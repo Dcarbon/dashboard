@@ -1,0 +1,50 @@
+@import "src/styles/custom.scss";
+
+@mixin box() {
+  display: block;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+// .btn{}
+.activity {
+  @include box;
+  border: 1px solid #ffffff;
+  @include transition;
+  &.act {
+    border-radius: 50%;
+    transform: scale(1.5);
+  }
+}
+.static {
+  position: absolute;
+  top: 2.5px;
+  left: -2.5px;
+  @include box;
+  @include transition;
+  .left,
+  .bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    @include box;
+    @include transition;
+  }
+  .left {
+    border-left: 1px solid #ffffff;
+  }
+  .bottom {
+    border-bottom: 1px solid #ffffff;
+  }
+  &.act {
+    transform: rotate(-45deg) translate(7px, -5px);
+    .left {
+      height: 8px;
+      border-left: 2px solid #56ff00;
+    }
+    .bottom {
+      width: 10px;
+      border-bottom: 2px solid #56ff00;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+.title {
+  line-height: 20px;
+  font-weight: 400;
+  color: #d7d7d9;
+  margin-bottom: 10px;
+  &::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    transform: translateX(-24px);
+    display: block;
+    width: 6px;
+    height: 20px;
+    background: #5055a4;
+    border-radius: 1px;
+  }
+}

@@ -1,0 +1,32 @@
+.scroll-box {
+  overflow: auto;
+  height: 100%;
+  &.disableX {
+    overflow-x: hidden;
+  }
+  &.disableY {
+    overflow-y: hidden;
+  }
+  /* width */
+  &::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: rgba(11, 10, 18, 1);
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #72bf44;
+    opacity: 0.3;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #8aec50;
+    opacity: 1;
+  }
+}

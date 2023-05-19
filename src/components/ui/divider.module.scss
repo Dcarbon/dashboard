@@ -1,0 +1,12 @@
+.vertical {
+  width: 1px;
+  height: var(--divider-height);
+  border-color: var(--divider-borderColor);
+  border-right-width: 1px;
+  border-top: 0;
+}
+.horizontal {
+  width: var(--divider-width);
+  height: 1px;
+  border-color: var(--divider-borderColor);
+}

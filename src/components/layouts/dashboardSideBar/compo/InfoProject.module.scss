@@ -1,0 +1,32 @@
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+  p:first-child {
+    color: #919097;
+    min-width: 35%;
+  }
+  p:last-child {
+    color: #fcfcfc;
+    max-width: 65%;
+    text-align: right;
+  }
+}
+.status,
+.copyBtn {
+  display: inline-block;
+  margin-left: 10px;
+}
+.status {
+  width: 8px;
+  height: 8px;
+  margin-bottom: 2px;
+  border-radius: 50%;
+  &.true {
+    background-color: #72bf44;
+  }
+  &.false {
+    background-color: #bf4444;
+  }
+}

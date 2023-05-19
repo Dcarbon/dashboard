@@ -1,0 +1,38 @@
+@import "src/styles/custom.scss";
+
+.Slide {
+  position: relative;
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    content: "";
+    width: 20%;
+    height: 100%;
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0),
+      rgba(0, 0, 0, 0.9)
+    );
+  }
+  // [class*="images-wrap"] {
+  //   gap: 16px;
+  // }
+}
+.imgItem {
+  padding-right: 16px;
+}
+.btnSlide {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  background-color: rgba(179, 178, 184, 0.8);
+  border-radius: 3px;
+  padding: 8px;
+  color: #ffffff;
+
+  &:hover {
+    color: #504f5a;
+    background-color: rgba(179, 178, 184, 1);
+  }
+}
