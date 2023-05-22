@@ -1,8 +1,8 @@
-import { ProjectACT } from "../actions/projectAction";
+import { OperatorACT } from "../actions/operatorAction";
 import { handleResponse } from "../handle";
 
-export const initProjectState = {
-  project: null,
+export const initOperatorState = {
+  metric: null,
   error: null,
   error_code: null,
   latest: "",
@@ -15,10 +15,10 @@ export const initProjectState = {
  * @param {import("src/utils/model").IAction} action
  * @returns
  */
-const projectReducer = (state = initProjectState, action) => {
+const operatorReducer = (state = initOperatorState, action) => {
   const res = handleResponse(action);
   switch (action.type) {
-    case ProjectACT.GET_PROJECT.REQUEST:
+    case OperatorACT.METRICS.REQUEST:
       // console.log("---------------request ", { action, res });
       return {
         ...state,
@@ -27,15 +27,15 @@ const projectReducer = (state = initProjectState, action) => {
         error_code: null,
         latest: action.type,
       };
-    case ProjectACT.GET_PROJECT.SUCCESS:
+    case OperatorACT.METRICS.SUCCESS:
       // console.log("---------------SUCCESS ", res);
       return {
         ...state,
         loading: true,
-        project: res.data,
+        metric: res.data,
         latest: action.type,
       };
-    case ProjectACT.GET_PROJECT.FAILURE:
+    case OperatorACT.METRICS.FAILURE:
       // console.log("---------------FAILURE ", res);
       return {
         ...state,
@@ -45,7 +45,7 @@ const projectReducer = (state = initProjectState, action) => {
         latest: action.type,
       };
 
-    case ProjectACT.CLEAR_ERR:
+    case OperatorACT.CLEAR_ERR:
       return {
         ...state,
         error: null,
@@ -56,4 +56,4 @@ const projectReducer = (state = initProjectState, action) => {
   }
 };
 
-export default projectReducer;
+export default operatorReducer;

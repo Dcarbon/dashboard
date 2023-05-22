@@ -8,6 +8,7 @@ import HookAPI from "src/tools/hook";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { listTime } from "src/tools/const";
+import { OperatorACT } from "src/redux/actions/operatorAction";
 function CarbonMinted() {
   const [payload, setPayload] = useState({
     iotId: 0,
@@ -18,6 +19,7 @@ function CarbonMinted() {
   const dispatch = useDispatch();
   const newHook = new HookAPI();
   const customState = useSelector(newHook.GetCustomState);
+  const operatorState = useSelector(newHook.GetOperatorState);
   useEffect(() => {
     if (payload?.iotId !== customState.idFeature) {
       var newPayload = { ...payload };
@@ -32,7 +34,7 @@ function CarbonMinted() {
     let from;
     switch (durationType) {
       case 0: // 7 ngay
-        thisDate?.setUTCDate(thisDate?.getUTCDate() - 7);
+        thisDate?.setUTCDate(thisDate?.getUTCDate() - 6);
         break;
       case 1: // 1 thang
         thisDate?.setUTCMonth(thisDate?.getUTCMonth() - 1);
@@ -65,6 +67,17 @@ function CarbonMinted() {
     },
     [dispatch, payload]
   );
+  // hàm lấy thông tin metric
+  const handleGetMetric = useCallback(
+    () =>
+      dispatch({
+        type: OperatorACT.METRICS.REQUEST,
+        payload: {
+          iotId: payload.iotId,
+        },
+      }),
+    [dispatch, payload]
+  );
   // Khi chưa có thời gian
   useEffect(() => {
     if (!payload?.to) {
@@ -86,6 +99,14 @@ function CarbonMinted() {
       handleGetIotMint();
     }
   }, [handleGetIotMint, payload?.iotId, payload?.to]);
+  // Lấy dữ liệu metric nếu đã có iotId
+  useEffect(() => {
+    if (payload?.iotId) {
+      // console.log("carbon minted load iot by", payload?.iotId);
+      handleGetMetric();
+    }
+  }, [handleGetMetric, payload?.iotId]);
+ 
 
   return (
     <BoxSection>
@@ -138,7 +159,10 @@ function CarbonMinted() {
       <FlexBetween className={"text-[#919097] font-normal mb-6"}>
         <p>Electricity generated</p>
         <p>
-          <span className='text-white'>152</span> (kWh)
+          <span className='text-white'>
+            {operatorState?.metric?.metrics[0]?.metric?.value}
+          </span>{" "}
+          (kWh)
         </p>
       </FlexBetween>
       <FlexBetween className={"text-[#919097] font-normal"}>

@@ -11,12 +11,18 @@ const optionsDefault = {
   chart: {
     toolbar: { show: false },
     width: "100%",
+    zoom: {
+      enabled: false,
+    },
   },
-  // colors: "#72BF44",
+  colors: "#72BF44",
   fill: { opacity: 0.3 },
   yaxis: { show: false },
   grid: { show: false },
-  // dataLabels: { enabled: false },
+  dataLabels: {
+    enabled: true,
+    formatter: (val) => parseFloat(val).toFixed(2),
+  },
   tooltip: { enabled: false },
   stroke: {
     show: true,
@@ -37,7 +43,10 @@ const optionsDefault = {
     axisTicks: { show: false },
   },
 };
-export default function CarbonMintedChart({ durType }) {
+export default function CarbonMintedChart({
+  durType,
+  //  to, from
+}) {
   const newHook = new HookAPI();
   const iotState = useSelector(newHook.GetIOTState);
   const [options, setOptions] = useState(null);
@@ -55,15 +64,16 @@ export default function CarbonMintedChart({ durType }) {
   }, [iotState.latest]);
   // Nếu đã load xong iot minted thì sẽ set option và series theo dữ liệu nhận đc
   useEffect(() => {
-    if (iotState.iot_minted?.length > 0) {
+    if (iotState.iot_minted?.length > 0) { 
       var newSeriesArr = [];
       for (let idx = 0; idx < iotState.iot_minted.length; idx++) {
         const element = iotState.iot_minted[idx];
-        const hexAmount = new BigNumber(element.amount);
-        const reduceAmount = hexAmount.div("1e6");
+        const hexAmount = new BigNumber(element.amount.toLocaleLowerCase());
+        const reduceAmount = hexAmount.div("1e6"); 
         const created_at = new Date(element?.createdAt).getTime();
-        newSeriesArr[idx] = [created_at, reduceAmount.toNumber(10)];
-      }
+        const roundCreate = Math.round(created_at / 1000); 
+        newSeriesArr[idx] = [roundCreate * 1000, reduceAmount.toFixed(2)];
+      } 
       setOptions(optionsDefault);
       setSeries([
         {
@@ -72,7 +82,7 @@ export default function CarbonMintedChart({ durType }) {
         },
       ]);
     }
-  }, [durType, iotState.iot_minted]);
+  }, [durType, iotState, iotState.iot_minted]);
 
   return (
     <Fragment>

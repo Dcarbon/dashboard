@@ -7,6 +7,7 @@ import HookAPI from "src/tools/hook";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import Error from "src/components/ui/Error";
+import { IOT_TYPE } from "src/tools/const";
 function InfoProject() {
   const newHook = new HookAPI();
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ function InfoProject() {
           </li>
           <li className={stls.itemRow}>
             <p>Project type</p>
-            <p>{iot?.type}</p>
+            <p>{IOT_TYPE(iot?.type)}</p>
           </li>
         </ul>
       )}

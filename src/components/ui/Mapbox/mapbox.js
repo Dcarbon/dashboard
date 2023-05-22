@@ -49,6 +49,7 @@ const layer_2 = {
   },
   paint: {
     "fill-color": "#72BF44",
+    "fill-antialias": true,
     "fill-opacity": [
       "case",
       ["boolean", ["feature-state", "hover"], false],
@@ -121,6 +122,7 @@ function MapBoxPage() {
         }
       }
     });
+    
   }, [changeIdFeature, customState?.idFeature, mymap]);
 
   return (
@@ -132,8 +134,11 @@ function MapBoxPage() {
         zoom: zoom,
       }}
       maxZoom={20}
-      minZoom={3}
-      style={{ width: "100%", height: "100%" }}
+      minZoom={2}
+      style={{
+        width: "100%",
+        height: "100%",
+      }}
       projection={"globe"}
       mapStyle='mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew'
       fog={{
@@ -144,6 +149,7 @@ function MapBoxPage() {
         "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
       }}
       mapboxAccessToken={accessToken}
+   
       onMove={() => {
         if (mymap) {
           setLng(mymap.getCenter().lng.toFixed(4));

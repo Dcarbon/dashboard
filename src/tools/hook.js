@@ -117,6 +117,31 @@ class HookAPI {
   GetProjectState(state) {
     return state?.projectState;
   }
+  /**
+   *
+   * @param {*} amount
+   * @returns {{
+   * metric : {
+   *  id: number,
+   *  metrics:: [{
+   *    id : number,
+   *    latest : number,
+   *    metric : {
+   *      lat : number,
+   *      lng : number,
+   *      value: number
+   *    },
+   *  }],
+   * }
+   * loading : boolean,
+   * error : string,
+   * error_code : string
+   * }}
+   *
+   */
+  GetOperatorState(state) {
+    return state?.operatorState;
+  }
   ConfigSeries(amount, type, time) {
     let listAmount = [];
 
