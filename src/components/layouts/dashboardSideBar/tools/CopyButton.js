@@ -12,8 +12,7 @@ function CopyButton({ className, obj }) {
   return (
     <span className={`${className} relative inline-block`} onClick={handleCopy}>
       <ActivityStack isCopy={isCopy} />
-      <StaticStack isCopy={isCopy} />
-      {/* <Image src={imgsDir(imgsObject.CopyButton)} alt='copy' /> */}
+      <StaticStack isCopy={isCopy} /> 
     </span>
   );
 }

@@ -1,6 +1,15 @@
 .main {
-  height: 100%;
-  @media (min-width: 991px) {
-    height: calc(100vh - 74px);
+  height: 100%; 
+}
+.box{
+  height: 478px;
+
+}
+@media (min-width: 768px) {
+  .main { 
+      height: calc(100vh - 74px); 
+  }
+  .box{
+    height: 100%;
   }
 }

@@ -8,8 +8,9 @@ function DashboardSideBar() {
   return (
     <ScrollBox
       disableX
-      className={`${stls.dashboard} bg-[#181818] w-full md:w-[420px]`}>
-      <div className='text-[#B3B2B8] p-6'>
+      className={`${stls.dashboard} bg-[#181818] w-full md:w-[420px]`}
+    >
+      <div className="text-[#B3B2B8] p-3 md:p-6">
         <SelectProject />
         <InfoProject />
         <CarbonMinted />

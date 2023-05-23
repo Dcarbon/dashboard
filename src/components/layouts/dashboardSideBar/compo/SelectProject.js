@@ -7,14 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import HookAPI from "src/tools/hook";
 import { ProjectACT } from "src/redux/actions/projectAction";
 import Error from "src/components/ui/Error";
-// import Selection from "src/components/ui/Selection";
-// import { listProject } from "src/tools/const";
-
 function SelectProject(props) {
-  // const [currentProject, setCurrentProject] = useState(0);
-  // const [searchProject, setSearchProject] = useState(
-  //   listProject[currentProject].label
-  // );
   const newHook = new HookAPI();
   const iotState = useSelector(newHook.GetIOTState);
   const projectState = useSelector(newHook.GetProjectState);
@@ -113,39 +106,7 @@ function SelectProject(props) {
           )}
         </div>
       )}
-      {/* <Selection
-          isSearch
-          size={"lg"}
-          id={"project-search"}
-          label={"Select or search project"}
-          value={searchProject}
-          onChange={(evt) => {
-            const val = evt.target.value;
-            if (currentProject !== val) {
-              setSearchProject(listProject[val].label);
-              setCurrentProject(val);
-            }
-          }}
-          onSearch={(e) =>
-            setSearchProject(e.target.value?.length > 0 ? e.target.value : "D")
-          }>
-          {listProject.map((item, key) => (
-            <li
-              key={"item-" + key}
-              className={`text-[#B3B2B8] p-3 ${
-                key < listProject?.length - 1
-                  ? "border-b border-b-[#504F5A]"
-                  : ""
-              } ${
-                currentProject === key
-                  ? "text-[#504F5A]"
-                  : "hover:bg-[#272541] rounded-sm cursor-pointer"
-              }  `}
-              value={key}>
-              {item.label}
-            </li>
-          ))}
-        </Selection> */}
+      
     </div>
   );
 }

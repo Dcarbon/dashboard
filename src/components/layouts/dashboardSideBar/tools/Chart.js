@@ -63,7 +63,7 @@ export default function CarbonMintedChart({
     }
   }, [iotState.latest]);
   // Nếu đã load xong iot minted thì sẽ set option và series theo dữ liệu nhận đc
-  useEffect(() => {
+  useEffect(() => { 
     if (iotState.iot_minted?.length > 0) { 
       var newSeriesArr = [];
       for (let idx = 0; idx < iotState.iot_minted.length; idx++) {

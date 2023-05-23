@@ -142,6 +142,40 @@ class HookAPI {
   GetOperatorState(state) {
     return state?.operatorState;
   }
+   /**
+   *
+   * @param {*} amount
+   * @returns {{
+   * sensors: [{ 
+   *  address: string,
+   *  createdAt: string,
+   *  id: number,
+   *  iotId: number,
+   *  status: number,
+   *  type: number
+   * }],
+   * sensor_metrics : [{
+   *  createdAt: string,
+   *  data: string,
+   *  id: string,
+   *  indicator: {
+   *    lat: number,
+   *    lng: number,
+   *    value: number
+   *  },
+   *  iotId": number,
+   *  sensorId": number,
+   *  sensorType": number
+   * }]
+   * loading : boolean,
+   * error : string,
+   * error_code : string
+   * }}
+   *
+   */
+  GetSensorsState(state) {
+    return state?.sensorsState;
+  }
   ConfigSeries(amount, type, time) {
     let listAmount = [];
 

@@ -1,6 +1,7 @@
 .dashboard {
+  flex: 1 0 auto;
   height: auto;
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 992px) {
     height: calc(100vh - 74px);
   }
 }

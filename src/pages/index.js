@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Layout>
       <div className={`${stls.main} block md:flex`}>
-        <div className='bg-[#181818] w-full h-2/3 md:h-full'>
+        <div className={`bg-[#181818] w-full ${stls.box}`}>
           <MapBoxPage />
         </div>
         <DashboardSideBar />
