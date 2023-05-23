@@ -9,13 +9,13 @@ function Layout({ children }) {
     <>
       <Head>
         <title>D-Carbon</title>
-        <meta charSet='utf-8' />
-        <meta name='description' content='D carbon website' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
+        <meta charSet="utf-8" />
+        <meta name="description" content="D carbon website" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`main ${lexend.className}`}>
-        <ScrollBox>
+        <ScrollBox disableX>
           <Header />
           {children}
         </ScrollBox>

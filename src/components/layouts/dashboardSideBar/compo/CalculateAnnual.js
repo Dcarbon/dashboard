@@ -11,7 +11,7 @@ function CalculateAnnual() {
       <p className="text-[#B3B2B8] mb-3">Dcarbon Devices Price</p>
       <FlexBetween className="items-center mb-3 gap-5">
         <input
-          className={`w-full md:w-[212px] ${stls.input} px-4 py-[11px] bg-[#0B0A12] border border-[#32313D] rounded-md`}
+          className={`w-full min-w-[212px] ${stls.input} px-4 py-[11px] bg-[#0B0A12] border border-[#32313D] rounded-md`}
           placeholder="Price (USD)"
           value={price}
           onChange={(e) => setPrice(e.target.value)}

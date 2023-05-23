@@ -151,13 +151,15 @@ function CarbonMinted() {
           </Selection>
         </div>
       </div>
-      <div className={stls.carbonMinted}>
-        <CarbonMintedChart
-          durType={payload.durationType}
-          from={payload?.from}
-          to={payload?.to}
-        />
-      </div>
+      {customState.idFeature && (
+        <div className={stls.carbonMinted}>
+          <CarbonMintedChart
+            durType={payload.durationType}
+            from={payload?.from}
+            to={payload?.to}
+          />
+        </div>
+      )}
       <FlexBetween className={"text-[#919097] font-normal mb-6"}>
         <p>Electricity generated</p>
         <p>

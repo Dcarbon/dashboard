@@ -1,47 +1,55 @@
-.main{
+.main {
   display: block;
   height: calc(100% - 74px);
-  @media (min-width : 1024px) {
+  @media (min-width: 1024px) {
     display: flex;
   }
-  &.active{
-    .map{
+  &.active {
+    .map {
       height: 478px;
-      @media (min-width : 768px) {
+      @media (min-width: 768px) {
         height: 433px;
       }
-      @media (min-width : 768px) {
+      @media (min-width: 1024px) {
         height: 100%;
-      } 
-    }
-    .sidebar{ 
-      @media (max-width : 1023px) { 
-          height: auto;
       }
-      @media (min-width : 1024px) { 
-          width: 420px;
+    }
+    .sidebar {
+      @media (max-width: 1023px) {
+        height: auto;
+      }
+      @media (min-width: 1024px) {
+        width: 420px;
+        position: static;
+        top: unset;
+        right: unset;
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
       }
     }
   }
 }
-.map{
+.map {
   height: 100%;
-  @media (min-width : 1024px) {
-    flex: 0 1 auto; 
+  @media (min-width: 1024px) {
+    flex: 0 1 auto;
     width: 100%;
   }
 }
-.sidebar{
-  background-color: #181818; 
-  @media (max-width : 1023px) {
+.sidebar {
+  @media (max-width: 1023px) {
     height: 0;
-   
   }
-  @media (min-width : 1024px) {
+  @media (min-width: 1024px) {
+    position: fixed;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    visibility: hidden;
     flex: 1 0 auto;
     height: 100%;
-    width: 0;
+    transform: translateX(100%);
     transition: all 0.5s ease;
-    
   }
 }
