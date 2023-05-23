@@ -8,7 +8,7 @@ const imgsObject = {
   Marker: "Marker.svg",
 };
 
-const listTime = ["7 days", "1 month", "1 year", "all times"];
+const listTime = ["7 days", "1 month", "1 year"];
 const IOT_TYPE = (val) => {
   switch (val) {
     case 10:

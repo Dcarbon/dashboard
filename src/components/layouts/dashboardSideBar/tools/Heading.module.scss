@@ -14,5 +14,8 @@
     height: 20px;
     background: #5055a4;
     border-radius: 1px;
+    @media (max-width : 1023px) {
+      display: none;
+    }
   }
 }

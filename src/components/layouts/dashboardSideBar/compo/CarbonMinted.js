@@ -9,10 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { listTime } from "src/tools/const";
 import { OperatorACT } from "src/redux/actions/operatorAction";
+import stls from "./CarbonMinted.module.scss";
 function CarbonMinted() {
   const [payload, setPayload] = useState({
     iotId: 0,
-    durationType: 3,
+    durationType: 2,
     from: 0,
     to: 0,
   });
@@ -106,13 +107,12 @@ function CarbonMinted() {
       handleGetMetric();
     }
   }, [handleGetMetric, payload?.iotId]);
- 
 
   return (
     <BoxSection>
-      <div className='flex justify-between items-center'>
+      <div className="flex justify-between items-center">
         <HeadingSideBar className={"inline-block"} text={"CARBON minted"} />
-        <div className='inline-block w-[132px]'>
+        <div className="inline-block w-[132px]">
           <Selection
             size={"sm"}
             id={"time"}
@@ -129,7 +129,8 @@ function CarbonMinted() {
             }}
             className={{
               list: "mt-1 min-w-[160px] overflow-hidden rounded-3 border border-[#504F5A]",
-            }}>
+            }}
+          >
             {listTime.map((item, key) => (
               <li
                 className={`text-sm text-[#B3B2B8] p-2 ${
@@ -142,14 +143,15 @@ function CarbonMinted() {
                     : "hover:bg-[#272541] rounded-sm cursor-pointer"
                 }`}
                 key={"item-" + item}
-                value={key}>
+                value={key}
+              >
                 {item}
               </li>
             ))}
           </Selection>
         </div>
       </div>
-      <div className='-mx-8'>
+      <div className={stls.carbonMinted}>
         <CarbonMintedChart
           durType={payload.durationType}
           from={payload?.from}
@@ -159,7 +161,7 @@ function CarbonMinted() {
       <FlexBetween className={"text-[#919097] font-normal mb-6"}>
         <p>Electricity generated</p>
         <p>
-          <span className='text-white'>
+          <span className="text-white">
             {operatorState?.metric?.metrics[0]?.metric?.value}
           </span>{" "}
           (kWh)
@@ -168,7 +170,7 @@ function CarbonMinted() {
       <FlexBetween className={"text-[#919097] font-normal"}>
         <p>Biogas treated</p>
         <p>
-          <span className='text-white'>102</span> (m
+          <span className="text-white">102</span> (m
           <sup>
             <smal>3</smal>
           </sup>

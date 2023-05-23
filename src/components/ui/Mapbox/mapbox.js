@@ -114,6 +114,7 @@ function MapBoxPage() {
       }
       hoveredStateId = null;
     });
+
     mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
       if (e.features.length > 0) {
         hoveredStateId = e.features[0].id;
@@ -122,7 +123,6 @@ function MapBoxPage() {
         }
       }
     });
-    
   }, [changeIdFeature, customState?.idFeature, mymap]);
 
   return (
@@ -140,7 +140,7 @@ function MapBoxPage() {
         height: "100%",
       }}
       projection={"globe"}
-      mapStyle='mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew'
+      mapStyle="mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew"
       fog={{
         color: "rgba(169, 200, 232, 0.8)", // Lower atmosphere
         "horizon-blend": 0.05,
@@ -149,21 +149,22 @@ function MapBoxPage() {
         "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
       }}
       mapboxAccessToken={accessToken}
-   
       onMove={() => {
         if (mymap) {
           setLng(mymap.getCenter().lng.toFixed(4));
           setLat(mymap.getCenter().lat.toFixed(4));
           setZoom(mymap.getZoom().toFixed(2));
         }
-      }}>
+      }}
+    >
       {/* {mymap && <MyMarkers mymap={mymap} />} */}
       <OverView featureId={featureId} />
       <Source
-        id='iott_all'
-        type='vector'
+        id="iott_all"
+        type="vector"
         tiles={[process.env.NEXT_PUBLIC_MAPSOURCE]}
-        attribution='Show to users'>
+        attribution="Show to users"
+      >
         <Layer {...layer_1} />
         <Layer {...layer_2} />
       </Source>

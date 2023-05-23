@@ -38,7 +38,20 @@ function SelectProject(props) {
       </button>
     ),
   };
-
+  const responsiveSettings = [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+      },
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 4,
+      },
+    },
+  ];
   return (
     <div {...props}>
       <Error
@@ -46,12 +59,12 @@ function SelectProject(props) {
         err={projectState?.error}
         err_code={projectState?.error_code}
       />
-      <h3 className='text-white uppercase text-lg mb-2'>
+      <h3 className="text-white uppercase text-lg mb-2">
         Project {projectState?.project?.id ?? 0}
       </h3>
-      <p className=' mb-4'>Project thumbnails</p>
+      <p className=" mb-4">Project thumbnails</p>
       {projectState?.project?.images?.length > 0 && (
-        <div className='list-img mb-6 -mr-12'>
+        <div className="list-img mb-6 -mr-12">
           {projectState?.project?.images?.length < 3 ? (
             <div>
               {projectState?.project?.images?.map((slideImage, index) => (
@@ -63,15 +76,16 @@ function SelectProject(props) {
                     alt={"Project " + projectState?.project?.id}
                     width={148}
                     height={90}
-                    className='w-36 h-auto'
+                    className="w-36 h-auto"
                   />
                 </div>
               ))}
             </div>
           ) : (
-            <div className='slide-container'>
+            <div className="slide-container">
               <Slide
                 ref={slideRef}
+                responsive={responsiveSettings}
                 onStartChange={(from, to) => {
                   let max = projectState?.project?.images?.length - 1;
                   let min = 0;
@@ -87,7 +101,8 @@ function SelectProject(props) {
                 }}
                 cssClass={stls.Slide}
                 {...customProperties}
-                infinite={false}>
+                infinite={false}
+              >
                 {projectState?.project?.images?.map((slideImage, index) => (
                   <div key={index} className={stls.imgItem}>
                     <Image
@@ -97,7 +112,7 @@ function SelectProject(props) {
                       alt={"Project " + projectState?.project?.id}
                       width={148}
                       height={90}
-                      className='w-full h-auto'
+                      className="w-full h-auto"
                     />
                   </div>
                 ))}
@@ -106,7 +121,6 @@ function SelectProject(props) {
           )}
         </div>
       )}
-      
     </div>
   );
 }

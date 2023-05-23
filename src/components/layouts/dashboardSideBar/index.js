@@ -6,14 +6,13 @@ import SelectProject from "./compo/SelectProject";
 import stls from "./index.module.scss";
 function DashboardSideBar() {
   return (
-    <ScrollBox
-      disableX
-      className={`${stls.dashboard} bg-[#181818] w-full md:w-[420px]`}
-    >
+    <ScrollBox disableX>
       <div className="text-[#B3B2B8] p-3 md:p-6">
         <SelectProject />
-        <InfoProject />
-        <CarbonMinted />
+        <div className={stls.boxMiddle}>
+          <InfoProject />
+          <CarbonMinted />
+        </div>
         <CalculateAnnual />
       </div>
     </ScrollBox>
