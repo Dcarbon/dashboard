@@ -78,11 +78,10 @@ function InfoProject() {
     return str?.replace(strReplace, "...");
   };
   const iot = useMemo(() => iotState?.iot, [iotState?.iot]);
-
   return (
     <BoxSection>
       <Error err={iotState.error} clearErrType={IOTAct.CLEAR_ERR} />
-      <HeadingSideBar text={"Info"} />
+      <HeadingSideBar text={`Info ${iot?.id ? `(${iot.id})` : ""}`} />
       {iotState && (
         <ul>
           <li className={stls.itemRow}>

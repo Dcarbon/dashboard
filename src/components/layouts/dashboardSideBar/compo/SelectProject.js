@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import stls from "./SelectProject.module.scss";
 import { Slide } from "react-slideshow-image";
@@ -62,47 +62,13 @@ function SelectProject(props) {
       <h3 className="text-white uppercase text-lg mb-2">
         Project {projectState?.project?.id ?? 0}
       </h3>
-      <p className=" mb-4">Project thumbnails</p>
+
       {projectState?.project?.images?.length > 0 && (
-        <div className="list-img mb-6 -mr-12">
-          {projectState?.project?.images?.length < 3 ? (
-            <div>
-              {projectState?.project?.images?.map((slideImage, index) => (
-                <div key={index} className={stls.imgItem}>
-                  <Image
-                    unoptimized
-                    priority
-                    src={slideImage?.image}
-                    alt={"Project " + projectState?.project?.id}
-                    width={148}
-                    height={90}
-                    className="w-36 h-auto"
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="slide-container">
-              <Slide
-                ref={slideRef}
-                responsive={responsiveSettings}
-                onStartChange={(from, to) => {
-                  let max = projectState?.project?.images?.length - 1;
-                  let min = 0;
-                  if (from < to) {
-                    if (!showPrev) setShowPrev(true);
-                    // to === 0 => show next hide prev
-                    if (to === max) setShowNext(false);
-                  } else {
-                    if (!showNext) setShowNext(true);
-                    // to === max => hide next show prev
-                    if (to === min) setShowPrev(false);
-                  }
-                }}
-                cssClass={stls.Slide}
-                {...customProperties}
-                infinite={false}
-              >
+        <Fragment>
+          <p className=" mb-4">Project thumbnails</p>
+          <div className="list-img mb-6 -mr-12">
+            {projectState?.project?.images?.length < 3 ? (
+              <div>
                 {projectState?.project?.images?.map((slideImage, index) => (
                   <div key={index} className={stls.imgItem}>
                     <Image
@@ -112,14 +78,51 @@ function SelectProject(props) {
                       alt={"Project " + projectState?.project?.id}
                       width={148}
                       height={90}
-                      className="w-full h-auto"
+                      className="w-36 h-auto"
                     />
                   </div>
                 ))}
-              </Slide>
-            </div>
-          )}
-        </div>
+              </div>
+            ) : (
+              <div className="slide-container">
+                <Slide
+                  ref={slideRef}
+                  responsive={responsiveSettings}
+                  onStartChange={(from, to) => {
+                    let max = projectState?.project?.images?.length - 1;
+                    let min = 0;
+                    if (from < to) {
+                      if (!showPrev) setShowPrev(true);
+                      // to === 0 => show next hide prev
+                      if (to === max) setShowNext(false);
+                    } else {
+                      if (!showNext) setShowNext(true);
+                      // to === max => hide next show prev
+                      if (to === min) setShowPrev(false);
+                    }
+                  }}
+                  cssClass={stls.Slide}
+                  {...customProperties}
+                  infinite={false}
+                >
+                  {projectState?.project?.images?.map((slideImage, index) => (
+                    <div key={index} className={stls.imgItem}>
+                      <Image
+                        unoptimized
+                        priority
+                        src={slideImage?.image}
+                        alt={"Project " + projectState?.project?.id}
+                        width={148}
+                        height={90}
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  ))}
+                </Slide>
+              </div>
+            )}
+          </div>
+        </Fragment>
       )}
     </div>
   );
