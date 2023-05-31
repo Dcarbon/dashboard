@@ -13,8 +13,11 @@
     "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:latest"
   },
   "dependencies": {
+    "@glidejs/glide": "^3.6.0",
     "@headlessui/react": "1.7.14",
     "@heroicons/react": "2.0.17",
+    "@react-three/drei": "^9.70.0",
+    "@react-three/fiber": "^8.13.0",
     "@reduxjs/toolkit": "^1.9.5",
     "apexcharts": "^3.39.0",
     "axios": "^1.4.0",
@@ -26,11 +29,13 @@
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-dom": "18.2.0",
+    "react-glider": "^4.0.2",
     "react-map-gl": "^7.0.23",
     "react-redux": "^8.0.5",
     "react-slideshow-image": "^4.2.1",
     "redux": "^4.2.1",
-    "redux-saga": "^1.2.3"
+    "redux-saga": "^1.2.3",
+    "three": "^0.152.2"
   },
   "devDependencies": {
     "autoprefixer": "10.4.14",

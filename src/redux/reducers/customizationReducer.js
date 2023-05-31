@@ -2,7 +2,7 @@ import { customizationAction } from "../actions/customizationAction";
 
 export const initCustomizationState = {
   mymap: null,
-  idFeature: 0,
+  features: null,
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -21,7 +21,7 @@ const customizationReducer = (state = initCustomizationState, action) => {
     case customizationAction.CHANGE_ID_FEATURE:
       return {
         ...state,
-        idFeature: action.payload,
+        features: action.payload,
       };
     default:
       return state;

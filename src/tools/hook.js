@@ -52,9 +52,10 @@ class HookAPI {
    * @param {object} state
    * @returns {{
    * mymap : object,
-   * idFeature : number
+   * features : Array
    * }}
    */
+
   GetCustomState(state) {
     return state?.customization;
   }
@@ -142,11 +143,11 @@ class HookAPI {
   GetOperatorState(state) {
     return state?.operatorState;
   }
-   /**
+  /**
    *
    * @param {*} amount
    * @returns {{
-   * sensors: [{ 
+   * sensors: [{
    *  address: string,
    *  createdAt: string,
    *  id: number,

@@ -1,12 +1,7 @@
 import { imgsObject } from "src/tools/const";
 import IconSvg from "../IconSvg";
-import Divider from "../divider";
 import stls from "./overview.module.scss";
-function OverView({ featureId }) {
-  // useEffect(() => {
-  //   console.log("customState", customState.idFeature);
-  // }, [customState.idFeature]);
-
+function OverView({ features }) {
   return (
     <div
       className={`absolute bg-black bg-opacity-80   top-3 md:top-6 mx-3 md:mx-6 py-3 px-4 rounded-[4px]`}
@@ -17,17 +12,17 @@ function OverView({ featureId }) {
           <p>Total number of nodes:</p>
           <span className={stls.overView_totals}>
             <IconSvg img={imgsObject.Hexagon} size={"sm"} />
-            {featureId ?? 0}
+            {features?.length ?? 0}
           </span>
         </div>
-        <Divider vertical />
+        {/* <Divider vertical />
         <div className="flex justify-between items-center gap-4">
           <p>Total carbon offset:</p>
           <span className={stls.overView_totals}>
             <IconSvg img={imgsObject.Recycle} size={"sm"} />
             {featureId ?? 0}
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

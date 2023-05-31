@@ -1,58 +1,93 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import BoxSection from "../tools/BoxSection";
 import HeadingSideBar from "../tools/Heading";
-import Selection from "src/components/ui/Selection";
 import CarbonMintedChart from "../tools/Chart";
 import FlexBetween from "src/components/ui/Stack/flex-between";
 import HookAPI from "src/tools/hook";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { listTime } from "src/tools/const";
-import { OperatorACT } from "src/redux/actions/operatorAction";
 import stls from "./CarbonMinted.module.scss";
-function CarbonMinted() {
+import SelectItem from "src/components/ui/Selection/SelectItem";
+import Selection from "src/components/ui/Selection/Select";
+import { SensorsACT } from "src/redux/actions/sensorsAction";
+// hàm lấy from to theo durtype
+const configDurType = (durationType) => {
+  var thisDate = new Date();
+  let to = Math.ceil(thisDate.getTime() / 1000);
+  let from;
+  switch (durationType) {
+    case 0: // 7 ngay
+      thisDate?.setUTCDate(thisDate?.getUTCDate() - 6);
+      break;
+    case 1: // 1 thang
+      thisDate?.setUTCMonth(thisDate?.getUTCMonth() - 1);
+      thisDate?.setUTCHours(0, 0, 0, 0);
+      break;
+    case 2: // 1 nam
+      thisDate?.setUTCFullYear(thisDate?.getUTCFullYear() - 1);
+      thisDate?.setUTCHours(0, 0, 0, 0);
+      break;
+    default:
+      thisDate = new Date(0);
+      break;
+  }
+  from = Math.ceil(thisDate?.getTime() / 1000);
+  return { to, from };
+};
+function CarbonMinted({ iotSelected }) {
   const [payload, setPayload] = useState({
     iotId: 0,
     durationType: 2,
     from: 0,
     to: 0,
+    limit: 50,
+    skip: 700,
+    sensorId: 0,
   });
   const dispatch = useDispatch();
   const newHook = new HookAPI();
-  const customState = useSelector(newHook.GetCustomState);
-  const operatorState = useSelector(newHook.GetOperatorState);
-  useEffect(() => {
-    if (payload?.iotId !== customState.idFeature) {
-      var newPayload = { ...payload };
-      newPayload.iotId = customState.idFeature;
-      setPayload({ ...newPayload });
-    }
-  }, [customState.idFeature, payload]);
-  // hàm lấy from to theo durtype
-  const configDurType = (durationType) => {
-    var thisDate = new Date();
-    let to = Math.ceil(thisDate.getTime() / 1000);
-    let from;
-    switch (durationType) {
-      case 0: // 7 ngay
-        thisDate?.setUTCDate(thisDate?.getUTCDate() - 6);
-        break;
-      case 1: // 1 thang
-        thisDate?.setUTCMonth(thisDate?.getUTCMonth() - 1);
-        thisDate?.setUTCHours(0, 0, 0, 0);
-        break;
-      case 2: // 1 nam
-        thisDate?.setUTCFullYear(thisDate?.getUTCFullYear() - 1);
-        thisDate?.setUTCHours(0, 0, 0, 0);
-        break;
-      default:
-        thisDate = new Date(0);
-        break;
-    }
-    from = Math.ceil(thisDate?.getTime() / 1000);
-    return { to, from };
+  const sensorState = useSelector(newHook.GetSensorsState);
+  const iotState = useSelector(newHook.GetIOTState);
+  // function handle Dur
+  const handleSelectDur = (evt) => {
+    let newFromTo = configDurType(evt.target.value);
+    let newPayload = {
+      ...payload,
+      durationType: evt.target.value,
+      to: newFromTo.to,
+      from: newFromTo.from,
+    };
+    handleGetIotMint(newPayload);
   };
-  // hàm lấy thông tin IOT minted
+  // Step 1 : check time and set
+  useEffect(() => {
+    if (!payload?.to) {
+      // console.log("Chưa có {To} => SET to from");
+      const newFromTo = configDurType(payload?.durationType);
+      let newPayload = {
+        ...payload,
+        to: newFromTo?.to,
+        from: newFromTo?.from,
+      };
+      setPayload(newPayload);
+    }
+  }, [payload, payload.iotId, payload?.to]);
+  useEffect(() => {
+    if (iotSelected !== payload?.iotId && payload?.to) {
+      var newPayload = { ...payload };
+      newPayload.iotId = iotSelected;
+      // Step 2: add iotId to payload
+      setPayload({ ...newPayload });
+      // Step 3: get sensors by iotId
+      dispatch({
+        type: SensorsACT.GET_SENSORS.REQUEST,
+        payload: { ...payload, iotId: iotSelected },
+      });
+    }
+  }, [dispatch, iotSelected, payload]);
+
+  // function get IotMinted
   const handleGetIotMint = useCallback(
     (newPayload) => {
       if (newPayload) {
@@ -68,45 +103,27 @@ function CarbonMinted() {
     },
     [dispatch, payload]
   );
-  // hàm lấy thông tin metric
-  const handleGetMetric = useCallback(
-    () =>
-      dispatch({
-        type: OperatorACT.METRICS.REQUEST,
-        payload: {
-          iotId: payload.iotId,
-        },
-      }),
-    [dispatch, payload]
-  );
-  // Khi chưa có thời gian
-  useEffect(() => {
-    if (!payload?.to) {
-      // console.log("Chưa có {To} => SET to from");
-      const newFromTo = configDurType(payload?.durationType);
-      let newPayload = {
-        ...payload,
-        to: newFromTo?.to,
-        from: newFromTo?.from,
-      };
-      setPayload(newPayload);
-    }
-  }, [payload, payload.iotId, payload?.to]);
-
-  // Lấy dữ liệu iot nếu đã có thời gian
+  // Step 4 get IotMinted
   useEffect(() => {
     if (payload?.iotId && payload?.to > 0) {
-      // console.log("carbon minted load iot by", payload?.iotId);
       handleGetIotMint();
     }
   }, [handleGetIotMint, payload?.iotId, payload?.to]);
-  // Lấy dữ liệu metric nếu đã có iotId
+  // function getSensorMetrics
+  const handleGetMetric = useCallback(
+    () => dispatch({ type: SensorsACT.GET_SENSORS_METRICS.REQUEST, payload }),
+    [dispatch, payload]
+  );
+  // Step 5 get Metrics
   useEffect(() => {
-    if (payload?.iotId) {
-      // console.log("carbon minted load iot by", payload?.iotId);
+    if (payload?.iotId && payload?.sensorId) {
       handleGetMetric();
     }
-  }, [handleGetMetric, payload?.iotId]);
+  }, [handleGetMetric, payload?.iotId, payload?.sensorId]);
+  useEffect(() => {
+    console.log("iotState", iotState);
+    console.log("metrics", sensorState);
+  }, [iotState, sensorState]);
 
   return (
     <BoxSection>
@@ -117,41 +134,23 @@ function CarbonMinted() {
             size={"sm"}
             id={"time"}
             value={listTime[payload.durationType]}
-            onChange={(evt) => {
-              let newFromTo = configDurType(evt.target.value);
-              let newPayload = {
-                ...payload,
-                durationType: evt.target.value,
-                to: newFromTo.to,
-                from: newFromTo.from,
-              };
-              handleGetIotMint(newPayload);
-            }}
-            className={{
-              list: "mt-1 min-w-[160px] overflow-hidden rounded-3 border border-[#504F5A]",
-            }}
+            onChange={handleSelectDur}
+            listClassName={"min-w-[160px]"}
           >
             {listTime.map((item, key) => (
-              <li
-                className={`text-sm text-[#B3B2B8] p-2 ${
-                  key < listTime?.length - 1
-                    ? "border-b border-b-[#504F5A]"
-                    : ""
-                } ${
-                  payload.durationType === key
-                    ? "text-[#504F5A]"
-                    : "hover:bg-[#272541] rounded-sm cursor-pointer"
-                }`}
+              <SelectItem
+                active={item === listTime[payload.durationType]}
                 key={"item-" + item}
                 value={key}
               >
                 {item}
-              </li>
+              </SelectItem>
             ))}
           </Selection>
         </div>
       </div>
-      {customState.idFeature && (
+      {/* Chart */}
+      {iotSelected && (
         <div className={stls.carbonMinted}>
           <CarbonMintedChart
             durType={payload.durationType}
@@ -160,25 +159,27 @@ function CarbonMinted() {
           />
         </div>
       )}
-      <FlexBetween className={"text-[#919097] font-normal mb-6"}>
-        <p>Electricity generated</p>
-        <p>
-          <span className="text-white">
-            {operatorState?.metric?.metrics[0]?.metric?.value}
-          </span>{" "}
-          (kWh)
-        </p>
-      </FlexBetween>
-      <FlexBetween className={"text-[#919097] font-normal"}>
-        <p>Biogas treated</p>
-        <p>
-          <span className="text-white">102</span> (m
-          <sup>
-            <smal>3</smal>
-          </sup>
-          )
-        </p>
-      </FlexBetween>
+      {/* info */}
+      {sensorState && (
+        <Fragment>
+          <FlexBetween className={"text-[#919097] font-normal mb-6"}>
+            <p>Electricity generated</p>
+            <p>
+              <span className="text-white"></span> (kWh)
+            </p>
+          </FlexBetween>
+          <FlexBetween className={"text-[#919097] font-normal"}>
+            <p>Biogas treated</p>
+            <p>
+              <span className="text-white">102</span> (m
+              <sup>
+                <smal>3</smal>
+              </sup>
+              )
+            </p>
+          </FlexBetween>
+        </Fragment>
+      )}
     </BoxSection>
   );
 }

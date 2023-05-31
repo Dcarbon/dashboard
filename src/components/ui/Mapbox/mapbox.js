@@ -63,7 +63,7 @@ function MapBoxPage() {
   const [lng, setLng] = useState(105.793123);
   const [lat, setLat] = useState(21.004998);
   const [zoom, setZoom] = useState(10);
-  const [featureId, setFeatureId] = useState(null);
+  const [features, setFeatures] = useState(null);
   const newHook = new HookAPI();
   const customState = useSelector(newHook.GetCustomState);
   const dispatch = useDispatch();
@@ -73,34 +73,43 @@ function MapBoxPage() {
     }
   }, [customState?.mymap, mymap, dispatch]);
 
-  const changeIdFeature = useCallback(
-    (id) =>
+  const changeFeatures = useCallback(
+    (features) =>
       dispatch({
         type: customizationAction.CHANGE_ID_FEATURE,
-        payload: id,
+        payload: features,
       }),
     [dispatch]
   );
   useEffect(() => {
     if (!mymap) return;
     let hoveredStateId = null;
+    let listFeatures = null;
     let tempState = (sourceLayer) => ({
       source: "iott_all",
       id: hoveredStateId,
       sourceLayer,
     });
+    let handleDuplicateFeatures = (features) => {
+      const newFeatures = features.map((item) => item.id);
+      return newFeatures.filter(
+        (item, index) => newFeatures.indexOf(item) === index
+      );
+    };
+
     let handleMultiFeatureState = (hover) => {
       mymap.setFeatureState(tempState(layer_1["source-layer"]), { hover });
       mymap.setFeatureState(tempState(layer_2["source-layer"]), { hover });
     };
     mymap.on("mousemove", ["boundaryLayer", "hexagonLayer"], (e) => {
+      // console.log("e move", e);
       if (e.features.length > 0) {
         if (hoveredStateId !== null) {
           handleMultiFeatureState(false);
         }
         hoveredStateId = e.features[0].id;
         if (customState?.idFeature !== hoveredStateId) {
-          setFeatureId(hoveredStateId);
+          setFeatures(handleDuplicateFeatures(e.features));
         }
 
         handleMultiFeatureState(true);
@@ -109,21 +118,23 @@ function MapBoxPage() {
 
     mymap.on("mouseleave", ["boundaryLayer", "hexagonLayer"], () => {
       if (hoveredStateId !== null) {
-        setFeatureId(null);
+        setFeatures(null);
         handleMultiFeatureState(false);
       }
       hoveredStateId = null;
     });
 
     mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
+      // console.log("mymap", mymap);
       if (e.features.length > 0) {
+        listFeatures = handleDuplicateFeatures(e.features);
         hoveredStateId = e.features[0].id;
         if (customState?.idFeature !== hoveredStateId) {
-          changeIdFeature(hoveredStateId);
+          changeFeatures(listFeatures);
         }
       }
     });
-  }, [changeIdFeature, customState?.idFeature, mymap]);
+  }, [changeFeatures, customState?.idFeature, mymap]);
 
   return (
     <Map
@@ -158,7 +169,7 @@ function MapBoxPage() {
       }}
     >
       {/* {mymap && <MyMarkers mymap={mymap} />} */}
-      <OverView featureId={featureId} />
+      <OverView features={features} />
       <Source
         id="iott_all"
         type="vector"

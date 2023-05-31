@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { AxiosGet, grpcCall } from "../sagaUtils"; 
+import { AxiosGet, grpcCall } from "../sagaUtils";
 import { SensorsACT } from "../actions/sensorsAction";
 
 export const watcherSensors = [
@@ -20,11 +20,11 @@ export const watcherSensors = [
     )
   ),
 ];
-function  getSensors (action ) {
-  var url = `sensors/?skip=${action.payload.skip}&limit=${action.payload.limit}&iot_id=${action.payload.iotId}&iot_address=${action.payload.iotAddress}`
-  return AxiosGet(url)
+function getSensors(action) {
+  var url = `sensors/?skip=${action.payload.skip}&limit=${action.payload.limit}&iot_id=${action.payload.iotId}&iot_address=${action.payload.iotAddress}`;
+  return AxiosGet(url);
 }
 function getSensorMetrics(action) {
-  var url = `sensors/sm?from=${action.payload.from}&to=${action.payload.to}&iotId=${action.payload.iotId}&limit=${action.payload.limit}&sensorId=${action.payload.sensorId}`;
+  var url = `sensors/sm?from=${action.payload.from}&to=${action.payload.to}&iotId=${action.payload.iotId}&limit=${action.payload.limit}&skip=${action.payload.skip}&sensorId=${action.payload.sensorId}`;
   return AxiosGet(url);
 }

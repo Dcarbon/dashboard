@@ -1,0 +1,68 @@
+.section {
+  background: radial-gradient(
+      82.57% 73.57% at 50% 50%,
+      #1d0a3b 0%,
+      #099e5036 100%
+    ),
+    url(/imgs/home_intro.png);
+
+  background-position: center;
+  background-size: cover;
+}
+.container {
+  padding: 40px 20px;
+}
+.box {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  filter: blur(0.5px);
+  backdrop-filter: blur(30px);
+  border-radius: 10px;
+  .left {
+    flex: 1 0 0;
+    padding: 50px;
+  }
+  .right {
+    position: relative;
+    width: 100%;
+    padding: 30px;
+    .laptop {
+      margin: 0 auto;
+      margin-right: 0;
+    }
+    .cloud {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-top: 0px;
+      margin-right: -10px;
+    }
+  }
+}
+@media (min-width: 768px) {
+  .box .right {
+    width: 425px;
+  }
+}
+@media (min-width: 1440px) {
+  .container {
+    padding: 62px 120px;
+  }
+  .box {
+    .left {
+      padding: 100px 90px;
+    }
+    .right {
+      .cloud {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-top: -20px;
+        margin-right: -20px;
+      }
+    }
+  }
+  .images {
+    padding: 0;
+  }
+}

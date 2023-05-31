@@ -7,7 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import HookAPI from "src/tools/hook";
 import { ProjectACT } from "src/redux/actions/projectAction";
 import Error from "src/components/ui/Error";
-function SelectProject(props) {
+import SelectItem from "src/components/ui/Selection/SelectItem";
+import Selection from "src/components/ui/Selection/Select";
+function SelectProject({ features, iotSelected, setIotSelected }) {
   const newHook = new HookAPI();
   const iotState = useSelector(newHook.GetIOTState);
   const projectState = useSelector(newHook.GetProjectState);
@@ -19,6 +21,7 @@ function SelectProject(props) {
   const [showNext, setShowNext] = useState(true);
   const dispatch = useDispatch();
   const slideRef = useRef(null);
+
   useEffect(() => {
     if (projectId) {
       dispatch({ type: ProjectACT.GET_PROJECT.REQUEST, payload: projectId });
@@ -53,12 +56,29 @@ function SelectProject(props) {
     },
   ];
   return (
-    <div {...props}>
+    <div>
       <Error
         clearErrType={ProjectACT.CLEAR_ERR}
         err={projectState?.error}
         err_code={projectState?.error_code}
       />
+      {features?.length > 0 && (
+        <Selection
+          label={"Select node"}
+          value={iotSelected}
+          onChange={(e) => setIotSelected(e.target.value)}
+        >
+          {features?.map((item) => (
+            <SelectItem
+              key={"iott-" + item}
+              value={item}
+              active={item === iotSelected}
+            >
+              {item}
+            </SelectItem>
+          ))}
+        </Selection>
+      )}
       <h3 className="text-white uppercase text-lg mb-2">
         Project {projectState?.project?.id ?? 0}
       </h3>

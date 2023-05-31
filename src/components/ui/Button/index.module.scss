@@ -1,0 +1,9 @@
+.btn {
+  background-color: #72bf44;
+  color: #0b0a12;
+  padding: 12px 38px;
+  border-radius: 3px;
+  &:hover {
+    background: radial-gradient(#b6f392, #72bf44);
+  }
+}

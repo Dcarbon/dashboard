@@ -1,0 +1,50 @@
+.container {
+  padding-top: 100px;
+  padding-bottom: 60px;
+  @media (min-width: 1440px) {
+    padding-top: 40px;
+    padding-bottom: 60px;
+  }
+}
+
+.box {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  overflow: hidden;
+  filter: blur(0.5px);
+  backdrop-filter: blur(25px);
+  padding-left: 5px;
+  &.green {
+    background: linear-gradient(to right, #72bf44 2%, rgb(49 72 35) 2%);
+    .icon {
+      margin-top: 40px;
+    }
+  }
+  &.grey {
+    background: linear-gradient(to right, #ffffff 2%, rgb(44 44 44) 2%);
+    .icon {
+      margin-top: 12px;
+      transform: rotate(5deg);
+    }
+  }
+  &.darkBlue {
+    background: linear-gradient(to right, #5055a4 2%, rgb(39 40 64) 2%);
+    .icon {
+      margin-top: 18px;
+      margin-left: 25px;
+    }
+  }
+}
+.text {
+  float: right;
+  text-align: right;
+  margin-bottom: 20px;
+  margin-right: 24px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  .bigText {
+    font-size: 58px;
+    line-height: 64px;
+  }
+}

@@ -1,24 +1,22 @@
 import Layout from "src/components/layouts";
-import DashboardSideBar from "src/components/layouts/dashboardSideBar";
-import MapBoxPage from "src/components/ui/Mapbox/mapbox";
-import stls from "./index.module.scss";
-import { useMemo } from "react";
-import HookAPI from "src/tools/hook";
-import { useSelector } from "react-redux";
+import Contact from "src/components/sections/home/Contact";
+import ProductShowcase from "src/components/sections/home/ProductShowcase";
+import BannerFisrt from "src/components/sections/home/banner";
+import BannerSecond from "src/components/sections/home/banner/bannerSecond";
+import Discover from "src/components/sections/home/discover";
+import IntroDcarbon from "src/components/sections/home/intro";
+import Mechanical from "src/components/sections/home/mechanical";
+
 export default function Home() {
-  const newHook = new HookAPI();
-  const customState = useSelector(newHook.GetCustomState);
-  const { idFeature } = useMemo(() => customState, [customState]);
   return (
     <Layout>
-      <div className={`${stls.main} ${idFeature > 0 ? stls.active : ""}`}>
-        <div className={stls.map}>
-          <MapBoxPage />
-        </div>
-        <div className={stls.sidebar}>
-          <DashboardSideBar />
-        </div>
-      </div>
+      <BannerFisrt />
+      <IntroDcarbon />
+      <Mechanical />
+      <BannerSecond />
+      <Discover />
+      <ProductShowcase />
+      <Contact />
     </Layout>
   );
 }

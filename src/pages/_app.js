@@ -1,4 +1,7 @@
 import "src/styles/globals.css";
+import "@glidejs/glide/src/assets/sass/glide.core.scss";
+import "@glidejs/glide/src/assets/sass/glide.theme.scss";
+import "glider-js/glider.min.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import "react-slideshow-image/dist/styles.css";

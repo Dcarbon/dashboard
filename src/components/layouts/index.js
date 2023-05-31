@@ -1,12 +1,12 @@
 import Head from "next/head";
-import Header from "./header";
-
 import { Lexend_Deca } from "next/font/google";
-import ScrollBox from "../ui/ScrollBox";
+import HeaderTransparent from "./header/header_transparent";
+import Footer from "./footer";
+import { Fragment } from "react";
 const lexend = Lexend_Deca({ subsets: ["vietnamese"] });
 function Layout({ children }) {
   return (
-    <>
+    <Fragment>
       <Head>
         <title>D-Carbon</title>
         <meta charSet="utf-8" />
@@ -14,13 +14,12 @@ function Layout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`main ${lexend.className}`}>
-        <ScrollBox disableX>
-          <Header />
-          {children}
-        </ScrollBox>
+      <main className={`relative bg-[#151515] ${lexend.className}`}>
+        <HeaderTransparent />
+        {children}
+        <Footer />
       </main>
-    </>
+    </Fragment>
   );
 }
 

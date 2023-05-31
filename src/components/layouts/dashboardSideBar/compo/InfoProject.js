@@ -9,39 +9,33 @@ import { IOTAct } from "src/redux/actions/iotAction";
 import Error from "src/components/ui/Error";
 import { IOT_TYPE } from "src/tools/const";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-function InfoProject() {
+function InfoProject({ iotSelected }) {
   const newHook = new HookAPI();
   const dispatch = useDispatch();
   const iotState = useSelector(newHook.GetIOTState);
-  const customState = useSelector(newHook.GetCustomState);
   const sensorsState = useSelector(newHook.GetSensorsState);
 
-  // get id by features in map
-  // get id by features in map
-  // get id by features in map
   useEffect(() => {
-    let loaded = false;
-    if (customState.idFeature && !loaded) {
+    if (iotSelected) {
+      console.log("iotSelected", iotSelected);
+      // get id by features in map
+      // get id by features in map
+      // get id by features in map
       dispatch({
         type: IOTAct.GET_IOT.REQUEST,
-        payload: customState.idFeature,
+        payload: iotSelected,
       });
-    }
-    return () => {
-      loaded = true;
-    };
-  }, [customState.idFeature, dispatch]);
-  // get sensor list
-  // get sensor list
-  // get sensor list
-  useEffect(() => {
-    if (customState?.idFeature) {
+
+      // get sensor list
+      // get sensor list
+      // get sensor list
       dispatch({
         type: SensorsACT.GET_SENSORS.REQUEST,
-        payload: { skip: 0, limit: 5, iotId: customState?.idFeature },
+        payload: { skip: 0, limit: 5, iotId: iotSelected },
       });
     }
-  }, [customState?.idFeature, dispatch]);
+  }, [iotSelected, dispatch]);
+
   // get sensor metrics by sensor_id in first item
   // get sensor metrics by sensor_id in first item
   // get sensor metrics by sensor_id in first item
@@ -54,14 +48,14 @@ function InfoProject() {
           to: Math.round(newDate.getTime() / 1000),
           // from : Math.round(newDate.getTime() / 1000 - 5),
           from: 1,
-          iotId: customState?.idFeature,
+          iotId: iotSelected,
           limit: 5,
           skip: 0,
           sensorId,
         },
       });
     },
-    [customState?.idFeature, dispatch]
+    [iotSelected, dispatch]
   );
 
   useEffect(() => {
@@ -81,7 +75,7 @@ function InfoProject() {
   return (
     <BoxSection>
       <Error err={iotState.error} clearErrType={IOTAct.CLEAR_ERR} />
-      <HeadingSideBar text={`Info ${iot?.id ? `(${iot.id})` : ""}`} />
+      <HeadingSideBar text={`Info`} />
       {iotState && (
         <ul>
           <li className={stls.itemRow}>

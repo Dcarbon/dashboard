@@ -65,7 +65,6 @@ export const handleErrorCodeMessage = (err_code) => {
 };
 export const handleResponse = (action) => {
   const paging = action?.response?.paging;
-  // console.log("action.response", action?.response);
   return {
     data: action?.response,
     paging: {

@@ -4,16 +4,31 @@ import CarbonMinted from "./compo/CarbonMinted";
 import InfoProject from "./compo/InfoProject";
 import SelectProject from "./compo/SelectProject";
 import stls from "./index.module.scss";
+import HookAPI from "src/tools/hook";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 function DashboardSideBar() {
+  const newHook = new HookAPI();
+  const customState = useSelector(newHook.GetCustomState);
+  const [iotSelected, setIotSelected] = useState(0);
+  useEffect(() => {
+    if (customState?.features?.length > 0) {
+      setIotSelected(customState?.features[0]);
+    }
+  }, [customState?.features]);
   return (
     <ScrollBox disableX>
       <div className="text-[#B3B2B8] p-3 md:p-6">
-        <SelectProject />
+        <SelectProject
+          features={customState?.features}
+          iotSelected={iotSelected}
+          setIotSelected={setIotSelected}
+        />
         <div className={stls.boxMiddle}>
-          <InfoProject />
-          <CarbonMinted />
+          <InfoProject iotSelected={iotSelected} />
+          <CarbonMinted iotSelected={iotSelected} />
         </div>
-        <CalculateAnnual />
+        <CalculateAnnual iotSelected={iotSelected} />
       </div>
     </ScrollBox>
   );
