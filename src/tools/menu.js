@@ -1,11 +1,11 @@
 class InfomationHook {
   GetMenu() {
     return [
-      { id: 1, label: "How does it work", href: "" },
-      { id: 2, label: "Our solution", href: "" },
-      { id: 3, label: "Dcarbon DAO", href: "" },
-      { id: 4, label: "Blog", href: "" },
-      { id: 5, label: "Nodes", href: "" },
+      { id: 1, label: "How does it work", href: "/how-does-it-work" },
+      { id: 2, label: "Our solution", href: "/solution" },
+      { id: 3, label: "Dcarbon DAO", href: "/dcarbon-dao" },
+      { id: 4, label: "Blog", href: "/blog" },
+      { id: 5, label: "Nodes", href: "/dashboard" },
     ];
   }
   GetCompanyInfo() {

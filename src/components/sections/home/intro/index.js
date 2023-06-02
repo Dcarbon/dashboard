@@ -5,12 +5,13 @@ import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
 import Image from "next/image";
 import { imgsDir, imgsObject } from "src/tools/const";
+import FlexBetween from "src/components/ui/Stack/flex-between";
 function IntroDcarbon() {
   return (
     <Section className={`${stls.section} relative`}>
       <Container className={stls.container}>
-        <div
-          className={`${stls.box} flex justify-between items-center flex-col md:flex-row`}
+        <FlexBetween
+          className={`${stls.box}  items-center flex-col md:flex-row`}
         >
           <div className={stls.left}>
             <Heading Tag={"h2"} textGradient className={"mb-4"}>
@@ -42,7 +43,7 @@ function IntroDcarbon() {
               />
             </div>
           </div>
-        </div>
+        </FlexBetween>
       </Container>
     </Section>
   );

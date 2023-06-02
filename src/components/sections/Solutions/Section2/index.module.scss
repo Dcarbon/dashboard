@@ -1,0 +1,141 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  & > div {
+    width: 100%;
+    padding: 10px;
+  }
+  .nav_tabs {
+    .item {
+      display: inline-block;
+      position: relative;
+      padding: 6px 0;
+      margin: 10px;
+      font-weight: 500;
+      &:first-child {
+        margin-left: 0;
+      }
+      &.active {
+        color: #5055a4;
+        &::after {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+  .content_tab {
+    margin-top: 24px;
+    .image {
+      max-width: 100%;
+      width: 320px;
+      height: 242px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    .body {
+      flex: 1 0;
+      padding: 10px;
+      background: rgba($color: #1d1d2c, $alpha: 0.5);
+      border-radius: 10px;
+      color: #b3b2b8;
+      font-weight: 300;
+      h3,
+      b {
+        color: #d7d7d9;
+      }
+      h3 {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        margin-bottom: 12px;
+      }
+      p {
+        font-size: 16px;
+        line-height: 24px;
+      }
+      ol {
+        list-style: decimal;
+        padding-left: 20px;
+        li {
+          margin-bottom: 8px;
+        }
+      }
+      b {
+        font-weight: 700;
+      }
+    }
+  }
+  @media (min-width: 992px) {
+    flex-direction: row;
+    & > div {
+      width: auto;
+    }
+    .nav_tabs {
+      .item {
+        display: block;
+        margin: 10px 0;
+      }
+    }
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 220px;
+      content: "";
+      width: 1px;
+      height: 100%;
+      display: inline-block;
+      background-color: rgb(255 255 255 / 30%);
+    }
+    .left {
+      min-width: 220px;
+      padding: 10px 15px;
+    }
+    .right {
+      flex: 1 0;
+      padding: 20px 15px;
+    }
+    .content_tab {
+      .body {
+        padding: 25px;
+      }
+    }
+  }
+  @media (min-width: 1280px) {
+    .nav_tabs {
+      .item {
+        &::after {
+          position: absolute;
+          top: 0;
+          left: -25px;
+          content: "";
+          background: #5055a4;
+          width: 4px;
+          height: 100%;
+          border-radius: 2px;
+          opacity: 0;
+        }
+      }
+    }
+    .left {
+      padding: 32px 25px;
+    }
+    .right {
+      padding: 32px 82px 32px 60px;
+    }
+    .content_tab {
+      .image {
+        width: 320px;
+        height: 242px;
+        margin-right: -58px;
+        margin-top: 32px;
+      }
+
+      .body {
+        padding: 32px;
+        padding-left: 84px;
+      }
+    }
+  }
+}

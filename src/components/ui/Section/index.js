@@ -1,6 +1,7 @@
 function Section({
   className,
   children,
+  bgColor,
   bgImageUrl,
   multiplebgImageUrl,
   bgPosition,
@@ -11,6 +12,7 @@ function Section({
     <section
       className={className}
       style={{
+        backgroundColor: bgColor,
         backgroundImage: bgImageUrl
           ? `url(${bgImageUrl})`
           : multiplebgImageUrl ?? null,

@@ -20,9 +20,10 @@ const imgsObject = {
   home_banner2: "home_banner2.png",
   home_banner_discover: "home_banner_discover.png",
   Contact: "Contact.png",
-  Circle: "3dCircle.png",
-  Polygon_1: "3dPolygon_1.png",
-  Polygon_2: "3dPolygon_2.png",
+  Circle: "3dCircle.svg",
+  Polygon_1: "3dPolygon_1.svg",
+  Polygon_2: "3dPolygon_2.svg",
+  Cube: "3dCube.svg",
   project_img_1: "project_img_1.png",
   project_img_2: "project_img_2.png",
   project_img_3: "project_img_3.png",
@@ -30,12 +31,22 @@ const imgsObject = {
   project_img_5: "project_img_5.png",
 
   Earths: {
-    NormalMap: "/maps/8k_earth_normal_map.jpg",
-    DayMap: "/maps/8k_earth_daymap.jpg",
-    Clouds: "/maps/8k_earth_clouds.jpg",
-    NightMap: "/maps/8k_earth_nightmap.jpg",
-    SpecularMap: "/maps/8k_earth_specular_map.jpg",
-    BumpMap: "/maps/8k_earth_bump_map.jpg",
+    NormalMap: "maps/8k_earth_normal_map.jpg",
+    DayMap: "maps/8k_earth_daymap.jpg",
+    Clouds: "maps/8k_earth_clouds.jpg",
+    NightMap: "maps/8k_earth_nightmap.jpg",
+    SpecularMap: "maps/8k_earth_specular_map.jpg",
+    BumpMap: "maps/8k_earth_bump_map.jpg",
+  },
+  HDIW: {
+    banner: "HDIW/banner.png",
+    polygon: "HDIW/Polygon.png",
+    circle: "HDIW/Circle.png",
+  },
+  Solution: {
+    biogas: "solution/biogas.png",
+    energy: "solution/energy.png",
+    wind: "solution/wind.png",
   },
 };
 

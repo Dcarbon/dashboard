@@ -127,7 +127,7 @@ function CarbonMinted({ iotSelected }) {
 
   return (
     <BoxSection>
-      <div className="flex justify-between items-center">
+      <FlexBetween className={"items-center"}>
         <HeadingSideBar className={"inline-block"} text={"CARBON minted"} />
         <div className="inline-block w-[132px]">
           <Selection
@@ -148,7 +148,7 @@ function CarbonMinted({ iotSelected }) {
             ))}
           </Selection>
         </div>
-      </div>
+      </FlexBetween>
       {/* Chart */}
       {iotSelected && (
         <div className={stls.carbonMinted}>

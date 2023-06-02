@@ -8,7 +8,11 @@ function Heading({
 }) {
   return (
     <div className={`${stls.heading} ${weigth ? stls["font-" + weigth] : ""}`}>
-      <Tag className={`${className} ${textGradient ? stls.textGradient : ""}`}>
+      <Tag
+        className={`${className ?? ""} ${
+          textGradient ? stls.textGradient : ""
+        }`}
+      >
         {children}
       </Tag>
     </div>

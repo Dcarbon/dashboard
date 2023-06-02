@@ -1,0 +1,12 @@
+.section {
+  padding-top: 222px;
+  padding-bottom: 215px;
+  .heading {
+    font-size: 58px;
+    height: 60px;
+    @media (max-width: 767px) {
+      font-size: 48px;
+      height: 50px;
+    }
+  }
+}

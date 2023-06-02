@@ -22,7 +22,7 @@ function BannerFisrt() {
       bgImageUrl={imgsDir(imgsObject.home_banner)}
     >
       <Container>
-        <div className={stls.box}>
+        <div className={`relative ${stls.box}`}>
           <div className="w-full md:w-2/3 lg:w-1/2">
             <Heading Tag={"h1"} className={stls.heading}>
               <span className={stls.strong}>Dcarbon</span> a Trustless and
@@ -47,13 +47,13 @@ export default BannerFisrt;
 function CanvasEarth() {
   return (
     <Canvas gl={{ antialias: true }}>
-      <EarthBox scale={1} />
+      <EarthBox scale={0.8} />
       <Suspense fallback={null}>
-        <ambientLight intensity={0.7} color="#ffffff" />
+        <ambientLight intensity={1} color="#ffffff" />
         <pointLight
           color={"#ffffff"}
-          position={[-10, 10, 10]}
-          intensity={0.8}
+          position={[10, 10, 10]}
+          // intensity={0.8}
           // decay={10}
         ></pointLight>
       </Suspense>
@@ -99,9 +99,9 @@ function EarthBox(props) {
         <meshStandardMaterial
           map={colorMap}
           bumpMap={bumpMap}
-          bumpScale={1.0}
-          metalness={0.1}
-          roughness={1}
+          bumpScale={0.01}
+          // metalness={0.1}
+          // roughness={1}
         />
         <OrbitControls
           enabled={true}

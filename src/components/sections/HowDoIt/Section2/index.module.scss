@@ -1,0 +1,144 @@
+.container {
+  @media (min-width: 1440px) {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+.box {
+  padding: 0 20px;
+  position: relative;
+
+  .widget {
+    padding: 12px 0;
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba($color: #ffffff, $alpha: 0.25);
+    }
+  }
+  .content {
+    flex: 1 0;
+    margin-bottom: 40px;
+    h1,
+    h2,
+    h3 {
+      font-size: 28px;
+      line-height: 40px;
+      color: #fcfcfc;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 14px;
+      line-height: 20px;
+      color: rgba($color: #fcfcfc, $alpha: 0.8);
+      margin-bottom: 6px;
+      font-weight: 300;
+    }
+  }
+  .image {
+    width: 224px;
+  }
+  @media (min-width: 992px) {
+    padding: 0 60px;
+    margin-bottom: 80px;
+    .widget {
+      padding: 32px 0;
+    }
+    .content {
+      margin-bottom: 40px;
+      h1,
+      h2,
+      h3 {
+        font-size: 32px;
+        line-height: 44px;
+        margin-top: 24px;
+        margin-bottom: 24px;
+      }
+      p {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 8px;
+      }
+    }
+    .image {
+      width: 356px;
+      margin-left: 125px;
+    }
+    .flip {
+      .content {
+        order: 2;
+      }
+      .image {
+        width: 324px;
+        order: 1;
+        margin-left: 90px;
+        margin-right: 150px;
+      }
+    }
+  }
+}
+.flyIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  .fly {
+    position: absolute;
+    z-index: -1;
+    opacity: 0.5;
+    &_1 {
+      top: 12%;
+      left: 3%;
+      filter: blur(8px);
+    }
+    &_2 {
+      top: 20%;
+      left: 67%;
+      filter: blur(6px);
+    }
+    &_3 {
+      top: 60%;
+      left: 3%;
+      filter: blur(1px);
+      z-index: -1;
+    }
+    &_4 {
+      top: 45%;
+      left: 80%;
+      transform: translateY(-50%);
+      filter: blur(1px);
+      z-index: 1;
+    }
+    &_5 {
+      top: 82%;
+      left: 50%;
+      transform: translateY(-50%);
+      filter: blur(9px);
+      z-index: -1;
+    }
+  }
+  @media (min-width: 992px) {
+    .fly {
+      opacity: 1;
+      &_2 {
+        top: 13%;
+        left: 67%;
+        filter: blur(6px);
+      }
+      &_4 {
+        top: 50%;
+        left: 90%;
+        transform: translateY(-50%);
+        filter: blur(1px);
+        z-index: 1;
+      }
+      &_5 {
+        top: 88%;
+        left: 35%;
+        transform: translateY(-50%);
+        filter: blur(9px);
+        z-index: -1;
+      }
+    }
+  }
+}

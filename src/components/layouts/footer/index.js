@@ -37,7 +37,7 @@ function Footer() {
           </div>
         </div>
         <div className={stls.row}>
-          <Heading Tag={"h4"} className={"mb-5"}>
+          <Heading Tag={"h5"} className={"mb-5"}>
             Headquarters
           </Heading>
           <InfoIcon
