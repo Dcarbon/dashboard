@@ -1,0 +1,33 @@
+.section {
+  background-size: 250px, cover;
+  .box {
+    padding-top: 160px;
+    padding-bottom: 100px;
+  }
+  @media (min-width: 768px) {
+    .box {
+      padding-top: 200px;
+      padding-bottom: 280px;
+    }
+    .image {
+      position: absolute;
+      width: 320px;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+    }
+  }
+  @media (min-width: 992px) {
+    .box {
+      padding-top: 267px;
+      padding-bottom: 357px;
+    }
+    .image {
+      position: absolute;
+      width: 600px;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+    }
+  }
+}

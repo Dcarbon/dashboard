@@ -48,6 +48,12 @@ const imgsObject = {
     energy: "solution/energy.png",
     wind: "solution/wind.png",
   },
+  DDAO: {
+    banner: "DDAO/banner.png",
+    vision: "DDAO/ourVision.png",
+    goal: "DDAO/ourGoal.png",
+    foundation: "DDAO/foundation.png",
+  },
 };
 
 const listTime = ["7 days", "1 month", "1 year"];

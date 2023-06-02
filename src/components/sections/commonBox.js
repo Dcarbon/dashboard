@@ -1,6 +1,6 @@
 import stls from "./index.module.scss";
-function CommonBox({ children }) {
-  return <div className={stls.box}>{children}</div>;
+function CommonBox({ className, children }) {
+  return <div className={`${stls.box} ${className ?? ""}`}>{children}</div>;
 }
 
 export default CommonBox;
