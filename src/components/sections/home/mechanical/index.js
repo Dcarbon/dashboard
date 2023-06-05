@@ -44,7 +44,7 @@ function Mechanical() {
             <Image
               className={stls.icon}
               src={imgsDir(imgsObject.mechanical_2)}
-              alt="Trustless"
+              alt="Transparency"
               width={166}
               height={164}
             />

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import stls from "./SelectProject.module.scss";
 import { Slide } from "react-slideshow-image";
@@ -9,6 +9,7 @@ import { ProjectACT } from "src/redux/actions/projectAction";
 import Error from "src/components/ui/Error";
 import SelectItem from "src/components/ui/Selection/SelectItem";
 import Selection from "src/components/ui/Selection/Select";
+import FlexBetween from "src/components/ui/Stack/flex-between";
 function SelectProject({ features, iotSelected, setIotSelected }) {
   const newHook = new HookAPI();
   const iotState = useSelector(newHook.GetIOTState);
@@ -17,8 +18,6 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
     () => iotState?.iot?.project,
     [iotState?.iot?.project]
   );
-  const [showPrev, setShowPrev] = useState(true);
-  const [showNext, setShowNext] = useState(true);
   const dispatch = useDispatch();
   const slideRef = useRef(null);
 
@@ -31,12 +30,12 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
     slidesToShow: 3,
     slidesToScroll: 1,
     prevArrow: (
-      <button className={`${stls.btnSlide} ${!showPrev && "hidden"} ml-2 `}>
+      <button className={`${stls.btnSlide}   ml-2 `}>
         <ChevronLeftIcon width={16} />
       </button>
     ),
     nextArrow: (
-      <button className={`${stls.btnSlide} ${!showNext && "hidden"} mr-12`}>
+      <button className={`${stls.btnSlide}  mr-12`}>
         <ChevronRightIcon width={16} />
       </button>
     ),
@@ -55,6 +54,20 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
       },
     },
   ];
+  const projectName = useMemo(() => {
+    const descs = projectState?.project?.descs;
+    if (descs?.length > 0) {
+      console.log(
+        "descs.filter(item => item?.language === )",
+        descs.filter((item) => item?.language === "vi")
+      );
+      return (
+        descs.find((item) => item?.language === "vi").desc ||
+        projectState.project.id
+      );
+    }
+    return projectState?.project?.id;
+  }, [projectState?.project?.descs, projectState?.project?.id]);
   return (
     <div>
       <Error
@@ -80,17 +93,17 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
         </Selection>
       )}
       <h3 className="text-white uppercase text-lg mb-2">
-        Project {projectState?.project?.id ?? 0}
+        Project: &quot;{projectName}&quot;
       </h3>
 
       {projectState?.project?.images?.length > 0 && (
         <Fragment>
-          <p className=" mb-4">Project thumbnails</p>
+          <p className=" mb-4">Thumbnails</p>
           <div className="list-img mb-6 -mr-12">
             {projectState?.project?.images?.length < 3 ? (
-              <div>
+              <FlexBetween>
                 {projectState?.project?.images?.map((slideImage, index) => (
-                  <div key={index} className={stls.imgItem}>
+                  <div key={index} className={`${stls.imgItem} w-1/2`}>
                     <Image
                       unoptimized
                       priority
@@ -102,28 +115,15 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
                     />
                   </div>
                 ))}
-              </div>
+              </FlexBetween>
             ) : (
               <div className="slide-container">
                 <Slide
                   ref={slideRef}
                   responsive={responsiveSettings}
-                  onStartChange={(from, to) => {
-                    let max = projectState?.project?.images?.length - 1;
-                    let min = 0;
-                    if (from < to) {
-                      if (!showPrev) setShowPrev(true);
-                      // to === 0 => show next hide prev
-                      if (to === max) setShowNext(false);
-                    } else {
-                      if (!showNext) setShowNext(true);
-                      // to === max => hide next show prev
-                      if (to === min) setShowPrev(false);
-                    }
-                  }}
                   cssClass={stls.Slide}
                   {...customProperties}
-                  infinite={false}
+                  infinite={true}
                 >
                   {projectState?.project?.images?.map((slideImage, index) => (
                     <div key={index} className={stls.imgItem}>

@@ -19,11 +19,12 @@ const imgsObject = {
   home_banner: "home_banner.png",
   home_banner2: "home_banner2.png",
   home_banner_discover: "home_banner_discover.png",
-  Contact: "Contact.png",
+  Contact: "contact.png",
   Circle: "3dCircle.svg",
   Polygon_1: "3dPolygon_1.svg",
   Polygon_2: "3dPolygon_2.svg",
   Cube: "3dCube.svg",
+  Earth: "3dEarth.svg",
   project_img_1: "project_img_1.png",
   project_img_2: "project_img_2.png",
   project_img_3: "project_img_3.png",
@@ -46,7 +47,7 @@ const imgsObject = {
   Solution: {
     biogas: "solution/biogas.png",
     energy: "solution/energy.png",
-    wind: "solution/wind.png",
+    stove: "solution/stove.png",
   },
   DDAO: {
     banner: "DDAO/banner.png",

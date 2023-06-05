@@ -8,9 +8,10 @@ import CommonBox from "../../commonBox";
 import Image from "next/image";
 import HTMLReactParser from "html-react-parser";
 import FlexBetween from "src/components/ui/Stack/flex-between";
+import { imgsDir, imgsObject } from "src/tools/const";
 function SolutionSection_2() {
   const solution_data = new _Solution().Section_2();
-  const [currentTab, setCurrentTab] = useState(1);
+  const [currentTab, setCurrentTab] = useState(0);
   return (
     <Section>
       <Container>
@@ -53,7 +54,13 @@ function TabContent({ content }) {
         <div className={`${stls.image} relative`}>
           <Image src={content.tab_img} alt="" fill />
         </div>
-        <div className={stls.body}>{HTMLReactParser(content.tab_content)}</div>
+        <div className={stls.body}>
+          <div
+            className={stls.earth}
+            style={{ backgroundImage: `url(${imgsDir(imgsObject.Earth)})` }}
+          ></div>
+          {HTMLReactParser(content.tab_content)}
+        </div>
       </FlexBetween>
     </div>
   );

@@ -5,7 +5,7 @@ import { Lexend_Deca } from "next/font/google";
 import ScrollBox from "../ui/ScrollBox";
 const lexend = Lexend_Deca({ subsets: ["vietnamese"] });
 import stls from "./iotLayout.module.scss";
-function IotLayout({ children }) {
+function DashboardLayout({ children }) {
   return (
     <>
       <Head>
@@ -25,4 +25,4 @@ function IotLayout({ children }) {
   );
 }
 
-export default IotLayout;
+export default DashboardLayout;

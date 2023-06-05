@@ -52,7 +52,7 @@ export function metaWithAuthGRPC(meta) {
   }
   return meta;
 }
-const handleUrl = (url) => {
+export const handleUrl = (url) => {
   if (url.startsWith("http")) {
     return url;
   }

@@ -39,11 +39,12 @@ class _Solution {
       },
       {
         tab_id: 3,
-        tab_name: "Wind Turbines",
-        tab_img: imgsDir(imgsObject.Solution.wind),
+        tab_name: "Clean Cookstoves",
+        tab_img: imgsDir(imgsObject.Solution.stove),
         tab_content: `<h3>What is clean cookstove</h3>
           <p>A clean cookstove with gasification is an advanced cooking device that utilizes gasification technology to convert biomass or solid fuels into clean-burning gases. Unlike traditional cookstoves that burn solid fuels directly, gasification cookstoves offer improved combustion efficiency and reduced emissions.
           The process involves heating the biomass or solid fuel in a controlled, low-oxygen environment, known as a gasifier. This leads to the production of combustible gases, such as carbon monoxide, hydrogen, and methane. These gases are then used as a clean fuel source for cooking in the specially designed cookstove.</p>
+          <br />
           <h3>The benefit of using clean cookstoves</h3>
           <p>A clean cookstove with gasification provides several benefits. Firstly, it significantly reduces indoor air pollution by minimizing the release of harmful pollutants like carbon monoxide, particulate matter, and volatile organic compounds. This improves the health and safety of users, particularly in households where cooking is done indoors. Secondly, gasification technology increases fuel efficiency, as the produced gases have a higher energy content compared to raw solid fuels. This means that less biomass or solid fuel is required for cooking, reducing fuel consumption and the demand for natural resources.</p>
           <p>Furthermore, clean cookstoves with gasification contribute to environmental sustainability by reducing greenhouse gas emissions. The controlled combustion process and cleaner fuel source help minimize the release of carbon dioxide and other greenhouse gases, compared to traditional cookstoves that burn solid fuels directly. In summary, a clean cookstove with gasification offers an environmentally friendly and efficient cooking solution. It reduces indoor air pollution, improves fuel efficiency, and contributes to mitigating climate change by minimizing emissions. Adopting such cookstoves can have significant positive impacts on health, environment, and sustainable cooking practices.</p>`,

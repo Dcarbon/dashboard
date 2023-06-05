@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import BoxSection from "../tools/BoxSection";
 import HeadingSideBar from "../tools/Heading";
 import CarbonMintedChart from "../tools/Chart";
@@ -11,6 +11,7 @@ import stls from "./CarbonMinted.module.scss";
 import SelectItem from "src/components/ui/Selection/SelectItem";
 import Selection from "src/components/ui/Selection/Select";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
+import BigNumber from "bignumber.js";
 // hàm lấy from to theo durtype
 const configDurType = (durationType) => {
   var thisDate = new Date();
@@ -48,7 +49,6 @@ function CarbonMinted({ iotSelected }) {
   const dispatch = useDispatch();
   const newHook = new HookAPI();
   const sensorState = useSelector(newHook.GetSensorsState);
-  const iotState = useSelector(newHook.GetIOTState);
   // function handle Dur
   const handleSelectDur = (evt) => {
     let newFromTo = configDurType(evt.target.value);
@@ -120,11 +120,15 @@ function CarbonMinted({ iotSelected }) {
       handleGetMetric();
     }
   }, [handleGetMetric, payload?.iotId, payload?.sensorId]);
-  useEffect(() => {
-    console.log("iotState", iotState);
-    console.log("metrics", sensorState);
-  }, [iotState, sensorState]);
 
+  const metric = useMemo(() => {
+    const metrics = sensorState?.sensor_metrics;
+    if (sensorState?.sensor_metrics?.length > 0) {
+      const metric = metrics[metrics?.length - 1]?.indicator?.value;
+      const hexAmount = new BigNumber(metric);
+      return hexAmount;
+    }
+  }, [sensorState?.sensor_metrics]);
   return (
     <BoxSection>
       <FlexBetween className={"items-center"}>
@@ -160,15 +164,15 @@ function CarbonMinted({ iotSelected }) {
         </div>
       )}
       {/* info */}
-      {sensorState && (
+      {metric && (
         <Fragment>
           <FlexBetween className={"text-[#919097] font-normal mb-6"}>
             <p>Electricity generated</p>
             <p>
-              <span className="text-white"></span> (kWh)
+              <span className="text-white">{metric}</span> (kWh)
             </p>
           </FlexBetween>
-          <FlexBetween className={"text-[#919097] font-normal"}>
+          {/* <FlexBetween className={"text-[#919097] font-normal"}>
             <p>Biogas treated</p>
             <p>
               <span className="text-white">102</span> (m
@@ -177,7 +181,7 @@ function CarbonMinted({ iotSelected }) {
               </sup>
               )
             </p>
-          </FlexBetween>
+          </FlexBetween> */}
         </Fragment>
       )}
     </BoxSection>

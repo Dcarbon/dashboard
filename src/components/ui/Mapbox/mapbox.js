@@ -102,15 +102,12 @@ function MapBoxPage() {
       mymap.setFeatureState(tempState(layer_2["source-layer"]), { hover });
     };
     mymap.on("mousemove", ["boundaryLayer", "hexagonLayer"], (e) => {
-      // console.log("e move", e);
       if (e.features.length > 0) {
         if (hoveredStateId !== null) {
           handleMultiFeatureState(false);
         }
         hoveredStateId = e.features[0].id;
-        if (customState?.idFeature !== hoveredStateId) {
-          setFeatures(handleDuplicateFeatures(e.features));
-        }
+        setFeatures(handleDuplicateFeatures(e.features));
 
         handleMultiFeatureState(true);
       }
@@ -125,16 +122,13 @@ function MapBoxPage() {
     });
 
     mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
-      // console.log("mymap", mymap);
       if (e.features.length > 0) {
         listFeatures = handleDuplicateFeatures(e.features);
         hoveredStateId = e.features[0].id;
-        if (customState?.idFeature !== hoveredStateId) {
-          changeFeatures(listFeatures);
-        }
+        changeFeatures(listFeatures);
       }
     });
-  }, [changeFeatures, customState?.idFeature, mymap]);
+  }, [changeFeatures, mymap]);
 
   return (
     <Map

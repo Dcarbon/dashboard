@@ -97,6 +97,12 @@ class HookAPI {
    * @returns {{
    * project : {
    * id: number,
+   * descs: [{
+   *  desc: string,
+   *  id: number,
+   *  language: string,
+   *  projectId: string,
+   * }],
    * owner: string,
    * status: number,
    * location: any,
