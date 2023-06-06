@@ -1,3 +1,12 @@
+@mixin transition {
+  -webkit-transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-in-out;
+  -webkit-transition-property: -webkit-transform, -webkit-opacity,
+    -webkit-transform-origin;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  transition-property: transform, opacity, transform-origin;
+}
 .section {
   padding-top: 50px;
   padding-bottom: 50px;
@@ -21,9 +30,10 @@
       width: 100%;
       -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
-      -webkit-transition: -webkit-transform 0.5s ease-in-out,
-        -webkit-opacity 0.5s ease-in;
-      transition: transform 0.5s ease-in-out, opacity 0.5s ease-in;
+      @include transition();
+      // -webkit-transition: -webkit-transform 0.5s ease-in-out,
+      //   -webkit-opacity 0.5s ease-in;
+      // transition: transform 0.5s ease-in-out, opacity 0.5s ease-in;
       -webkit-transform-origin: 50% 50%;
       transform-origin: 50% 50%;
       will-change: transform;
@@ -38,20 +48,16 @@
         object-fit: fill;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-        -webkit-transition: -webkit-transform 0.5s ease-in-out,
-          -webkit-opacity 0.5s ease-in;
-        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in;
+        object-fit: cover;
+
+        @include transition();
         &.left {
           border-radius: 2px;
-          -webkit-box-shadow: 0 0.5rem 4rem 0 rgba(0, 0, 0, 0.5);
-          box-shadow: 0 0.5rem 4rem 0 rgba(0, 0, 0, 0.5);
         }
         &.center {
           top: 0;
           right: 0;
           width: 3rem;
-          // -webkit-transform: translate3d(-1px, 0, -3rem) rotateY(90deg);
-          // transform: translate3d(-1px, 0, -3rem) rotateY(90deg);
           -webkit-transform: translate3d(20px, 0, -43px) rotateY(65deg);
           transform: translate3d(20px, 0, -43px) rotateY(65deg);
           -webkit-transform-origin: 100% 50%;
@@ -63,8 +69,6 @@
           top: 0;
           left: 0;
           width: 3rem;
-          -webkit-transform: translate3d(1px, 0, -3rem) rotateY(-90deg);
-          transform: translate3d(1px, 0, -3rem) rotateY(-90deg);
           -webkit-transform: translate3d(-20px, 0, -44px) rotateY(-65deg);
           transform: translate3d(-20px, 0, -44px) rotateY(-65deg);
           -webkit-transform-origin: 0 50%;
@@ -90,6 +94,8 @@
       .imgs {
         transform: perspective(800px) rotateY(-20deg) translateX(-30px);
         transform-origin: 100% 50%;
+        -webkit-transition-property: -webkit-transform, -webkit-opacity;
+        transition-property: transform, opacity;
       }
     }
   }

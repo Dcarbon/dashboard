@@ -12,7 +12,7 @@ function Contact() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   return (
-    <Section className={"mb-16"}>
+    <Section id={"contact-form"} className={"mb-16"}>
       <Container standard={false} className={stls.container}>
         <div className={stls.box}>
           <div className={stls.image}>

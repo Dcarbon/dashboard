@@ -22,9 +22,10 @@ function MyGlide() {
       focusAt: "center",
       type: "slide",
       gap: 10,
-      // autoplay: 8000,
+      // autoplay: 5000,
       animationDuration: "500",
       rewind: true,
+
       breakpoints: {
         800: {
           perView: 1,

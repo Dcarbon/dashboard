@@ -14,42 +14,44 @@
       filter: blur(1px);
     }
     &_middle {
-      top: 39%;
+      top: 52%;
       left: 80%;
-      filter: blur(5px);
+      filter: blur(8px);
     }
     &_right {
       top: 82%;
       left: 2%;
       filter: blur(1px);
     }
+    @media (min-width: 768px) {
+      &_left {
+        top: 24%;
+        left: 4%;
+      }
+      &_middle {
+        top: 75%;
+        left: 35%;
+      }
+      &_right {
+        top: 36%;
+        left: 86%;
+      }
+    }
     @media (min-width: 1440px) {
       &_left {
-        top: 71%;
+        top: 69%;
         left: -1.6%;
       }
       &_middle {
-        top: 66%;
-        left: 39%;
+        top: 65%;
+        left: 38%;
       }
       &_right {
         top: 69.5%;
-        left: 84.2%;
+        left: 91%;
       }
     }
   }
-
-  // };
-  // const middleIcon = {
-  //   url: `url(${imgsDir(imgsObject.Circle)})`,
-  //   position: "43% 77%",
-  //   size: "auto",
-  // };
-  // const rightIcon = {
-  //   url: `url(${imgsDir(imgsObject.Polygon_2)})`,
-  //   position: " 92% 91%",
-  //   size: "auto",
-  // };
 }
 .left {
   flex: 1 0 0;

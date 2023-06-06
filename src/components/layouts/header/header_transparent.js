@@ -39,7 +39,11 @@ function HeaderTransparent() {
                   <span className={stls.split}></span>
                 </li>
                 <li className={stls.item}>
-                  <Link href={"/"} className={stls.link}>
+                  <Link
+                    href={"#contact-form"}
+                    className={stls.link}
+                    scroll={false}
+                  >
                     Contact
                   </Link>
                 </li>

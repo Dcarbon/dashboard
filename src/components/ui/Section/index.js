@@ -1,4 +1,5 @@
 function Section({
+  id,
   className,
   children,
   bgColor,
@@ -10,6 +11,7 @@ function Section({
 }) {
   return (
     <section
+      id={id}
       className={className}
       style={{
         backgroundColor: bgColor,

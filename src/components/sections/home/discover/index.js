@@ -6,17 +6,16 @@ import Heading from "src/components/ui/Heading";
 import Image from "next/image";
 function Discover() {
   const mainBg = {
-    url: `url(${imgsDir(imgsObject.home_banner_discover)})`,
+    url: imgsDir(imgsObject.home_banner_discover),
     position: "center",
     size: "cover",
   };
 
-  const configReturn = (key) => mainBg[key];
   return (
     <Section
-      bgImageUrl={configReturn("url")}
-      bgPosition={configReturn("position")}
-      bgSize={configReturn("size")}
+      bgImageUrl={mainBg.url}
+      bgPosition={mainBg.position}
+      bgSize={mainBg.size}
     >
       <Container>
         <div className={stls.box}>
