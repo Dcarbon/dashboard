@@ -17,6 +17,7 @@ function MyGlide() {
     if (!window && !check) return;
 
     new Glide("#glide", {
+      startAt: 2,
       perView: 3,
       focusAt: "center",
       type: "slide",

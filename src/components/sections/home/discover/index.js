@@ -10,31 +10,39 @@ function Discover() {
     position: "center",
     size: "cover",
   };
-  const leftIcon = {
-    url: `url(${imgsDir(imgsObject.Polygon_1)})`,
-    position: "7% 76%",
-    size: "auto",
-  };
-  const middleIcon = {
-    url: `url(${imgsDir(imgsObject.Circle)})`,
-    position: "43% 77%",
-    size: "auto",
-  };
-  const rightIcon = {
-    url: `url(${imgsDir(imgsObject.Polygon_2)})`,
-    position: " 92% 91%",
-    size: "auto",
-  };
-  const configReturn = (key) =>
-    `${leftIcon[key]},${middleIcon[key]},${rightIcon[key]},${mainBg[key]}`;
+
+  const configReturn = (key) => mainBg[key];
   return (
     <Section
-      multiplebgImageUrl={configReturn("url")}
+      bgImageUrl={configReturn("url")}
       bgPosition={configReturn("position")}
       bgSize={configReturn("size")}
     >
       <Container>
         <div className={stls.box}>
+          <div>
+            <Image
+              className={`${stls.icons} ${stls.icons_left}`}
+              src={imgsDir(imgsObject.Polygon_1)}
+              alt=""
+              width={64}
+              height={62}
+            />
+            <Image
+              className={`${stls.icons} ${stls.icons_middle}`}
+              src={imgsDir(imgsObject.Circle)}
+              alt=""
+              width={85}
+              height={85}
+            />
+            <Image
+              className={`${stls.icons} ${stls.icons_right}`}
+              src={imgsDir(imgsObject.Polygon_2)}
+              alt=""
+              width={114}
+              height={123}
+            />
+          </div>
           <div className={stls.left}>
             <Heading Tag={"h2"} className={"text-[#FCFCFC] mb-3"}>
               Discover <span className="uppercase">DCARBON</span>

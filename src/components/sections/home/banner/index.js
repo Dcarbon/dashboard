@@ -4,8 +4,8 @@ import stls from "./index.module.scss";
 import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
 import { imgsDir, imgsObject } from "src/tools/const";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import {
   AdditiveBlending,
   BackSide,
@@ -13,7 +13,6 @@ import {
   Euler,
   TextureLoader,
 } from "three";
-import { Environment, OrbitControls } from "@react-three/drei";
 import { fragmentAtmosphere, vertexAtmosphere } from "src/tools/shaders";
 function BannerFisrt() {
   return (
@@ -61,22 +60,13 @@ function EarthBox(props) {
   const [colorMap, cloudsMap] = useLoader(TextureLoader, [
     imgsDir(imgsObject.Earths.DayMap),
     imgsDir(imgsObject.Earths.Clouds),
-    imgsDir(imgsObject.Earths.BumpMap),
   ]);
 
   useFrame(() => {
     earthRef.current.rotation.y += 0.0002;
     cloudsRef.current.rotation.y += 0.00025;
   });
-  const CommonObit = (
-    <OrbitControls
-      enabled={true}
-      enableRotate={true}
-      enablePan={false}
-      enableZoom={false}
-      rotateSpeed={0.2}
-    />
-  );
+
   return (
     <group>
       {/* Cloud */}
@@ -88,7 +78,6 @@ function EarthBox(props) {
           transparent={true}
           side={DoubleSide}
         />
-        {CommonObit}
       </mesh>
       {/* Earth */}
       <mesh {...props} ref={earthRef} rotation={new Euler(0.26, 2.95, 0)}>
@@ -101,9 +90,7 @@ function EarthBox(props) {
           metalness={0.5}
         />
         <meshStandardMaterial map={colorMap} roughness={1} metalness={0} />
-        {CommonObit}
       </mesh>
-
       <mesh {...props}>
         <sphereGeometry args={[3, 23, 23]} />
         <shaderMaterial
@@ -114,7 +101,6 @@ function EarthBox(props) {
           opacity={1}
           transparent={true}
         />
-        {CommonObit}
       </mesh>
     </group>
   );
