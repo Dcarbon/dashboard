@@ -15,9 +15,9 @@ function HeaderTransparent() {
       <Container standard={false} className={stls.container}>
         <div className={stls.box}>
           <div className={stls.item}>
-            <div className={stls.logo}>
+            <Link href={"/"} className={stls.logo}>
               <Logo />
-            </div>
+            </Link>
             <Button
               className={stls.btnNav}
               onClick={() => setShowMenuMobi(!showMenuMobi)}
@@ -39,7 +39,7 @@ function HeaderTransparent() {
                   <span className={stls.split}></span>
                 </li>
                 <li className={stls.item}>
-                  <Link href={""} className={stls.link}>
+                  <Link href={"/"} className={stls.link}>
                     Contact
                   </Link>
                 </li>

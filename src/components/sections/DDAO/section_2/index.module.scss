@@ -104,12 +104,16 @@
     .thumbnail {
       width: 171px;
     }
+    .body {
+      padding-left: 32px;
+    }
   }
   .foundation {
     padding: 40px 32px 40px 30px;
     gap: 22px;
     .thumbnail {
       width: 145px;
+      margin-bottom: 21px;
     }
   }
 }

@@ -25,8 +25,8 @@ const imgsObject = {
   Polygon_2: "3dPolygon_2.svg",
   Cube: "3dCube.svg",
   Earth: "3dEarth.svg",
-  project_img_1: "project_img_1.png",
-  project_img_2: "project_img_2.png",
+  project_img_1: "project_img_1.jpg",
+  project_img_2: "project_img_2.jpg",
   project_img_3: "project_img_3.png",
   project_img_4: "project_img_4.png",
   project_img_5: "project_img_5.png",
@@ -74,4 +74,22 @@ const IOT_TYPE = (val) => {
       return "None";
   }
 };
-export { imgsDir, imgsObject, listTime, IOT_TYPE };
+
+function hexToString(hex) {
+  var string = "";
+
+  // Remove the leading "0x" if present
+  if (hex.slice(0, 2) === "0x") {
+    hex = hex.slice(2);
+  }
+
+  // Convert each pair of characters to decimal and then to a character
+  for (var i = 0; i < hex.length; i += 2) {
+    var decimal = parseInt(hex.substr(i, 2), 16);
+    string += String.fromCharCode(decimal);
+  }
+
+  return string;
+}
+
+export { imgsDir, imgsObject, listTime, IOT_TYPE, hexToString };

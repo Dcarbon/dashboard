@@ -6,12 +6,11 @@ import FlexBetween from "src/components/ui/Stack/flex-between";
 import HookAPI from "src/tools/hook";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
-import { listTime } from "src/tools/const";
+import { hexToString, listTime } from "src/tools/const";
 import stls from "./CarbonMinted.module.scss";
 import SelectItem from "src/components/ui/Selection/SelectItem";
 import Selection from "src/components/ui/Selection/Select";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-import BigNumber from "bignumber.js";
 // hàm lấy from to theo durtype
 const configDurType = (durationType) => {
   var thisDate = new Date();
@@ -63,7 +62,6 @@ function CarbonMinted({ iotSelected }) {
   // Step 1 : check time and set
   useEffect(() => {
     if (!payload?.to) {
-      // console.log("Chưa có {To} => SET to from");
       const newFromTo = configDurType(payload?.durationType);
       let newPayload = {
         ...payload,
@@ -110,24 +108,27 @@ function CarbonMinted({ iotSelected }) {
     }
   }, [handleGetIotMint, payload?.iotId, payload?.to]);
   // function getSensorMetrics
-  const handleGetMetric = useCallback(
-    () => dispatch({ type: SensorsACT.GET_SENSORS_METRICS.REQUEST, payload }),
-    [dispatch, payload]
-  );
+  const handleGetMetric = useCallback(() => {
+    console.log("get Metric ");
+    dispatch({ type: SensorsACT.GET_SENSORS_METRICS.REQUEST, payload });
+  }, [dispatch, payload]);
   // Step 5 get Metrics
   useEffect(() => {
-    if (payload?.iotId && payload?.sensorId) {
+    console.log("payload?.iotId", payload?.iotId);
+    if (payload?.iotId && payload?.from) {
+      console.log("get Metric step 1 ");
       handleGetMetric();
     }
-  }, [handleGetMetric, payload?.iotId, payload?.sensorId]);
+  }, [handleGetMetric, payload?.from, payload?.iotId, payload?.sensorId]);
 
   const metric = useMemo(() => {
     const metrics = sensorState?.sensor_metrics;
     if (sensorState?.sensor_metrics?.length > 0) {
-      const metric = metrics[metrics?.length - 1]?.indicator?.value;
-      const hexAmount = new BigNumber(metric);
-      return hexAmount;
+      const metricTemp = metrics[metrics?.length - 1]?.data;
+      const hexString = JSON.parse(hexToString(metricTemp));
+      return hexString?.indicator?.value;
     }
+    return null;
   }, [sensorState?.sensor_metrics]);
   return (
     <BoxSection>
@@ -169,19 +170,9 @@ function CarbonMinted({ iotSelected }) {
           <FlexBetween className={"text-[#919097] font-normal mb-6"}>
             <p>Electricity generated</p>
             <p>
-              <span className="text-white">{metric}</span> (kWh)
+              <span className="text-white">{metric / 1000}</span> (kWh)
             </p>
           </FlexBetween>
-          {/* <FlexBetween className={"text-[#919097] font-normal"}>
-            <p>Biogas treated</p>
-            <p>
-              <span className="text-white">102</span> (m
-              <sup>
-                <smal>3</smal>
-              </sup>
-              )
-            </p>
-          </FlexBetween> */}
         </Fragment>
       )}
     </BoxSection>

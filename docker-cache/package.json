@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dk-build-cache": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:cache .",
+    "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.0.1 .",
+    "dk-run": "docker run -p 3232:3000 harbor.viet-tin.com/dcarbon/dashboard:latest",
+    "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:latest"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
@@ -32,6 +36,7 @@
     "react-slideshow-image": "^4.2.1",
     "redux": "^4.2.1",
     "redux-saga": "^1.2.3",
+    "swr": "^2.1.5",
     "three": "^0.152.2"
   },
   "devDependencies": {

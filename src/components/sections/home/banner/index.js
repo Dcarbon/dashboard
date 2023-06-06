@@ -13,7 +13,7 @@ import {
   Euler,
   TextureLoader,
 } from "three";
-import { OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls } from "@react-three/drei";
 import { fragmentAtmosphere, vertexAtmosphere } from "src/tools/shaders";
 function BannerFisrt() {
   return (
@@ -50,12 +50,7 @@ function CanvasEarth() {
       <EarthBox scale={0.8} />
       <Suspense fallback={null}>
         <ambientLight intensity={1} color="#ffffff" />
-        <pointLight
-          color={"#ffffff"}
-          position={[10, 10, 10]}
-          // intensity={0.8}
-          // decay={10}
-        ></pointLight>
+        <pointLight color={"#ffffff"} position={[10, 10, 10]} />
       </Suspense>
     </Canvas>
   );
@@ -63,7 +58,7 @@ function CanvasEarth() {
 function EarthBox(props) {
   const earthRef = useRef(null);
   const cloudsRef = useRef(null);
-  const [colorMap, cloudsMap, bumpMap] = useLoader(TextureLoader, [
+  const [colorMap, cloudsMap] = useLoader(TextureLoader, [
     imgsDir(imgsObject.Earths.DayMap),
     imgsDir(imgsObject.Earths.Clouds),
     imgsDir(imgsObject.Earths.BumpMap),
@@ -73,42 +68,40 @@ function EarthBox(props) {
     earthRef.current.rotation.y += 0.0002;
     cloudsRef.current.rotation.y += 0.00025;
   });
-
+  const CommonObit = (
+    <OrbitControls
+      enabled={true}
+      enableRotate={true}
+      enablePan={false}
+      enableZoom={false}
+      rotateSpeed={0.2}
+    />
+  );
   return (
     <group>
       {/* Cloud */}
       <mesh {...props} ref={cloudsRef}>
-        <sphereGeometry args={[3, 500, 200]} />
+        <sphereGeometry args={[3, 200, 200]} />
         <meshPhongMaterial
           map={cloudsMap}
           opacity={0.2}
           transparent={true}
           side={DoubleSide}
         />
-        <OrbitControls
-          enabled={true}
-          enableRotate={true}
-          enablePan={false}
-          enableZoom={false}
-        />
+        {CommonObit}
       </mesh>
       {/* Earth */}
-      <mesh {...props} ref={earthRef} rotation={new Euler(0.26, 2.75, 0)}>
+      <mesh {...props} ref={earthRef} rotation={new Euler(0.26, 2.95, 0)}>
         <sphereGeometry args={[3, 23, 23]} />
-        <meshPhongMaterial specularMap={imgsDir(imgsObject.Earths.DayMap)} />
-        <meshStandardMaterial
-          map={colorMap}
-          bumpMap={bumpMap}
-          bumpScale={0.01}
-          // metalness={0.1}
-          // roughness={1}
+        <meshPhysicalMaterial
+          map={imgsDir(imgsObject.Earths.DayMap)}
+          clearcoat={1}
+          clearcoatRoughness={0}
+          roughness={0}
+          metalness={0.5}
         />
-        <OrbitControls
-          enabled={true}
-          enableRotate={true}
-          enablePan={false}
-          enableZoom={false}
-        />
+        <meshStandardMaterial map={colorMap} roughness={1} metalness={0} />
+        {CommonObit}
       </mesh>
 
       <mesh {...props}>
@@ -121,12 +114,7 @@ function EarthBox(props) {
           opacity={1}
           transparent={true}
         />
-        <OrbitControls
-          enabled={true}
-          enableRotate={true}
-          enablePan={false}
-          enableZoom={false}
-        />
+        {CommonObit}
       </mesh>
     </group>
   );

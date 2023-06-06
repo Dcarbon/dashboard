@@ -54,6 +54,13 @@ function MyGlide() {
                   height={262}
                 />
                 <Image
+                  className={stls.center}
+                  src={item}
+                  alt={"Project image " + idx}
+                  width={452}
+                  height={262}
+                />
+                <Image
                   className={stls.right}
                   src={item}
                   alt={"Project image " + idx}

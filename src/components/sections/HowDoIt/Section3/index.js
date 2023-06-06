@@ -5,6 +5,7 @@ import _HDIW from "src/tools/HDIW_content";
 import stls from "./index.module.scss";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import HTMLReactParser from "html-react-parser";
 function HdiW_FAQs() {
   const hdiw_data = new _HDIW().Section_3();
   const [showAnswer, setShowAnswer] = useState(-1);
@@ -33,7 +34,9 @@ function HdiW_FAQs() {
                   height={32}
                 />
               </div>
-              <div className={stls.answers}>{item.answers}</div>
+              <div className={stls.answers}>
+                {HTMLReactParser(item.answers)}
+              </div>
             </div>
           ))}
         </div>
