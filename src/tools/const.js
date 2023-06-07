@@ -1,3 +1,4 @@
+const filesDir = (str) => `/files/${str}`;
 const imgsDir = (str) => `/imgs/${str}`;
 const imgsObject = {
   logo: "Logo.png",
@@ -14,8 +15,8 @@ const imgsObject = {
   mechanical_2: "mechanical_2.png",
   mechanical_3: "mechanical_3.png",
   Hexagon: "Hexagon.png",
-  Manifesto: "Manifesto.png",
-  Whitepaper: "Whitepaper.png",
+  Manifesto: "Manifesto.svg",
+  Whitepaper: "White-paper.svg",
   home_banner: "home_banner.png",
   home_banner2: "home_banner2.png",
   home_banner_discover: "home_banner_discover.png",
@@ -29,12 +30,11 @@ const imgsObject = {
   project_img_2: "project_img_2.jpg",
   project_img_3: "project_img_3.png",
   project_img_4: "project_img_4.png",
-  project_img_5: "project_img_5.png",
 
   Earths: {
     NormalMap: "maps/8k_earth_normal_map.jpg",
-    DayMap: "maps/8k_earth_daymap.jpg",
-    Clouds: "maps/8k_earth_clouds.jpg",
+    DayMap: "maps/2k_earth_daymap.jpg",
+    Clouds: "maps/2k_earth_clouds.jpg",
     NightMap: "maps/8k_earth_nightmap.jpg",
     SpecularMap: "maps/8k_earth_specular_map.jpg",
     BumpMap: "maps/8k_earth_bump_map.jpg",
@@ -92,4 +92,4 @@ function hexToString(hex) {
   return string;
 }
 
-export { imgsDir, imgsObject, listTime, IOT_TYPE, hexToString };
+export { imgsDir, filesDir, imgsObject, listTime, IOT_TYPE, hexToString };

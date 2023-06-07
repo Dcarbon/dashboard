@@ -9,7 +9,6 @@ const images = [
   imgsDir(imgsObject.project_img_2),
   imgsDir(imgsObject.project_img_3),
   imgsDir(imgsObject.project_img_4),
-  imgsDir(imgsObject.project_img_5),
 ];
 function MyGlide() {
   useEffect(() => {

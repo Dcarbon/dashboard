@@ -90,6 +90,20 @@
     font-size: 14px;
     font-weight: 300;
     line-height: 18px;
+    height: calc(18px * 4);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .download {
+    margin-top: 20px;
+    color: #2461ff;
+    font-family: Lexend Deca;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
   }
 }
 @media (min-width: 525px) {

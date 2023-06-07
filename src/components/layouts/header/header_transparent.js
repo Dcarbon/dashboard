@@ -6,10 +6,11 @@ import Logo from "src/components/ui/Logo";
 import { Bars3BottomRightIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import Button from "src/components/ui/Button";
+import { useRouter } from "next/router";
 function HeaderTransparent() {
   const hookMenu = new InfomationHook();
   const [showMenuMobi, setShowMenuMobi] = useState(false);
-
+  const { pathname } = useRouter();
   return (
     <header className={"absolute top-0 left-0 w-full z-50"}>
       <Container standard={false} className={stls.container}>
@@ -30,7 +31,12 @@ function HeaderTransparent() {
               <ul className={`${stls.menus} ${showMenuMobi ? stls.act : ""}`}>
                 {hookMenu.GetMenu().map((item) => (
                   <li key={item?.id} className={stls.item}>
-                    <Link href={item.href} className={stls.link}>
+                    <Link
+                      href={item.href}
+                      className={`${
+                        pathname === item.href ? stls.active : ""
+                      } ${stls.link}`}
+                    >
                       {item.label}
                     </Link>
                   </li>
@@ -40,7 +46,8 @@ function HeaderTransparent() {
                 </li>
                 <li className={stls.item}>
                   <Link
-                    href={"#contact-form"}
+                    href={"/"}
+                    as={"/#contact-form"}
                     className={stls.link}
                     scroll={false}
                   >

@@ -1,9 +1,10 @@
 import Container from "src/components/ui/Container";
 import Section from "src/components/ui/Section";
-import { imgsDir, imgsObject } from "src/tools/const";
+import { filesDir, imgsDir, imgsObject } from "src/tools/const";
 import stls from "./index.module.scss";
 import Heading from "src/components/ui/Heading";
 import Image from "next/image";
+import Link from "next/link";
 function Discover() {
   const mainBg = {
     url: imgsDir(imgsObject.home_banner_discover),
@@ -57,10 +58,12 @@ function Discover() {
           </div>
           <div className={stls.right}>
             <HexagonBox
+              file={filesDir("Manifesto.pdf")}
               imgUrl={imgsDir(imgsObject.Manifesto)}
               text={"Read about the mission that drive the Dcarbon project"}
             />
             <HexagonBox
+              file={filesDir("White-Paper.pdf")}
               imgUrl={imgsDir(imgsObject.Whitepaper)}
               text={
                 "Our proposed solution, presenting evidence-based research, detailed analysis, and a strategic roadmap"
@@ -74,7 +77,7 @@ function Discover() {
 }
 
 export default Discover;
-function HexagonBox({ imgUrl, text }) {
+function HexagonBox({ imgUrl, text, file }) {
   return (
     <div className={stls.hexBox}>
       <div className={stls.hexagon}>
@@ -90,7 +93,9 @@ function HexagonBox({ imgUrl, text }) {
           <Image src={imgUrl} alt="Manifesto" width={248} height={259} />
         </div>
         <p className={stls.text}>{text}</p>
-        <button className={stls.download}>Download</button>
+        <Link href={file} target="_blank" className={stls.download}>
+          Download
+        </Link>
       </div>
     </div>
   );

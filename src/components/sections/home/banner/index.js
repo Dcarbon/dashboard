@@ -6,6 +6,8 @@ import Button from "src/components/ui/Button";
 import { imgsDir, imgsObject } from "src/tools/const";
 import { Suspense, useRef } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+
+import { fragmentAtmosphere, vertexAtmosphere } from "src/tools/shaders";
 import {
   AdditiveBlending,
   BackSide,
@@ -13,7 +15,7 @@ import {
   Euler,
   TextureLoader,
 } from "three";
-import { fragmentAtmosphere, vertexAtmosphere } from "src/tools/shaders";
+import { OrbitControls } from "@react-three/drei";
 function BannerFisrt() {
   return (
     <Section
@@ -48,8 +50,14 @@ function CanvasEarth() {
     <Canvas gl={{ antialias: true }}>
       <EarthBox scale={0.8} />
       <Suspense fallback={null}>
-        <ambientLight intensity={1} color="#ffffff" />
+        <ambientLight intensity={0.6} color="#ffffff" />
         <pointLight color={"#ffffff"} position={[10, 10, 10]} />
+        <OrbitControls
+          autoRotate
+          autoRotateSpeed={0.3}
+          rotateSpeed={0.2}
+          enableZoom={false}
+        />
       </Suspense>
     </Canvas>
   );
@@ -62,24 +70,17 @@ function EarthBox(props) {
     imgsDir(imgsObject.Earths.Clouds),
   ]);
 
-  useFrame(() => {
-    earthRef.current.rotation.y += 0.0002;
-    cloudsRef.current.rotation.y += 0.00025;
-  });
+  // useFrame(() => {
+  //   if (earthRef?.current && cloudsRef?.current) {
+  //     earthRef.current.rotation.y += 0.0002;
+  //     cloudsRef.current.rotation.y += 0.00025;
+  //   }
+  // });
 
   return (
     <group>
-      {/* Cloud */}
-      <mesh {...props} ref={cloudsRef}>
-        <sphereGeometry args={[3, 200, 200]} />
-        <meshPhongMaterial
-          map={cloudsMap}
-          opacity={0.2}
-          transparent={true}
-          side={DoubleSide}
-        />
-      </mesh>
       {/* Earth */}
+
       <mesh {...props} ref={earthRef} rotation={new Euler(0.26, 2.95, 0)}>
         <sphereGeometry args={[3, 23, 23]} />
         <meshPhysicalMaterial
@@ -91,6 +92,19 @@ function EarthBox(props) {
         />
         <meshStandardMaterial map={colorMap} roughness={1} metalness={0} />
       </mesh>
+
+      {/* Cloud */}
+
+      <mesh {...props} ref={cloudsRef}>
+        <sphereGeometry args={[3, 200, 200]} />
+        <meshPhongMaterial
+          map={cloudsMap}
+          opacity={0.2}
+          transparent={true}
+          side={DoubleSide}
+        />
+      </mesh>
+
       <mesh {...props}>
         <sphereGeometry args={[3, 23, 23]} />
         <shaderMaterial
