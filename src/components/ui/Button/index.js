@@ -1,7 +1,7 @@
 import stls from "./index.module.scss";
-function Button({ children, ...all }) {
+function Button({ className, children, ...all }) {
   return (
-    <button className={stls.btn} {...all}>
+    <button className={`${stls.btn} ${className}`} {...all}>
       {children}
     </button>
   );

@@ -23,7 +23,11 @@ function HeaderTransparent() {
               className={stls.btnNav}
               onClick={() => setShowMenuMobi(!showMenuMobi)}
             >
-              {showMenuMobi ? <XMarkIcon /> : <Bars3BottomRightIcon />}
+              {showMenuMobi ? (
+                <XMarkIcon width={24} height={24} />
+              ) : (
+                <Bars3BottomRightIcon width={24} height={24} />
+              )}
             </Button>
           </div>
           <div className={stls.item}>

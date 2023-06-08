@@ -4,7 +4,7 @@ import HeaderTransparent from "./header/header_transparent";
 import Footer from "./footer";
 import { Fragment } from "react";
 const lexend = Lexend_Deca({ subsets: ["vietnamese"] });
-function Layout({ children }) {
+function Layout({ children, noFooter, noHeader }) {
   return (
     <Fragment>
       <Head>
@@ -15,9 +15,9 @@ function Layout({ children }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`relative bg-[#151515] ${lexend.className}`}>
-        <HeaderTransparent />
+        {!noHeader && <HeaderTransparent />}
         {children}
-        <Footer />
+        {!noFooter && <Footer />}
       </main>
     </Fragment>
   );

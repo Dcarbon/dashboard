@@ -30,6 +30,8 @@ const imgsObject = {
   project_img_2: "project_img_2.jpg",
   project_img_3: "project_img_3.png",
   project_img_4: "project_img_4.png",
+  coming_soon: "bg_comingsoon.jpg",
+  image_coming_soon: "icon_comingsoon.png",
 
   Earths: {
     NormalMap: "maps/8k_earth_normal_map.jpg",

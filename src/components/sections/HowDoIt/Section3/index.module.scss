@@ -56,14 +56,14 @@
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .faqs {
     .item {
       &:nth-child(odd) {
-        margin-right: 60px;
+        margin-right: 20px;
       }
       &:nth-child(even) {
-        margin-left: 60px;
+        margin-left: 20px;
       }
     }
     &::before {
@@ -75,6 +75,19 @@
       width: 1px;
       height: 100%;
       background-color: rgba($color: #ffffff, $alpha: 0.1);
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .faqs {
+    .item {
+      &:nth-child(odd) {
+        margin-right: 60px;
+      }
+      &:nth-child(even) {
+        margin-left: 60px;
+      }
     }
   }
 }

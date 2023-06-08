@@ -14,7 +14,22 @@
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(60px);
   border-radius: 10px;
-  padding: 16px 32px;
+  padding: 12px 20px;
+  .logo {
+    display: block;
+  }
+  .btnNav {
+    cursor: pointer;
+    padding: 10px;
+    width: 42px;
+    height: 42px;
+    border-radius: 3px;
+
+    &:hover {
+      background-color: #0000001e;
+      color: #72bf44;
+    }
+  }
 }
 
 .menus {
@@ -52,23 +67,13 @@
     font-weight: 500;
   }
 }
-.btnNav {
-  cursor: pointer;
-  padding: 10px;
-  width: 42px;
-  height: 42px;
-  border-radius: 3px;
 
-  &:hover {
-    background-color: #0000001e;
-    color: #72bf44;
-  }
-}
 @media (max-width: 1023px) {
   .item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
   }
   .menus {
     position: absolute;
@@ -112,6 +117,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
+    padding: 16px 32px;
   }
 
   .btnNav {
