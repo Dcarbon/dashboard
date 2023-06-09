@@ -32,7 +32,8 @@ function MyMarkers({ mymap }) {
                 zoom: 16,
                 essential: true, // this animation is considered essential with respect to prefers-reduced-motion
               });
-            }}>
+            }}
+          >
             <IconSvg img={imgsObject.Marker} />
           </Marker>
         );

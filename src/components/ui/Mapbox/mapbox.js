@@ -58,7 +58,7 @@ const layer_2 = {
     ],
   },
 };
-function MapBoxPage() {
+function MapBoxPage({ className }) {
   const [mymap, setMymap] = useState(null);
   const [lng, setLng] = useState(105.793123);
   const [lat, setLat] = useState(21.004998);
@@ -91,7 +91,7 @@ function MapBoxPage() {
       sourceLayer,
     });
     let handleDuplicateFeatures = (features) => {
-      const newFeatures = features.map((item) => item.id);
+      const newFeatures = features?.map((item) => item.id);
       return newFeatures.filter(
         (item, index) => newFeatures.indexOf(item) === index
       );
@@ -131,49 +131,51 @@ function MapBoxPage() {
   }, [changeFeatures, mymap]);
 
   return (
-    <Map
-      ref={setMymap}
-      initialViewState={{
-        longitude: lng,
-        latitude: lat,
-        zoom: zoom,
-      }}
-      maxZoom={20}
-      minZoom={2}
-      style={{
-        width: "100%",
-        height: "100%",
-      }}
-      projection={"globe"}
-      mapStyle="mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew"
-      fog={{
-        color: "rgba(169, 200, 232, 0.8)", // Lower atmosphere
-        "horizon-blend": 0.05,
-        "high-color": "rgba(36, 92, 223, 0.7)", // Upper atmosphere
-        "space-color": "rgb(11, 11, 25)", // Background color
-        "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
-      }}
-      mapboxAccessToken={accessToken}
-      onMove={() => {
-        if (mymap) {
-          setLng(mymap.getCenter().lng.toFixed(4));
-          setLat(mymap.getCenter().lat.toFixed(4));
-          setZoom(mymap.getZoom().toFixed(2));
-        }
-      }}
-    >
-      {/* {mymap && <MyMarkers mymap={mymap} />} */}
-      <OverView features={features} />
-      <Source
-        id="iott_all"
-        type="vector"
-        tiles={[process.env.NEXT_PUBLIC_MAPSOURCE]}
-        attribution="Show to users"
+    <div className={className}>
+      <Map
+        ref={setMymap}
+        initialViewState={{
+          longitude: lng,
+          latitude: lat,
+          zoom: zoom,
+        }}
+        maxZoom={20}
+        minZoom={2}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+        projection={"globe"}
+        mapStyle="mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew"
+        fog={{
+          color: "rgba(169, 200, 232, 0.8)", // Lower atmosphere
+          "horizon-blend": 0.05,
+          "high-color": "rgba(36, 92, 223, 0.7)", // Upper atmosphere
+          "space-color": "rgb(11, 11, 25)", // Background color
+          "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
+        }}
+        mapboxAccessToken={accessToken}
+        onMove={() => {
+          if (mymap) {
+            setLng(mymap.getCenter().lng.toFixed(4));
+            setLat(mymap.getCenter().lat.toFixed(4));
+            setZoom(mymap.getZoom().toFixed(2));
+          }
+        }}
       >
-        <Layer {...layer_1} />
-        <Layer {...layer_2} />
-      </Source>
-    </Map>
+        {/* {mymap && <MyMarkers mymap={mymap} />} */}
+        <OverView features={features} />
+        <Source
+          id="iott_all"
+          type="vector"
+          tiles={[process.env.NEXT_PUBLIC_MAPSOURCE]}
+          attribution="Show to users"
+        >
+          <Layer {...layer_1} />
+          <Layer {...layer_2} />
+        </Source>
+      </Map>
+    </div>
   );
 }
 

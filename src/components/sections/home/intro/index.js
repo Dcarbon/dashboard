@@ -23,7 +23,7 @@ function IntroDcarbon() {
               fragmentation, together steering innovations towards a green
               economy
             </p>
-            <Button>Learn more</Button>
+            <Button href={"/how-does-it-work"}>Learn more</Button>
           </div>
           <div className={stls.right}>
             <div className={stls.images}>

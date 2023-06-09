@@ -33,7 +33,7 @@ function HeaderTransparent() {
           <div className={stls.item}>
             <div className={stls.navbar}>
               <ul className={`${stls.menus} ${showMenuMobi ? stls.act : ""}`}>
-                {hookMenu.GetMenu().map((item) => (
+                {hookMenu.GetMenu()?.map((item) => (
                   <li key={item?.id} className={stls.item}>
                     <Link
                       href={item.href}

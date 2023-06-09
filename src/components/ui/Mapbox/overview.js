@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { handleUrl } from "src/redux/sagaUtils";
 const fetcher = (...urls) => {
   const f = (url) => fetch(url).then((r) => r.json());
-  return Promise.all(urls.map((url) => f(url)));
+  return Promise.all(urls?.map((url) => f(url)));
 };
 function OverView({ features }) {
   // const urls = [handleUrl"iots/{}", "/api/v1/magazines/1234/articles"];

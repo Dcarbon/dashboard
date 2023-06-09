@@ -16,7 +16,7 @@ function HdiW_FAQs() {
           {hdiw_data.heading}
         </Heading>
         <div className={`grid grid-cols-1 md:grid-cols-2 ${stls.faqs}`}>
-          {hdiw_data.faqs.map((item, idx) => (
+          {hdiw_data.faqs?.map((item, idx) => (
             <div
               key={"hdiw-faq-" + idx}
               className={`${stls.item} ${

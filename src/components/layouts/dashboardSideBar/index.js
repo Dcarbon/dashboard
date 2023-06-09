@@ -7,7 +7,7 @@ import stls from "./index.module.scss";
 import HookAPI from "src/tools/hook";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-function DashboardSideBar() {
+function DashboardSideBar({ className }) {
   const newHook = new HookAPI();
   const customState = useSelector(newHook.GetCustomState);
   const [iotSelected, setIotSelected] = useState(0);
@@ -17,20 +17,22 @@ function DashboardSideBar() {
     }
   }, [customState?.features]);
   return (
-    <ScrollBox disableX>
-      <div className="text-[#B3B2B8] p-3 md:p-6">
-        <SelectProject
-          features={customState?.features}
-          iotSelected={iotSelected}
-          setIotSelected={setIotSelected}
-        />
-        <div className={stls.boxMiddle}>
-          <InfoProject iotSelected={iotSelected} />
-          <CarbonMinted iotSelected={iotSelected} />
+    <div className={className}>
+      <ScrollBox disableX>
+        <div className="text-[#B3B2B8] p-3 md:p-6">
+          <SelectProject
+            features={customState?.features}
+            iotSelected={iotSelected}
+            setIotSelected={setIotSelected}
+          />
+          <div className={stls.boxMiddle}>
+            <InfoProject iotSelected={iotSelected} />
+            <CarbonMinted iotSelected={iotSelected} />
+          </div>
+          <CalculateAnnual iotSelected={iotSelected} />
         </div>
-        <CalculateAnnual iotSelected={iotSelected} />
-      </div>
-    </ScrollBox>
+      </ScrollBox>
+    </div>
   );
 }
 

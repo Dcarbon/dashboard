@@ -142,7 +142,7 @@ function CarbonMinted({ iotSelected }) {
             onChange={handleSelectDur}
             listClassName={"min-w-[160px]"}
           >
-            {listTime.map((item, key) => (
+            {listTime?.map((item, key) => (
               <SelectItem
                 active={item === listTime[payload.durationType]}
                 key={"item-" + item}

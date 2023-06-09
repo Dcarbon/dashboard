@@ -5,7 +5,7 @@ import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
 import { imgsDir, imgsObject } from "src/tools/const";
 import { Suspense, useRef } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 
 import { fragmentAtmosphere, vertexAtmosphere } from "src/tools/shaders";
 import {
@@ -33,7 +33,7 @@ function BannerFisrt() {
               Accurately measure, report and verify carbon footprints reduced,
               then bring them to the Web3.
             </p>
-            <Button>Learn more</Button>
+            <Button href={"/how-does-it-work"}>Learn more</Button>
           </div>
           <div className={stls.earth}>
             <CanvasEarth />
@@ -69,13 +69,6 @@ function EarthBox(props) {
     imgsDir(imgsObject.Earths.DayMap),
     imgsDir(imgsObject.Earths.Clouds),
   ]);
-
-  // useFrame(() => {
-  //   if (earthRef?.current && cloudsRef?.current) {
-  //     earthRef.current.rotation.y += 0.0002;
-  //     cloudsRef.current.rotation.y += 0.00025;
-  //   }
-  // });
 
   return (
     <group>
