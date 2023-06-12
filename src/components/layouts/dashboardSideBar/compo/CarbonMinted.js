@@ -3,7 +3,7 @@ import BoxSection from "../tools/BoxSection";
 import HeadingSideBar from "../tools/Heading";
 import CarbonMintedChart from "../tools/Chart";
 import FlexBetween from "src/components/ui/Stack/flex-between";
-import HookAPI from "src/tools/hook";
+import DcarbonAPI from "src/tools/hook";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { hexToString, listTime } from "src/tools/const";
@@ -46,8 +46,8 @@ function CarbonMinted({ iotSelected }) {
     sensorId: 0,
   });
   const dispatch = useDispatch();
-  const newHook = new HookAPI();
-  const sensorState = useSelector(newHook.GetSensorsState);
+  const newDcarbon = new DcarbonAPI();
+  const sensorState = useSelector(newDcarbon.GetSensorsState);
   // function handle Dur
   const handleSelectDur = (evt) => {
     let newFromTo = configDurType(evt.target.value);
@@ -114,7 +114,6 @@ function CarbonMinted({ iotSelected }) {
   }, [dispatch, payload]);
   // Step 5 get Metrics
   useEffect(() => {
-    console.log("payload?.iotId", payload?.iotId);
     if (payload?.iotId && payload?.from) {
       console.log("get Metric step 1 ");
       handleGetMetric();

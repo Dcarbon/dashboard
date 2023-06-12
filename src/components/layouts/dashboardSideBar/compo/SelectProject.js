@@ -1,19 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment, useEffect, useMemo, useRef } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 import stls from "./SelectProject.module.scss";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import HookAPI from "src/tools/hook";
+import DcarbonAPI from "src/tools/hook";
 import { ProjectACT } from "src/redux/actions/projectAction";
 import Error from "src/components/ui/Error";
 import SelectItem from "src/components/ui/Selection/SelectItem";
 import Selection from "src/components/ui/Selection/Select";
 import Slider from "react-slick";
+import Heading from "src/components/ui/Heading";
+import Button from "src/components/ui/Button";
 function SelectProject({ features, iotSelected, setIotSelected }) {
-  const newHook = new HookAPI();
-  const iotState = useSelector(newHook.GetIOTState);
-  const projectState = useSelector(newHook.GetProjectState);
+  const newDcarbon = new DcarbonAPI();
+  const iotState = useSelector(newDcarbon.GetIOTState);
+  const projectState = useSelector(newDcarbon.GetProjectState);
   const projectId = useMemo(
     () => iotState?.iot?.project,
     [iotState?.iot?.project]
@@ -26,17 +32,6 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
     }
   }, [dispatch, projectId]);
 
-  // get project name
-  const projectName = useMemo(() => {
-    const descs = projectState?.project?.descs;
-    if (descs?.length > 0) {
-      return (
-        descs.find((item) => item?.language === "vi").desc ||
-        projectState.project.id
-      );
-    }
-    return projectState?.project?.id;
-  }, [projectState?.project?.descs, projectState?.project?.id]);
   return (
     <div>
       <Error
@@ -61,9 +56,9 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
           ))}
         </Selection>
       )}
-      <h3 className="text-white uppercase text-lg mb-2">
-        Project: &quot;{projectName}&quot;
-      </h3>
+      {/* <h3 className="text-white uppercase text-lg mb-2">
+        Project: &quot;{}&quot;
+      </h3> */}
 
       {projectState?.project?.images?.length > 0 && (
         <SliderGroup
@@ -87,7 +82,7 @@ function BtnArr({ onClick, right }) {
   );
 }
 function SliderGroup({ images, projectId }) {
-  console.log("images", images);
+  const [showDialog, setShowDialog] = useState(false);
   const customProperties = {
     slidesToShow: 2,
     slidesToScroll: 1,
@@ -108,54 +103,50 @@ function SliderGroup({ images, projectId }) {
       },
     },
   ];
-  const settingsVariable = {
-    dots: true,
-    infinite: true,
-    centerMode: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    variableWidth: true,
-  };
-  const dialogREF = useRef(null);
-  // useEffect(() => {
-  //   let check = false;
-  //   if (!document) return;
-  //   let bodyREF = document.getElementsByTagName("body");
-  //   console.log("boduy", bodyREF[0]);
-  //   if (!check && dialogREF.current) {
-  //     bodyREF[0].append(dialogREF.current);
-  //     check = true;
-  //   }
-  //   return () => (check = false);
-  // }, []);
 
+  const dialogREF = useRef(null);
+  const slider1 = useRef(null);
+  const slider2 = useRef(null);
+  const [navState, setNavState] = useState({ nav1: null, nav2: null });
+  useEffect(() => {
+    if (slider1?.current && slider2?.current) {
+      setNavState({
+        nav1: slider1?.current,
+        nav2: slider2?.current,
+      });
+    }
+  }, [setNavState]);
   return (
     <div id={stls.SliderGroup}>
-      {/* <Slider>
+      <div className={stls.defaultSlide}>
         <div className={stls.static}>
-          <p className=" mb-4">Thumbnails</p>
           <div className={`mb-6 ${stls.thumbnails}`}>
             <div className={stls["slide-container"]}>
               <Slider
                 className={stls.Slide}
                 autoplay={false}
                 speed={500}
-                responsive={responsiveSettings}
                 {...customProperties}
+                responsive={responsiveSettings}
                 infinite={true}
                 dots={true}
               >
                 {images?.map((slideImage, index) => (
                   <div key={index} className={`${stls.imgItem} `}>
-                    <div>
+                    <div
+                      onClick={() => {
+                        setShowDialog(true);
+                        slider1?.current?.slickGoTo(index);
+                      }}
+                    >
                       <Image
-                        unoptimized
                         priority
                         src={slideImage?.image}
                         alt={"Project " + projectId}
                         width={148}
                         height={90}
                         className="w-full h-auto"
+                        quality={70}
                       />
                     </div>
                   </div>
@@ -164,57 +155,79 @@ function SliderGroup({ images, projectId }) {
             </div>
           </div>
         </div>
-      </Slider> */}
-      <div className={stls.dialog} ref={dialogREF}>
-        <div className={stls.dialog_content}>
-          {/* <Slider
-            className={stls.sider_main}
-            slidesToShow={1}
-            slidesToScroll={1}
-            infinite
-            autoplay
-          >
-            {images?.map((item) => (
-              <div key={item?.id} className={stls.img}>
-                <Image src={item?.image} alt="" fill />
-              </div>
-            ))}
-          </Slider> */}
-          <Slider dots infinite speed={500} slidesToShow={1} slidesToScroll={1}>
-            <div>
-              <h3>1</h3>
-            </div>
-            <div>
-              <h3>2</h3>
-            </div>
-            <div>
-              <h3>3</h3>
-            </div>
-            <div>
-              <h3>4</h3>
-            </div>
-            <div>
-              <h3>5</h3>
-            </div>
-            <div>
-              <h3>6</h3>
-            </div>
-          </Slider>
+      </div>
+      <div
+        className={`${stls.dialog} ${showDialog ? stls.active : ""}`}
+        ref={dialogREF}
+      >
+        <div className={stls.box}>
+          <div className={stls.dialog_header}>
+            <Heading Tag={"h4"} className={"text-white"}>
+              Dcarbon Picture
+            </Heading>
+            <span className={stls.btn} onClick={() => setShowDialog(false)}>
+              <XMarkIcon width={24} height={24} />
+            </span>
+          </div>
+          <div className={stls.dialog_content}>
+            <Slider
+              className={stls.sider_main}
+              asNavFor={navState.nav2}
+              ref={slider1}
+              infinite={false}
+              arrows={false}
+            >
+              {images?.map((item) => (
+                <div key={item?.id} className={stls.img}>
+                  <Image
+                    src={item?.image}
+                    alt=""
+                    width={500}
+                    height={500}
+                    style={{ maxWidth: "100%", maxHeight: "450px" }}
+                  />
+                </div>
+              ))}
+            </Slider>
 
-          {/* <Slider className={stls.sider_nav} {...settingsVariable}>
-            {images?.map((item) => (
-              <div key={item?.id} className={stls.img}>
-                <Image
-                  src={item?.image}
-                  alt=""
-                  width={100}
-                  height={100}
-                  style={{ width: "auto", height: "100%" }}
-                  quality={20}
-                />
-              </div>
-            ))}
-          </Slider> */}
+            <div className={stls.bottom}>
+              <Slider
+                asNavFor={navState.nav1}
+                ref={slider2}
+                className={stls.sider_nav}
+                nextArrow={<BtnArr right />}
+                prevArrow={<BtnArr />}
+                focusOnSelect={true}
+                variableWidth={true}
+                infinite={false}
+                accessibility
+                responsive={[
+                  {
+                    breakpoint: 768,
+                    settings: {
+                      arrows: false,
+                    },
+                  },
+                ]}
+              >
+                {images?.map((item, idx) => (
+                  <div key={item?.id} className={stls.img}>
+                    <Image
+                      alt=""
+                      key={"nav-" + idx}
+                      src={images[idx]?.image}
+                      width={60}
+                      height={100}
+                      style={{ width: "auto", height: "60px" }}
+                    />
+                  </div>
+                ))}
+              </Slider>
+              <Button className={stls.btn} onClick={() => setShowDialog(false)}>
+                Close
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

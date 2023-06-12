@@ -4,7 +4,8 @@ import OverView from "./overview";
 // import MyMarkers from "./markers";
 import { useDispatch, useSelector } from "react-redux";
 import { customizationAction } from "src/redux/actions/customizationAction";
-import HookAPI from "src/tools/hook";
+import DcarbonAPI from "src/tools/hook";
+
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 
 const layer_1 = {
@@ -64,8 +65,8 @@ function MapBoxPage({ className }) {
   const [lat, setLat] = useState(21.004998);
   const [zoom, setZoom] = useState(10);
   const [features, setFeatures] = useState(null);
-  const newHook = new HookAPI();
-  const customState = useSelector(newHook.GetCustomState);
+  const newDcarbon = new DcarbonAPI();
+  const customState = useSelector(newDcarbon.GetCustomState);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!customState?.mymap && mymap) {

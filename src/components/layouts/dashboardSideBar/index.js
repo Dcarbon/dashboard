@@ -4,12 +4,12 @@ import CarbonMinted from "./compo/CarbonMinted";
 import InfoProject from "./compo/InfoProject";
 import SelectProject from "./compo/SelectProject";
 import stls from "./index.module.scss";
-import HookAPI from "src/tools/hook";
+import DcarbonAPI from "src/tools/hook";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 function DashboardSideBar({ className }) {
-  const newHook = new HookAPI();
-  const customState = useSelector(newHook.GetCustomState);
+  const newDcarbon = new DcarbonAPI();
+  const customState = useSelector(newDcarbon.GetCustomState);
   const [iotSelected, setIotSelected] = useState(0);
   useEffect(() => {
     if (customState?.features?.length > 0) {
@@ -29,7 +29,7 @@ function DashboardSideBar({ className }) {
             <InfoProject iotSelected={iotSelected} />
             <CarbonMinted iotSelected={iotSelected} />
           </div>
-          <CalculateAnnual iotSelected={iotSelected} />
+          {/* <CalculateAnnual iotSelected={iotSelected} /> */}
         </div>
       </ScrollBox>
     </div>

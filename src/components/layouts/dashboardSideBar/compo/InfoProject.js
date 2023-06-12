@@ -1,23 +1,44 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import BoxSection from "../tools/BoxSection";
 import HeadingSideBar from "../tools/Heading";
 import stls from "./InfoProject.module.scss";
 import CopyButton from "../tools/CopyButton";
-import HookAPI from "src/tools/hook";
+import DcarbonAPI from "src/tools/hook";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import Error from "src/components/ui/Error";
 import { IOT_TYPE } from "src/tools/const";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
+import HTMLReactParser from "html-react-parser";
+import {
+  ChevronUpIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/solid";
+import Button from "src/components/ui/Button";
+import Collapse from "src/components/ui/Collapse";
 function InfoProject({ iotSelected }) {
-  const newHook = new HookAPI();
+  const newDcarbon = new DcarbonAPI();
   const dispatch = useDispatch();
-  const iotState = useSelector(newHook.GetIOTState);
-  const sensorsState = useSelector(newHook.GetSensorsState);
+  const iotState = useSelector(newDcarbon.GetIOTState);
+  const sensorsState = useSelector(newDcarbon.GetSensorsState);
+
+  const projectState = useSelector(newDcarbon.GetProjectState);
+  // get project name
+  const projectName = useMemo(() => {
+    const descs = projectState?.project?.descs;
+    if (descs?.length > 0) {
+      return (
+        descs.find((item) => item?.language === "vi").name ||
+        projectState.project.id
+      );
+    }
+    return projectState?.project?.id;
+  }, [projectState?.project?.descs, projectState?.project?.id]);
+
+  const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     if (iotSelected) {
-      console.log("iotSelected", iotSelected);
       // get id by features in map
       // get id by features in map
       // get id by features in map
@@ -72,15 +93,19 @@ function InfoProject({ iotSelected }) {
     return str?.replace(strReplace, "...");
   };
   const iot = useMemo(() => iotState?.iot, [iotState?.iot]);
+  const projectDetail = useMemo(() => {
+    let newD = new DcarbonAPI();
+    return newD.ProjectInfo(projectState?.project?.id);
+  }, [projectState?.project?.id]);
   return (
-    <BoxSection>
+    <BoxSection className={stls.infoProject}>
       <Error err={iotState.error} clearErrType={IOTAct.CLEAR_ERR} />
-      <HeadingSideBar text={`Info`} />
+      <HeadingSideBar text={`Info project`} />
       {iotState && (
         <ul>
           <li className={stls.itemRow}>
-            <p>Project status</p>
-            <p>
+            <div>Project status</div>
+            <div>
               Active
               <span
                 className={`${stls.status} ${
@@ -89,21 +114,76 @@ function InfoProject({ iotSelected }) {
                     : stls.false
                 }`}
               ></span>
-            </p>
+            </div>
           </li>
           <li className={stls.itemRow}>
-            <p>Ethereum address</p>
-            <p>
+            <div>Name</div>
+            <div>{projectName}</div>
+          </li>
+          <li className={stls.itemRow}>
+            <div>Type</div>
+            <div>{IOT_TYPE(iot?.type)}</div>
+          </li>
+          <li className={stls.itemRow}>
+            <div>Ethereum address</div>
+            <div>
               {strCut(iot?.address)}
               <CopyButton className={stls.copyBtn} obj={iot?.address} />
-            </p>
+            </div>
           </li>
           <li className={stls.itemRow}>
-            <p>Project type</p>
-            <p>{IOT_TYPE(iot?.type)}</p>
+            <div>Loction</div>
+            <div>{projectDetail?.location}</div>
           </li>
         </ul>
       )}
+
+      <Collapse isOpen={showDetail}>
+        <ul>
+          <li className={stls.itemRow}>
+            <div>Implement</div>
+            <div>{projectDetail?.implement}</div>
+          </li>
+          <li className={stls.itemRow}>
+            <div>Area</div>
+            <div>
+              {projectDetail?.area} m<sup>2</sup>
+            </div>
+          </li>
+          <li className={stls.itemRow}>
+            <div>Waste</div>
+            <div>{projectDetail?.waste} kg/day</div>
+          </li>
+          <li className={stls.itemRow}>
+            <div>Power</div>
+            <div>{projectDetail?.power} kVA</div>
+          </li>
+        </ul>
+        <div className={stls.information}>
+          <span className={stls.icon}>
+            <InformationCircleIcon width={24} height={24} />
+          </span>
+          <div className={stls.content}>
+            {/* <span className={stls.icon_hidden}>
+              <InformationCircleIcon width={24} height={24} />
+            </span> */}
+            {HTMLReactParser(projectDetail?.detail ?? "")}
+          </div>
+        </div>
+      </Collapse>
+      <Button
+        className={stls.btnDetails}
+        onClick={() => {
+          setShowDetail(!showDetail);
+        }}
+      >
+        <ChevronUpIcon
+          width={24}
+          height={16}
+          className={showDetail ? stls.showing : ""}
+        />
+        {showDetail ? "Hide" : "View"} details
+      </Button>
     </BoxSection>
   );
 }

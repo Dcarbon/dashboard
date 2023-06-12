@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Loading from "src/components/ui/Animation/Loading";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { listTime } from "src/tools/const";
-import HookAPI from "src/tools/hook";
+import DcarbonAPI from "src/tools/hook";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const optionsDefault = {
   chart: {
@@ -48,8 +48,8 @@ export default function CarbonMintedChart({
   durType,
   //  to, from
 }) {
-  const newHook = new HookAPI();
-  const iotState = useSelector(newHook.GetIOTState);
+  const newDcarbon = new DcarbonAPI();
+  const iotState = useSelector(newDcarbon.GetIOTState);
   const [options, setOptions] = useState(null);
   const [series, setSeries] = useState(null);
   const [loadingIotMined, setloadingIotMined] = useState(false);
