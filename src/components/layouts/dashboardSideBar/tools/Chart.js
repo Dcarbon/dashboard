@@ -50,8 +50,6 @@ export default function CarbonMintedChart({
 }) {
   const newDcarbon = new DcarbonAPI();
   const iotState = useSelector(newDcarbon.GetIOTState);
-  const [options, setOptions] = useState(null);
-  const [series, setSeries] = useState(null);
   const [loadingIotMined, setloadingIotMined] = useState(false);
   useEffect(() => {
     if (iotState?.latest === IOTAct.GET_IOT_MINTED.REQUEST) {
@@ -64,28 +62,6 @@ export default function CarbonMintedChart({
     }
   }, [iotState.latest]);
   // Nếu đã load xong iot minted thì sẽ set option và series theo dữ liệu nhận đc
-  useEffect(() => {
-    if (iotState.iot_minted?.length > 0) {
-      var newSeriesArr = [];
-      for (let idx = 0; idx < iotState.iot_minted.length; idx++) {
-        const element = iotState.iot_minted[idx];
-        const hexAmount = new BigNumber(element.amount.toLocaleLowerCase());
-        const reduceAmount = hexAmount.div("1e9");
-        const created_at = new Date(element?.createdAt).getTime();
-        const roundCreate = Math.round(created_at / 1000);
-
-        newSeriesArr[idx] = [roundCreate * 1000, reduceAmount.toFixed(2)];
-      }
-      console.log("newSeriesArr", newSeriesArr);
-      setOptions(optionsDefault);
-      setSeries([
-        {
-          name: listTime[durType],
-          data: newSeriesArr,
-        },
-      ]);
-    }
-  }, [durType, iotState.iot_minted]);
 
   return (
     <Fragment>

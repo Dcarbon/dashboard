@@ -28,7 +28,7 @@
         height: 433px;
       }
       @media (min-width: 1024px) {
-        width: calc(100% - 420px);
+        width: calc(100% - 428px);
         float: left;
         height: calc(100vh - 74px);
       }
@@ -39,34 +39,10 @@
         width: 100%;
       }
       @media (min-width: 1024px) {
-        width: 420px;
+        width: 428px;
         height: calc(100vh - 74px);
         float: left;
       }
     }
   }
 }
-
-// .map {
-//   height: 100%;
-//   @media (min-width: 1024px) {
-//     flex: 0 1 auto;
-//     width: 100%;
-//   }
-// }
-// .sidebar {
-//   @media (max-width: 1023px) {
-//     height: 0;
-//   }
-//   @media (min-width: 1024px) {
-//     position: fixed;
-//     top: 0;
-//     right: 0;
-//     opacity: 0;
-//     visibility: hidden;
-//     flex: 1 0 auto;
-//     height: 100%;
-//     transform: translateX(100%);
-//     transition: all 0.5s ease;
-//   }
-// }

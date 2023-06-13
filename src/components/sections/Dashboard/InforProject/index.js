@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import BoxSection from "../tools/BoxSection";
-import HeadingSideBar from "../tools/Heading";
-import stls from "./InfoProject.module.scss";
-import CopyButton from "../tools/CopyButton";
+
+import stls from "./index.module.scss";
 import DcarbonAPI from "src/tools/hook";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
@@ -16,6 +14,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Button from "src/components/ui/Button";
 import Collapse from "src/components/ui/Collapse";
+import CopyButton from "src/components/layouts/dashboardSideBar/tools/CopyButton";
 function InfoProject({ iotSelected }) {
   const newDcarbon = new DcarbonAPI();
   const dispatch = useDispatch();
@@ -98,9 +97,9 @@ function InfoProject({ iotSelected }) {
     return newD.ProjectInfo(projectState?.project?.id);
   }, [projectState?.project?.id]);
   return (
-    <BoxSection className={stls.infoProject}>
+    <div className={stls.infoProject}>
       <Error err={iotState.error} clearErrType={IOTAct.CLEAR_ERR} />
-      <HeadingSideBar text={`Info project`} />
+
       {iotState && (
         <ul>
           <li className={stls.itemRow}>
@@ -137,54 +136,60 @@ function InfoProject({ iotSelected }) {
           </li>
         </ul>
       )}
-
-      <Collapse isOpen={showDetail}>
-        <ul>
-          <li className={stls.itemRow}>
-            <div>Implement</div>
-            <div>{projectDetail?.implement}</div>
-          </li>
-          <li className={stls.itemRow}>
-            <div>Area</div>
-            <div>
-              {projectDetail?.area} m<sup>2</sup>
+      {projectState?.project && (
+        <Collapse isOpen={showDetail}>
+          <ul>
+            <li className={stls.itemRow}>
+              <div>Implement</div>
+              <div>{projectDetail?.implement}</div>
+            </li>
+            <li className={stls.itemRow}>
+              <div>Area</div>
+              <div>
+                {projectDetail?.area} m<sup>2</sup>
+              </div>
+            </li>
+            <li className={stls.itemRow}>
+              <div>Waste</div>
+              <div>{projectDetail?.waste} kg/day</div>
+            </li>
+            <li className={stls.itemRow}>
+              <div>Power</div>
+              <div>{projectDetail?.power} kVA</div>
+            </li>
+          </ul>
+          <div className={stls.information}>
+            <label className={stls.icon}>
+              <InformationCircleIcon type="outline" width={24} height={24} />
+            </label>
+            <div className={stls.content}>
+              {/* <fieldset className={stls.icon_hidden}>
+                <InformationCircleIcon type="outline" width={24} height={24} />
+              </fieldset> */}
+              <div className={stls.parsered}>
+                {HTMLReactParser(projectDetail?.detail ?? "")}
+              </div>
             </div>
-          </li>
-          <li className={stls.itemRow}>
-            <div>Waste</div>
-            <div>{projectDetail?.waste} kg/day</div>
-          </li>
-          <li className={stls.itemRow}>
-            <div>Power</div>
-            <div>{projectDetail?.power} kVA</div>
-          </li>
-        </ul>
-        <div className={stls.information}>
-          <span className={stls.icon}>
-            <InformationCircleIcon width={24} height={24} />
-          </span>
-          <div className={stls.content}>
-            {/* <span className={stls.icon_hidden}>
-              <InformationCircleIcon width={24} height={24} />
-            </span> */}
-            {HTMLReactParser(projectDetail?.detail ?? "")}
           </div>
-        </div>
-      </Collapse>
-      <Button
-        className={stls.btnDetails}
-        onClick={() => {
-          setShowDetail(!showDetail);
-        }}
-      >
-        <ChevronUpIcon
-          width={24}
-          height={16}
-          className={showDetail ? stls.showing : ""}
-        />
-        {showDetail ? "Hide" : "View"} details
-      </Button>
-    </BoxSection>
+        </Collapse>
+      )}
+
+      <div className="text-right">
+        <Button
+          className={stls.btnDetails}
+          onClick={() => {
+            setShowDetail(!showDetail);
+          }}
+        >
+          <ChevronUpIcon
+            width={24}
+            height={16}
+            className={!showDetail ? stls.showing : ""}
+          />
+          {showDetail ? "Hide" : "View"} details
+        </Button>
+      </div>
+    </div>
   );
 }
 

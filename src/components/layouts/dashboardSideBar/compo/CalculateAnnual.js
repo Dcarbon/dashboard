@@ -1,12 +1,11 @@
 import { useState } from "react";
-import BoxSection from "../tools/BoxSection";
 import HeadingSideBar from "../tools/Heading";
 import stls from "./CalculateAnnual.module.scss";
 import FlexBetween from "src/components/ui/Stack/flex-between";
 function CalculateAnnual() {
   const [price, setPrice] = useState("");
   return (
-    <BoxSection>
+    <div>
       <HeadingSideBar text={"Calculate Annual Return"} />
       <p className="text-[#B3B2B8] mb-3">Dcarbon Devices Price</p>
       <FlexBetween className="items-center mb-3 gap-5">
@@ -26,7 +25,7 @@ function CalculateAnnual() {
         Note: Annual return is based on past performance of this node. This node
         breakeven time is 36 months.
       </p>
-    </BoxSection>
+    </div>
   );
 }
 

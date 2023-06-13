@@ -1,5 +1,8 @@
 @import "src/styles/custom.scss";
-
+.main {
+  margin-top: 28px;
+  padding: 0 24px;
+}
 .thumbnails {
   margin-right: -1.5rem;
   margin-left: -5px;
@@ -37,7 +40,8 @@
   padding-right: 5px;
   & > div {
     border: 1px solid transparent;
-    height: calc(100% - 2px);
+    border-radius: 10px;
+    height: 100%;
     overflow: hidden;
     transition: border 0.2s ease;
   }

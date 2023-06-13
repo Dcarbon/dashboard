@@ -7,7 +7,6 @@ import { customizationAction } from "src/redux/actions/customizationAction";
 import DcarbonAPI from "src/tools/hook";
 
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
-
 const layer_1 = {
   id: "boundaryLayer",
   type: "line",
@@ -39,7 +38,6 @@ const layer_1 = {
     ],
   },
 };
-
 const layer_2 = {
   id: "hexagonLayer",
   type: "fill",
@@ -164,7 +162,6 @@ function MapBoxPage({ className }) {
           }
         }}
       >
-        {/* {mymap && <MyMarkers mymap={mymap} />} */}
         <OverView features={features} />
         <Source
           id="iott_all"

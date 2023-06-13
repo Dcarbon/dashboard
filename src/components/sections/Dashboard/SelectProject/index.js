@@ -1,11 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
-import stls from "./SelectProject.module.scss";
+import stls from "./index.module.scss";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import DcarbonAPI from "src/tools/hook";
@@ -33,7 +32,7 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
   }, [dispatch, projectId]);
 
   return (
-    <div>
+    <div className={stls.main}>
       <Error
         clearErrType={ProjectACT.CLEAR_ERR}
         err={projectState?.error}
@@ -145,7 +144,7 @@ function SliderGroup({ images, projectId }) {
                         alt={"Project " + projectId}
                         width={148}
                         height={90}
-                        className="w-full h-auto"
+                        className="max-w-full w-full h-full"
                         quality={70}
                       />
                     </div>

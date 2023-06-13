@@ -1,12 +1,12 @@
 import ScrollBox from "src/components/ui/ScrollBox";
-import CalculateAnnual from "./compo/CalculateAnnual";
-import CarbonMinted from "./compo/CarbonMinted";
-import InfoProject from "./compo/InfoProject";
-import SelectProject from "./compo/SelectProject";
 import stls from "./index.module.scss";
 import DcarbonAPI from "src/tools/hook";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import InfoProject from "src/components/sections/Dashboard/InforProject";
+import CarbonGenerated from "src/components/sections/Dashboard/Generated/carbon";
+import CollapseTab from "src/components/sections/Dashboard/CollapseTab";
+import SelectProject from "src/components/sections/Dashboard/SelectProject";
 function DashboardSideBar({ className }) {
   const newDcarbon = new DcarbonAPI();
   const customState = useSelector(newDcarbon.GetCustomState);
@@ -16,20 +16,29 @@ function DashboardSideBar({ className }) {
       setIotSelected(customState?.features[0]);
     }
   }, [customState?.features]);
+  const [currentTab, setCurrentTab] = useState(1);
   return (
     <div className={className}>
       <ScrollBox disableX>
-        <div className="text-[#B3B2B8] p-3 md:p-6">
+        <div className="text-[#B3B2B8]">
           <SelectProject
             features={customState?.features}
             iotSelected={iotSelected}
             setIotSelected={setIotSelected}
           />
           <div className={stls.boxMiddle}>
-            <InfoProject iotSelected={iotSelected} />
-            <CarbonMinted iotSelected={iotSelected} />
+            {iotSelected && (
+              <CollapseTab disable color="blue" title="Info project">
+                <InfoProject iotSelected={iotSelected} />
+              </CollapseTab>
+            )}
+
+            <CarbonGenerated
+              iotSelected={iotSelected}
+              currentTab={currentTab}
+              setCurrentTab={setCurrentTab}
+            />
           </div>
-          {/* <CalculateAnnual iotSelected={iotSelected} /> */}
         </div>
       </ScrollBox>
     </div>
