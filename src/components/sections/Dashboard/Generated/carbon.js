@@ -1,18 +1,20 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import stls from "./carbon.module.scss";
 import CollapseTab from "../CollapseTab";
-import CarbonMintedChart from "src/components/layouts/dashboardSideBar/tools/Chart";
 import DcarbonAPI from "src/tools/hook";
 import Button from "src/components/ui/Button";
 import BigNumber from "bignumber.js";
+import dateFormat from "dateformat";
 import dynamic from "next/dynamic";
+import Loading from "src/components/ui/Animation/Loading";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 // hàm lấy from to theo durtype
 const roundup_second = (time) => Math.round(time.getTime() / 1000);
 const Get_Duration_by_Type = (durationType) => {
+  console.log("durationType", durationType);
   var thisDate = new Date(); // now
   let to = roundup_second(thisDate);
   let from;
@@ -72,7 +74,6 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
   );
   // Step 2 : Get IotMinted
   useEffect(() => {
-    console.log(payload);
     if (iotSelected !== payload?.iotId) {
       handleGetIotMinted({ ...payload, iotId: iotSelected });
     }
@@ -88,8 +89,8 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
       title="CARBON minted"
       strongNumb={120}
       unit="kWh"
-      isOpen={Boolean(currentTab === 2)}
-      handleOpen={() => setCurrentTab(currentTab !== 2 ? 2 : 0)}
+      isOpen={Boolean(currentTab === 1)}
+      handleOpen={() => setCurrentTab(currentTab !== 1 ? 1 : 0)}
     >
       <div className={stls.carbonMinted}>
         <DcarbonChart durType={durType} iot_minted={iotState?.iot_minted} />
@@ -98,134 +99,217 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
     </CollapseTab>
   );
 }
-
 export default CarbonGenerated;
-const optionsDefault = {
-  chart: {
-    toolbar: { show: false },
-    width: "100%",
-    zoom: {
-      enabled: false,
-    },
-  },
-  colors: "#72BF44",
-  fill: { opacity: 0.3 },
-  yaxis: { show: false },
-  grid: { show: false },
-  dataLabels: {
-    enabled: true,
-    formatter: (val) => parseFloat(val).toFixed(2),
-  },
-  tooltip: { enabled: false },
-  stroke: {
-    show: true,
-    colors: "#ff0000",
-    width: 2,
-    dashArray: 2,
-  },
-  plotOptions: {
-    bar: {
-      borderRadius: 5,
-      borderRadiusApplication: "end",
-      borderRadiusWhenStacked: "all",
-      columnWidth: "32px",
-    },
-  },
-  xaxis: {
-    type: "datetime",
-    axisTicks: { show: false },
-  },
-};
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 const oneDay = 24 * 60 * 60 * 1000;
-const CeilDay = (time) => Math.round(time / oneDay);
 const createArray = (length) => new Array(length);
+const getAmount = (item) => {
+  const hexAmount = new BigNumber(item.amount.toLocaleLowerCase());
+  const reduceAmount = hexAmount.div("1e9");
+  return reduceAmount.toFixed(2);
+};
+const getSum = (prev, next) => {
+  return Number(prev) + Number(next);
+};
+const getStringDay = (durType, time) => {
+  if (time) {
+    const newTime = new Date(time);
+    if (durType === "full") {
+      return dateFormat(newTime, "d/m/yyyy");
+    } else if (durType < 2) {
+      return dateFormat(newTime, "dd mmm");
+    } else {
+      return dateFormat(newTime, "mmm yyyy");
+    }
+  }
+};
 function DcarbonChart({ durType, iot_minted }) {
   const [options, setOptions] = useState({});
   const [series, setSeries] = useState([]);
   const [arrLng, setArrLng] = useState([]);
-  var diff = 0;
+  const [loading, setLoading] = useState([]);
+  const optionsDefault = useMemo(
+    () => ({
+      chart: {
+        toolbar: { show: false },
+        width: "100%",
+        zoom: {
+          enabled: false,
+        },
+      },
+      colors: "#72BF44",
+      fill: { opacity: 0.3 },
+      yaxis: { show: false },
+      grid: { show: false },
+      dataLabels: {
+        enabled: false,
+        // formatter: (val) => parseFloat(val).toFixed(2),
+      },
+      crosshairs: {
+        fill: {
+          type: "gradient",
+          gradient: {
+            colorFrom: "#D8E3F0",
+            colorTo: "#BED1E6",
+            stops: [0, 100],
+            opacityFrom: 0.4,
+            opacityTo: 0.5,
+          },
+        },
+      },
+      tooltip: {
+        enabled: true,
+        custom: function (props) {
+          const { series, seriesIndex, dataPointIndex } = props;
+          return (
+            '<div class="arrow_box">' +
+            '<h4 class="title"><b class="strong">' +
+            series[seriesIndex][dataPointIndex] +
+            "</b> Dcarbon </h4>" +
+            "<span>" +
+            getStringDay("full", arrLng[dataPointIndex]) +
+            "</span>" +
+            "</div>"
+          );
+        },
+        marker: { show: true },
+      },
+      stroke: { show: false },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          borderRadiusApplication: "end",
+          borderRadiusWhenStacked: "all",
+        },
+      },
+    }),
+    [arrLng]
+  );
+  // Step 1 : Get array length by durtype
   useEffect(() => {
     let array = null;
     if (durType === 0) {
       array = createArray(7);
-      diff = oneDay;
     } else if (durType === 1) {
       let newDate = new Date();
       let thisMonthTime = newDate.getTime();
       newDate.setUTCMonth(newDate.getUTCMonth() - 1);
       let beforeMonthTime = newDate.getTime();
       array = createArray((thisMonthTime - beforeMonthTime) / oneDay);
-      diff = oneDay;
     } else if (durType === 2) {
       array = createArray(6);
-      diff = 1;
     } else if (durType === 3) {
       array = createArray(12);
-      diff = 1;
     }
     setArrLng(array);
   }, [durType]);
-
+  // Step 2 : Set time by array length
   useEffect(() => {
-    var newSeriesArr = [];
-    var toDay = new Date();
     var prevDay = 0;
     var prevMonth = 0;
+    var currentTime = 0;
     for (let idx = 0; idx < arrLng.length; idx++) {
-      // lọc theo độ dài mảng
-      const element = arrLng[idx];
-      let getIOTMinted = iot_minted?.filter((item) => {
-        let createAt_Date = new Date(item?.createdAt);
-        if (durType > 1) {
-          // nếu kiểu tgian = nhiều tháng
-          // lấy tháng vừa lọc trừ đi 1 đến hết vong lặp
-        }
-
-        // item?.createdAt
-        // if (durType === 0) {
-        //   array = createArray(7);
-        // } else if (durType === 1) {
-        //   let newDate = new Date();
-        //   let thisMonthTime = newDate.getTime();
-        //   newDate.setUTCMonth(newDate.getUTCMonth() - 1);
-        //   let beforeMonthTime = newDate.getTime();
-        //   array = createArray((thisMonthTime - beforeMonthTime) / oneDay);
-        // } else if (durType === 2) {
-        //   array = createArray(6);
-        // } else if (durType === 3) {
-        //   array = createArray(12);
-        // }
-        return 1;
-      });
+      var toDay = new Date();
+      toDay.setHours(0, 0, 0, 0);
+      if (durType < 2) {
+        currentTime = toDay.getTime() - prevDay;
+        prevDay += oneDay;
+      } else {
+        currentTime = toDay.getUTCMonth() - prevMonth;
+        prevMonth++;
+      }
+      arrLng[idx] = durType < 2 ? currentTime : toDay.setUTCMonth(currentTime);
     }
-    for (let idx = 0; idx < iot_minted?.length; idx++) {
-      const element = iot_minted[idx];
-      const hexAmount = new BigNumber(element.amount.toLocaleLowerCase());
-      const reduceAmount = hexAmount.div("1e9");
-      const created_at = new Date(element?.createdAt).getTime();
-      const roundCreate = Math.round(created_at / 1000);
+  }, [arrLng, durType]);
+  // Step 3 : Filter value adapt with time
+  useEffect(() => {
+    if (arrLng?.length) {
+      let newSeriesArr = [];
+      for (let index = 0; index < arrLng.length; index++) {
+        const elm_1 = arrLng[index];
+        const elm_2 = arrLng[index + 1] ?? 0;
+        let collect_by_time = [];
 
-      newSeriesArr[idx] = [roundCreate * 1000, reduceAmount.toFixed(2)];
+        collect_by_time = iot_minted?.filter((item) => {
+          const created_at = new Date(item?.createdAt).getTime();
+          return elm_1 > created_at && elm_2 <= created_at;
+        });
+        const listAmount = collect_by_time?.map(getAmount);
+        const amount = listAmount?.length > 0 ? listAmount?.reduce(getSum) : 0;
+
+        newSeriesArr[index] = {
+          x: elm_1,
+          y: amount,
+        };
+      }
+      if (newSeriesArr?.length > 0) {
+        setLoading(false);
+        setOptions({
+          ...optionsDefault,
+          xaxis: {
+            type: "datetime",
+            axisTicks: { show: false },
+          },
+        });
+        setSeries([
+          {
+            name: "duration",
+            data: newSeriesArr,
+          },
+        ]);
+      }
     }
-    console.log("newSeriesArr", newSeriesArr);
-    setOptions(optionsDefault);
-    setSeries([
-      {
-        name: "duration",
-        data: newSeriesArr,
-      },
-    ]);
-  }, [arrLng, iot_minted]);
+  }, [arrLng, durType, iot_minted, optionsDefault]);
+
   return (
-    <ApexCharts
-      options={options}
-      series={series}
-      type="bar"
-      height={120}
-      width={"100%"}
-    />
+    <div className="myApex">
+      {loading ? (
+        <Loading />
+      ) : (
+        <ApexCharts
+          options={options}
+          series={series}
+          type="bar"
+          height={170}
+          width={"100%"}
+        />
+      )}
+    </div>
   );
 }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 function DcarbonDuration({ durType, setDurType }) {
   var listDur = ["7 days", "1 month", "6 months", "1 year"];
   return (

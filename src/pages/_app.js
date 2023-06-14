@@ -4,7 +4,7 @@ import "glider-js/glider.min.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "src/styles/globals.css";
+import "src/styles/globals.scss";
 import NextNProgress from "nextjs-progressbar";
 import { Provider } from "react-redux";
 import { store } from "src/redux";
