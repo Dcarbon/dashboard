@@ -11,7 +11,7 @@ var account =
     : "");
 
 export const gateway = process.env.NEXT_PUBLIC_APP_GATEWAY;
-
+export const webfiles = process.env.NEXT_PUBLIC_WEB_UPLOADS;
 // token
 export const setToken = (newToken) => {
   token = newToken;

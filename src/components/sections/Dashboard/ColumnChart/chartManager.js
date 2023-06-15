@@ -101,6 +101,7 @@ const optionsDefault = {
   },
 };
 export default function DcarbonChart({
+  durType,
   unit,
   data,
   setLoading,
@@ -140,7 +141,7 @@ export default function DcarbonChart({
                 unit +
                 "</h4>" +
                 "<span>" +
-                getStringDay("full", arrTime[dataPointIndex]) +
+                getStringDay(durType, arrTime[dataPointIndex]) +
                 "</span>" +
                 "</div>"
               );
@@ -157,6 +158,7 @@ export default function DcarbonChart({
       }
     }
   }, [
+    durType,
     arrData,
     arrTime,
     data,
