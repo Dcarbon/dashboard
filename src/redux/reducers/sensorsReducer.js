@@ -29,7 +29,7 @@ const sensorsReducer = (state = initsensorsState, action) => {
         latest: action.type,
       };
     case SensorsACT.GET_SENSORS.SUCCESS:
-      console.log("---------------SUCCESS ", { action, res });
+      // console.log("---------------SUCCESS ", { action, res });
       return {
         ...state,
         sensors: res.data,
@@ -55,7 +55,7 @@ const sensorsReducer = (state = initsensorsState, action) => {
         latest: action.type,
       };
     case SensorsACT.GET_SENSORS_METRICS.SUCCESS:
-      console.log("---------------SUCCESS ", { action, res });
+      // console.log("---------------SUCCESS ", { action, res });
       return {
         ...state,
         loading: true,

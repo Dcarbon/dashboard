@@ -9,7 +9,7 @@
     "lint": "next lint",
     "dk-build-cache": "cd docker-cache && docker build -t harbor.viet-tin.com/dcarbon/dashboard:cache .",
     "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.0.1 .",
-    "dk-run": "docker run -p 3232:3000 harbor.viet-tin.com/dcarbon/dashboard:latest",
+    "dk-run": "docker run -p 3232:3000 harbor.viet-tin.com/dcarbon/dashboard:v0.0.1",
     "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:v0.0.1"
   },
   "dependencies": {

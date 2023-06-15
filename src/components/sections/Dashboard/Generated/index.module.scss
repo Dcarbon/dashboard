@@ -1,0 +1,21 @@
+.selectDuration {
+  gap: 20px;
+
+  .btn {
+    text-align: center;
+    padding: 6px 0;
+    width: 100%;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: #919097;
+    border: 1px solid #444444;
+    background-color: transparent;
+  }
+  .active .btn,
+  .btn:hover {
+    color: #ffffff;
+    border-color: transparent;
+    background: radial-gradient(#82bf5d, #72bf44);
+  }
+}

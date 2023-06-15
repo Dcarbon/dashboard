@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import stls from "./index.module.scss";
 function Collapse({ isOpen, children }) {
   const boxConetentREF = useRef(null);

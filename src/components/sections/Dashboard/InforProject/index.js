@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import stls from "./index.module.scss";
 import DcarbonAPI from "src/tools/hook";
@@ -14,7 +14,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Button from "src/components/ui/Button";
 import Collapse from "src/components/ui/Collapse";
-import CopyButton from "src/components/layouts/dashboardSideBar/tools/CopyButton";
+import CopyButton from "src/components/ui/Button/CopyButton";
 function InfoProject({ iotSelected }) {
   const newDcarbon = new DcarbonAPI();
   const dispatch = useDispatch();
@@ -49,7 +49,6 @@ function InfoProject({ iotSelected }) {
       // get sensor list
       // get sensor list
       // get sensor list
-      console.log("GET_SENSORS iotSelected", iotSelected);
       dispatch({
         type: SensorsACT.GET_SENSORS.REQUEST,
         payload: { skip: 0, limit: 5, iotId: iotSelected },
@@ -57,44 +56,6 @@ function InfoProject({ iotSelected }) {
     }
   }, [iotSelected, dispatch]);
 
-  // get sensor metrics by sensor_id in first item
-  // get sensor metrics by sensor_id in first item
-  // get sensor metrics by sensor_id in first item
-  const getSensorMetrics = useCallback(
-    (sensorId) => {
-      console.log("sensorId", sensorId);
-      const newDate = new Date();
-      dispatch({
-        type: SensorsACT.GET_SENSORS_METRICS.REQUEST,
-        payload: {
-          to: Math.round(newDate.getTime() / 1000),
-          // from : Math.round(newDate.getTime() / 1000 - 5),
-          from: 1,
-          iotId: iotSelected,
-          limit: 5,
-          skip: 0,
-          sensorId,
-        },
-      });
-    },
-    [dispatch, iotSelected]
-  );
-  useEffect(() => {
-    if (sensorsState?.sensors?.length > 0 && iotSelected) {
-      const sensorId = sensorsState?.sensors[0].id;
-      getSensorMetrics(sensorId);
-    }
-  }, [getSensorMetrics, iotSelected, sensorsState?.sensors]);
-
-  useEffect(() => {
-    const newInterval = setInterval(() => {
-      if (sensorsState?.sensors?.length > 0) {
-        const sensorId = sensorsState?.sensors[0].id;
-        getSensorMetrics(sensorId);
-      }
-    }, 5000);
-    return () => clearInterval(newInterval);
-  }, [getSensorMetrics, sensorsState, sensorsState?.sensors]);
   // handle Ether address
   const strCut = (str) => {
     const strReplace = str?.substring(5, str?.length - 4);
@@ -140,7 +101,7 @@ function InfoProject({ iotSelected }) {
             </div>
           </li>
           <li className={stls.itemRow}>
-            <div>Loction</div>
+            <div>Location</div>
             <div>{projectDetail?.location}</div>
           </li>
         </ul>

@@ -7,6 +7,7 @@ import InfoProject from "src/components/sections/Dashboard/InforProject";
 import CarbonGenerated from "src/components/sections/Dashboard/Generated/carbon";
 import CollapseTab from "src/components/sections/Dashboard/CollapseTab";
 import SelectProject from "src/components/sections/Dashboard/SelectProject";
+import ElectricityGenerated from "src/components/sections/Dashboard/Generated/electricity";
 function DashboardSideBar({ className }) {
   const newDcarbon = new DcarbonAPI();
   const customState = useSelector(newDcarbon.GetCustomState);
@@ -38,14 +39,12 @@ function DashboardSideBar({ className }) {
               currentTab={currentTab}
               setCurrentTab={setCurrentTab}
             />
-            <CollapseTab
-              color="blue"
-              title="Electricity generated"
-              strongNumb={123}
-              unit="kWh"
-              isOpen={Boolean(currentTab === 2)}
-              handleOpen={() => setCurrentTab(currentTab !== 2 ? 2 : 0)}
-            ></CollapseTab>
+
+            <ElectricityGenerated
+              iotSelected={iotSelected}
+              currentTab={currentTab}
+              setCurrentTab={setCurrentTab}
+            />
             <CollapseTab
               color="green"
               title="Biogas treated"

@@ -25,8 +25,6 @@ function MyMarkers({ mymap }) {
             longitude={longitude}
             latitude={latitude}
             onClick={() => {
-              // const myNewMap = mymap;
-              // console.log("mymap.", myNewMap);
               mymap.flyTo({
                 center: [longitude, latitude],
                 zoom: 16,
