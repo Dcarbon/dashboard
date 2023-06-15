@@ -49,6 +49,7 @@ function InfoProject({ iotSelected }) {
       // get sensor list
       // get sensor list
       // get sensor list
+      console.log("GET_SENSORS iotSelected", iotSelected);
       dispatch({
         type: SensorsACT.GET_SENSORS.REQUEST,
         payload: { skip: 0, limit: 5, iotId: iotSelected },
@@ -61,6 +62,7 @@ function InfoProject({ iotSelected }) {
   // get sensor metrics by sensor_id in first item
   const getSensorMetrics = useCallback(
     (sensorId) => {
+      console.log("sensorId", sensorId);
       const newDate = new Date();
       dispatch({
         type: SensorsACT.GET_SENSORS_METRICS.REQUEST,
@@ -75,17 +77,24 @@ function InfoProject({ iotSelected }) {
         },
       });
     },
-    [iotSelected, dispatch]
+    [dispatch, iotSelected]
   );
-
   useEffect(() => {
-    if (sensorsState?.sensors?.length > 0) {
+    if (sensorsState?.sensors?.length > 0 && iotSelected) {
       const sensorId = sensorsState?.sensors[0].id;
       getSensorMetrics(sensorId);
-      let thisInterval = setInterval(() => getSensorMetrics(sensorId), 5000);
-      return () => clearInterval(thisInterval);
     }
-  }, [getSensorMetrics, sensorsState?.sensors]);
+  }, [getSensorMetrics, iotSelected, sensorsState?.sensors]);
+
+  useEffect(() => {
+    const newInterval = setInterval(() => {
+      if (sensorsState?.sensors?.length > 0) {
+        const sensorId = sensorsState?.sensors[0].id;
+        getSensorMetrics(sensorId);
+      }
+    }, 5000);
+    return () => clearInterval(newInterval);
+  }, [getSensorMetrics, sensorsState, sensorsState?.sensors]);
   // handle Ether address
   const strCut = (str) => {
     const strReplace = str?.substring(5, str?.length - 4);
@@ -139,38 +148,49 @@ function InfoProject({ iotSelected }) {
       {projectState?.project && (
         <Collapse isOpen={showDetail}>
           <ul>
-            <li className={stls.itemRow}>
-              <div>Implement</div>
-              <div>{projectDetail?.implement}</div>
-            </li>
-            <li className={stls.itemRow}>
-              <div>Area</div>
-              <div>
-                {projectDetail?.area} m<sup>2</sup>
-              </div>
-            </li>
-            <li className={stls.itemRow}>
-              <div>Waste</div>
-              <div>{projectDetail?.waste} kg/day</div>
-            </li>
-            <li className={stls.itemRow}>
-              <div>Power</div>
-              <div>{projectDetail?.power} kVA</div>
-            </li>
+            {projectDetail?.implement && (
+              <li className={stls.itemRow}>
+                <div>Implement</div>
+                <div>{projectDetail?.implement}</div>
+              </li>
+            )}
+            {projectDetail?.area && (
+              <li className={stls.itemRow}>
+                <div>Area</div>
+                <div>
+                  {projectDetail?.area} m<sup>2</sup>
+                </div>
+              </li>
+            )}
+            {projectDetail?.waste && (
+              <li className={stls.itemRow}>
+                <div>Waste</div>
+                <div>{projectDetail?.waste} kg/day</div>
+              </li>
+            )}
+            {projectDetail?.power && (
+              <li className={stls.itemRow}>
+                <div>Power</div>
+                <div>{projectDetail?.power} kVA</div>
+              </li>
+            )}
           </ul>
-          <div className={stls.information}>
-            <label className={stls.icon}>
-              <InformationCircleIcon type="outline" width={24} height={24} />
-            </label>
-            <div className={stls.content}>
-              {/* <fieldset className={stls.icon_hidden}>
+          {projectDetail?.detail && (
+            <div className={stls.information}>
+              <label className={stls.icon}>
+                <InformationCircleIcon type="outline" width={24} height={24} />
+              </label>
+              <div className={stls.content}>
+                {/* <fieldset className={stls.icon_hidden}>
                 <InformationCircleIcon type="outline" width={24} height={24} />
               </fieldset> */}
-              <div className={stls.parsered}>
-                {HTMLReactParser(projectDetail?.detail ?? "")}
+
+                <div className={stls.parsered}>
+                  {HTMLReactParser(projectDetail?.detail ?? "")}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </Collapse>
       )}
 

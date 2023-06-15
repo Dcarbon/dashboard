@@ -38,6 +38,22 @@ function DashboardSideBar({ className }) {
               currentTab={currentTab}
               setCurrentTab={setCurrentTab}
             />
+            <CollapseTab
+              color="blue"
+              title="Electricity generated"
+              strongNumb={123}
+              unit="kWh"
+              isOpen={Boolean(currentTab === 2)}
+              handleOpen={() => setCurrentTab(currentTab !== 2 ? 2 : 0)}
+            ></CollapseTab>
+            <CollapseTab
+              color="green"
+              title="Biogas treated"
+              strongNumb={123}
+              unit="m3"
+              isOpen={Boolean(currentTab === 3)}
+              handleOpen={() => setCurrentTab(currentTab !== 3 ? 3 : 0)}
+            ></CollapseTab>
           </div>
         </div>
       </ScrollBox>

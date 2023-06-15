@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import stls from "./carbon.module.scss";
@@ -8,13 +8,12 @@ import Button from "src/components/ui/Button";
 import BigNumber from "bignumber.js";
 import dateFormat from "dateformat";
 import dynamic from "next/dynamic";
-import Loading from "src/components/ui/Animation/Loading";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 // hàm lấy from to theo durtype
 const roundup_second = (time) => Math.round(time.getTime() / 1000);
+
 const Get_Duration_by_Type = (durationType) => {
-  console.log("durationType", durationType);
   var thisDate = new Date(); // now
   let to = roundup_second(thisDate);
   let from;
@@ -41,6 +40,74 @@ const Get_Duration_by_Type = (durationType) => {
 
   return { to, from };
 };
+const oneDay = 24 * 60 * 60 * 1000;
+const createArray = (length) => new Array(length);
+const getAmount = (item) => {
+  const hexAmount = new BigNumber(item.amount.toLocaleLowerCase());
+  const reduceAmount = hexAmount.div("1e9");
+  return reduceAmount.toFixed(2);
+};
+const getSum = (prev, next) => {
+  return Number(prev) + Number(next);
+};
+const getStringDay = (durType, time) => {
+  if (time) {
+    const newTime = new Date(time);
+    if (durType === "full") {
+      return dateFormat(newTime, "d/m/yyyy");
+    } else if (durType < 2) {
+      return dateFormat(newTime, "dd mmm");
+    } else {
+      return dateFormat(newTime, "mmm yyyy");
+    }
+  }
+};
+const getTimeLine = (durType) => {
+  let newArr = [];
+  if (durType === 0) {
+    newArr = createArray(7);
+  } else if (durType === 1) {
+    let newDate = new Date();
+    let thisMonthTime = newDate.getTime();
+    newDate.setUTCMonth(newDate.getUTCMonth() - 1);
+    let beforeMonthTime = newDate.getTime();
+    newArr = createArray((thisMonthTime - beforeMonthTime) / oneDay);
+  } else if (durType === 2) {
+    newArr = createArray(6);
+  } else if (durType === 3) {
+    newArr = createArray(12);
+  }
+  if (newArr?.length > 0) {
+    var prevDay = 0;
+    var prevMonth = 0;
+    var currentTime = 0;
+    for (let idx = 0; idx < newArr.length; idx++) {
+      var toDay = new Date();
+      toDay.setHours(0, 0, 0, 0);
+      if (durType < 2) {
+        currentTime = toDay.getTime() - prevDay;
+        prevDay += oneDay;
+      } else {
+        currentTime = toDay.getUTCMonth() - prevMonth;
+        prevMonth++;
+      }
+      newArr[idx] = durType < 2 ? currentTime : toDay.setUTCMonth(currentTime);
+    }
+  }
+  return newArr;
+};
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
   const [payload, setPayload] = useState({
     iotId: 0,
@@ -48,6 +115,9 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
     to: 0,
   });
   const [durType, setDurType] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [arrTime, setArrTime] = useState(null);
+  const [arrData, setArrData] = useState(null);
   const dispatch = useDispatch();
   const iotState = useSelector(new DcarbonAPI().GetIOTState);
 
@@ -76,16 +146,22 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
   useEffect(() => {
     if (iotSelected !== payload?.iotId) {
       handleGetIotMinted({ ...payload, iotId: iotSelected });
+      setArrData(null);
     }
   }, [handleGetIotMinted, iotSelected, payload]);
   const handleChangeDurType = (newDurType) => {
+    setLoading(true);
     setDurType(newDurType);
     let newDur = Get_Duration_by_Type(newDurType);
+
     handleGetIotMinted({ ...payload, from: newDur.from, to: newDur.to });
+    const newArrTime = getTimeLine(newDurType);
+    setArrTime(newArrTime);
+    setArrData(null);
   };
   return (
     <CollapseTab
-      color="blue"
+      color="green"
       title="CARBON minted"
       strongNumb={120}
       unit="kWh"
@@ -93,7 +169,15 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
       handleOpen={() => setCurrentTab(currentTab !== 1 ? 1 : 0)}
     >
       <div className={stls.carbonMinted}>
-        <DcarbonChart durType={durType} iot_minted={iotState?.iot_minted} />
+        <DcarbonChart
+          durType={durType}
+          iot_minted={iotState?.iot_minted}
+          loading={loading}
+          setLoading={setLoading}
+          arrTime={arrTime}
+          arrData={arrData}
+          setArrData={setArrData}
+        />
         <DcarbonDuration durType={durType} setDurType={handleChangeDurType} />
       </div>
     </CollapseTab>
@@ -118,35 +202,39 @@ export default CarbonGenerated;
 //
 //
 //
-const oneDay = 24 * 60 * 60 * 1000;
-const createArray = (length) => new Array(length);
-const getAmount = (item) => {
-  const hexAmount = new BigNumber(item.amount.toLocaleLowerCase());
-  const reduceAmount = hexAmount.div("1e9");
-  return reduceAmount.toFixed(2);
-};
-const getSum = (prev, next) => {
-  return Number(prev) + Number(next);
-};
-const getStringDay = (durType, time) => {
-  if (time) {
-    const newTime = new Date(time);
-    if (durType === "full") {
-      return dateFormat(newTime, "d/m/yyyy");
-    } else if (durType < 2) {
-      return dateFormat(newTime, "dd mmm");
-    } else {
-      return dateFormat(newTime, "mmm yyyy");
-    }
+
+function getDataSeries(timeline, iot_minted) {
+  let newSeriesArr = [];
+  for (let index = 0; index < timeline.length; index++) {
+    const elm_1 = timeline[index];
+    const elm_2 = timeline[index + 1] ?? 0;
+    let collect_by_time = [];
+
+    collect_by_time = iot_minted?.filter((item) => {
+      const created_at = new Date(item?.createdAt).getTime();
+      return elm_1 > created_at && elm_2 <= created_at;
+    });
+    const listAmount = collect_by_time?.map(getAmount);
+    const amount = listAmount?.length > 0 ? listAmount?.reduce(getSum) : 0;
+
+    newSeriesArr[index] = {
+      x: elm_1,
+      y: amount,
+    };
   }
-};
-function DcarbonChart({ durType, iot_minted }) {
+  return newSeriesArr;
+}
+function DcarbonChart({
+  iot_minted,
+  setLoading,
+  arrTime,
+  arrData,
+  setArrData,
+}) {
   const [options, setOptions] = useState({});
   const [series, setSeries] = useState([]);
-  const [arrLng, setArrLng] = useState([]);
-  const [loading, setLoading] = useState([]);
-  const optionsDefault = useMemo(
-    () => ({
+  const optionsDefault = useCallback((timeline) => {
+    return {
       chart: {
         toolbar: { show: false },
         width: "100%",
@@ -184,7 +272,7 @@ function DcarbonChart({ durType, iot_minted }) {
             series[seriesIndex][dataPointIndex] +
             "</b> Dcarbon </h4>" +
             "<span>" +
-            getStringDay("full", arrLng[dataPointIndex]) +
+            getStringDay("full", timeline[dataPointIndex]) +
             "</span>" +
             "</div>"
           );
@@ -199,70 +287,20 @@ function DcarbonChart({ durType, iot_minted }) {
           borderRadiusWhenStacked: "all",
         },
       },
-    }),
-    [arrLng]
-  );
-  // Step 1 : Get array length by durtype
-  useEffect(() => {
-    let array = null;
-    if (durType === 0) {
-      array = createArray(7);
-    } else if (durType === 1) {
-      let newDate = new Date();
-      let thisMonthTime = newDate.getTime();
-      newDate.setUTCMonth(newDate.getUTCMonth() - 1);
-      let beforeMonthTime = newDate.getTime();
-      array = createArray((thisMonthTime - beforeMonthTime) / oneDay);
-    } else if (durType === 2) {
-      array = createArray(6);
-    } else if (durType === 3) {
-      array = createArray(12);
-    }
-    setArrLng(array);
-  }, [durType]);
-  // Step 2 : Set time by array length
-  useEffect(() => {
-    var prevDay = 0;
-    var prevMonth = 0;
-    var currentTime = 0;
-    for (let idx = 0; idx < arrLng.length; idx++) {
-      var toDay = new Date();
-      toDay.setHours(0, 0, 0, 0);
-      if (durType < 2) {
-        currentTime = toDay.getTime() - prevDay;
-        prevDay += oneDay;
-      } else {
-        currentTime = toDay.getUTCMonth() - prevMonth;
-        prevMonth++;
-      }
-      arrLng[idx] = durType < 2 ? currentTime : toDay.setUTCMonth(currentTime);
-    }
-  }, [arrLng, durType]);
-  // Step 3 : Filter value adapt with time
-  useEffect(() => {
-    if (arrLng?.length) {
-      let newSeriesArr = [];
-      for (let index = 0; index < arrLng.length; index++) {
-        const elm_1 = arrLng[index];
-        const elm_2 = arrLng[index + 1] ?? 0;
-        let collect_by_time = [];
+    };
+  }, []);
 
-        collect_by_time = iot_minted?.filter((item) => {
-          const created_at = new Date(item?.createdAt).getTime();
-          return elm_1 > created_at && elm_2 <= created_at;
-        });
-        const listAmount = collect_by_time?.map(getAmount);
-        const amount = listAmount?.length > 0 ? listAmount?.reduce(getSum) : 0;
+  // Step 2 : Filter value adapt with time
+  useEffect(() => {
+    if (!arrData && arrTime?.length > 0 && iot_minted?.length >= 0) {
+      let newSeriesArr = getDataSeries(arrTime, iot_minted);
+      if (newSeriesArr?.length) {
+        setArrData(newSeriesArr);
 
-        newSeriesArr[index] = {
-          x: elm_1,
-          y: amount,
-        };
-      }
-      if (newSeriesArr?.length > 0) {
         setLoading(false);
+        const newOption = optionsDefault(arrTime);
         setOptions({
-          ...optionsDefault,
+          ...newOption,
           xaxis: {
             type: "datetime",
             axisTicks: { show: false },
@@ -276,21 +314,17 @@ function DcarbonChart({ durType, iot_minted }) {
         ]);
       }
     }
-  }, [arrLng, durType, iot_minted, optionsDefault]);
+  }, [arrData, arrTime, iot_minted, optionsDefault, setArrData, setLoading]);
 
   return (
     <div className="myApex">
-      {loading ? (
-        <Loading />
-      ) : (
-        <ApexCharts
-          options={options}
-          series={series}
-          type="bar"
-          height={170}
-          width={"100%"}
-        />
-      )}
+      <ApexCharts
+        options={options}
+        series={series}
+        type="bar"
+        height={170}
+        width={"100%"}
+      />
     </div>
   );
 }

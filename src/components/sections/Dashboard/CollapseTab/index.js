@@ -2,7 +2,6 @@ import Collapse from "src/components/ui/Collapse";
 import stls from "./index.module.scss";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Heading from "src/components/ui/Heading";
-import { useEffect } from "react";
 
 /**
  * @type {object}
@@ -51,7 +50,7 @@ function CollapseTab({
           </div>
         )}
       </div>
-      <div className={stls.content}>
+      <div className={`${stls.content} ${isOpen ? stls.active : ""}`}>
         {disable ? children : <Collapse isOpen={isOpen}>{children}</Collapse>}
       </div>
     </div>
