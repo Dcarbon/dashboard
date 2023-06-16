@@ -58,11 +58,11 @@ function ElectricityGenerated({ iotSelected }) {
       setPayload({ ...payload, iotId: iotSelected });
     }
     //  set Sensor Id
-    if (sensorState?.sensors?.length) {
-      const sensorId = sensorState?.sensors[0].id;
-      if (sensorId !== payload?.sensorId) {
-        setPayload({ ...payload, sensorId });
-      }
+    let sensorId =
+      sensorState?.sensors?.length > 0 ? sensorState?.sensors[0].id : 0;
+    if (sensorId !== payload?.sensorId) {
+      console.log("askldjflk;asdjf");
+      setPayload({ ...payload, sensorId });
     }
   }, [iotSelected, payload, sensorState]);
 
@@ -95,6 +95,11 @@ function ElectricityGenerated({ iotSelected }) {
       setStrongNumb(numb || 0);
     }
   }, [sensorState?.sensor_metrics]);
+  useEffect(() => {
+    if (sensorState?.sensors?.length === 0) {
+      setStrongNumb(0);
+    }
+  }, [sensorState?.sensors]);
 
   return (
     <Fragment>
