@@ -54,7 +54,7 @@ function Footer() {
         <div
           className={`${stls.bottom} flex flex-col md:flex-row gap-5 justify-between items-center`}
         >
-          <p>&copy; 2023 Dcarbon, All rights reserved</p>
+          <p>&copy; 2023 D-carbon, All rights reserved</p>
           <Link href={"#"}>Privacy Policy</Link>
         </div>
       </Container>

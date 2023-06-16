@@ -45,14 +45,6 @@ function DashboardSideBar({ className }) {
               currentTab={currentTab}
               setCurrentTab={setCurrentTab}
             />
-            <CollapseTab
-              color="green"
-              title="Biogas treated"
-              strongNumb={123}
-              unit="m3"
-              isOpen={Boolean(currentTab === 3)}
-              handleOpen={() => setCurrentTab(currentTab !== 3 ? 3 : 0)}
-            ></CollapseTab>
           </div>
         </div>
       </ScrollBox>

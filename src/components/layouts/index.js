@@ -8,7 +8,7 @@ function Layout({ children, noFooter, noHeader }) {
   return (
     <Fragment>
       <Head>
-        <title>D-Carbon</title>
+        <title> DCarbon</title>
         <meta charSet="utf-8" />
         <meta name="description" content="D carbon website" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

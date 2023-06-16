@@ -35,7 +35,17 @@ function CollapseTab({
           </Heading>
           {strongNumb && (
             <p className={stls.subtitle}>
-              Total: <b className="text-white">{strongNumb}</b>({unit})
+              Total: <b className="text-white">{strongNumb}</b> (
+              <span>
+                {unit === "m3" ? (
+                  <>
+                    m<sup>3</sup>
+                  </>
+                ) : (
+                  unit
+                )}
+              </span>
+              )
             </p>
           )}
         </div>

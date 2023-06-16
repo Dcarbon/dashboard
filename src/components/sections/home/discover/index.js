@@ -48,11 +48,11 @@ function Discover() {
               Discover <span className="uppercase">DCARBON</span>
             </Heading>
             <p className={stls.text}>
-              Dcarbon is the modern panacea for traditional carbon offsetting
+              DCarbon is the modern panacea for traditional carbon offsetting
               process.
             </p>
             <p className={stls.text}>
-              By using Blockchain and IoT, Dcarbon bridges the market
+              By using Blockchain and IoT, DCarbon bridges the market
               fragmentation.
             </p>
           </div>
@@ -60,7 +60,7 @@ function Discover() {
             <HexagonBox
               file={filesDir("Manifesto.pdf")}
               imgUrl={imgsDir(imgsObject.Manifesto)}
-              text={"Read about the mission that drive the Dcarbon project"}
+              text={"Read about the mission that drive the  DCarbon project"}
             />
             <HexagonBox
               file={filesDir("White-Paper.pdf")}

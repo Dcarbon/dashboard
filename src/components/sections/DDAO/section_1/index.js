@@ -16,7 +16,7 @@ function Section_1() {
       <Container>
         <div className={`relative ${stls.box}`}>
           <Heading Tag={"h1"} className={"text-[#FCFCFC]"}>
-            Dcarbon DAO
+            DCarbon DAO
           </Heading>
           <Image
             priority

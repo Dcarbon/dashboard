@@ -13,7 +13,7 @@ class _Solution {
         tab_name: "Biogas Energy",
         tab_img: imgsDir(imgsObject.Solution.biogas),
         tab_content: `<h3>Innovative Solution Turns Manure into Renewable Energy</h3>
-          <p>Manure is a common byproduct of animal agriculture, and while it can be a valuable source of nutrients for plants and crops, its disposal can also pose a significant environmental challenge. However, thanks to the solution developed by Dcarbon, manure is no longer just a waste product, but rather a potential source of renewable energy. This process involves the use of microorganisms to break down organic matter, such as manure, in the absence of oxygen. The result is biogas that can be used to generate electricity, heat or fuel.</p>
+          <p>Manure is a common byproduct of animal agriculture, and while it can be a valuable source of nutrients for plants and crops, its disposal can also pose a significant environmental challenge. However, thanks to the solution developed by  DCarbon, manure is no longer just a waste product, but rather a potential source of renewable energy. This process involves the use of microorganisms to break down organic matter, such as manure, in the absence of oxygen. The result is biogas that can be used to generate electricity, heat or fuel.</p>
           <br />
           <br />
           <h3>A Sustainable and Low-Carbon Solution for Livestock Farming</h3>

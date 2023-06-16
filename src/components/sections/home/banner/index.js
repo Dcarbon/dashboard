@@ -26,7 +26,7 @@ function BannerFisrt() {
         <div className={`relative ${stls.box}`}>
           <div className="w-full md:w-2/3 lg:w-1/2">
             <Heading Tag={"h1"} className={stls.heading}>
-              <span className={stls.strong}>Dcarbon</span> a Trustless and
+              <span className={stls.strong}> DCarbon</span> a Trustless and
               autonomous Carbon system
             </Heading>
             <p className={stls.sub_heading}>

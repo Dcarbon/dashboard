@@ -162,7 +162,7 @@ function SliderGroup({ images, projectId }) {
         <div className={stls.box}>
           <div className={stls.dialog_header}>
             <Heading Tag={"h4"} className={"text-white"}>
-              Dcarbon Picture
+              DCarbon Picture
             </Heading>
             <span className={stls.btn} onClick={() => setShowDialog(false)}>
               <XMarkIcon width={24} height={24} />

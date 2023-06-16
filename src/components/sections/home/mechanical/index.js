@@ -24,7 +24,7 @@ function Mechanical() {
             <p className="text-white mt-5">A product for everyone</p>
             <p>
               Not only bighead firms, any individuals are incentivized to join
-              the democratized Dcarbon market. Fight climate change, track your
+              the democratized DCarbon market. Fight climate change, track your
               results and get rewarded!
             </p>
           </div>

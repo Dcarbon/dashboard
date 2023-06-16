@@ -18,7 +18,7 @@ function OverView({ features }) {
     <div
       className={`absolute bg-black bg-opacity-80   top-3 md:top-6 mx-3 md:mx-6 py-3 px-4 rounded-[4px]`}
     >
-      <h3 className="text-white text-lg">Dcarbon Overview</h3>
+      <h3 className="text-white text-lg"> DCarbon Overview</h3>
       <FlexBetween
         className={"items-stretch text-opacity-60 text-white text-sm gap-5"}
       >

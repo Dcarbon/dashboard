@@ -3,7 +3,7 @@ class InfomationHook {
     return [
       { id: 1, label: "How does it work", href: "/how-does-it-work" },
       { id: 2, label: "Our solution", href: "/solution" },
-      { id: 3, label: "Dcarbon DAO", href: "/dcarbon-DAO" },
+      { id: 3, label: " DCarbon DAO", href: "/dcarbon-DAO" },
       { id: 4, label: "Blog", href: "/blog" },
       { id: 5, label: "Nodes", href: "/dashboard" },
     ];

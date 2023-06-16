@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DcarbonAPI from "src/tools/hook";
 import CollapseTab from "../CollapseTab";
-import ColumnChart from "../ColumnChart";
-import stls from "./index.module.scss";
 import { hexToString } from "src/tools/const";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 
-function ElectricityGenerated({ iotSelected, currentTab, setCurrentTab }) {
+function ElectricityGenerated({ iotSelected }) {
   const [payload, setPayload] = useState({
     iotId: 0,
     from: 0,
@@ -17,8 +15,7 @@ function ElectricityGenerated({ iotSelected, currentTab, setCurrentTab }) {
     skip: 0,
   });
   const sensorState = useSelector(new DcarbonAPI().GetSensorsState);
-  const [durType, setDurType] = useState(0);
-  const [arrData, setArrData] = useState(null);
+
   const [strongNumb, setStrongNumb] = useState(0);
   const dispatch = useDispatch();
 
@@ -44,49 +41,78 @@ function ElectricityGenerated({ iotSelected, currentTab, setCurrentTab }) {
     },
     [dispatch]
   );
+  //  Lấy Metrics
+  const getMetrics = useCallback(() => {
+    if (payload?.iotId && payload?.sensorId) {
+      let newDate = new Date();
+      let to = Math.round(newDate.getTime() / 1000);
 
-  // get sensor metrics by iot Selected
+      newDate?.setUTCDate(newDate?.getUTCDate() - 6);
+      let from = Math.round(newDate.getTime() / 1000); // day 7th before
+      handleGetSensorMetrics({ ...payload, from, to });
+    }
+  }, [handleGetSensorMetrics, payload]);
+  useEffect(() => {
+    //  set Iot Id
+    if (iotSelected !== payload?.iotId) {
+      setPayload({ ...payload, iotId: iotSelected });
+    }
+    //  set Sensor Id
+    if (sensorState?.sensors?.length) {
+      const sensorId = sensorState?.sensors[0].id;
+      if (sensorId !== payload?.sensorId) {
+        setPayload({ ...payload, sensorId });
+      }
+    }
+  }, [iotSelected, payload, sensorState]);
 
+  //  Lấy Metrics mỗi 5s
   useEffect(() => {
     if (
-      iotSelected > 0 &&
-      iotSelected !== payload?.iotId &&
-      sensorState?.sensors?.length > 0
+      !sensorState?.sensor_metrics?.length &&
+      payload?.iotId > 0 &&
+      payload?.sensorId > 0
     ) {
-      const sensorId = sensorState?.sensors[0].id;
-      handleGetSensorMetrics({ ...payload, iotId: iotSelected, sensorId });
-      setArrData(null);
+      getMetrics();
     }
-  }, [handleGetSensorMetrics, iotSelected, payload, sensorState?.sensors]);
-  const handleDataChangeDurType = (newDur) => {
-    handleGetSensorMetrics({ ...payload, from: newDur.from, to: newDur.to });
-  };
+    const intervalGetMetrics = setInterval(getMetrics, 5000);
+    return () => {
+      clearInterval(intervalGetMetrics);
+    };
+  }, [
+    getMetrics,
+    payload?.iotId,
+    payload?.sensorId,
+    sensorState?.sensor_metrics?.length,
+    sensorState?.sensors,
+  ]);
+
+  useEffect(() => {
+    const metrics = sensorState?.sensor_metrics;
+    if (metrics?.length > 0) {
+      const data = metrics[metrics?.length - 1];
+      const numb = getAmount(data);
+      setStrongNumb(numb || 0);
+    }
+  }, [sensorState?.sensor_metrics]);
 
   return (
-    <CollapseTab
-      color="blue"
-      title="Electricity generated"
-      strongNumb={strongNumb}
-      unit="kWh"
-      isOpen={Boolean(currentTab === 2)}
-      handleOpen={() => setCurrentTab(currentTab !== 2 ? 2 : 0)}
-    >
-      <div className={stls.carbonMinted}>
-        <ColumnChart
-          unit="kWh"
-          data={sensorState?.sensor_metrics}
-          payload={payload}
-          setPayload={setPayload}
-          durType={durType}
-          setDurType={setDurType}
-          arrData={arrData}
-          setArrData={setArrData}
-          handleValue={getAmount}
-          setStrongNumb={setStrongNumb}
-          handleDataChangeDurType={handleDataChangeDurType}
-        />
-      </div>
-    </CollapseTab>
+    <Fragment>
+      <CollapseTab
+        color="blue"
+        title="Electricity generated"
+        strongNumb={strongNumb}
+        unit="kWh"
+        disable
+      />
+      <CollapseTab
+        color="green"
+        title="Biogas treated"
+        strongNumb={Number(strongNumb * 0.528888889).toFixed(3)}
+        unit="m3"
+        disable
+      />
+    </Fragment>
   );
 }
 

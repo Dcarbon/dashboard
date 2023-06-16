@@ -15,11 +15,11 @@ function IntroDcarbon() {
         >
           <div className={stls.left}>
             <Heading Tag={"h2"} textGradient className={"mb-4"}>
-              What is Dcarbon?
+              What is DCarbon?
             </Heading>
             <p className={"mb-10"}>
-              Dcarbon is the modern panacea for traditional carbon offsetting
-              process. By using Blockchain and IoT, Dcarbon bridges the market
+              DCarbon is the modern panacea for traditional carbon offsetting
+              process. By using Blockchain and IoT, DCarbon bridges the market
               fragmentation, together steering innovations towards a green
               economy
             </p>
