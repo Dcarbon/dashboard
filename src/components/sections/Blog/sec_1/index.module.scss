@@ -1,0 +1,37 @@
+.main {
+  padding-top: 150px;
+  padding-bottom: 40px;
+
+  .box {
+    text-align: center;
+  }
+  .heading {
+    font-size: 48px;
+    line-height: 66px;
+  }
+  .subTitle {
+    margin: 10px auto 24px;
+    width: 600px;
+    max-width: 100%;
+  }
+}
+.formSearch {
+  width: 300px;
+  margin: 0px auto;
+  position: relative;
+  .field {
+    padding: 14px 54px;
+    width: 100%;
+    background-color: rgba($color: #b3b2b8, $alpha: 0.5);
+    border-radius: 5px;
+  }
+  .btn {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    transition: all 0.2s ease;
+    &:hover {
+      color: #72bf44;
+    }
+  }
+}

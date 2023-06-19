@@ -57,6 +57,9 @@ const imgsObject = {
     goal: "DDAO/ourGoal.png",
     foundation: "DDAO/foundation.png",
   },
+  blog: {
+    banner: "blog/banner.png",
+  },
 };
 
 const listTime = ["7 days", "1 month", "1 year"];
