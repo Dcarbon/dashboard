@@ -1,0 +1,60 @@
+.main {
+  padding: 72px 0 0;
+  .image {
+    max-height: 210px;
+  }
+  .title {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .summary {
+    font-size: 16px;
+    line-height: 22px;
+    height: 44px;
+  }
+}
+.container {
+  @media (min-width: 1440px) {
+    padding: 0 60px;
+  }
+}
+.grid_1,
+.grid_2 {
+  transition: all 0.2s ease;
+  row-gap: 22px;
+  column-gap: 40px;
+  @media (min-width: 1280px) {
+    row-gap: 42px;
+    column-gap: 60px;
+  }
+  @media (min-width: 1440px) {
+    row-gap: 62px;
+    column-gap: 80px;
+  }
+}
+
+.pagination {
+  text-align: center;
+  margin: 40px 0;
+  color: rgba(255, 255, 255, 0.4);
+  ul {
+    margin: 0 auto;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style-type: none;
+    padding: 0 5rem;
+  }
+
+  li a {
+    border-radius: 7px;
+    padding: 0.1rem 1rem;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  .active {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    line-height: 25px;
+  }
+}

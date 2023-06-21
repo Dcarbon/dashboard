@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dk-build-cache": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:cache .",
+    "dk-cache": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:cache_1 .",
     "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.0.1 .",
-    "dk-run": "docker run -p 3232:3000 harbor.viet-tin.com/dcarbon/dashboard:latest",
+    "dk-run": "docker run -p 3232:3000 harbor.viet-tin.com/dcarbon/dashboard:v0.0.1",
     "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:v0.0.1"
   },
   "dependencies": {
@@ -27,8 +27,11 @@
     "eslint-config-next": "13.3.1",
     "html-react-parser": "^4.0.0",
     "mapbox-gl": "^2.14.1",
+    "markdown-to-jsx": "^7.2.1",
     "next": "13.3.1",
     "nextjs-progressbar": "^0.0.16",
+    "qs": "^6.11.2",
+    "rc-pagination": "^3.5.0",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-dom": "18.2.0",

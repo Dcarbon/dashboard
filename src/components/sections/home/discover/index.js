@@ -1,11 +1,16 @@
 import Container from "src/components/ui/Container";
 import Section from "src/components/ui/Section";
-import { filesDir, imgsDir, imgsObject } from "src/tools/const";
+import {
+  handleAttributes,
+  handleImage,
+  imgsDir,
+  imgsObject,
+} from "src/tools/const";
 import stls from "./index.module.scss";
 import Heading from "src/components/ui/Heading";
 import Image from "next/image";
 import Link from "next/link";
-function Discover() {
+function Discover({ download }) {
   const mainBg = {
     url: imgsDir(imgsObject.home_banner_discover),
     position: "center",
@@ -56,20 +61,21 @@ function Discover() {
               fragmentation.
             </p>
           </div>
-          <div className={stls.right}>
-            <HexagonBox
-              file={filesDir("Manifesto.pdf")}
-              imgUrl={imgsDir(imgsObject.Manifesto)}
-              text={"Read about the mission that drive the  DCarbon project"}
-            />
-            <HexagonBox
-              file={filesDir("White-Paper.pdf")}
-              imgUrl={imgsDir(imgsObject.Whitepaper)}
-              text={
-                "Our proposed solution, presenting evidence-based research, detailed analysis, and a strategic roadmap"
-              }
-            />
-          </div>
+
+          {download?.length > 0 && (
+            <div className={stls.right}>
+              <HexagonBox
+                file={handleImage(handleAttributes(download[0].files))}
+                imgUrl={imgsDir(imgsObject.Manifesto)}
+                text={download[0].description}
+              />
+              <HexagonBox
+                file={handleImage(handleAttributes(download[1].files))}
+                imgUrl={imgsDir(imgsObject.Whitepaper)}
+                text={download[1].description}
+              />
+            </div>
+          )}
         </div>
       </Container>
     </Section>

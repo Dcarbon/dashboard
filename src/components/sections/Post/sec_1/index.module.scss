@@ -1,0 +1,31 @@
+.main {
+  padding-top: 120px;
+  padding-bottom: 32px;
+  background-color: #171623;
+}
+.container {
+  @media (min-width: 1440px) {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+.list {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 28px;
+
+  li {
+    color: #919097;
+    display: inline-block;
+    max-width: 80%;
+    p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    span {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+}

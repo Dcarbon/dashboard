@@ -30,7 +30,6 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
       dispatch({ type: ProjectACT.GET_PROJECT.REQUEST, payload: projectId });
     }
   }, [dispatch, projectId]);
-
   return (
     <div className={stls.main}>
       <Error
@@ -139,13 +138,14 @@ function SliderGroup({ images, projectId }) {
                       }}
                     >
                       <Image
-                        priority
                         src={slideImage?.image}
                         alt={"Project " + projectId}
-                        width={148}
-                        height={90}
-                        className="max-w-full w-full h-full"
-                        quality={70}
+                        width={200}
+                        height={120}
+                        style={{
+                          width: "auto",
+                          height: "auto",
+                        }}
                       />
                     </div>
                   </div>
@@ -183,7 +183,12 @@ function SliderGroup({ images, projectId }) {
                     alt=""
                     width={500}
                     height={500}
-                    style={{ maxWidth: "100%", maxHeight: "450px" }}
+                    style={{
+                      maxWidth: "100%",
+                      width: "auto",
+                      height: "auto",
+                      maxHeight: "450px",
+                    }}
                   />
                 </div>
               ))}

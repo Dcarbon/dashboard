@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const path = require("path");
 const nextConfig = {
+  reactStrictMode: false,
   experimental: {
     appDir: false,
   },
@@ -12,7 +13,6 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "dev.dcarbon.org",
-        port: "",
       },
     ],
   },

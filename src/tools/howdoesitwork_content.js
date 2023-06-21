@@ -1,9 +1,9 @@
-const { imgsDir, imgsObject } = require("./const");
+import { imgsDir, imgsObject } from "./const";
 
 class _HDIW {
   Section_1() {
     return {
-      banner: imgsDir(imgsObject.HDIW.banner),
+      banner: imgsDir(imgsObject.howdoesitwork.banner),
       text: "How does  DCarbon work?",
     };
   }
@@ -12,12 +12,12 @@ class _HDIW {
       {
         content:
           "<h3>Trustless digital MRV</h3><p> DCarbon protocol use carbon agents, an autonomous IoT solution for real-time monitoring, reporting and verification of carbon emissions and Blockchain technology for secure and tamper-proof transactions.</p><br /><p>Our system guarantee that each carbon credit minted is exactly equivalent to 1 ton of carbon being offset from the earth's atmosphere.</p>",
-        imgs: imgsDir(imgsObject.HDIW.polygon),
+        imgs: imgsDir(imgsObject.howdoesitwork.polygon),
       },
       {
         content:
           "<h3>A people's protocol</h3><p> DCarbon DAO is a decentralized registry which empower climate workers, offset projects and  DCarbon community to directly give them the opportunities to participate in the decision making process of  DCarbon protocol.</p> <h3>Proof of offset</h3><p>Proof of offset is a certificate generated from the process of sending CARBON token to a burn address (a wallet that cannot be unlocked). Thank to the immutability and transparency nature of blockchain these records are preserved and the burned CARBON credit can not be recirculated.</p>",
-        imgs: imgsDir(imgsObject.HDIW.circle),
+        imgs: imgsDir(imgsObject.howdoesitwork.circle),
       },
     ];
   }

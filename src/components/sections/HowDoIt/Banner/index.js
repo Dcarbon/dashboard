@@ -1,7 +1,7 @@
 import Heading from "src/components/ui/Heading";
 import Section from "src/components/ui/Section";
-import _HDIW from "src/tools/HDIW_content";
 import stls from "./index.module.scss";
+import _HDIW from "src/tools/howdoesitwork_content";
 function HDI_Banner() {
   const hdiw_data = new _HDIW().Section_1();
   return (

@@ -1,3 +1,5 @@
+import { CMS_HOST } from "src/redux/handle";
+
 const filesDir = (str) => `/files/${str}`;
 const imgsDir = (str) => `/imgs/${str}`;
 const imgsObject = {
@@ -32,7 +34,6 @@ const imgsObject = {
   project_img_4: "project_img_4.png",
   coming_soon: "bg_comingsoon.jpg",
   image_coming_soon: "icon_comingsoon.png",
-
   Earths: {
     NormalMap: "maps/8k_earth_normal_map.jpg",
     DayMap: "maps/2k_earth_daymap.jpg",
@@ -41,10 +42,10 @@ const imgsObject = {
     SpecularMap: "maps/8k_earth_specular_map.jpg",
     BumpMap: "maps/8k_earth_bump_map.jpg",
   },
-  HDIW: {
-    banner: "HDIW/banner.png",
-    polygon: "HDIW/Polygon.png",
-    circle: "HDIW/Circle.png",
+  howdoesitwork: {
+    banner: "howdoesitwork/banner.png",
+    polygon: "howdoesitwork/Polygon.png",
+    circle: "howdoesitwork/Circle.png",
   },
   Solution: {
     biogas: "solution/biogas.png",
@@ -96,5 +97,24 @@ function hexToString(hex) {
 
   return string;
 }
-
-export { imgsDir, filesDir, imgsObject, listTime, IOT_TYPE, hexToString };
+const handleAttributes = (res) =>
+  res?.attributes ?? res?.data?.attributes ?? null;
+const handleMeta = (res) => res?.meta ?? res?.data?.meta;
+const handleImage = (res) => {
+  let url = res?.url ?? res?.attributes?.url;
+  if (!url) {
+    return imgsDir(imgsObject.image_coming_soon);
+  }
+  return CMS_HOST + url;
+};
+export {
+  imgsDir,
+  filesDir,
+  imgsObject,
+  listTime,
+  IOT_TYPE,
+  hexToString,
+  handleAttributes,
+  handleMeta,
+  handleImage,
+};

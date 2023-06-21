@@ -61,7 +61,6 @@ function ElectricityGenerated({ iotSelected }) {
     let sensorId =
       sensorState?.sensors?.length > 0 ? sensorState?.sensors[0].id : 0;
     if (sensorId !== payload?.sensorId) {
-      console.log("askldjflk;asdjf");
       setPayload({ ...payload, sensorId });
     }
   }, [iotSelected, payload, sensorState]);

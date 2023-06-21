@@ -2,10 +2,10 @@ import HTMLReactParser from "html-react-parser";
 import Image from "next/image";
 import Container from "src/components/ui/Container";
 import Section from "src/components/ui/Section";
-import _HDIW from "src/tools/HDIW_content";
 import stls from "./index.module.scss";
 import { imgsDir, imgsObject } from "src/tools/const";
 import CommonBox from "../../commonBox";
+import _HDIW from "src/tools/howdoesitwork_content";
 function HDIWSection2() {
   const hdiw_data = new _HDIW().Section_2();
   return (

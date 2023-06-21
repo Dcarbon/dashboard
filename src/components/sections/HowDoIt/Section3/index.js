@@ -1,11 +1,11 @@
 import Container from "src/components/ui/Container";
 import Heading from "src/components/ui/Heading";
 import Section from "src/components/ui/Section";
-import _HDIW from "src/tools/HDIW_content";
 import stls from "./index.module.scss";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import HTMLReactParser from "html-react-parser";
+import _HDIW from "src/tools/howdoesitwork_content";
 function HdiW_FAQs() {
   const hdiw_data = new _HDIW().Section_3();
   const [showAnswer, setShowAnswer] = useState(-1);

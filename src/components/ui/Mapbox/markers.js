@@ -32,7 +32,7 @@ function MyMarkers({ mymap }) {
               });
             }}
           >
-            <IconSvg img={imgsObject.Marker} />
+            <IconSvg img={imgsObject.Marker} width={32} height={32} />
           </Marker>
         );
       })}

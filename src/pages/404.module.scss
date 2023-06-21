@@ -1,0 +1,143 @@
+@keyframes balloonAnimate {
+  0% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@keyframes gearGreenAnimate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes gearGreenAnimateReverse {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.main {
+  padding-top: 100px;
+  @media (min-width: 1440px) {
+    padding-top: 80px;
+  }
+}
+.box {
+  padding: 0;
+  margin: 40px 0;
+  text-align: center;
+}
+.heading {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 36px;
+  margin-bottom: 10px;
+}
+.title {
+  font-size: 13px;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+.button {
+  width: 100%;
+  max-width: 434px;
+  margin-top: 40px;
+  font-size: 16px;
+  line-height: 24px;
+}
+.images {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+.main_image {
+  max-width: 100%;
+  width: 458px;
+}
+.image {
+  position: absolute;
+}
+.man {
+  width: 40%;
+  height: 70%;
+  left: 33%;
+  top: 22%;
+  animation: balloonAnimate 3s linear alternate infinite;
+}
+.gear_green {
+  width: 19.5%;
+  height: 19.5%;
+  right: 10%;
+  top: 10%;
+  animation: gearGreenAnimate 10s 2s infinite linear;
+}
+.gear_pink {
+  width: 10%;
+  height: 10.93%;
+  right: 2.2%;
+  top: 24.8%;
+  animation: gearGreenAnimate 10s 2s infinite linear;
+}
+.gear_black {
+  width: 10%;
+  height: 10.93%;
+  right: 12%;
+  top: 30.5%;
+  animation: gearGreenAnimateReverse 10s 2s infinite linear;
+}
+@media (min-width: 1024px) {
+  .container {
+    padding: 84px 0;
+    display: flex;
+    align-items: center;
+  }
+  .images {
+    flex: 0 0 auto;
+    width: 458px;
+  }
+  .box {
+    flex: 0 0 auto;
+    width: calc(100% - 458px);
+  }
+  .heading {
+    font-size: 36px;
+    line-height: 40px;
+  }
+  .title {
+    font-size: 18px;
+    line-height: 18px;
+  }
+  .button {
+    width: 100%;
+    max-width: 434px;
+    margin-top: 40px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .images {
+    width: 545px;
+  }
+  .main_image {
+    width: 545px;
+    max-width: 545px;
+  }
+  .box {
+    width: calc(100% - 545px - 190px);
+    margin-left: 190px;
+    text-align: left;
+  }
+  .button {
+    text-align: center;
+  }
+}
