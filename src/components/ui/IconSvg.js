@@ -8,7 +8,7 @@ export default function IconSvg({ img, width, height }) {
       alt="icon"
       width={width}
       height={height}
-      style={{ width: "auto", height: "auto" }}
+      style={{ width, height }}
     />
   );
 }

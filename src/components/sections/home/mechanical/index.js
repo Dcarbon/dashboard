@@ -35,6 +35,7 @@ function Mechanical() {
               alt="Trustless"
               width={222}
               height={133}
+              style={{ width: "auto", height: "auto" }}
             />
             <div className={stls.text}>
               <p className={stls.bigText}>Trustless</p>
@@ -47,6 +48,7 @@ function Mechanical() {
               alt="Transparency"
               width={166}
               height={164}
+              style={{ width: "auto", height: "auto" }}
             />
             <div className={stls.text}>
               <p>Absolute</p>
@@ -60,6 +62,7 @@ function Mechanical() {
               alt="Trustless"
               width={145}
               height={174}
+              style={{ width: "auto", height: "auto" }}
             />
             <div className={stls.text}>
               <p className={stls.bigText}>Errorless</p>

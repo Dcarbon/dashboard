@@ -129,27 +129,31 @@ function SliderGroup({ images, projectId }) {
                 infinite={true}
                 dots={true}
               >
-                {images?.map((slideImage, index) => (
-                  <div key={index} className={`${stls.imgItem} `}>
-                    <div
-                      onClick={() => {
-                        setShowDialog(true);
-                        slider1?.current?.slickGoTo(index);
-                      }}
-                    >
-                      <Image
-                        src={slideImage?.image}
-                        alt={"Project " + projectId}
-                        width={200}
-                        height={120}
-                        style={{
-                          width: "auto",
-                          height: "auto",
+                {images?.map((slideImage, index) => {
+                  return (
+                    <div key={index} className={`${stls.imgItem} `}>
+                      <div
+                        onClick={() => {
+                          setShowDialog(true);
+                          slider1?.current?.slickGoTo(index);
                         }}
-                      />
+                      >
+                        <Image
+                          unoptimized
+                          quality={60}
+                          src={slideImage?.image}
+                          alt={"Project " + projectId}
+                          width={200}
+                          height={120}
+                          style={{
+                            width: "auto",
+                            height: "auto",
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </Slider>
             </div>
           </div>
@@ -176,22 +180,26 @@ function SliderGroup({ images, projectId }) {
               infinite={false}
               arrows={false}
             >
-              {images?.map((item) => (
-                <div key={item?.id} className={stls.img}>
-                  <Image
-                    src={item?.image}
-                    alt=""
-                    width={500}
-                    height={500}
-                    style={{
-                      maxWidth: "100%",
-                      width: "auto",
-                      height: "auto",
-                      maxHeight: "450px",
-                    }}
-                  />
-                </div>
-              ))}
+              {images?.map((item) => {
+                return (
+                  <div key={item?.id} className={stls.img}>
+                    <Image
+                      unoptimized
+                      quality={50}
+                      src={item?.image}
+                      alt=""
+                      width={500}
+                      height={500}
+                      style={{
+                        maxWidth: "100%",
+                        width: "auto",
+                        height: "auto",
+                        maxHeight: "450px",
+                      }}
+                    />
+                  </div>
+                );
+              })}
             </Slider>
 
             <div className={stls.bottom}>
@@ -214,18 +222,22 @@ function SliderGroup({ images, projectId }) {
                   },
                 ]}
               >
-                {images?.map((item, idx) => (
-                  <div key={item?.id} className={stls.img}>
-                    <Image
-                      alt=""
-                      key={"nav-" + idx}
-                      src={images[idx]?.image}
-                      width={60}
-                      height={100}
-                      style={{ width: "auto", height: "60px" }}
-                    />
-                  </div>
-                ))}
+                {images?.map((item, idx) => {
+                  return (
+                    <div key={item?.id} className={stls.img}>
+                      <Image
+                        unoptimized
+                        alt=""
+                        key={"nav-" + idx}
+                        src={images[idx]?.image}
+                        width={60}
+                        height={100}
+                        quality={10}
+                        style={{ width: "auto", height: "60px" }}
+                      />
+                    </div>
+                  );
+                })}
               </Slider>
               <Button className={stls.btn} onClick={() => setShowDialog(false)}>
                 Close

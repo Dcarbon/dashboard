@@ -88,12 +88,19 @@ function ElectricityGenerated({ iotSelected }) {
 
   useEffect(() => {
     const metrics = sensorState?.sensor_metrics;
-    if (metrics?.length > 0) {
-      const data = metrics[metrics?.length - 1];
-      const numb = getAmount(data);
-      setStrongNumb(numb || 0);
+    const getStrongNumb = () => {
+      const data = metrics?.length > 0 ? metrics[metrics?.length - 1] : null;
+      const numb = data ? getAmount(data) : 0;
+      setStrongNumb(numb);
+    };
+    if (metrics?.length > 0 && !strongNumb) {
+      getStrongNumb();
     }
-  }, [sensorState?.sensor_metrics]);
+    let newInterval = setInterval(getStrongNumb, 5000);
+    return () => {
+      clearInterval(newInterval);
+    };
+  }, [sensorState?.sensor_metrics, strongNumb]);
   useEffect(() => {
     if (sensorState?.sensors?.length === 0) {
       setStrongNumb(0);

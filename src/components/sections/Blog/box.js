@@ -25,6 +25,8 @@ function PostBox({
       <div className={`${stls.image} ${imageClassName ?? ""}`}>
         <Link href={"/post/" + data?.slug}>
           <Image
+            unoptimized
+            quality={10}
             src={handleImage(attributes)}
             alt={attributes?.alt ?? ""}
             width={1188}

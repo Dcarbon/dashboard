@@ -31,6 +31,7 @@ function Post_Sec_2({ attrs }) {
           {attrImg && (
             <div className={stls.image}>
               <Image
+                unoptimized
                 src={handleImage(attrImg)}
                 alt={attrImg?.alternativeText ?? ""}
                 width={1000}
@@ -51,6 +52,7 @@ function Post_Sec_2({ attrs }) {
                     img: (attrImg2) => {
                       return (
                         <Image
+                          unoptimized
                           src={handleImage(attrImg2)}
                           alt={attrImg2?.alt ?? ""}
                           width={1440}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import QueryString from "qs";
 import { CMS_HOST } from "src/redux/handle";
-const QStringify = (obj) => {
+export const QStringify = (obj) => {
   return QueryString.stringify(obj, { encodeValuesOnly: true });
 };
 const handleErr = (error) => {
@@ -12,15 +12,28 @@ const handleErr = (error) => {
   };
 };
 
-const AxiosGet = async (endpoint, objQuery) => {
-  let queryString = QStringify(objQuery);
+// const AxiosGet = async (endpoint, objQuery) => {
+//   let queryString = QStringify(objQuery);
+//   try {
+//     // let strAPI = `${cms_api}${endpoint}?${queryString}`;
+//     let strAPI = `${CMS_HOST + "/cms/"}${endpoint}?${queryString}`;
+//     let res = await axios.get(strAPI);
+//     console.log(
+//       "--------------" + `${CMS_HOST + "/cms/"}${endpoint}?${queryString}`
+//     );
+//     return res.data;
+//   } catch (error) {
+//     return handleErr(error);
+//   }
+// };
+export const AxiosGet = async (endpoint, queryString) => {
   try {
     // let strAPI = `${cms_api}${endpoint}?${queryString}`;
     let strAPI = `${CMS_HOST + "/cms/"}${endpoint}?${queryString}`;
     let res = await axios.get(strAPI);
-    console.log(
-      "--------------" + `${CMS_HOST + "/cms/"}${endpoint}?${queryString}`
-    );
+    // console.log(
+    //   "--------------" + `${CMS_HOST + "/cms/"}${endpoint}?${queryString}`
+    // );
     return res.data;
   } catch (error) {
     return handleErr(error);
@@ -46,13 +59,15 @@ class HandleAPI {
         },
       },
     };
-    return AxiosGet(this.endppoint.page.home, objQuery);
+    return objQuery;
+    // return AxiosGet(this.endppoint.page.home, objQuery);
   }
   Get_page_blog() {
     let objQuery = {
       populate: "*",
     };
-    return AxiosGet(this.endppoint.page.blog, objQuery);
+    return objQuery;
+    // return AxiosGet(this.endppoint.page.blog, objQuery);
   }
   Get_blog_categories(id) {
     let objQuery = {
@@ -87,7 +102,8 @@ class HandleAPI {
         ],
       },
     };
-    return AxiosGet(`${this.endppoint.blog.post}`, objQuery);
+    return objQuery;
+    // return AxiosGet(`${this.endppoint.blog.post}`, objQuery);
   }
   Get_blog_post(slug) {
     let objQuery = {
@@ -98,7 +114,8 @@ class HandleAPI {
         },
       },
     };
-    return AxiosGet(`${this.endppoint.blog.post}`, objQuery);
+    return objQuery;
+    // return AxiosGet(`${this.endppoint.blog.post}`, objQuery);
   }
 }
 export default HandleAPI;

@@ -101,9 +101,9 @@ const handleAttributes = (res) =>
   res?.attributes ?? res?.data?.attributes ?? null;
 const handleMeta = (res) => res?.meta ?? res?.data?.meta;
 const handleImage = (res) => {
-  let url = res?.url ?? res?.attributes?.url;
+  let url = res?.src ?? res?.url ?? res?.attributes?.url;
   if (!url) {
-    return imgsDir(imgsObject.image_coming_soon);
+    return "/not_found/no-image.jpg";
   }
   return CMS_HOST + url;
 };
