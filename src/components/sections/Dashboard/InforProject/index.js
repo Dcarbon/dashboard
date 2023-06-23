@@ -15,6 +15,7 @@ import {
 import Button from "src/components/ui/Button";
 import Collapse from "src/components/ui/Collapse";
 import CopyButton from "src/components/ui/Button/CopyButton";
+import dateFormat from "dateformat";
 function InfoProject({ iotSelected }) {
   const newDcarbon = new DcarbonAPI();
   const dispatch = useDispatch();
@@ -66,6 +67,13 @@ function InfoProject({ iotSelected }) {
     let newD = new DcarbonAPI();
     return newD.ProjectInfo(projectState?.project?.id);
   }, [projectState?.project?.id]);
+  useEffect(() => {
+    console.log("projectState", projectState);
+  }, [projectState]);
+  const specs = useMemo(
+    () => projectState?.project?.specs?.specs,
+    [projectState?.project?.specs?.specs]
+  );
   return (
     <div className={stls.infoProject}>
       <Error err={iotState.error} clearErrType={IOTAct.CLEAR_ERR} />
@@ -109,30 +117,45 @@ function InfoProject({ iotSelected }) {
       {projectState?.project && (
         <Collapse isOpen={showDetail}>
           <ul>
-            {projectDetail?.implement && (
+            {projectState?.project?.createdAt && (
               <li className={stls.itemRow}>
                 <div>Implement</div>
-                <div>{projectDetail?.implement}</div>
-              </li>
-            )}
-            {projectDetail?.area && (
-              <li className={stls.itemRow}>
-                <div>Area</div>
                 <div>
-                  {projectDetail?.area} m<sup>2</sup>
+                  {dateFormat(
+                    new Date(projectState?.project?.createdAt),
+                    "dd/mm/yyyy"
+                  )}
                 </div>
               </li>
             )}
-            {projectDetail?.waste && (
+            {specs?.area && (
               <li className={stls.itemRow}>
-                <div>Waste</div>
-                <div>{projectDetail?.waste} kg/day</div>
+                <div>Area</div>
+                <div>
+                  {specs?.area} m<sup>2</sup>
+                </div>
               </li>
             )}
-            {projectDetail?.power && (
+
+            {specs?.waste && (
+              <li className={stls.itemRow}>
+                <div>Waste</div>
+                <div>{specs?.waste} kg/day</div>
+              </li>
+            )}
+
+            {specs?.livestock && (
+              <li className={stls.itemRow}>
+                <div>Livestock</div>
+                <div>
+                  {specs?.livestock} <span title="Livestock unit">LSU</span>
+                </div>
+              </li>
+            )}
+            {specs?.power && (
               <li className={stls.itemRow}>
                 <div>Power</div>
-                <div>{projectDetail?.power} kVA</div>
+                <div>{specs?.power} kVA</div>
               </li>
             )}
           </ul>

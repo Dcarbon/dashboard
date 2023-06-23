@@ -96,24 +96,33 @@ class DcarbonAPI {
    * @param {*} amount
    * @returns {{
    * project : {
-   * id: number,
-   * descs: [{
-   *  desc: string,
    *  id: number,
-   *  language: string,
-   *  projectId: string,
-   * }],
-   * owner: string,
-   * status: number,
-   * location: any,
-   * images: [{
-   *  id : number,
-   *  projectId : number,
-   *  image : string,
-   *  createdAt : string,
-   * }],
-   * createdAt: string,
-   * updatedAt: string,
+   *  descs: [{
+   *    desc: string,
+   *    id: number,
+   *    language: string,
+   *    projectId: string,
+   *  }],
+   *  specs : {
+   *    id : number,
+   *    projectId : number,
+   *    specs: {
+   *      area: number,
+   *      livestock: number,
+   *      power: number,
+   *    }
+   *  }
+   *  owner: string,
+   *  status: number,
+   *  location: any,
+   *  images: [{
+   *    id : number,
+   *    projectId : number,
+   *    image : string,
+   *    createdAt : string,
+   *  }],
+   *  createdAt: string,
+   *  updatedAt: string,
    * }
    * loading : boolean,
    * error : string,
