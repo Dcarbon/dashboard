@@ -26,10 +26,12 @@ const handleErr = (error) => {
 //     return handleErr(error);
 //   }
 // };
-export const AxiosGet = async (endpoint, queryString) => {
+export const AxiosGet = async (endpoint, queryString, locale) => {
   try {
     // let strAPI = `${cms_api}${endpoint}?${queryString}`;
-    let strAPI = `${CMS_HOST + "/cms/"}${endpoint}?${queryString}`;
+    let strAPI = `${CMS_HOST + "/cms/"}${endpoint}?${queryString}${
+      locale ? "locale=" + locale : ""
+    }`;
     let res = await axios.get(strAPI);
     // console.log(
     //   "--------------" + `${CMS_HOST + "/cms/"}${endpoint}?${queryString}`
@@ -38,6 +40,9 @@ export const AxiosGet = async (endpoint, queryString) => {
   } catch (error) {
     return handleErr(error);
   }
+};
+export const populateAll = (key) => {
+  return { [key]: { populate: "*" } };
 };
 class HandleAPI {
   endppoint = {
@@ -54,9 +59,8 @@ class HandleAPI {
   Get_page_home() {
     let objQuery = {
       populate: {
-        download: {
-          populate: "*",
-        },
+        ...populateAll("download"),
+        ...populateAll("localizations"),
       },
     };
     return objQuery;

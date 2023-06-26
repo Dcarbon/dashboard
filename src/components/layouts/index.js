@@ -12,7 +12,7 @@ function Layout({ children, noFooter, noHeader }) {
         <meta charSet="utf-8" />
         <meta name="description" content="D carbon website" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <main className={`relative bg-[#151515] ${lexend.className}`}>
         {!noHeader && <HeaderTransparent />}
