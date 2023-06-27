@@ -2,6 +2,7 @@ import Collapse from "src/components/ui/Collapse";
 import stls from "./index.module.scss";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Heading from "src/components/ui/Heading";
+import { Fragment } from "react";
 
 /**
  * @type {object}
@@ -33,21 +34,26 @@ function CollapseTab({
           <Heading Tag={"h5"} className={`${stls.heading} text-white`}>
             {title}
           </Heading>
-          {strongNumb && (
-            <p className={stls.subtitle}>
-              Total: <b className="text-white">{strongNumb}</b> (
-              <span>
-                {unit === "m3" ? (
-                  <>
-                    m<sup>3</sup>
-                  </>
-                ) : (
-                  unit
-                )}
-              </span>
-              )
-            </p>
-          )}
+
+          <p className={stls.subtitle}>
+            Total:{" "}
+            {strongNumb ? (
+              <Fragment>
+                <b className="text-white">{strongNumb}</b>
+                <span>
+                  {unit === "m3" ? (
+                    <>
+                      m<sup>3</sup>
+                    </>
+                  ) : (
+                    unit
+                  )}
+                </span>
+              </Fragment>
+            ) : (
+              0
+            )}
+          </p>
         </div>
         {!disable && (
           <div

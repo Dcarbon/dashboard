@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Layer, Map, Source } from "react-map-gl";
 import OverView from "./overview";
 // import MyMarkers from "./markers";
@@ -58,12 +58,12 @@ const layer_2 = {
     ],
   },
 };
-function MapBoxPage({ className }) {
+function MapBoxPage({ className, setFeatures, setIotSelected }) {
   const [mymap, setMymap] = useState(null);
   const [lng, setLng] = useState(105.793123);
   const [lat, setLat] = useState(21.004998);
+  const [currentfeatures, setCurrentFeatures] = useState(null);
   const [zoom, setZoom] = useState(10);
-  const [features, setFeatures] = useState(null);
   const newDcarbon = new DcarbonAPI();
   const customState = useSelector(newDcarbon.GetCustomState);
   const dispatch = useDispatch();
@@ -73,14 +73,6 @@ function MapBoxPage({ className }) {
     }
   }, [customState?.mymap, mymap, dispatch]);
 
-  const changeFeatures = useCallback(
-    (features) =>
-      dispatch({
-        type: customizationAction.CHANGE_ID_FEATURE,
-        payload: features,
-      }),
-    [dispatch]
-  );
   useEffect(() => {
     if (!mymap) return;
     let hoveredStateId = null;
@@ -101,35 +93,67 @@ function MapBoxPage({ className }) {
       mymap.setFeatureState(tempState(layer_1["source-layer"]), { hover });
       mymap.setFeatureState(tempState(layer_2["source-layer"]), { hover });
     };
+    // on move map get total node on project
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     mymap.on("mousemove", ["boundaryLayer", "hexagonLayer"], (e) => {
       if (e.features.length > 0) {
         if (hoveredStateId !== null) {
           handleMultiFeatureState(false);
         }
         hoveredStateId = e.features[0].id;
-        setFeatures(handleDuplicateFeatures(e.features));
+        setCurrentFeatures(handleDuplicateFeatures(e.features));
 
         handleMultiFeatureState(true);
       }
     });
 
+    // on move map delete total node on project
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     mymap.on("mouseleave", ["boundaryLayer", "hexagonLayer"], () => {
       if (hoveredStateId !== null) {
-        setFeatures(null);
+        setCurrentFeatures(null);
         handleMultiFeatureState(false);
       }
       hoveredStateId = null;
     });
 
+    // on Chooose
+    // on Chooose
+    // on Chooose
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
       if (e.features.length > 0) {
-        listFeatures = handleDuplicateFeatures(e.features);
         hoveredStateId = e.features[0].id;
-        changeFeatures(listFeatures);
+        listFeatures = handleDuplicateFeatures(e.features);
+        setIotSelected(listFeatures[0]);
+        setFeatures(listFeatures);
         dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: false });
       }
     });
-  }, [changeFeatures, dispatch, mymap]);
+  }, [dispatch, mymap, setFeatures, setIotSelected]);
 
   return (
     <div className={className}>
@@ -164,7 +188,7 @@ function MapBoxPage({ className }) {
           }
         }}
       >
-        <OverView features={features} />
+        <OverView features={currentfeatures} />
         <Source
           id="iott_all"
           type="vector"

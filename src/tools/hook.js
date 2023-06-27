@@ -1,12 +1,12 @@
 class DcarbonAPI {
-  GetInfoProject() {
-    return {
-      status: true,
-      etherAddress: "0xa51deR17DGE4j345RQj3qfvn39sREGZ497DCbA",
-      projectType: "Manure management",
-      location: "40 Phan Boi Chau, P. Cua Nam, Q. Hoan Kiem, Hanoi, Vietnam",
-    };
-  }
+  // GetInfoProject() {
+  //   return {
+  // status: true,
+  // etherAddress: "0xa51deR17DGE4j345RQj3qfvn39sREGZ497DCbA",
+  // projectType: "Manure management",
+  // location: "40 Phan Boi Chau, P. Cua Nam, Q. Hoan Kiem, Hanoi, Vietnam",
+  //   };
+  // }
   GetMarker() {
     return [
       {
@@ -229,11 +229,7 @@ class DcarbonAPI {
       return {
         type: "Pig farm",
         location: "Khu 5, Xã Minh Côi, Huyện Hạ Hoà, Tỉnh Phú Thọ, Việt Nam",
-        implement: "25/05/2023",
-        area: 1000,
-        livestocks: 500,
-        waste: 1000,
-        power: 1000,
+
         detail: `<p>With a daily amount of 1000 kg waste, if it is not properly treated, it will cause environmental pollution, affecting the ecosystem in the area, leading to the death of the ecosystem within the region, as well as emitting tens or even hundreds of tons of greenhouse gases into the atmosphere every year.</p>
         <br /><p>Therefore, when implementing a processing system with machine capacity 500 kVA, environmental concerns will be thoroughly addressed and the health of the residents (HOW MANY HOUSEHOLDS) in the area will be protected, as well as the ability to transparently measure and monitor the waste treatment process on a daily and hourly basis.</p>`,
       };

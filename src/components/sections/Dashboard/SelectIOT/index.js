@@ -16,7 +16,8 @@ import Slider from "react-slick";
 import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-function SelectProject({ features, iotSelected, setIotSelected }) {
+import { IOTAct } from "src/redux/actions/iotAction";
+function SelectIOT({ features, iotSelected, setIotSelected }) {
   const newDcarbon = new DcarbonAPI();
   const iotState = useSelector(newDcarbon.GetIOTState);
   const projectState = useSelector(newDcarbon.GetProjectState);
@@ -26,6 +27,22 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
   );
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    // ĐÃ check : xảy ra 1 lần mỗi khi iotSelected thay đổi
+    // => Get iot by id
+    if (iotSelected) {
+      // get id by features in map
+      dispatch({
+        type: IOTAct.GET_IOT.REQUEST,
+        payload: iotSelected,
+      });
+      // get sensor list
+      dispatch({
+        type: SensorsACT.GET_SENSORS.REQUEST,
+        payload: { skip: 0, limit: 5, iotId: iotSelected },
+      });
+    }
+  }, [dispatch, iotSelected]);
   useEffect(() => {
     if (projectId) {
       dispatch({ type: ProjectACT.GET_PROJECT.REQUEST, payload: projectId });
@@ -58,11 +75,8 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
           ))}
         </Selection>
       )}
-      {/* <h3 className="text-white uppercase text-lg mb-2">
-        Project: &quot;{}&quot;
-      </h3> */}
 
-      {projectState?.project?.images?.length > 0 && (
+      {iotSelected > 0 && projectState?.project?.images?.length > 0 && (
         <SliderGroup
           images={projectState?.project?.images}
           projectId={projectState?.project?.id}
@@ -72,7 +86,7 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
   );
 }
 
-export default SelectProject;
+export default SelectIOT;
 function BtnArr({ onClick, right }) {
   return (
     <button
@@ -83,6 +97,20 @@ function BtnArr({ onClick, right }) {
     </button>
   );
 }
+// Slide Image
+// Slide ImageSlide ImageSlide
+//
+// --------------------
+// --------------------
+// --------------------
+// --------------------
+// --------------------
+// --------------------
+// --------------------
+// --------------------
+//
+//
+//
 function SliderGroup({ images, projectId }) {
   const [showDialog, setShowDialog] = useState(false);
   const customProperties = {
@@ -91,20 +119,20 @@ function SliderGroup({ images, projectId }) {
     nextArrow: <BtnArr right />,
     prevArrow: <BtnArr />,
   };
-  const responsiveSettings = [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 2,
-      },
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 3,
-      },
-    },
-  ];
+  // const responsiveSettings = [
+  //   {
+  //     breakpoint: 1024,
+  //     settings: {
+  //       slidesToShow: 2,
+  //     },
+  //   },
+  //   {
+  //     breakpoint: 768,
+  //     settings: {
+  //       slidesToShow: 3,
+  //     },
+  //   },
+  // ];
 
   const dialogREF = useRef(null);
   const slider1 = useRef(null);
@@ -129,7 +157,7 @@ function SliderGroup({ images, projectId }) {
                 autoplay={false}
                 speed={500}
                 {...customProperties}
-                responsive={responsiveSettings}
+                // responsive={responsiveSettings}
                 infinite={true}
                 dots={true}
               >

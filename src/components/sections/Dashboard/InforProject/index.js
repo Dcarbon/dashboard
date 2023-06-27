@@ -2,11 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 
 import stls from "./index.module.scss";
 import DcarbonAPI from "src/tools/hook";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import Error from "src/components/ui/Error";
 import { IOT_TYPE } from "src/tools/const";
-import { SensorsACT } from "src/redux/actions/sensorsAction";
 import HTMLReactParser from "html-react-parser";
 import {
   ChevronUpIcon,
@@ -16,48 +15,22 @@ import Button from "src/components/ui/Button";
 import Collapse from "src/components/ui/Collapse";
 import CopyButton from "src/components/ui/Button/CopyButton";
 import dateFormat from "dateformat";
-function InfoProject({ iotSelected }) {
+function InfoProject() {
   const newDcarbon = new DcarbonAPI();
-  const dispatch = useDispatch();
   const iotState = useSelector(newDcarbon.GetIOTState);
-  const sensorsState = useSelector(newDcarbon.GetSensorsState);
 
+  // Project  đã lấy thông tin ở phần SelectIOT
   const projectState = useSelector(newDcarbon.GetProjectState);
+
   // get project name
   const projectName = useMemo(() => {
     const descs = projectState?.project?.descs;
     if (descs?.length > 0) {
-      return (
-        descs.find((item) => item?.language === "vi").name ||
-        projectState.project.id
-      );
+      return descs[0].name;
     }
-    return projectState?.project?.id;
-  }, [projectState?.project?.descs, projectState?.project?.id]);
+  }, [projectState?.project?.descs]);
 
   const [showDetail, setShowDetail] = useState(false);
-  const [currentSelected, setCurrentSelected] = useState(null);
-  useEffect(() => {
-    if (iotSelected !== currentSelected) {
-      setCurrentSelected(iotSelected);
-      // get id by features in map
-      // get id by features in map
-      // get id by features in map
-
-      dispatch({
-        type: IOTAct.GET_IOT.REQUEST,
-        payload: iotSelected,
-      });
-
-      // get sensor list
-      // get sensor list
-      // get sensor list
-      dispatch({
-        type: SensorsACT.GET_SENSORS.REQUEST,
-        payload: { skip: 0, limit: 5, iotId: iotSelected },
-      });
-    }
-  }, [iotSelected, dispatch, currentSelected]);
 
   // handle Ether address
   const strCut = (str) => {
@@ -74,6 +47,14 @@ function InfoProject({ iotSelected }) {
     () => projectState?.project?.specs?.specs,
     [projectState?.project?.specs?.specs]
   );
+
+  // Check trạng thái hoạt động của project dựa vào dữ liệu sensor metrics trả về
+  // sensor metrics đc lấy ở electricity
+  const sensorsState = useSelector(newDcarbon.GetSensorsState);
+  const isActive = useMemo(
+    () => Boolean(sensorsState?.sensor_metrics?.length > 0),
+    [sensorsState?.sensor_metrics?.length]
+  );
   return (
     <div className={stls.infoProject}>
       <Error err={iotState.error} clearErrType={IOTAct.CLEAR_ERR} />
@@ -86,21 +67,21 @@ function InfoProject({ iotSelected }) {
               Active
               <span
                 className={`${stls.status} ${
-                  sensorsState?.sensor_metrics?.length > 0
-                    ? stls.true
-                    : stls.false
+                  isActive ? stls.true : stls.false
                 }`}
               ></span>
             </div>
           </li>
           <li className={stls.itemRow}>
             <div>Name</div>
-            <div>{projectName}</div>
+            <div>{projectName || projectState?.project?.id}</div>
           </li>
+          {/* Loại IOT */}
           <li className={stls.itemRow}>
             <div>Type</div>
             <div>{IOT_TYPE(iot?.type)}</div>
           </li>
+          {/* Ethereum address */}
           <li className={stls.itemRow}>
             <div>Ethereum address</div>
             <div>
@@ -108,10 +89,12 @@ function InfoProject({ iotSelected }) {
               <CopyButton className={stls.copyBtn} obj={iot?.address} />
             </div>
           </li>
-          <li className={stls.itemRow}>
-            <div>Location</div>
-            <div>{projectDetail?.location}</div>
-          </li>
+          {projectDetail?.location && (
+            <li className={stls.itemRow}>
+              <div>Location</div>
+              <div>{projectDetail?.location}</div>
+            </li>
+          )}
         </ul>
       )}
       {projectState?.project && (
@@ -165,10 +148,6 @@ function InfoProject({ iotSelected }) {
                 <InformationCircleIcon type="outline" width={24} height={24} />
               </label>
               <div className={stls.content}>
-                {/* <fieldset className={stls.icon_hidden}>
-                <InformationCircleIcon type="outline" width={24} height={24} />
-              </fieldset> */}
-
                 <div className={stls.parsered}>
                   {HTMLReactParser(projectDetail?.detail ?? "")}
                 </div>

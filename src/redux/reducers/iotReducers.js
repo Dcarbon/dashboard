@@ -47,7 +47,7 @@ const iotReducer = (state = initIotState, action) => {
         latest: action.type,
       };
     case IOTAct.GET_IOT_MINTED.REQUEST:
-      // console.log("---------------request ", { action, res });
+      console.log("GET_IOT_MINTED---------------request ", { action, res });
       return {
         ...state,
         loading: false,
@@ -57,7 +57,8 @@ const iotReducer = (state = initIotState, action) => {
         latest: action.type,
       };
     case IOTAct.GET_IOT_MINTED.SUCCESS:
-      // console.log("---------------SUCCESS ", res);
+      // console.log("payloadddddddddddddddddddddddddd", action.payload);
+      // console.log("GET_IOT_MINTED---------------SUCCESS ", res);
       return {
         ...state,
         loading: true,
@@ -65,7 +66,7 @@ const iotReducer = (state = initIotState, action) => {
         latest: action.type,
       };
     case IOTAct.GET_IOT_MINTED.FAILURE:
-      // console.log("---------------FAILURE ", res);
+      // console.log("GET_IOT_MINTED---------------FAILURE ", res);
       return {
         ...state,
         loading: true,

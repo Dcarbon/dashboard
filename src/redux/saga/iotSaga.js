@@ -4,11 +4,11 @@ import { IOTAct } from "../actions/iotAction";
 
 export const watcherIot = [
   takeEvery(
-    IOTAct?.GET_IOT.REQUEST,
+    IOTAct.GET_IOT.REQUEST,
     grpcCall(getIot, IOTAct.GET_IOT.SUCCESS, IOTAct.GET_IOT.FAILURE)
   ),
   takeEvery(
-    IOTAct?.GET_IOT_MINTED.REQUEST,
+    IOTAct.GET_IOT_MINTED.REQUEST,
     grpcCall(
       getIotMinted,
       IOTAct.GET_IOT_MINTED.SUCCESS,

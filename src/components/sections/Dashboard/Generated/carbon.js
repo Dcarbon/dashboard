@@ -25,7 +25,8 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
   const getAmount = (item) => {
     const hexAmount = new BigNumber(item.amount.toLocaleLowerCase());
     const reduceAmount = hexAmount.div("1e9");
-    return reduceAmount.toFixed(2);
+    return reduceAmount.toFixed(4);
+    // return reduceAmount;
   };
   // call back :  Handle get IotMinted
   const handleGetIotMinted = useCallback(
@@ -38,6 +39,7 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
   // Step 2 : Get IotMinted
   useEffect(() => {
     if (iotSelected !== payload?.iotId) {
+      // get iot minted
       handleGetIotMinted({ ...payload, iotId: iotSelected });
       setArrData(null);
     }
@@ -57,7 +59,7 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
     >
       <div className={stls.carbonMinted}>
         <ColumnChart
-          unit="kWh"
+          unit="carbon"
           data={iotState?.iot_minted}
           payload={payload}
           setPayload={setPayload}

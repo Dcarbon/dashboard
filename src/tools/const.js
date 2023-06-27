@@ -77,7 +77,7 @@ const IOT_TYPE = (val) => {
     case 31:
       return "Trash";
     default:
-      return "None";
+      return "Undefined.";
   }
 };
 

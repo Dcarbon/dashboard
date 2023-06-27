@@ -36,7 +36,7 @@ const getDataSeries = (timeline, iot_minted, handleValue) => {
     newSeriesArr[index] = {
       x: elm_1,
       // y: amount,
-      y: parseFloat(amount).toFixed(2),
+      y: parseFloat(amount).toFixed(4),
     };
   }
   return newSeriesArr;
@@ -113,7 +113,6 @@ export default function DcarbonChart({
 }) {
   const [options, setOptions] = useState(optionsDefault);
   const [series, setSeries] = useState([]);
-  useEffect(() => {}, [arrData, arrTime, data]);
 
   // Step 2 : Filter value adapt with time
   useEffect(() => {
@@ -122,11 +121,18 @@ export default function DcarbonChart({
       if (newSeriesArr?.length) {
         setArrData(newSeriesArr);
         const arrY =
-          newSeriesArr?.length > 0
-            ? newSeriesArr.map((item) => parseFloat(item.y).toFixed(2))
-            : [];
-        setStrongNumb(arrY.reduce(getSum));
+          newSeriesArr?.length > 0 ? newSeriesArr.map((item) => item.y) : [];
+        // console.log("arrY---------------------------------------------", arrY);
+        const filterTotal = arrY.find((item) => item > 0);
+        setStrongNumb(filterTotal);
         setLoading(false);
+
+        setSeries([
+          {
+            name: "duration",
+            data: newSeriesArr,
+          },
+        ]);
         setOptions({
           ...optionsDefault,
           tooltip: {
@@ -136,7 +142,7 @@ export default function DcarbonChart({
               return (
                 '<div class="arrow_box">' +
                 '<h4 class="title"><b class="strong">' +
-                series[seriesIndex][dataPointIndex] +
+                series?.[seriesIndex]?.[dataPointIndex] +
                 "</b> " +
                 unit +
                 "</h4>" +
@@ -149,12 +155,6 @@ export default function DcarbonChart({
             marker: { show: true },
           },
         });
-        setSeries([
-          {
-            name: "duration",
-            data: newSeriesArr,
-          },
-        ]);
       }
     }
   }, [

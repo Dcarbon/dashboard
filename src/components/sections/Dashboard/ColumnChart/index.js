@@ -115,6 +115,7 @@ function ColumnChart({
     }
   }, [durType, handleDataChangeDurType, payload, setPayload]);
   const handleChangeDurType = (newDurType) => {
+    setStrongNumb(0);
     setLoading(true);
     setDurType(newDurType);
     let newDur = Get_Duration_by_Type(newDurType);
@@ -124,7 +125,6 @@ function ColumnChart({
     setArrTime(newArrTime);
     setArrData(null);
   };
-
   return (
     <div className={stls.carbonMinted}>
       <DcarbonChart
@@ -139,6 +139,7 @@ function ColumnChart({
         setArrData={setArrData}
         setStrongNumb={setStrongNumb}
       />
+
       <DcarbonDuration durType={durType} setDurType={handleChangeDurType} />
     </div>
   );
