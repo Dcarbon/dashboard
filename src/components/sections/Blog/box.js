@@ -12,12 +12,17 @@ function PostBox({
   summaryClassName,
   imageClassName,
 }) {
-  const attributes = useMemo(
-    () => handleAttributes(data?.thumbnail),
-    [data?.thumbnail]
-  );
+  // -------------
+  // -------------
+  // -------------
+  // -------------
+  // -------------
+  const attributes = useMemo(() => {
+    return handleAttributes(data?.thumbnail);
+  }, [data]);
   const dateCreate = useMemo(
-    () => dateFormat(new Date(data?.createdAt), "mmm dd, yyyy"),
+    () =>
+      data?.createdAt && dateFormat(new Date(data?.createdAt), "mmm dd, yyyy"),
     [data?.createdAt]
   );
   return (

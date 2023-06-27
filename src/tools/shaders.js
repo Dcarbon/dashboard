@@ -34,7 +34,7 @@ export const fragmentAtmosphere = `
 varying vec3 vertexNormal;
 
 void main(){
-  float intensity = pow(0.72 - dot(vertexNormal, vec3(0, 0, 1)),  12.6);
-  gl_FragColor = vec4( 225, 225, 225, 1) * intensity;
+  float intensity = pow(0.7 - dot(vertexNormal, vec3(0, 0, 1.2)),  16.6);
+  gl_FragColor = vec4( 225, 225, 225, 0.5) * intensity;
 }
 `;

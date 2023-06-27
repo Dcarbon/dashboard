@@ -12,8 +12,10 @@ function DashboardSideBar({ className }) {
   const newDcarbon = new DcarbonAPI();
   const customState = useSelector(newDcarbon.GetCustomState);
   const [iotSelected, setIotSelected] = useState(0);
+
   useEffect(() => {
     if (customState?.features?.length > 0) {
+      console.log("features");
       setIotSelected(customState?.features[0]);
     }
   }, [customState?.features]);

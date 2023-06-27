@@ -26,7 +26,8 @@ function getSensors(action) {
   return AxiosGet(url);
 }
 function getSensorMetrics(action) {
-  // console.log("action", action);
+  // console.log("getSensorMetrics");
   var url = `sensors/sm?from=${action.payload.from}&to=${action.payload.to}&iotId=${action.payload.iotId}&limit=${action.payload.limit}&skip=${action.payload.skip}&sensorId=${action.payload.sensorId}`;
+  // console.log("url", url);
   return AxiosGet(url);
 }

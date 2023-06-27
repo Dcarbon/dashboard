@@ -1,6 +1,11 @@
-.standard {
-  padding-left: 20px;
-  padding-right: 20px;
+.standard[class*="container"] {
+  padding-left: 15px;
+  padding-right: 15px;
+  max-width: unset;
+  @media (min-width: 768px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
   @media (min-width: 1024px) {
     padding-left: 40px;
     padding-right: 40px;
@@ -8,5 +13,6 @@
   @media (min-width: 1440px) {
     padding-left: 120px;
     padding-right: 120px;
+    max-width: 1440px;
   }
 }

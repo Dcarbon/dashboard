@@ -9,7 +9,9 @@ import Image from "next/image";
 import Markdown from "markdown-to-jsx";
 function Post_Sec_2({ attrs }) {
   const dateCreate = useMemo(
-    () => dateFormat(new Date(attrs?.createdAt), "mmm dd, yyyy"),
+    () =>
+      attrs?.createdAt &&
+      dateFormat(new Date(attrs?.createdAt), "mmm dd, yyyy"),
     [attrs?.createdAt]
   );
   const attrImg = handleAttributes(attrs?.thumbnail);

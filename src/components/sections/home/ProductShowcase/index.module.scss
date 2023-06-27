@@ -75,6 +75,7 @@
           transform-origin: 0 50%;
           border-width: 3px;
           border-left-width: 9px;
+          filter: brightness(0.2);
         }
       }
     }
@@ -86,6 +87,7 @@
         .center {
           -webkit-transform: translate3d(-1px, 0, -3rem) rotateY(90deg);
           transform: translate3d(-1px, 0, -3rem) rotateY(90deg);
+          filter: brightness(0.2);
         }
       }
     }
@@ -96,6 +98,9 @@
         transform-origin: 100% 50%;
         -webkit-transition-property: -webkit-transform, -webkit-opacity;
         transition-property: transform, opacity;
+        .center {
+          filter: brightness(0.2);
+        }
       }
     }
   }

@@ -17,7 +17,9 @@ function Footer() {
           className={`${stls.row} flex flex-col md:flex-row justify-between md:items-end  flex-wrap md:gap-9`}
         >
           <div className={stls.col_left}>
-            <Logo />
+            <Link href={"/"}>
+              <Logo />
+            </Link>
             <Heading Tag={"h3"} className={"text-[#919097] mt-4"}>
               Fair to us, fair to earth
             </Heading>

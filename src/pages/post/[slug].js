@@ -6,10 +6,12 @@ import { handleAttributes } from "src/tools/const";
 import HandleAPI, { AxiosGet, QStringify } from "src/tools/handleAPI";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-const fetcherPage = ([url, qstr]) => {
-  return AxiosGet(url, qstr);
+import useLocale from "src/hook/useLocale";
+const fetcherPage = ([url, qstr, locale]) => {
+  return AxiosGet(url, qstr, locale);
 };
 function Post() {
+  const locale = useLocale();
   const router = useRouter();
   const { query } = router;
   const slug = query?.slug;
@@ -22,7 +24,7 @@ function Post() {
     error: errPost,
     // isLoading: isLoadingPage,
   } = useSWR(
-    [newHandleAPI.endppoint.blog.post, QStringify(postQuery)],
+    [newHandleAPI.endppoint.blog.post, QStringify(postQuery), locale?.current],
     fetcherPage
   );
 

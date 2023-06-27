@@ -40,6 +40,10 @@ function ElectricityGenerated_intoTrash({
 
   const handleGetSensorMetrics = useCallback(
     (newPayload) => {
+      console.log(
+        "TRASH ---------- handleGetSensorMetrics",
+        handleGetSensorMetrics
+      );
       setPayload({ ...newPayload });
       dispatch({
         type: SensorsACT.GET_SENSORS_METRICS.REQUEST,

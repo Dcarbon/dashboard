@@ -13,7 +13,7 @@ function HeaderTransparent() {
   const { pathname } = useRouter();
   return (
     <header className={"absolute top-0 left-0 w-full z-50"}>
-      <Container standard={false} className={stls.container}>
+      <Container className={stls.container}>
         <div className={stls.box}>
           <div className={stls.item}>
             <Link href={"/"} className={stls.logo}>

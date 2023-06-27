@@ -15,8 +15,10 @@
       margin: 10px;
       font-weight: 500;
       cursor: pointer;
-      &:first-child {
-        margin-left: 0;
+      @media (min-width: 768px) {
+        &:first-child {
+          margin-left: 0;
+        }
       }
       &.active {
         color: #5055a4;

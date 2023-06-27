@@ -5,6 +5,7 @@ import OverView from "./overview";
 import { useDispatch, useSelector } from "react-redux";
 import { customizationAction } from "src/redux/actions/customizationAction";
 import DcarbonAPI from "src/tools/hook";
+import { SensorsACT } from "src/redux/actions/sensorsAction";
 
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 const layer_1 = {
@@ -125,9 +126,10 @@ function MapBoxPage({ className }) {
         listFeatures = handleDuplicateFeatures(e.features);
         hoveredStateId = e.features[0].id;
         changeFeatures(listFeatures);
+        dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: false });
       }
     });
-  }, [changeFeatures, mymap]);
+  }, [changeFeatures, dispatch, mymap]);
 
   return (
     <div className={className}>

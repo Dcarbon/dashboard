@@ -15,6 +15,7 @@ import Selection from "src/components/ui/Selection/Select";
 import Slider from "react-slick";
 import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
+import { SensorsACT } from "src/redux/actions/sensorsAction";
 function SelectProject({ features, iotSelected, setIotSelected }) {
   const newDcarbon = new DcarbonAPI();
   const iotState = useSelector(newDcarbon.GetIOTState);
@@ -41,7 +42,10 @@ function SelectProject({ features, iotSelected, setIotSelected }) {
         <Selection
           label={"Select node"}
           value={iotSelected}
-          onChange={(e) => setIotSelected(e.target.value)}
+          onChange={(e) => {
+            dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: false });
+            setIotSelected(e.target.value);
+          }}
         >
           {features?.map((item) => (
             <SelectItem

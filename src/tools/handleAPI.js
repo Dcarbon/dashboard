@@ -4,12 +4,9 @@ import { CMS_HOST } from "src/redux/handle";
 export const QStringify = (obj) => {
   return QueryString.stringify(obj, { encodeValuesOnly: true });
 };
-const handleErr = (error) => {
-  console.error("Error from ", error?.config?.url);
-  return {
-    failed: true,
-    data: error?.response?.data?.error,
-  };
+export const handleErr = (error) => {
+  console.error("Error from ", error);
+  return error?.response?.data?.error;
 };
 
 // const AxiosGet = async (endpoint, objQuery) => {
@@ -27,19 +24,13 @@ const handleErr = (error) => {
 //   }
 // };
 export const AxiosGet = async (endpoint, queryString, locale) => {
-  try {
-    // let strAPI = `${cms_api}${endpoint}?${queryString}`;
-    let strAPI = `${CMS_HOST + "/cms/"}${endpoint}?${queryString}${
-      locale ? "locale=" + locale : ""
-    }`;
-    let res = await axios.get(strAPI);
-    // console.log(
-    //   "--------------" + `${CMS_HOST + "/cms/"}${endpoint}?${queryString}`
-    // );
-    return res.data;
-  } catch (error) {
-    return handleErr(error);
-  }
+  // let strAPI = `${cms_api}${endpoint}?${queryString}`;
+  let strAPI = `${CMS_HOST + "/cms/"}${endpoint}?${queryString}${
+    locale ? "&locale=" + locale : ""
+  }`;
+  let res = await axios.get(strAPI);
+  // console.log("--------------" + `${strAPI}`);
+  return res.data;
 };
 export const populateAll = (key) => {
   return { [key]: { populate: "*" } };
@@ -105,6 +96,7 @@ class HandleAPI {
           },
         ],
       },
+      ...populateAll("localizations"),
     };
     return objQuery;
     // return AxiosGet(`${this.endppoint.blog.post}`, objQuery);
@@ -117,6 +109,7 @@ class HandleAPI {
           $eq: slug,
         },
       },
+      ...populateAll("localizations"),
     };
     return objQuery;
     // return AxiosGet(`${this.endppoint.blog.post}`, objQuery);

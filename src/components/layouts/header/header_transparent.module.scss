@@ -17,6 +17,10 @@
   padding: 12px 20px;
   .logo {
     display: block;
+    width: 240px;
+    @media (min-width: 1180px) {
+      width: initial;
+    }
   }
   .btnNav {
     cursor: pointer;

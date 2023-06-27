@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Layout from "src/components/layouts";
 import ComingSoon from "src/components/layouts/commingSoon";
 import Contact from "src/components/sections/home/Contact";
@@ -8,16 +7,18 @@ import BannerSecond from "src/components/sections/home/banner/bannerSecond";
 import Discover from "src/components/sections/home/discover";
 import IntroDcarbon from "src/components/sections/home/intro";
 import Mechanical from "src/components/sections/home/mechanical";
-import useLocale from "src/hook/useLocale";
 import { handleAttributes } from "src/tools/const";
-import HandleAPI, { AxiosGet, QStringify } from "src/tools/handleAPI";
+import HandleAPI, {
+  AxiosGet,
+  QStringify,
+  handleErr,
+} from "src/tools/handleAPI";
 import useSWR from "swr";
-const fetcherPage = ([url, qstr, locale]) => {
-  return AxiosGet(url, qstr, locale);
+const fetcherPage = ([url, qstr]) => {
+  return AxiosGet(url, qstr);
 };
 export default function Home() {
   // check language =
-  const locale = useLocale();
   const newHandleAPI = new HandleAPI();
   // GET  DATA
   // GET  DATA
@@ -34,15 +35,17 @@ export default function Home() {
     error: errpage,
     // isLoading: isLoadingPage,
   } = useSWR(
-    [newHandleAPI.endppoint.page.home, QStringify(pageQuery), locale?.current],
+    [newHandleAPI.endppoint.page.home, QStringify(pageQuery)],
     fetcherPage
   );
-  useEffect(() => {
-    console.log("page", page);
-  }, [page]);
-
   if (errpage) {
-    return <ComingSoon />;
+    let handleErred = handleErr(errpage);
+
+    if (handleErred?.status === 404) {
+      return <ComingSoon />;
+    } else {
+      return <h1>Lỗi trang : ---- {JSON.stringify(handleErred)}</h1>;
+    }
   }
 
   const attrHome = handleAttributes(page);

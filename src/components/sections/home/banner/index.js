@@ -23,8 +23,8 @@ function BannerFisrt() {
       bgImageUrl={imgsDir(imgsObject.home_banner)}
     >
       <Container>
-        <div className={`relative ${stls.box}`}>
-          <div className="w-full md:w-2/3 lg:w-1/2">
+        <div className={stls.box}>
+          <div className={stls.boxText}>
             <Heading Tag={"h1"} className={stls.heading}>
               <span className={stls.strong}> DCarbon</span> a Trustless and
               autonomous Carbon system
@@ -35,6 +35,12 @@ function BannerFisrt() {
             </p>
             <Button href={"/how-does-it-work"}>Learn more</Button>
           </div>
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
           <div className={stls.earth}>
             <CanvasEarth />
           </div>
@@ -47,15 +53,16 @@ function BannerFisrt() {
 export default BannerFisrt;
 function CanvasEarth() {
   return (
-    <Canvas gl={{ antialias: true }}>
-      <EarthBox scale={0.8} />
+    <Canvas gl={{ antialias: true }} dpr={[1, 2]}>
+      <EarthBox scale={0.95} />
       <Suspense fallback={null}>
-        <ambientLight intensity={0.6} color="#ffffff" />
+        <ambientLight intensity={0.8} color="#ffffff" />
         <pointLight color={"#ffffff"} position={[10, 10, 10]} />
         <OrbitControls
           autoRotate
           autoRotateSpeed={0.3}
           rotateSpeed={0.2}
+          enablePan={false}
           enableZoom={false}
         />
       </Suspense>
@@ -75,13 +82,12 @@ function EarthBox(props) {
       {/* Earth */}
 
       <mesh {...props} ref={earthRef} rotation={new Euler(0.26, 2.95, 0)}>
-        <sphereGeometry args={[3, 23, 23]} />
+        <sphereGeometry args={[3, 90, 33]} />
         <meshPhysicalMaterial
+          color={"#ffffff"}
           map={imgsDir(imgsObject.Earths.DayMap)}
-          clearcoat={1}
-          clearcoatRoughness={0}
-          roughness={0}
-          metalness={0.5}
+          roughness={1}
+          metalness={0.3}
         />
         <meshStandardMaterial map={colorMap} roughness={1} metalness={0} />
       </mesh>
@@ -89,7 +95,7 @@ function EarthBox(props) {
       {/* Cloud */}
 
       <mesh {...props} ref={cloudsRef}>
-        <sphereGeometry args={[3, 200, 200]} />
+        <sphereGeometry args={[3, 300, 300]} />
         <meshPhongMaterial
           map={cloudsMap}
           opacity={0.2}
@@ -99,13 +105,13 @@ function EarthBox(props) {
       </mesh>
 
       <mesh {...props}>
-        <sphereGeometry args={[3, 23, 23]} />
+        <sphereGeometry args={[3, 30, 33]} />
         <shaderMaterial
           vertexShader={vertexAtmosphere}
           fragmentShader={fragmentAtmosphere}
           blending={AdditiveBlending}
           side={BackSide}
-          opacity={1}
+          opacity={0.6}
           transparent={true}
         />
       </mesh>

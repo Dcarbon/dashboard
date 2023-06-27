@@ -1,15 +1,21 @@
 import { useRouter } from "next/router";
+import { Fragment } from "react";
 import Layout from "src/components/layouts";
 import ComingSoon from "src/components/layouts/commingSoon";
 import Blog_Section_1 from "src/components/sections/Blog/sec_1";
 import Blog_Section_2 from "src/components/sections/Blog/sec_2";
 import Blog_Section_3 from "src/components/sections/Blog/sec_3";
+import Heading from "src/components/ui/Heading";
 
 import { handleAttributes, handleMeta } from "src/tools/const";
-import HandleAPI, { AxiosGet, QStringify } from "src/tools/handleAPI";
+import HandleAPI, {
+  AxiosGet,
+  QStringify,
+  handleErr,
+} from "src/tools/handleAPI";
 import useSWR from "swr";
-const fetcherPage = ([url, qstr]) => {
-  return AxiosGet(url, qstr);
+const fetcherPage = ([url, qstr, locale]) => {
+  return AxiosGet(url, qstr, locale);
 };
 
 function Blog() {
@@ -63,13 +69,19 @@ function Blog() {
     fetcherPage
   );
   if (errpage) {
-    console.error("errpage : --------", errpage);
+    if (handleErr(errpage).status === 404) {
+      return <ComingSoon />;
+    } else {
+      return <h1>Lỗi trang</h1>;
+    }
   }
   if (errThreePosts) {
-    console.error("errThreePosts : --------", errThreePosts);
+    console.error("errThreePosts : --------", handleErr(errThreePosts));
+    return <h1>Lỗi lấy 3 bài viết đầu</h1>;
   }
   if (errPosts) {
-    console.error("errPosts : --------", errPosts);
+    console.error("errPosts : --------", handleErr(errPosts));
+    return <h1>Lỗi lấy các bài viết</h1>;
   }
 
   // handle
@@ -79,19 +91,23 @@ function Blog() {
   // handle
   // handle
   // handle
-
-  if (errpage) {
-    return <ComingSoon />;
-  }
 
   return (
     <Layout>
       <Blog_Section_1 data={handleAttributes(page)} />
-      {!filters && !errThreePosts && threePosts && (
-        <Blog_Section_2 data={threePosts?.data} />
-      )}
-      {!errPosts && posts && (
-        <Blog_Section_3 data={posts?.data} meta={handleMeta(posts)} />
+      {threePosts?.data?.length > 0 ? (
+        <Fragment>
+          {!filters && !errThreePosts && threePosts?.data && (
+            <Blog_Section_2 data={threePosts?.data} />
+          )}
+          {!errPosts && posts?.data && (
+            <Blog_Section_3 data={posts?.data} meta={handleMeta(posts)} />
+          )}
+        </Fragment>
+      ) : (
+        <div className="py-12 text-center">
+          <Heading Tag={"h1"}>There are no posts yet.</Heading>
+        </div>
       )}
     </Layout>
   );

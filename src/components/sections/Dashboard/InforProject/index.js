@@ -36,12 +36,14 @@ function InfoProject({ iotSelected }) {
   }, [projectState?.project?.descs, projectState?.project?.id]);
 
   const [showDetail, setShowDetail] = useState(false);
-
+  const [currentSelected, setCurrentSelected] = useState(null);
   useEffect(() => {
-    if (iotSelected) {
+    if (iotSelected !== currentSelected) {
+      setCurrentSelected(iotSelected);
       // get id by features in map
       // get id by features in map
       // get id by features in map
+
       dispatch({
         type: IOTAct.GET_IOT.REQUEST,
         payload: iotSelected,
@@ -55,7 +57,7 @@ function InfoProject({ iotSelected }) {
         payload: { skip: 0, limit: 5, iotId: iotSelected },
       });
     }
-  }, [iotSelected, dispatch]);
+  }, [iotSelected, dispatch, currentSelected]);
 
   // handle Ether address
   const strCut = (str) => {
@@ -67,9 +69,7 @@ function InfoProject({ iotSelected }) {
     let newD = new DcarbonAPI();
     return newD.ProjectInfo(projectState?.project?.id);
   }, [projectState?.project?.id]);
-  useEffect(() => {
-    console.log("projectState", projectState);
-  }, [projectState]);
+
   const specs = useMemo(
     () => projectState?.project?.specs?.specs,
     [projectState?.project?.specs?.specs]

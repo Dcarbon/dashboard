@@ -162,6 +162,11 @@ class DcarbonAPI {
    *
    * @param {*} amount
    * @returns {{
+   * loading : boolean,
+   * 
+   * latest : boolean,
+   * error : string,
+   * error_code : string
    * sensors: [{
    *  address: string,
    *  createdAt: string,
@@ -182,10 +187,8 @@ class DcarbonAPI {
    *  iotId": number,
    *  sensorId": number,
    *  sensorType": number
-   * }]
-   * loading : boolean,
-   * error : string,
-   * error_code : string
+   * }],
+
    * }}
    *
    */

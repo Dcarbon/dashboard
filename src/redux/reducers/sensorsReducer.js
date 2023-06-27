@@ -8,14 +8,11 @@ export const initsensorsState = {
   error_code: null,
   latest: "",
   loading: false,
+  loadingSensorFirstTime: false,
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
-/**
- *
- * @param {import("src/utils/model").IAction} action
- * @returns
- */
+
 const sensorsReducer = (state = initsensorsState, action) => {
   const res = handleResponse(action);
   switch (action.type) {
@@ -77,6 +74,11 @@ const sensorsReducer = (state = initsensorsState, action) => {
         ...state,
         error: null,
         error_code: null,
+      };
+    case SensorsACT.LOAD_SENSOR_1ST_TIME:
+      return {
+        ...state,
+        loadingSensorFirstTime: action.payload,
       };
     default:
       return state;

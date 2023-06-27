@@ -14,9 +14,9 @@ function Header() {
               alt=""
               fill
               priority
-              sizes="(max-width: 768px) 250,
-              (max-width: 1200px) 320,
-              272"
+              // sizes="(max-width: 768px) 250,
+              // (max-width: 1200px) 320,
+              // 272"
             />
           </Link>
         </FlexBetween>

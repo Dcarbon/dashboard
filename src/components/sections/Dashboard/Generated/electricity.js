@@ -42,49 +42,45 @@ function ElectricityGenerated({ iotSelected }) {
     [dispatch]
   );
   //  Lấy Metrics
-  const getMetrics = useCallback(() => {
-    if (payload?.iotId && payload?.sensorId) {
-      let newDate = new Date();
-      let to = Math.round(newDate.getTime() / 1000);
+  const getMetrics = useCallback(
+    (newPayload) => {
+      if (
+        (payload?.iotId > 0 && payload?.sensorId > 0) ||
+        (newPayload?.iotId > 0 && newPayload?.sensorId > 0)
+      ) {
+        let newDate = new Date();
+        let to = Math.round(newDate.getTime() / 1000);
+        newDate?.setUTCDate(newDate?.getUTCDate() - 6);
+        let from = Math.round(newDate.getTime() / 1000); // day 7th before
+        handleGetSensorMetrics({ ...payload, ...newPayload, from, to });
+      }
+    },
+    [handleGetSensorMetrics, payload]
+  );
 
-      newDate?.setUTCDate(newDate?.getUTCDate() - 6);
-      let from = Math.round(newDate.getTime() / 1000); // day 7th before
-      handleGetSensorMetrics({ ...payload, from, to });
-    }
-  }, [handleGetSensorMetrics, payload]);
   useEffect(() => {
-    //  set Iot Id
-    if (iotSelected !== payload?.iotId) {
-      setPayload({ ...payload, iotId: iotSelected });
-    }
-    //  set Sensor Id
     let sensorId =
       sensorState?.sensors?.length > 0 ? sensorState?.sensors[0].id : 0;
-    if (sensorId !== payload?.sensorId) {
-      setPayload({ ...payload, sensorId });
-    }
-  }, [iotSelected, payload, sensorState]);
 
+    if (
+      iotSelected > 0 &&
+      sensorId > 0 &&
+      !sensorState?.loadingSensorFirstTime
+    ) {
+      console.log("__________");
+      console.log("--Metric 1st---", [iotSelected, sensorId]);
+      dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: true });
+      setPayload({ ...payload, iotId: iotSelected, sensorId });
+      getMetrics({ ...payload, iotId: iotSelected, sensorId });
+    }
+  }, [dispatch, getMetrics, iotSelected, payload, sensorState]);
   //  Lấy Metrics mỗi 5s
   useEffect(() => {
-    if (
-      !sensorState?.sensor_metrics?.length &&
-      payload?.iotId > 0 &&
-      payload?.sensorId > 0
-    ) {
-      getMetrics();
-    }
     const intervalGetMetrics = setInterval(getMetrics, 5000);
     return () => {
       clearInterval(intervalGetMetrics);
     };
-  }, [
-    getMetrics,
-    payload?.iotId,
-    payload?.sensorId,
-    sensorState?.sensor_metrics?.length,
-    sensorState?.sensors,
-  ]);
+  }, [getMetrics]);
 
   useEffect(() => {
     const metrics = sensorState?.sensor_metrics;

@@ -8,9 +8,9 @@
 
   background-position: center;
   background-size: cover;
-}
-.container {
-  padding: 40px 20px;
+  .container {
+    padding: 0;
+  }
 }
 .box {
   background: rgba(255, 255, 255, 0.08);
@@ -20,7 +20,7 @@
   border-radius: 10px;
   .left {
     flex: 1 0 0;
-    padding: 50px;
+    padding: 15px;
   }
   .right {
     position: relative;
@@ -39,26 +39,76 @@
     }
   }
 }
+@media (min-width: 575px) {
+  .section {
+    .container {
+      padding: 20px 20px;
+    }
+  }
+  .box {
+    .left {
+      padding: 40px;
+    }
+    .right {
+      width: 325px;
+      // width: 425px;
+      .cloud {
+        width: 120px;
+        margin-right: 0;
+      }
+    }
+  }
+}
 @media (min-width: 768px) {
-  .box .right {
-    width: 425px;
+  .section {
+    .container {
+      padding: 42px 44px;
+    }
+  }
+  .box {
+    .left {
+      padding: 62px 10px 62px 32px;
+    }
+    .right {
+      width: 250px;
+      padding: 0 20px 0 0;
+      .cloud {
+        width: 100px;
+        margin-right: -20px;
+        margin-top: -20px;
+      }
+    }
+  }
+}
+@media (min-width: 1024px) {
+  .box {
+    .left {
+      padding: 62px;
+      padding-right: 20px;
+    }
+    .right {
+      width: 300px;
+      .cloud {
+        width: 120px;
+      }
+    }
   }
 }
 @media (min-width: 1440px) {
-  .container {
-    padding: 62px 120px;
+  .section {
+    .container {
+      padding: 62px 120px;
+    }
   }
   .box {
     .left {
       padding: 100px 90px;
+      padding-right: 60px;
     }
     .right {
+      width: 425px;
       .cloud {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin-top: -20px;
-        margin-right: -20px;
+        width: 120px;
       }
     }
   }
