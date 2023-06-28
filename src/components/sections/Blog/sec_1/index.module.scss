@@ -19,6 +19,7 @@
   width: 300px;
   margin: 0px auto;
   position: relative;
+
   .field {
     padding: 14px 54px;
     width: 100%;
@@ -32,6 +33,32 @@
     transition: all 0.2s ease;
     &:hover {
       color: #72bf44;
+    }
+  }
+  @media (max-width: 767px) {
+    max-width: 90%;
+    form {
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .field {
+      padding: 10px;
+      text-align: center;
+    }
+    .btn {
+      padding: 10px 20px;
+      position: static;
+      top: unset;
+      left: unset;
+      background-color: rgba($color: #888888a1, $alpha: 0.5);
+      border-radius: 5px;
+      &:hover {
+        background-color: rgba($color: #d3d3d3d3, $alpha: 0.5);
+      }
     }
   }
 }

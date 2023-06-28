@@ -51,7 +51,7 @@ function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
   return (
     <CollapseTab
       color="green"
-      title="CARBON minted"
+      title="Carbon minted"
       strongNumb={strongNumb}
       unit="carbon"
       isOpen={Boolean(currentTab === 1)}

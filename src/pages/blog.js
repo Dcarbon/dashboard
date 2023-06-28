@@ -69,7 +69,9 @@ function Blog() {
     fetcherPage
   );
   if (errpage) {
-    if (handleErr(errpage).status === 404) {
+    let handleErred = handleErr(errpage);
+
+    if (handleErred?.status === 404) {
       return <ComingSoon />;
     } else {
       return <h1>Lỗi trang</h1>;

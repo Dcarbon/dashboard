@@ -85,6 +85,8 @@ const sensorsReducer = (state = initsensorsState, action) => {
       return {
         ...state,
         loadingSensorFirstTime: action.payload,
+        sensors: null,
+        sensor_metrics: null,
       };
     default:
       return state;

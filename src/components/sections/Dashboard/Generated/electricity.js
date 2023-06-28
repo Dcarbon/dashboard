@@ -96,7 +96,6 @@ function ElectricityGenerated({ iotSelected }) {
     const GET_STRONG_NUMB = () => {
       const data = metrics?.length > 0 ? metrics[metrics?.length - 1] : null;
       const numb = data ? getAmount(data) : 0;
-      console.log("n-", numb);
       setStrongNumb(numb);
     };
     // SET new strong numb if new iot, sonsor

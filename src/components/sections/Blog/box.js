@@ -1,6 +1,6 @@
 import { handleAttributes, handleImage } from "src/tools/const";
 import stls from "./index.module.scss";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import Image from "next/image";
 import Heading from "src/components/ui/Heading";
 import dateFormat from "dateformat";
@@ -27,19 +27,20 @@ function PostBox({
   );
   return (
     <div className={`${boxClassName ?? ""}`}>
-      <div className={`${stls.image} ${imageClassName ?? ""}`}>
-        <Link href={"/post/" + data?.slug}>
-          <Image
-            unoptimized
-            quality={10}
-            src={handleImage(attributes)}
-            alt={attributes?.alt ?? ""}
-            width={1188}
-            height={584}
-            style={{ objectPosition: data?.position ?? "center" }}
-          />
-        </Link>
-      </div>
+      <Link
+        className={`${stls.image} ${imageClassName ?? ""}`}
+        href={"/post/" + data?.slug}
+      >
+        <Image
+          unoptimized
+          quality={10}
+          src={handleImage(attributes)}
+          alt={attributes?.alt ?? ""}
+          width={1188}
+          height={584}
+          style={{ objectPosition: data?.position ?? "center" }}
+        />
+      </Link>
       <div className={stls.content}>
         {data?.blog_category?.data && (
           <Heading Tag={"h5"} className={stls.tag}>

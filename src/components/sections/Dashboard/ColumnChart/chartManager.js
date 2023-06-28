@@ -112,7 +112,12 @@ export default function DcarbonChart({
   handleValue,
 }) {
   const [options, setOptions] = useState(optionsDefault);
-  const [series, setSeries] = useState([]);
+  const [series, setSeries] = useState([
+    {
+      name: "duration",
+      data: [],
+    },
+  ]);
 
   // Step 2 : Filter value adapt with time
   useEffect(() => {
@@ -139,6 +144,14 @@ export default function DcarbonChart({
             enabled: true,
             custom: function (props) {
               const { series, seriesIndex, dataPointIndex } = props;
+              console.log("----", {
+                durType,
+                arrTime: arrTime[dataPointIndex],
+              });
+              console.log(
+                "-getStringDay-",
+                getStringDay(durType, arrTime[dataPointIndex])
+              );
               return (
                 '<div class="arrow_box">' +
                 '<h4 class="title"><b class="strong">' +

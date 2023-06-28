@@ -216,6 +216,7 @@ function SliderGroup({ images, projectId }) {
                 return (
                   <div key={item?.id} className={stls.img}>
                     <Image
+                      className={stls.img_}
                       unoptimized
                       quality={50}
                       src={item?.image}
@@ -226,7 +227,6 @@ function SliderGroup({ images, projectId }) {
                         maxWidth: "100%",
                         width: "auto",
                         height: "auto",
-                        maxHeight: "450px",
                       }}
                     />
                   </div>
