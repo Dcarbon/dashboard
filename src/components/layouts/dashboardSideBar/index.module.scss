@@ -1,13 +1,14 @@
-.boxMiddle{
+.boxMiddle {
   display: block;
-  @media (min-width : 768px) and (max-width : 1023px) {
+  @media (min-width: 768px) and (max-width: 1023px) {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
     gap: 40px;
-    &> * {
+    & > * {
       flex: 0 1 auto;
-      width: 50%;
+      width: calc(50% - 20px);
     }
   }
 }

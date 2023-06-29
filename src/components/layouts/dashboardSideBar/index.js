@@ -1,6 +1,6 @@
 import ScrollBox from "src/components/ui/ScrollBox";
 import stls from "./index.module.scss";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import InfoProject from "src/components/sections/Dashboard/InforProject";
 import CarbonGenerated from "src/components/sections/Dashboard/Generated/carbon";
 import CollapseTab from "src/components/sections/Dashboard/CollapseTab";
@@ -12,8 +12,6 @@ function DashboardSideBar({
   iotSelected,
   setIotSelected,
 }) {
-  const [currentTab, setCurrentTab] = useState(1);
-
   return (
     <div className={className}>
       <ScrollBox disableX>
@@ -23,29 +21,25 @@ function DashboardSideBar({
             iotSelected={iotSelected}
             setIotSelected={setIotSelected}
           />
-          {iotSelected > 0 && (
-            <Fragment>
-              <div className={stls.boxMiddle}>
-                {iotSelected && (
-                  <CollapseTab disable color="blue" title="Info project">
-                    <InfoProject />
-                  </CollapseTab>
-                )}
 
-                <CarbonGenerated
-                  iotSelected={iotSelected}
-                  currentTab={currentTab}
-                  setCurrentTab={setCurrentTab}
-                />
-
-                <ElectricityGenerated
-                  iotSelected={iotSelected}
-                  currentTab={currentTab}
-                  setCurrentTab={setCurrentTab}
-                />
-              </div>
-            </Fragment>
-          )}
+          <Fragment>
+            <div className={stls.boxMiddle}>
+              {iotSelected && (
+                <CollapseTab disable color="blue" title="Info project">
+                  <InfoProject />
+                </CollapseTab>
+              )}
+              {/* Chart  */}
+              {/* Chart  */}
+              {/* Chart  */}
+              <CarbonGenerated iotSelected={iotSelected} />
+              {/* electric and biogas */}
+              {/* electric and biogas */}
+              {/* electric and biogas */}
+              {/* electric and biogas */}
+              <ElectricityGenerated iotSelected={iotSelected} />
+            </div>
+          </Fragment>
         </div>
       </ScrollBox>
     </div>

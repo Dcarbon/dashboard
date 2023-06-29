@@ -20,7 +20,7 @@
     "@react-three/drei": "9.70.0",
     "@react-three/fiber": "^8.13.0",
     "@reduxjs/toolkit": "^1.9.5",
-    "apexcharts": "^3.39.0",
+    "apexcharts": "^3.41.0",
     "axios": "^1.4.0",
     "bignumber.js": "^9.1.1",
     "dateformat": "^5.0.3",

@@ -64,7 +64,7 @@ function InfoProject() {
           <li className={stls.itemRow}>
             <div>Project status</div>
             <div>
-              Active
+              {isActive ? "Active" : "Deactive"}
               <span
                 className={`${stls.status} ${
                   isActive ? stls.true : stls.false
@@ -156,7 +156,6 @@ function InfoProject() {
           )}
         </Collapse>
       )}
-
       <div className="text-right">
         <Button
           className={stls.btnDetails}

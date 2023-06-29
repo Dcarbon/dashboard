@@ -99,7 +99,6 @@ function ElectricityGenerated({ iotSelected }) {
       setStrongNumb(numb);
     };
     // SET new strong numb if new iot, sonsor
-
     if (iotSelected > 0 && sensorId > 0 && metrics?.length > 0) {
       GET_STRONG_NUMB();
     }

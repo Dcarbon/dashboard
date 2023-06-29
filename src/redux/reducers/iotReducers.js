@@ -47,11 +47,10 @@ const iotReducer = (state = initIotState, action) => {
         latest: action.type,
       };
     case IOTAct.GET_IOT_MINTED.REQUEST:
-      console.log("GET_IOT_MINTED---------------request ", { action, res });
+      // console.log("GET_IOT_MINTED---------------request ", { action, res });
       return {
         ...state,
         loading: false,
-        iot_minted: null,
         error: null,
         error_code: null,
         latest: action.type,

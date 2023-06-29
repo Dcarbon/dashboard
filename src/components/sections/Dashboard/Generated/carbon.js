@@ -1,76 +1,85 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import stls from "./index.module.scss";
 import CollapseTab from "../CollapseTab";
-import BigNumber from "bignumber.js";
-import ColumnChart from "../ColumnChart";
 import DcarbonAPI from "src/tools/hook";
+import {
+  Get_Duration_by_Type,
+  getTimeLine,
+} from "../ColumnChart/thisColumnTool";
+import DcarbonDuration from "../ColumnChart/durationType";
+import NewChart from "../ColumnChart/testNewChart";
+//
+//
+function CarbonGenerated({ iotSelected }) {
+  const [openTab, setOpenTab] = useState(true);
+  const [durType, setDurType] = useState(3);
 
-//
-//
-//
-//
-function CarbonGenerated({ iotSelected, currentTab, setCurrentTab }) {
-  const [payload, setPayload] = useState({
-    iotId: 0,
-    from: 0,
-    to: 0,
-  });
-  const [durType, setDurType] = useState(0);
-  const [arrData, setArrData] = useState(null);
+  const [time_split_by_durtype, setTime_split_by_durtype] = useState([]);
+
   const [strongNumb, setStrongNumb] = useState(0);
   const dispatch = useDispatch();
   const iotState = useSelector(new DcarbonAPI().GetIOTState);
-  const getAmount = (item) => {
-    const hexAmount = new BigNumber(item.amount.toLocaleLowerCase());
-    const reduceAmount = hexAmount.div("1e9");
-    return reduceAmount.toFixed(4);
-    // return reduceAmount;
-  };
+  const iot_minted = useMemo(
+    () => iotState?.iot_minted,
+    [iotState?.iot_minted]
+  );
+
   // call back :  Handle get IotMinted
   const handleGetIotMinted = useCallback(
     (newPayload) => {
-      setPayload({ ...newPayload });
       dispatch({ type: IOTAct.GET_IOT_MINTED.REQUEST, payload: newPayload });
     },
     [dispatch]
   );
-  // Step 2 : Get IotMinted
+  // STEP 1
+  // STEP 1 GET Iot minted by iotId and duration time
+  // STEP 1
+  // STEP 1
+  // STEP 1
   useEffect(() => {
-    if (iotSelected !== payload?.iotId) {
-      // get iot minted
-      handleGetIotMinted({ ...payload, iotId: iotSelected });
-      setArrData(null);
+    if (iotSelected > 0) {
+      // get to and from by durtype
+      const newFrom_To = Get_Duration_by_Type(3);
+      const newArrTime = [
+        getTimeLine(0),
+        getTimeLine(1),
+        getTimeLine(2),
+        getTimeLine(3),
+      ];
+      setTime_split_by_durtype(newArrTime);
+      handleGetIotMinted({ iotId: iotSelected, ...newFrom_To });
+      // get new iot minted
+      // console.log("iotSelected", iotSelected);
+      // console.log("durType", durType);
     }
-  }, [handleGetIotMinted, iotSelected, payload]);
-  const handleDataChangeDurType = (newDur) => {
-    handleGetIotMinted({ ...payload, from: newDur.from, to: newDur.to });
+  }, [durType, handleGetIotMinted, iotSelected]);
+
+  const handleChangeDurType = (newDurType) => {
+    setDurType(newDurType);
   };
 
   return (
     <CollapseTab
       color="green"
-      title="Carbon minted"
+      title="Carbon credits earned"
       strongNumb={strongNumb}
       unit="carbon"
-      isOpen={Boolean(currentTab === 1)}
-      handleOpen={() => setCurrentTab(currentTab !== 1 ? 1 : 0)}
+      isOpen={openTab}
+      handleOpen={() => setOpenTab(!openTab)}
     >
       <div className={stls.carbonMinted}>
-        <ColumnChart
-          unit="carbon"
-          data={iotState?.iot_minted}
-          payload={payload}
-          setPayload={setPayload}
-          durType={durType}
-          setDurType={setDurType}
-          arrData={arrData}
-          setArrData={setArrData}
-          handleValue={getAmount}
-          setStrongNumb={setStrongNumb}
-          handleDataChangeDurType={handleDataChangeDurType}
-        />
+        <div className={stls.carbonMinted}>
+          <NewChart
+            durType={durType}
+            data={iot_minted}
+            time_split_by_durtype={time_split_by_durtype}
+            setStrongNumb={setStrongNumb}
+          />
+
+          <DcarbonDuration durType={durType} setDurType={handleChangeDurType} />
+        </div>
       </div>
     </CollapseTab>
   );
