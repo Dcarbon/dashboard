@@ -2,16 +2,16 @@
   "name": "d-carbon-website",
   "version": "0.1.0",
   "private": true,
-  "description": "v0.1.1 : connect to api, add project info",
+  "description": "v0.1.3 : connect to api, add project info",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "dk-cache": "cd docker-cache && docker build -t harbor.viet-tin.com/dcarbon/dashboard:cache_1 .",
-    "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.1.2 .",
-    "dk-run": "docker run -p 3232:3000 harbor.viet-tin.com/dcarbon/dashboard:v0.1.2",
-    "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:v0.1.2"
+    "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.1.3 .",
+    "dk-run": "docker run -p 3232:3000 harbor.viet-tin.com/dcarbon/dashboard:v0.1.3",
+    "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:v0.1.3"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",

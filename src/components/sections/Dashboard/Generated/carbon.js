@@ -9,7 +9,7 @@ import {
   getTimeLine,
 } from "../ColumnChart/thisColumnTool";
 import DcarbonDuration from "../ColumnChart/durationType";
-import NewChart from "../ColumnChart/testNewChart";
+import DcarbonChart from "../ColumnChart/DcarbonChart";
 //
 //
 function CarbonGenerated({ iotSelected }) {
@@ -71,7 +71,7 @@ function CarbonGenerated({ iotSelected }) {
     >
       <div className={stls.carbonMinted}>
         <div className={stls.carbonMinted}>
-          <NewChart
+          <DcarbonChart
             durType={durType}
             data={iot_minted}
             time_split_by_durtype={time_split_by_durtype}

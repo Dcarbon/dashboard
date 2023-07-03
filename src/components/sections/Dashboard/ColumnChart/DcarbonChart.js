@@ -10,7 +10,7 @@ import {
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-function NewChart({ data, time_split_by_durtype, durType, setStrongNumb }) {
+function DcarbonChart({ data, time_split_by_durtype, durType, setStrongNumb }) {
   const [width, setWidth] = useState(0);
 
   const BOXREF = useRef(null);
@@ -116,4 +116,4 @@ function NewChart({ data, time_split_by_durtype, durType, setStrongNumb }) {
   );
 }
 
-export default NewChart;
+export default DcarbonChart;
