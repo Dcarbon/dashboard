@@ -59,9 +59,11 @@ class DcarbonAPI {
   GetCustomState(state) {
     return state?.customization;
   }
+
   /**
    * @param {object} state
    * @returns {{
+   * count :number,
    * iot: {
    *   id: Number,
    *   project: Number,
@@ -163,7 +165,6 @@ class DcarbonAPI {
    * @param {*} amount
    * @returns {{
    * loading : boolean,
-   * 
    * latest : boolean,
    * error : string,
    * error_code : string

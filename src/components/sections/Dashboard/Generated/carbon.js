@@ -63,7 +63,7 @@ function CarbonGenerated({ iotSelected }) {
   return (
     <CollapseTab
       color="green"
-      title="Carbon credits earned"
+      title="Carbon credit earned"
       strongNumb={strongNumb}
       unit="carbon"
       isOpen={openTab}

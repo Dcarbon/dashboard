@@ -12,12 +12,26 @@ export default function Dashboard() {
       <div
         className={`${stls.main} ${features?.length > 0 ? stls.active : ""}`}
       >
+        {/* Map */}
+        {/* - hiển thị thông tin tổng số  generator (iot) */}
+        {/* - hiển thị vị trí node trên bản đồ , mỗi node sẽ có các iot*/}
+        {/* - click node -> get iot -> gán vào iotSelected, features (generators)  */}
         <MapBoxPage
           setFeatures={setFeatures}
           className={stls?.map}
           iotSelected={iotSelected}
           setIotSelected={setIotSelected}
         />
+
+        {/* Side */}
+        {/* - Liệt kê generators */}
+        {/* - hiển thị vị trí node trên bản đồ */}
+        {/* - click node -> get iot -> gán vào iotSelected, features (generators)  */}
+        {/* - khi có iot :  */}
+        {/* ------------ find project => info project (nếu có mảng trả về và thời gian số liệu cách hiện tại 5s => đang hoạt đông ) */}
+        {/* ------------ biểu đồ  */}
+        {/* ------------ power nếu type === 1 && thời gian phù hợp */}
+        {/* ------------ nếu có number power * số liệu đã cho */}
         <DashboardSideBar
           features={features}
           setFeatures={setFeatures}

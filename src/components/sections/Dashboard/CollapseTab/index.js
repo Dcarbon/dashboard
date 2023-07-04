@@ -39,7 +39,7 @@ function CollapseTab({
             Total:{" "}
             {strongNumb ? (
               <Fragment>
-                <b className="text-white">{strongNumb}</b>
+                <b className="text-white">{strongNumb} </b>
                 <span>
                   {unit === "m3" ? (
                     <>

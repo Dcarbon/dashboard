@@ -1,68 +1,18 @@
 import { useEffect, useState } from "react";
-import { Layer, Map, Source } from "react-map-gl";
+import { Map } from "react-map-gl";
 import OverView from "./overview";
-// import MyMarkers from "./markers";
 import { useDispatch, useSelector } from "react-redux";
 import { customizationAction } from "src/redux/actions/customizationAction";
 import DcarbonAPI from "src/tools/hook";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
+import MySource from "./source";
+import { layer_1, layer_2 } from "./libs";
 
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
-const layer_1 = {
-  id: "boundaryLayer",
-  type: "line",
-  source: "iott_all",
-  "source-layer": "boundary",
-  layout: {
-    // Make the layer visible by default.
-    visibility: "visible",
-    "line-cap": "round",
-  },
-  paint: {
-    "line-color": [
-      "case",
-      ["boolean", ["feature-state", "hover"], false],
-      "#ffffff",
-      "#72BF44",
-    ],
-    "line-width": [
-      "case",
-      ["boolean", ["feature-state", "hover"], false],
-      8,
-      2,
-    ],
-    "line-opacity": [
-      "case",
-      ["boolean", ["feature-state", "hover"], false],
-      0.9,
-      0.4,
-    ],
-  },
-};
-const layer_2 = {
-  id: "hexagonLayer",
-  type: "fill",
-  source: "iott_all",
-  "source-layer": "hexagon",
-  layout: {
-    visibility: "visible",
-  },
-  paint: {
-    "fill-color": "#72BF44",
-    "fill-antialias": true,
-    "fill-opacity": [
-      "case",
-      ["boolean", ["feature-state", "hover"], false],
-      0.9,
-      0.6,
-    ],
-  },
-};
 function MapBoxPage({ className, setFeatures, setIotSelected }) {
   const [mymap, setMymap] = useState(null);
   const [lng, setLng] = useState(105.793123);
   const [lat, setLat] = useState(21.004998);
-  const [currentfeatures, setCurrentFeatures] = useState(null);
   const [zoom, setZoom] = useState(10);
   const newDcarbon = new DcarbonAPI();
   const customState = useSelector(newDcarbon.GetCustomState);
@@ -108,7 +58,6 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
           handleMultiFeatureState(false);
         }
         hoveredStateId = e.features[0].id;
-        setCurrentFeatures(handleDuplicateFeatures(e.features));
 
         handleMultiFeatureState(true);
       }
@@ -125,7 +74,6 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     //
     mymap.on("mouseleave", ["boundaryLayer", "hexagonLayer"], () => {
       if (hoveredStateId !== null) {
-        setCurrentFeatures(null);
         handleMultiFeatureState(false);
       }
       hoveredStateId = null;
@@ -144,7 +92,12 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     //
     //
     //
+
+    mymap.on("click", (e) => {
+      console.log("Click normal --------------- ", e);
+    });
     mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
+      console.warn("Click source --------------- ", e);
       if (e.features.length > 0) {
         hoveredStateId = e.features[0].id;
         listFeatures = handleDuplicateFeatures(e.features);
@@ -188,16 +141,9 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
           }
         }}
       >
-        <OverView features={currentfeatures} />
-        <Source
-          id="iott_all"
-          type="vector"
-          tiles={[process.env.NEXT_PUBLIC_MAPSOURCE]}
-          attribution="Show to users"
-        >
-          <Layer {...layer_1} />
-          <Layer {...layer_2} />
-        </Source>
+        {/* Hiển thị tổng số nodes */}
+        <OverView />
+        <MySource />
       </Map>
     </div>
   );

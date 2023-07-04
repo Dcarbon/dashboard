@@ -56,18 +56,24 @@ export const handleUrl = (url) => {
   if (url.startsWith("http")) {
     return url;
   }
-  return gateway + "/" + url;
+  let reqURL = gateway + "/" + url;
+  console.log(`-----------: `, reqURL);
+  return reqURL;
 };
 
 export function AxiosGet(url) {
+  // console.warn("AxiosGet--------GET");
   return axios.get(handleUrl(url), metaWithAuth());
 }
 export function AxiosDelete(url) {
+  // console.warn("AxiosDelete--------DELETE");
   return axios.delete(handleUrl(url), metaWithAuth());
 }
 export function AxiosPatch(url, options) {
+  // console.warn("AxiosPatch--------PATCH");
   return axios.patch(handleUrl(url), options, metaWithAuth());
 }
 export function AxiosPost(url, options) {
+  // console.warn("AxiosPost--------POST");
   return axios.post(handleUrl(url), options, metaWithAuth());
 }

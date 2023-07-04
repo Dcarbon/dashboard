@@ -3,6 +3,7 @@ import { handleResponse } from "../handle";
 
 export const initIotState = {
   iot: null,
+  count: null,
   iot_minted: null,
   error: null,
   error_code: null,
@@ -19,6 +20,46 @@ export const initIotState = {
 const iotReducer = (state = initIotState, action) => {
   const res = handleResponse(action);
   switch (action.type) {
+    //
+    //
+    //
+    //
+    // count iot
+    //
+    //
+    case IOTAct.COUNT_IOT.REQUEST:
+      // console.log("---------------request ", { action, res });
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        error_code: null,
+        latest: action.type,
+      };
+    case IOTAct.COUNT_IOT.SUCCESS:
+      // console.log("---------------SUCCESS ", res);
+      return {
+        ...state,
+        loading: true,
+        count: res.data?.count,
+        latest: action.type,
+      };
+    case IOTAct.COUNT_IOT.FAILURE:
+      // console.log("---------------FAILURE ", res);
+      return {
+        ...state,
+        loading: true,
+        error: res.error,
+        error_code: res.error_code,
+        latest: action.type,
+      };
+    //
+    //
+    //
+    //
+    // get iot
+    //
+    //
     case IOTAct.GET_IOT.REQUEST:
       // console.log("---------------request ", { action, res });
       return {

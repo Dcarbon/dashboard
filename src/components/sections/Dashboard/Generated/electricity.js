@@ -4,8 +4,43 @@ import DcarbonAPI from "src/tools/hook";
 import CollapseTab from "../CollapseTab";
 import { hexToString } from "src/tools/const";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-
+const getAmount = (item) => {
+  if (item?.data) {
+    const hexConverted = hexToString(item.data);
+    let newString = JSON.parse(hexConverted);
+    let valStr = newString?.indicator;
+    let val = valStr?.value || "";
+    return val / 1000 ?? "";
+  }
+  return 0;
+};
 function ElectricityGenerated({ iotSelected }) {
+  // REDUX
+  // REDUX
+  // REDUX
+  // REDUX
+  // REDUX
+  // REDUX
+  // REDUX
+  // REDUX
+  // REDUX
+  // REDUX
+  const dispatch = useDispatch();
+  const sensorState = useSelector(new DcarbonAPI().GetSensorsState);
+  // sensor list and metrics
+  const sensors = useMemo(() => sensorState?.sensors, [sensorState?.sensors]);
+  const sensor_metrics = useMemo(
+    () => sensorState?.sensor_metrics,
+    [sensorState?.sensor_metrics]
+  );
+  const sensorId = useMemo(
+    () => {
+      return sensors?.length > 0 ? sensors[0].id : 0;
+    }, // Lấy sensor id đầu tiên trong mảng vì mảng trả về sensor giống nhau
+    [sensors]
+  );
+  //
+  const [strongNumb, setStrongNumb] = useState(0);
   const [payload, setPayload] = useState({
     iotId: 0,
     from: 0,
@@ -14,21 +49,7 @@ function ElectricityGenerated({ iotSelected }) {
     limit: 50,
     skip: 0,
   });
-  const sensorState = useSelector(new DcarbonAPI().GetSensorsState);
 
-  const [strongNumb, setStrongNumb] = useState(0);
-  const dispatch = useDispatch();
-
-  const getAmount = (item) => {
-    if (item?.data) {
-      const hexConverted = hexToString(item.data);
-      let newString = JSON.parse(hexConverted);
-      let valStr = newString?.indicator;
-      let val = valStr?.value || "";
-      return val / 1000 ?? "";
-    }
-    return 0;
-  };
   // call back :  Handle get IotMinted
 
   const handleGetSensorMetrics = useCallback(
@@ -49,27 +70,37 @@ function ElectricityGenerated({ iotSelected }) {
         (newPayload?.iotId > 0 && newPayload?.sensorId > 0)
       ) {
         let newDate = new Date();
-        let to = Math.round(newDate.getTime() / 1000);
-        newDate?.setUTCDate(newDate?.getUTCDate() - 6);
-        let from = Math.round(newDate.getTime() / 1000); // day 7th before
+        let to = Math.ceil(newDate.getTime() / 1000);
+        console.log("To --- payload ", new Date(to * 1000));
+        newDate?.setUTCMinutes(newDate?.getUTCMinutes() - 1);
+        let from = Math.ceil(newDate.getTime() / 1000); // day 7th before
+        console.log("From --- payload ", new Date(from * 1000));
+        // console.log(
+        //   "Gọi từ 7 ngày trước ",
+        //   dateformat(new Date(from * 1000), "dd/mm/yyyy") +
+        //     "-" +
+        //     dateformat(new Date(to * 1000), "dd/mm/yyyy")
+        // );
         handleGetSensorMetrics({ ...payload, ...newPayload, from, to });
       }
     },
     [handleGetSensorMetrics, payload]
   );
+  const GET_STRONG_NUMB = useCallback(() => {
+    let leng = sensor_metrics?.length;
+    const data = leng > 0 ? sensor_metrics[leng - 1] : null; // lấy số liệu của metric cuối cùng trong mảng
+    const numb = data ? getAmount(data) : 0;
+    setStrongNumb(numb);
+  }, [sensor_metrics]);
 
-  const sensorId = useMemo(
-    () => (sensorState?.sensors?.length > 0 ? sensorState?.sensors[0].id : 0),
-    [sensorState?.sensors]
-  );
   useEffect(() => {
     if (
       iotSelected > 0 &&
       sensorId > 0 &&
       !sensorState?.loadingSensorFirstTime
     ) {
-      console.log("__________");
-      console.log("--Metric 1st---", [iotSelected, sensorId]);
+      // console.log("__________");
+      // console.log("--Metric 1st---", [iotSelected, sensorId]);
       dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: true });
       let newPay = { ...payload, iotId: iotSelected, sensorId };
       setPayload(newPay);
@@ -86,47 +117,32 @@ function ElectricityGenerated({ iotSelected }) {
   //  Lấy Metrics mỗi 5s
   useEffect(() => {
     const intervalGetMetrics = setInterval(GET_METRICS, 5000);
-    return () => {
-      clearInterval(intervalGetMetrics);
-    };
+    return () => clearInterval(intervalGetMetrics);
   }, [GET_METRICS]);
+  //
 
   useEffect(() => {
-    const metrics = sensorState?.sensor_metrics;
-    const GET_STRONG_NUMB = () => {
-      const data = metrics?.length > 0 ? metrics[metrics?.length - 1] : null;
-      const numb = data ? getAmount(data) : 0;
-      setStrongNumb(numb);
-    };
-    // SET new strong numb if new iot, sonsor
-    if (iotSelected > 0 && sensorId > 0 && metrics?.length > 0) {
-      GET_STRONG_NUMB();
-    }
+    // SET new strong numb
     // set strong interval
-    let newInterval = setInterval(GET_STRONG_NUMB, 5000);
-    return () => {
-      clearInterval(newInterval);
-    };
-  }, [iotSelected, sensorId, sensorState?.sensor_metrics]);
-  useEffect(() => {
-    if (sensorState?.sensors?.length === 0) {
-      setStrongNumb(0);
-    }
-  }, [sensorState?.sensors]);
+    let newInterval = setInterval(GET_STRONG_NUMB, 1000);
+    return () => clearInterval(newInterval);
+  }, [GET_STRONG_NUMB, iotSelected, sensorId, sensor_metrics?.length]);
 
   return (
     <Fragment>
       <CollapseTab
         color="blue"
         title="Electricity generated"
-        strongNumb={strongNumb}
+        strongNumb={strongNumb || "---"}
         unit="kWh"
         disable
       />
       <CollapseTab
         color="green"
         title="Biogas treated"
-        strongNumb={Number(strongNumb * 0.528888889).toFixed(3)}
+        strongNumb={
+          strongNumb ? Number(strongNumb * 0.528888889).toFixed(3) : "---"
+        }
         unit="m3"
         disable
       />

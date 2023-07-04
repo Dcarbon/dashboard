@@ -1,6 +1,5 @@
 import { SensorsACT } from "../actions/sensorsAction";
 import { handleResponse } from "../handle";
-
 export const initsensorsState = {
   sensors: null,
   sensor_metrics: null,
@@ -26,7 +25,10 @@ const sensorsReducer = (state = initsensorsState, action) => {
         latest: action.type,
       };
     case SensorsACT.GET_SENSORS.SUCCESS:
-      // console.log("---------------SUCCESS ", { action, res });
+      console.log("SensorsACT.GET_SENSORS.SUCCESS---------------SUCCESS ", {
+        action,
+        res,
+      });
       return {
         ...state,
         sensors: res.data,
@@ -55,10 +57,6 @@ const sensorsReducer = (state = initsensorsState, action) => {
         latest: action.type,
       };
     case SensorsACT.GET_SENSORS_METRICS.SUCCESS:
-      // console.info("GET_SENSORS_METRICS---------------SUCCESS ", {
-      //   action,
-      //   res,
-      // });
       return {
         ...state,
         loading: true,

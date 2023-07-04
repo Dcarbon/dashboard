@@ -4,6 +4,10 @@ import { IOTAct } from "../actions/iotAction";
 
 export const watcherIot = [
   takeEvery(
+    IOTAct.COUNT_IOT.REQUEST,
+    grpcCall(countIot, IOTAct.COUNT_IOT.SUCCESS, IOTAct.COUNT_IOT.FAILURE)
+  ),
+  takeEvery(
     IOTAct.GET_IOT.REQUEST,
     grpcCall(getIot, IOTAct.GET_IOT.SUCCESS, IOTAct.GET_IOT.FAILURE)
   ),
@@ -17,6 +21,10 @@ export const watcherIot = [
   ),
 ];
 
+function countIot() {
+  var url = `iots/count`;
+  return AxiosGet(url);
+}
 function getIot(action) {
   var url = `iots/${action.payload}`;
   return AxiosGet(url);
@@ -24,5 +32,6 @@ function getIot(action) {
 
 function getIotMinted(action) {
   var url = `iots/${action.payload.iotId}/mint-sign/?from=${action.payload.from}&to=${action.payload.to}`;
+  // var url = `iots/${action.payload.iotId}/minted/?from=${action.payload.from}&to=${action.payload.to}&interval=${action.payload.interval}`;
   return AxiosGet(url);
 }

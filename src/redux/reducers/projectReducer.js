@@ -51,6 +51,12 @@ const projectReducer = (state = initProjectState, action) => {
         error: null,
         error_code: null,
       };
+
+    case ProjectACT.CLEAR_PROJECT:
+      return {
+        ...state,
+        project: null,
+      };
     default:
       return state;
   }
