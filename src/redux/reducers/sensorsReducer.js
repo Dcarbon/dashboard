@@ -25,10 +25,10 @@ const sensorsReducer = (state = initsensorsState, action) => {
         latest: action.type,
       };
     case SensorsACT.GET_SENSORS.SUCCESS:
-      console.log("SensorsACT.GET_SENSORS.SUCCESS---------------SUCCESS ", {
-        action,
-        res,
-      });
+      // console.log("SensorsACT.GET_SENSORS.SUCCESS---------------SUCCESS ", {
+      //   action,
+      //   res,
+      // });
       return {
         ...state,
         sensors: res.data,

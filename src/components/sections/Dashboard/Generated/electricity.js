@@ -71,10 +71,10 @@ function ElectricityGenerated({ iotSelected }) {
       ) {
         let newDate = new Date();
         let to = Math.ceil(newDate.getTime() / 1000);
-        console.log("To --- payload ", new Date(to * 1000));
+        // console.log("To --- payload ", new Date(to * 1000));
         newDate?.setUTCMinutes(newDate?.getUTCMinutes() - 1);
         let from = Math.ceil(newDate.getTime() / 1000); // day 7th before
-        console.log("From --- payload ", new Date(from * 1000));
+        // console.log("From --- payload ", new Date(from * 1000));
         // console.log(
         //   "Gọi từ 7 ngày trước ",
         //   dateformat(new Date(from * 1000), "dd/mm/yyyy") +
@@ -89,6 +89,7 @@ function ElectricityGenerated({ iotSelected }) {
   const GET_STRONG_NUMB = useCallback(() => {
     let leng = sensor_metrics?.length;
     const data = leng > 0 ? sensor_metrics[leng - 1] : null; // lấy số liệu của metric cuối cùng trong mảng
+
     const numb = data ? getAmount(data) : 0;
     setStrongNumb(numb);
   }, [sensor_metrics]);

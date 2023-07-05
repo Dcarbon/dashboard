@@ -4,19 +4,14 @@ import FlexBetween from "../Stack/flex-between";
 
 function Error({ err, err_code, clearErrType }) {
   const [thisErr, setThisErr] = useState(null);
-  const [thisErrCode, setThisErrCode] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
     if (err) {
       setThisErr(err);
-      setThisErrCode(err_code);
       dispatch({ type: clearErrType });
     }
   }, [clearErrType, dispatch, err, err_code]);
-  const handleClose = () => {
-    setThisErr(null);
-    setThisErrCode(null);
-  };
+
   return (
     <Fragment>
       {/* <!-- Main modal --> */}

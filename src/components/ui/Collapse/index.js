@@ -1,10 +1,18 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import stls from "./index.module.scss";
 function Collapse({ isOpen, children }) {
   const boxConetentREF = useRef(null);
   const contentREF = useRef(null);
-  const clientHeight = useMemo(() => {
-    return contentREF?.current?.clientHeight;
+  const [cH, setCH] = useState(0);
+
+  useEffect(() => {
+    let intervalColl = setInterval(() => {
+      setCH(contentREF.current?.clientHeight);
+    }, 500);
+
+    return () => {
+      clearInterval(intervalColl);
+    };
   }, []);
 
   return (
@@ -12,7 +20,7 @@ function Collapse({ isOpen, children }) {
       ref={boxConetentREF}
       className={stls.collapse}
       style={{
-        maxHeight: isOpen ? clientHeight + "px" : 0,
+        maxHeight: isOpen ? cH + "px" : 0,
       }}
     >
       <div ref={contentREF}>{children}</div>

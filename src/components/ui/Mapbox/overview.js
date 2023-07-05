@@ -18,10 +18,6 @@ function OverView() {
       getCount();
       setIsLoaded(true);
     }
-    let getInterval = setInterval(getCount, 10000);
-    return () => {
-      clearInterval(getInterval);
-    };
   }, [count, dispatch, isLoaded]);
 
   return (

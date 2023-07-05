@@ -34,7 +34,6 @@ function CollapseTab({
           <Heading Tag={"h5"} className={`${stls.heading} text-white`}>
             {title}
           </Heading>
-
           <p className={stls.subtitle}>
             Total:{" "}
             {strongNumb ? (
@@ -55,6 +54,7 @@ function CollapseTab({
             )}
           </p>
         </div>
+
         {!disable && (
           <div
             className={`w-8 h-8 p-1 cursor-pointer transition duration-300 ${
@@ -66,6 +66,7 @@ function CollapseTab({
           </div>
         )}
       </div>
+
       <div className={`${stls.content} ${isOpen ? stls.active : ""}`}>
         {disable ? children : <Collapse isOpen={isOpen}>{children}</Collapse>}
       </div>

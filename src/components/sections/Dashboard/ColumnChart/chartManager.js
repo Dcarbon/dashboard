@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import { getDataSeries, getStringDay, optionsDefault } from "./thisColumnTool";
+import { getDataSeries, getStringDay, optionsDefault } from "./tools";
 // import ReactApexChart from "react-apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 //

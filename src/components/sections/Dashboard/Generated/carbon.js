@@ -4,10 +4,7 @@ import { IOTAct } from "src/redux/actions/iotAction";
 import stls from "./index.module.scss";
 import CollapseTab from "../CollapseTab";
 import DcarbonAPI from "src/tools/hook";
-import {
-  Get_Duration_by_Type,
-  getTimeLine,
-} from "../ColumnChart/thisColumnTool";
+import { Get_Duration_by_Type, getTimeLine } from "../ColumnChart/tools";
 import DcarbonDuration from "../ColumnChart/durationType";
 import DcarbonChart from "../ColumnChart/DcarbonChart";
 //
@@ -39,26 +36,31 @@ function CarbonGenerated({ iotSelected }) {
   // STEP 1
   // STEP 1
   useEffect(() => {
-    if (iotSelected > 0) {
+    if (iotSelected && durType) {
+      console.log("CarbonGenerated ------------  ", iotSelected);
+      console.log("CarbonGenerated ------------  ", iotSelected);
+      console.log("CarbonGenerated ------------  ", iotSelected);
+      console.log("CarbonGenerated ------------  ", durType);
+      console.log("CarbonGenerated ------------  ", durType);
+      console.log("CarbonGenerated ------------  ", durType);
+
       // get to and from by durtype
-      const newFrom_To = Get_Duration_by_Type(3);
-      const newArrTime = [
-        getTimeLine(0),
-        getTimeLine(1),
-        getTimeLine(2),
-        getTimeLine(3),
-      ];
+      const newFrom_To = Get_Duration_by_Type(durType);
+      const newArrTime = getTimeLine(durType);
+      console.log("__________newArrTime", newArrTime);
       setTime_split_by_durtype(newArrTime);
-      handleGetIotMinted({ iotId: iotSelected, ...newFrom_To });
+      handleGetIotMinted({
+        iotId: iotSelected,
+        ...newFrom_To,
+        interval: durType > 2 ? 2 : 1, // interval : by day (1) || by month : (2)
+      });
       // get new iot minted
       // console.log("iotSelected", iotSelected);
       // console.log("durType", durType);
     }
   }, [durType, handleGetIotMinted, iotSelected]);
 
-  const handleChangeDurType = (newDurType) => {
-    setDurType(newDurType);
-  };
+  const handleChangeDurType = (newDurType) => setDurType(newDurType);
 
   return (
     <CollapseTab

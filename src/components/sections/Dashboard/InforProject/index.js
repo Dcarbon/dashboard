@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import stls from "./index.module.scss";
 import DcarbonAPI from "src/tools/hook";
@@ -13,7 +13,16 @@ import Collapse from "src/components/ui/Collapse";
 import CopyButton from "src/components/ui/Button/CopyButton";
 import dateFormat from "dateformat";
 import CollapseTab from "../CollapseTab";
-function InfoProject({ project, iot, sensor_metrics }) {
+import Error from "src/components/ui/Error";
+import { ProjectACT } from "src/redux/actions/projectAction";
+function InfoProject({
+  err,
+  project,
+  iot,
+  sensor_metrics,
+  showDetail,
+  setShowDetail,
+}) {
   // get project name
   const projectName = useMemo(() => {
     const descs = project?.descs;
@@ -21,8 +30,6 @@ function InfoProject({ project, iot, sensor_metrics }) {
       return descs[0].name;
     }
   }, [project?.descs]);
-
-  const [showDetail, setShowDetail] = useState(false);
 
   // handle Ether address
   const strCut = (str) => {
@@ -33,6 +40,13 @@ function InfoProject({ project, iot, sensor_metrics }) {
     let newD = new DcarbonAPI();
     return newD.ProjectInfo(project?.id);
   }, [project?.id]);
+
+  // useEffect(() => {
+  //   console.log("iot", iot);
+  //   console.log("project", project);
+  //   console.log("sensor_metrics", sensor_metrics);
+  //   console.log("projectDetail", projectDetail);
+  // }, [iot, project, projectDetail, sensor_metrics]);
 
   const specs = useMemo(() => project?.specs?.specs, [project?.specs?.specs]);
 
@@ -49,8 +63,7 @@ function InfoProject({ project, iot, sensor_metrics }) {
       return true;
     }
   }, [sensor_metrics]);
-  console.log("project", project);
-  console.log("projectDetail", projectDetail);
+
   const isDetailInfo = useMemo(
     () =>
       Boolean(
@@ -71,7 +84,7 @@ function InfoProject({ project, iot, sensor_metrics }) {
     ]
   );
   return (
-    <CollapseTab disable color="blue" title="Info project">
+    <CollapseTab disable color="blue" title={`Info project ${project?.id}`}>
       <div className={stls.infoProject}>
         <ul>
           <li className={stls.itemRow}>
@@ -109,8 +122,9 @@ function InfoProject({ project, iot, sensor_metrics }) {
             </li>
           )}
         </ul>
-
-        {project && (
+        {/* <p>is detail {isDetailInfo ? "yes" : "no"} </p>
+        <p>is showDetail {showDetail ? "yes" : "no"} </p> */}
+        {isDetailInfo && (
           <Collapse isOpen={showDetail}>
             <ul>
               {project?.createdAt && (
@@ -187,6 +201,7 @@ function InfoProject({ project, iot, sensor_metrics }) {
             </Button>
           </div>
         )}
+        <Error clearErrType={ProjectACT.CLEAR_ERR} err={err} />
       </div>
     </CollapseTab>
   );

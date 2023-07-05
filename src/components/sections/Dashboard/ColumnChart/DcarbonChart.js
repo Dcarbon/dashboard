@@ -1,39 +1,27 @@
 import dynamic from "next/dynamic";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  getAmount,
-  getDataSeries,
-  getStringDay,
-  optionsDefault,
-} from "./thisColumnTool";
+import { getAmount, getDataSeries, optionsDefault } from "./tools";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-function DcarbonChart({ data, time_split_by_durtype, durType, setStrongNumb }) {
+function DcarbonChart({ data, durType, time_split_by_durtype, setStrongNumb }) {
   const [width, setWidth] = useState(0);
 
   const BOXREF = useRef(null);
   const time_and_val = useMemo(() => {
-    let getS = (dur) =>
-      getDataSeries(time_split_by_durtype[dur], data, getAmount);
-    let newS_0 = getS(0);
-    let newS_1 = getS(1);
-    let newS_2 = getS(2);
-    let newS_3 = getS(3);
+    // console.log("time_split_by_durtype", time_split_by_durtype);
+    // console.log("data", data);
+    let getS = () =>
+      getDataSeries(time_split_by_durtype, data, durType, getAmount);
     return {
-      onlyTime: [
-        newS_0.onlyTime,
-        newS_1.onlyTime,
-        newS_2.onlyTime,
-        newS_3.onlyTime,
-      ],
-      onlyVal: [newS_0.onlyVal, newS_1.onlyVal, newS_2.onlyVal, newS_3.onlyVal],
+      onlyTime: getS().onlyTime,
+      onlyVal: getS().onlyVal,
     };
-  }, [data, time_split_by_durtype]);
+  }, [data, durType, time_split_by_durtype]);
 
   const options = useMemo(() => {
-    let newCategories = time_and_val.onlyTime[durType];
+    let newCategories = time_and_val.onlyTime;
     return {
       ...optionsDefault,
       chart: {
@@ -69,25 +57,34 @@ function DcarbonChart({ data, time_split_by_durtype, durType, setStrongNumb }) {
             "</b> carbon" +
             "</h4>" +
             "<span>" +
-            getStringDay(
-              durType,
-              time_and_val.onlyTime[durType][dataPointIndex]
-            ) +
+            // getStringDay(
+            //   durType,
+            //   // time_and_val.onlyTime[dataPointIndex]
+            // ) +
             "</span>" +
             "</div>"
           );
         },
       },
     };
-  }, [durType, time_and_val.onlyTime]);
+  }, [time_and_val.onlyTime]);
   // series
   // series
   const series = useMemo(() => {
-    let newSeries = [
-      { name: "durType-" + durType, data: time_and_val.onlyVal[durType] },
-    ];
-    return newSeries;
-  }, [durType, time_and_val.onlyVal]);
+    if (data?.length > 0) {
+      let newSeries = [
+        { name: "durType-" + durType, data: time_and_val.onlyVal[durType] },
+      ];
+      // let newSeries = data?.map((item) => item?.carbon);
+      console.log("newSeries", newSeries);
+      // return newSeries;
+    }
+    return [{ name: "duration", data: [] }];
+  }, [data?.length, durType, time_and_val.onlyVal]);
+  // resize
+  // resize
+  // resize
+  // resize
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -97,11 +94,20 @@ function DcarbonChart({ data, time_split_by_durtype, durType, setStrongNumb }) {
       clearInterval(interval);
     };
   }, []);
+  const lastCarbon = useMemo(() => {
+    if (data?.length > 0) {
+      let last = data[data?.length - 1];
+      return last?.carbon;
+    }
+  }, [data]);
   useEffect(() => {
-    const yearData = time_and_val?.onlyVal[3];
-    const filterTotal = yearData?.find((item) => item > 0);
-    setStrongNumb(filterTotal);
-  }, [setStrongNumb, time_and_val?.onlyVal]);
+    // const yearData = time_and_val?.onlyVal[3];
+    // const filterTotal = yearData?.find((item) => item > 0);
+    setStrongNumb(lastCarbon ?? 0);
+  }, [lastCarbon, setStrongNumb]);
+  useEffect(() => {
+    console.log("data___________________", data);
+  }, [data]);
 
   return (
     <div ref={BOXREF} className="myApex -ml-5">

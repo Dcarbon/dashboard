@@ -14,7 +14,6 @@ function Selection({
 }) {
   const [showSelect, setShowSelect] = useState(false);
   const listRef = useRef(null);
-
   return (
     <div className={`relative ${stls[size || "md"]} `}>
       <Form
@@ -54,20 +53,27 @@ function Form({
   setShowSelect,
 }) {
   const btnToggleRef = useRef(null);
+  const inputToggleRef = useRef(null);
 
-  const toggleSelection = () => setShowSelect(!showSelect);
+  var ToggleSelection = () => {
+    setShowSelect(!showSelect);
+  };
   useEffect(() => {
     let clickOutSide = (event) => {
-      if (event?.button === 0) {
-        const btnContains = () => btnToggleRef?.current?.contains(event.target);
-        if (!btnContains()) {
-          setShowSelect(false);
-        }
+      let btnContains = btnToggleRef?.current?.contains(event.target);
+      let inputContains = inputToggleRef?.current?.contains(event.target);
+
+      if (
+        (isSearch && !btnContains) ||
+        (!isSearch && !btnContains && !inputContains)
+      ) {
+        setShowSelect(false);
       }
     };
-    document.addEventListener("mousedown", clickOutSide);
-    return () => document.removeEventListener("mousedown", clickOutSide);
-  }, [setShowSelect]);
+    //
+    document.addEventListener("click", clickOutSide);
+    return () => document.removeEventListener("click", clickOutSide);
+  }, [isSearch, setShowSelect, showSelect]);
   return (
     <form>
       {label && (
@@ -75,7 +81,13 @@ function Form({
           {label}
         </label>
       )}
-      <div className="relative">
+      <div
+        ref={inputToggleRef}
+        className="relative"
+        onClick={() => {
+          ToggleSelection();
+        }}
+      >
         <input
           title={label}
           placeholder="Name of project"
@@ -85,14 +97,19 @@ function Form({
           type="text"
           value={value}
           onKeyDown={() => {
-            if (!showSelect && isSearch) setShowSelect(true);
+            if (!showSelect && isSearch) {
+              console.log("onKeyDown");
+              setShowSelect(true);
+            }
           }}
           onChange={(evt) => isSearch && onSearch(evt)}
         />
         <span
           ref={btnToggleRef}
-          onClick={toggleSelection}
-          className={`absolute block bottom-full text-center ${stls.iconSelect}`}
+          onClick={ToggleSelection}
+          className={`absolute block bottom-full text-center ${
+            stls.iconSelect
+          } ${showSelect ? stls.act : ""}`}
         >
           <ChevronDownIcon />
         </span>

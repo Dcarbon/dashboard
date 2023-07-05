@@ -1,6 +1,6 @@
 import ScrollBox from "src/components/ui/ScrollBox";
 import stls from "./index.module.scss";
-import { Fragment, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import InfoProject from "src/components/sections/Dashboard/InforProject";
 import CarbonGenerated from "src/components/sections/Dashboard/Generated/carbon";
 import SelectIOT from "src/components/sections/Dashboard/SelectIOT";
@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 import DcarbonAPI from "src/tools/hook";
-import Error from "src/components/ui/Error";
 
 // get info project
 // get iot minted
@@ -46,6 +45,18 @@ function DashboardSideBar({
   const sensorsState = useSelector(newDcarbon.GetSensorsState);
   const projectState = useSelector(newDcarbon.GetProjectState);
 
+  // state
+  // state
+  // state
+  // state
+  // state
+  // state
+  // state
+  // state
+  // state
+  // state
+  // state
+  // state
   // Khi có iot mới sẽ lấy thông tin iot đó và danh sách sensor của nó
   // Khi có iot mới
   // Khi có iot mới
@@ -88,34 +99,20 @@ function DashboardSideBar({
   //  PROJECT
   //  PROJECT
   //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
+  const [showDetail, setShowDetail] = useState(false);
+  const project = useMemo(() => projectState?.project, [projectState?.project]);
   const projectId = useMemo(() => {
     // từ iot hiên tại, lấy project id
     return iotState?.iot?.project;
   }, [iotState?.iot?.project]);
   // lấy thông tin project khi có projectId mới
   useEffect(() => {
-    if (projectId && !projectState?.project) {
+    if (projectId) {
+      console.log("project Id::", projectId);
       dispatch({ type: ProjectACT.GET_PROJECT.REQUEST, payload: projectId });
     }
-  }, [dispatch, projectId, projectState?.project]);
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
+  }, [dispatch, projectId]);
+
   // SENSOR
   // SENSOR
   // SENSOR
@@ -139,39 +136,34 @@ function DashboardSideBar({
           {/* box select iot  */}
           {/* box select iot  */}
           <SelectIOT
+            err={iotState.error}
             features={features}
             iotSelected={iotSelected}
             setIotSelected={setIotSelected}
           />
-          <Error err={iotState.error} clearErrType={IOTAct.CLEAR_ERR} />
-          {iotSelected && (
-            <Fragment>
-              <div className={stls.boxMiddle}>
-                {/* info  */}
-                {/* info  */}
-                {/* info  */}
-                <Error
-                  clearErrType={ProjectACT.CLEAR_ERR}
-                  err={projectState?.error}
-                  err_code={projectState?.error_code}
-                />
 
-                <InfoProject
-                  project={projectState?.project}
-                  iot={iotState?.iot}
-                  sensor_metrics={sensorsState?.sensor_metrics}
-                />
-                {/* Chart  */}
-                {/* Chart  */}
-                {/* Chart  */}
-                <CarbonGenerated iotSelected={iotSelected} />
-                {/* electric and biogas */}
-                {/* electric and biogas */}
-                {/* electric and biogas */}
-                <ElectricityGenerated iotSelected={iotSelected} />
-              </div>
-            </Fragment>
-          )}
+          <div className={stls.boxMiddle}>
+            {/* info  */}
+            {/* info  */}
+            {/* info  */}
+            <InfoProject
+              showDetail={showDetail}
+              setShowDetail={setShowDetail}
+              err={projectState?.error}
+              project={project}
+              iot={iotState?.iot}
+              sensor_metrics={sensorsState?.sensor_metrics}
+            />
+
+            {/* Chart  */}
+            {/* Chart  */}
+            {/* Chart  */}
+            <CarbonGenerated iotSelected={iotSelected} />
+            {/* electric and biogas */}
+            {/* electric and biogas */}
+            {/* electric and biogas */}
+            <ElectricityGenerated iotSelected={iotSelected} />
+          </div>
         </div>
       </ScrollBox>
     </div>
