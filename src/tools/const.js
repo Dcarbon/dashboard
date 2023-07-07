@@ -38,6 +38,10 @@ const imgsObject = {
     NormalMap: "maps/8k_earth_normal_map.jpg",
     DayMap: "maps/2k_earth_daymap.jpg",
     Clouds: "maps/2k_earth_clouds.jpg",
+
+    DayMap_quality_low: "maps/low_quality__earth_daymap.jpg",
+    Clouds_quality_low: "maps/low_quality__earth_clouds.jpg",
+
     NightMap: "maps/8k_earth_nightmap.jpg",
     SpecularMap: "maps/8k_earth_specular_map.jpg",
     BumpMap: "maps/8k_earth_bump_map.jpg",

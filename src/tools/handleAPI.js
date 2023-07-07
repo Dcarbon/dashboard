@@ -101,11 +101,7 @@ class HandleAPI {
         ],
       },
       localizations: {
-        populate: {
-          thumbnail: {
-            populate: "*",
-          },
-        },
+        populate: "*",
       },
       // ...populateAll("localizations"),
     };
