@@ -29,11 +29,15 @@ export const AxiosGet = async (endpoint, queryString, locale) => {
     locale ? "&locale=" + locale : ""
   }`;
   let res = await axios.get(strAPI);
-  // console.log("--------------" + `${strAPI}`);
+  console.log("--------------" + `${strAPI}`);
   return res.data;
 };
 export const populateAll = (key) => {
-  return { [key]: { populate: "*" } };
+  return {
+    [key]: {
+      populate: "*",
+    },
+  };
 };
 class HandleAPI {
   endppoint = {
@@ -96,7 +100,14 @@ class HandleAPI {
           },
         ],
       },
-      ...populateAll("localizations"),
+      localizations: {
+        populate: {
+          thumbnail: {
+            populate: "*",
+          },
+        },
+      },
+      // ...populateAll("localizations"),
     };
     return objQuery;
     // return AxiosGet(`${this.endppoint.blog.post}`, objQuery);

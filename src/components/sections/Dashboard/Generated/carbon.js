@@ -4,14 +4,20 @@ import { IOTAct } from "src/redux/actions/iotAction";
 import stls from "./index.module.scss";
 import CollapseTab from "../CollapseTab";
 import DcarbonAPI from "src/tools/hook";
-import { Get_Duration_by_Type, getTimeLine } from "../ColumnChart/tools";
+import {
+  DURATION_TYPE_modal,
+  Get_Duration_by_Type,
+  getAmount,
+  getTimeLine,
+  roundup_second,
+} from "../ColumnChart/tools";
 import DcarbonDuration from "../ColumnChart/durationType";
 import DcarbonChart from "../ColumnChart/DcarbonChart";
 //
 //
 function CarbonGenerated({ iotSelected }) {
   const [openTab, setOpenTab] = useState(true);
-  const [durType, setDurType] = useState(3);
+  const [durType, setDurType] = useState(DURATION_TYPE_modal.WEEK);
 
   const [time_split_by_durtype, setTime_split_by_durtype] = useState([]);
 
@@ -30,6 +36,15 @@ function CarbonGenerated({ iotSelected }) {
     },
     [dispatch]
   );
+  const handleGetIotTotalMinted = useCallback(
+    (newPayload) => {
+      dispatch({
+        type: IOTAct.GET_IOT_TOTAL_MINTED.REQUEST,
+        payload: newPayload,
+      });
+    },
+    [dispatch]
+  );
   // STEP 1
   // STEP 1 GET Iot minted by iotId and duration time
   // STEP 1
@@ -37,36 +52,58 @@ function CarbonGenerated({ iotSelected }) {
   // STEP 1
   useEffect(() => {
     if (iotSelected && durType) {
-      console.log("CarbonGenerated ------------  ", iotSelected);
-      console.log("CarbonGenerated ------------  ", iotSelected);
-      console.log("CarbonGenerated ------------  ", iotSelected);
-      console.log("CarbonGenerated ------------  ", durType);
-      console.log("CarbonGenerated ------------  ", durType);
-      console.log("CarbonGenerated ------------  ", durType);
-
       // get to and from by durtype
       const newFrom_To = Get_Duration_by_Type(durType);
       const newArrTime = getTimeLine(durType);
-      console.log("__________newArrTime", newArrTime);
       setTime_split_by_durtype(newArrTime);
       handleGetIotMinted({
         iotId: iotSelected,
         ...newFrom_To,
         interval: durType > 2 ? 2 : 1, // interval : by day (1) || by month : (2)
       });
-      // get new iot minted
-      // console.log("iotSelected", iotSelected);
-      // console.log("durType", durType);
+      let payloadGetTotal = {
+        iotId: iotSelected,
+        ...newFrom_To,
+        from: 1,
+      };
+      handleGetIotTotalMinted(payloadGetTotal);
     }
-  }, [durType, handleGetIotMinted, iotSelected]);
+  }, [durType, handleGetIotMinted, handleGetIotTotalMinted, iotSelected]);
 
   const handleChangeDurType = (newDurType) => setDurType(newDurType);
+  useEffect(() => {
+    if (iotState.total_minted) {
+      let ar = iotState.total_minted;
+      let newArr = ar.reverse();
+      let amountArr = newArr.filter((item) => item?.amount > 0);
+      let newestAmount = amountArr[0];
+      setStrongNumb(getAmount(newestAmount?.amount));
+      // return 0;
+    }
+  }, [iotState.total_minted]);
+  useEffect(() => {
+    if (iotSelected) {
+      let newDate = new Date();
+      let payloadGetTotal = {
+        iotId: iotSelected,
+        to: roundup_second(newDate),
+        from: 1,
+      };
+      let myInter = setInterval(
+        () => handleGetIotTotalMinted(payloadGetTotal),
+        15000
+      );
+      return () => {
+        clearInterval(myInter);
+      };
+    }
+  }, [handleGetIotTotalMinted, iotSelected]);
 
   return (
     <CollapseTab
       color="green"
       title="Carbon credit earned"
-      strongNumb={strongNumb}
+      strongNumb={strongNumb || "---"}
       unit="carbon"
       isOpen={openTab}
       handleOpen={() => setOpenTab(!openTab)}
@@ -77,7 +114,8 @@ function CarbonGenerated({ iotSelected }) {
             durType={durType}
             data={iot_minted}
             time_split_by_durtype={time_split_by_durtype}
-            setStrongNumb={setStrongNumb}
+            // strongNumb={strongNumb}
+            // setStrongNumb={setStrongNumb}
           />
 
           <DcarbonDuration durType={durType} setDurType={handleChangeDurType} />

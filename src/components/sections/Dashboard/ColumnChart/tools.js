@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import dateFormat from "dateformat";
-const roundup_second = (time) => Math.round(time.getTime() / 1000);
+export const roundup_second = (time) => Math.round(time.getTime() / 1000);
 export const DURATION_TYPE_modal = {
   WEEK: 1, // 7 ngày
   MONTH: 2, // 7 ngày
@@ -83,46 +83,45 @@ export const getTimeLine = (durType) => {
   // );
   return newArr;
 };
-export const getAmount = (item) => {
-  console.log("itemn", item);
-  // const hexAmount = new BigNumber(item.amount.toLocaleLowerCase());
-  // const reduceAmount = hexAmount.div("1e9");
-  // return reduceAmount.toFixed(4);
-  // return reduceAmount;
-  return 0;
+export const getAmount = (item, text) => {
+  const hexAmount = new BigNumber(item);
+  const reduceAmount = hexAmount.div("1e9");
+  let fxied = reduceAmount.toFixed(4);
+  if (text) {
+    console.log(text + " ||||-----------------------", item);
+    console.log("hexAmount--------------", hexAmount);
+    console.log("reduceAmount-----------", reduceAmount);
+    console.log("fxied-----------------------------", fxied);
+  }
+  return Math.round(fxied * 1000) / 1000;
+  // return 0;
 };
 const getSum = (prev, next) => Number(prev) + Number(next);
 export const getStringDay = (durType, time) => {
   if (time) {
     const newTime = new Date(time);
     if (durType === "full") {
-      return dateFormat(newTime, "d/m/yyyy");
-    } else if (durType < 2) {
-      return dateFormat(newTime, "dd/mmm");
+      return dateFormat(newTime, "dd mmm yyyy");
+    } else if (durType < DURATION_TYPE_modal.MONTHs) {
+      return dateFormat(newTime, "dd mmm");
     } else {
       return dateFormat(newTime, "mmm yyyy");
     }
   }
 };
 
-export const getDataSeries = (timeline, iot_minted, durType, handleValue) => {
+export const getDataSeries = (timeline, iot_minted, durType) => {
   let newSeriesArr = [];
   let onlyTime = [];
   let onlyVal = [];
-  console.log("DurType ");
-  console.log("DurType ");
-  console.log("DurType ");
-  console.log("DurType ", durType);
-  let getTimeToCompare = (time, text) => {
+  let getTimeToCompare = (time) => {
     let newDate = new Date(time);
     newDate.setHours(0, 0, 0, 0);
     if (durType > DURATION_TYPE_modal.MONTH) {
       newDate.setDate(1);
     }
-    console.log("----------newDate---" + text, dateFormat(newDate, "dd/mm/yy"));
     return newDate.getTime();
   };
-  // console.log("timeline", timeline);
   for (let index = 0; index < timeline?.length; index++) {
     const thisTime = timeline[index];
     let compare1 = getTimeToCompare(thisTime, "ONE");
@@ -134,32 +133,18 @@ export const getDataSeries = (timeline, iot_minted, durType, handleValue) => {
       // so sánh ngày tạo và thời gian tại vòng lặp này
       return compare1 === compare2;
     });
+    const listAmount = getData_inThisTime?.map((item) => item.carbon ?? 0);
+    const amount = listAmount?.length > 0 ? listAmount?.reduce(getSum) : 0;
 
-    // let collect_by_time = [];
-    // collect_by_time = iot_minted?.filter((item) => {
-    //   const created_at = new Date(item?.createdAt);
-    //   created_at?.setHours(0, 0, 0, 0);
-    //   let created_at_time = created_at.getTime();
-    //   return elm_1 > created_at_time && elm_2 <= created_at_time;
-    // });
-    // console.log("collect_by_time", collect_by_time);
-    // const listAmount = [];
-    // const listAmount = getData_inThisTime?.map(handleValue);
-    console.log("getData_inThisTime", getData_inThisTime);
-    const amount =
-      getData_inThisTime?.length > 0
-        ? getData_inThisTime?.reduce((prev, next) =>
-            getSum(prev.carbon, next.carbon)
-          )
-        : 0;
     newSeriesArr[index] = {
       x: thisTime,
-      // y: amount,
       y: amount ?? "",
     };
     onlyTime[index] = thisTime;
-    onlyVal[index] = parseFloat(amount).toFixed(4);
+    // onlyVal[index] = parseFloat(amount).toFixed(4);
+    onlyVal[index] = amount;
   }
+
   return {
     newSeriesArr: newSeriesArr?.reverse(),
     onlyTime: onlyTime?.reverse(),
@@ -179,13 +164,12 @@ export const optionsDefault = {
     enabled: false,
     // formatter: (val) => parseFloat(val).toFixed(2),
   },
-  series: [],
-  noData: {
-    text: "Loading ...",
-    style: {
-      color: "#ffffff",
-    },
-  },
+  // noData: {
+  //   text: "Loading ...",
+  //   style: {
+  //     color: "#ffffff",
+  //   },
+  // },
 
   xaxis: {
     type: "datetime",

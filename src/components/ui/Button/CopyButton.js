@@ -3,8 +3,12 @@ import stls from "./CopyButton.module.scss";
 function CopyButton({ className, obj }) {
   const [isCopy, setIsCopy] = useState(false);
   const handleCopy = useCallback(() => {
-    if (window?.navigator && !isCopy) {
-      window.navigator.clipboard.writeText(obj);
+    if (!navigator?.cookieEnabled) {
+      alert("The browser does not support or is blocking cookies");
+      return;
+    }
+    if (!isCopy) {
+      navigator?.clipboard?.writeText(obj);
       setIsCopy(true);
       setTimeout(() => setIsCopy(false), 1300);
     }
@@ -12,7 +16,7 @@ function CopyButton({ className, obj }) {
   return (
     <span className={`${className} relative inline-block`} onClick={handleCopy}>
       <ActivityStack isCopy={isCopy} />
-      <StaticStack isCopy={isCopy} /> 
+      <StaticStack isCopy={isCopy} />
     </span>
   );
 }

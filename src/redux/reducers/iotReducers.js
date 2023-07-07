@@ -5,6 +5,7 @@ export const initIotState = {
   iot: null,
   count: null,
   iot_minted: null,
+  total_minted: null,
   error: null,
   error_code: null,
   latest: "",
@@ -97,7 +98,6 @@ const iotReducer = (state = initIotState, action) => {
         latest: action.type,
       };
     case IOTAct.GET_IOT_MINTED.SUCCESS:
-      // console.log("payloadddddddddddddddddddddddddd", action.payload);
       // console.log("GET_IOT_MINTED---------------SUCCESS ", res);
       return {
         ...state,
@@ -106,6 +106,32 @@ const iotReducer = (state = initIotState, action) => {
         latest: action.type,
       };
     case IOTAct.GET_IOT_MINTED.FAILURE:
+      // console.log("GET_IOT_MINTED---------------FAILURE ", res);
+      return {
+        ...state,
+        loading: true,
+        error: res.error,
+        error_code: res.error_code,
+        latest: action.type,
+      };
+    case IOTAct.GET_IOT_TOTAL_MINTED.REQUEST:
+      // console.log("GET_IOT_MINTED---------------request ", { action, res });
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        error_code: null,
+        latest: action.type,
+      };
+    case IOTAct.GET_IOT_TOTAL_MINTED.SUCCESS:
+      // console.log("GET_IOT_TOTAL_MINTED---------------SUCCESS ", res);
+      return {
+        ...state,
+        loading: true,
+        total_minted: res.data,
+        latest: action.type,
+      };
+    case IOTAct.GET_IOT_TOTAL_MINTED.FAILURE:
       // console.log("GET_IOT_MINTED---------------FAILURE ", res);
       return {
         ...state,

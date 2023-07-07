@@ -93,11 +93,7 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     //
     //
 
-    mymap.on("click", (e) => {
-      console.log("Click normal --------------- ", e);
-    });
     mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
-      console.warn("Click source --------------- ", e);
       if (e.features.length > 0) {
         hoveredStateId = e.features[0].id;
         listFeatures = handleDuplicateFeatures(e.features);

@@ -108,7 +108,6 @@ function DashboardSideBar({
   // lấy thông tin project khi có projectId mới
   useEffect(() => {
     if (projectId) {
-      console.log("project Id::", projectId);
       dispatch({ type: ProjectACT.GET_PROJECT.REQUEST, payload: projectId });
     }
   }, [dispatch, projectId]);

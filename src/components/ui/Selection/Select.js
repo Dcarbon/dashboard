@@ -98,7 +98,6 @@ function Form({
           value={value}
           onKeyDown={() => {
             if (!showSelect && isSearch) {
-              console.log("onKeyDown");
               setShowSelect(true);
             }
           }}

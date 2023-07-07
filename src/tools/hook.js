@@ -73,6 +73,10 @@ class DcarbonAPI {
    *   position: { lat : Number, lng : Number}
    * },
    * iot_minted : [{
+   *   "carbon": string,
+   *   "createdAt": string,
+   * }],
+   * total_minted : [{
    *   "amount": string,
    *   "createdAt": string,
    *   "id": Number,

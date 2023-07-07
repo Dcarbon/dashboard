@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import stls from "./index.module.scss";
 import DcarbonAPI from "src/tools/hook";
@@ -41,28 +41,13 @@ function InfoProject({
     return newD.ProjectInfo(project?.id);
   }, [project?.id]);
 
-  // useEffect(() => {
-  //   console.log("iot", iot);
-  //   console.log("project", project);
-  //   console.log("sensor_metrics", sensor_metrics);
-  //   console.log("projectDetail", projectDetail);
-  // }, [iot, project, projectDetail, sensor_metrics]);
-
   const specs = useMemo(() => project?.specs?.specs, [project?.specs?.specs]);
 
   // Check trạng thái hoạt động của project dựa vào dữ liệu sensor metrics trả về
-  const isActive = useMemo(() => {
-    if (sensor_metrics?.length > 0) {
-      // const lastData = sensor_metrics[sensor_metrics.length - 1];
-      // console.log("lastData", lastData);
-      // console.log(
-      //   "date",
-      //   dateFormat(new Date(lastData?.createdAt), "dd/mm/yyyy")
-      // );
-
-      return true;
-    }
-  }, [sensor_metrics]);
+  const isActive = useMemo(
+    () => Boolean(sensor_metrics?.length > 0),
+    [sensor_metrics]
+  );
 
   const isDetailInfo = useMemo(
     () =>

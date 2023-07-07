@@ -71,16 +71,8 @@ function ElectricityGenerated({ iotSelected }) {
       ) {
         let newDate = new Date();
         let to = Math.ceil(newDate.getTime() / 1000);
-        // console.log("To --- payload ", new Date(to * 1000));
         newDate?.setUTCMinutes(newDate?.getUTCMinutes() - 1);
         let from = Math.ceil(newDate.getTime() / 1000); // day 7th before
-        // console.log("From --- payload ", new Date(from * 1000));
-        // console.log(
-        //   "Gọi từ 7 ngày trước ",
-        //   dateformat(new Date(from * 1000), "dd/mm/yyyy") +
-        //     "-" +
-        //     dateformat(new Date(to * 1000), "dd/mm/yyyy")
-        // );
         handleGetSensorMetrics({ ...payload, ...newPayload, from, to });
       }
     },
@@ -97,11 +89,11 @@ function ElectricityGenerated({ iotSelected }) {
   useEffect(() => {
     if (
       iotSelected > 0 &&
-      sensorId > 0 &&
-      !sensorState?.loadingSensorFirstTime
+      sensorId > 0
+      // &&
+      // !sensorState?.loadingSensorFirstTime
     ) {
-      // console.log("__________");
-      // console.log("--Metric 1st---", [iotSelected, sensorId]);
+      console.log("log get metrics");
       dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: true });
       let newPay = { ...payload, iotId: iotSelected, sensorId };
       setPayload(newPay);
@@ -117,7 +109,7 @@ function ElectricityGenerated({ iotSelected }) {
   ]);
   //  Lấy Metrics mỗi 5s
   useEffect(() => {
-    const intervalGetMetrics = setInterval(GET_METRICS, 5000);
+    const intervalGetMetrics = setInterval(GET_METRICS, 15000);
     return () => clearInterval(intervalGetMetrics);
   }, [GET_METRICS]);
   //

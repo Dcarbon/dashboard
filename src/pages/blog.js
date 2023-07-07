@@ -6,6 +6,7 @@ import Blog_Section_1 from "src/components/sections/Blog/sec_1";
 import Blog_Section_2 from "src/components/sections/Blog/sec_2";
 import Blog_Section_3 from "src/components/sections/Blog/sec_3";
 import Heading from "src/components/ui/Heading";
+import useLocale from "src/hook/useLocale";
 
 import { handleAttributes, handleMeta } from "src/tools/const";
 import HandleAPI, {
@@ -20,6 +21,7 @@ const fetcherPage = ([url, qstr, locale]) => {
 
 function Blog() {
   const router = useRouter();
+  const locale = useLocale();
   const { query } = router;
   const currentPage = query?.page - 1 || 0;
   const skip = query?.search ? 0 : 3;
@@ -48,7 +50,7 @@ function Blog() {
     error: errpage,
     // isLoading: isLoadingPage,
   } = useSWR(
-    [newHandleAPI.endppoint.page.blog, QStringify(pageQuery)],
+    [newHandleAPI.endppoint.page.blog, QStringify(pageQuery), locale?.current],
     fetcherPage
   );
 
@@ -57,7 +59,11 @@ function Blog() {
     error: errThreePosts,
     // isLoading: isLoadingThreePosts,
   } = useSWR(
-    [newHandleAPI.endppoint.blog.post, QStringify(threepostsQuery)],
+    [
+      newHandleAPI.endppoint.blog.post,
+      QStringify(threepostsQuery),
+      locale?.current,
+    ],
     fetcherPage
   );
   const {
@@ -65,7 +71,7 @@ function Blog() {
     error: errPosts,
     // isLoading: isLoadingPosts,
   } = useSWR(
-    [newHandleAPI.endppoint.blog.post, QStringify(postsQuery)],
+    [newHandleAPI.endppoint.blog.post, QStringify(postsQuery), locale?.current],
     fetcherPage
   );
   if (errpage) {

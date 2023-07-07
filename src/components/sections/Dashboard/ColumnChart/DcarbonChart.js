@@ -1,22 +1,37 @@
 import dynamic from "next/dynamic";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getAmount, getDataSeries, optionsDefault } from "./tools";
+import {
+  getAmount,
+  getDataSeries,
+  getStringDay,
+  optionsDefault,
+} from "./tools";
+import DcarbonAPI from "src/tools/hook";
+import { useSelector } from "react-redux";
+import Loading from "src/components/ui/Animation/Loading";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-function DcarbonChart({ data, durType, time_split_by_durtype, setStrongNumb }) {
+function DcarbonChart({
+  data,
+  durType,
+  time_split_by_durtype,
+  // strongNumb,
+  // setStrongNumb,
+}) {
+  const newDcarbon = new DcarbonAPI();
+  const iotState = useSelector(newDcarbon.GetIOTState);
+
   const [width, setWidth] = useState(0);
 
   const BOXREF = useRef(null);
   const time_and_val = useMemo(() => {
-    // console.log("time_split_by_durtype", time_split_by_durtype);
-    // console.log("data", data);
-    let getS = () =>
-      getDataSeries(time_split_by_durtype, data, durType, getAmount);
+    let getS = getDataSeries(time_split_by_durtype, data, durType);
+
     return {
-      onlyTime: getS().onlyTime,
-      onlyVal: getS().onlyVal,
+      onlyTime: getS.onlyTime,
+      onlyVal: getS.onlyVal.map((item) => getAmount(item)),
     };
   }, [data, durType, time_split_by_durtype]);
 
@@ -40,6 +55,12 @@ function DcarbonChart({ data, durType, time_split_by_durtype, setStrongNumb }) {
           },
         },
       },
+      noData: {
+        text: iotState?.loading ? "Loading..." : "No Data",
+        style: {
+          color: "#ffffff",
+        },
+      },
       xaxis: {
         ...optionsDefault.xaxis,
         type: "category",
@@ -49,7 +70,6 @@ function DcarbonChart({ data, durType, time_split_by_durtype, setStrongNumb }) {
         ...optionsDefault.tooltip,
         custom: function (props) {
           const { series, seriesIndex, dataPointIndex } = props;
-
           return (
             '<div class="arrow_box">' +
             '<h4 class="title"><b class="strong">' +
@@ -57,27 +77,24 @@ function DcarbonChart({ data, durType, time_split_by_durtype, setStrongNumb }) {
             "</b> carbon" +
             "</h4>" +
             "<span>" +
-            // getStringDay(
-            //   durType,
-            //   // time_and_val.onlyTime[dataPointIndex]
-            // ) +
+            getStringDay(durType, time_and_val.onlyTime[dataPointIndex]) +
             "</span>" +
             "</div>"
           );
         },
       },
     };
-  }, [time_and_val.onlyTime]);
+  }, [durType, iotState?.loading, time_and_val.onlyTime]);
   // series
   // series
   const series = useMemo(() => {
     if (data?.length > 0) {
       let newSeries = [
-        { name: "durType-" + durType, data: time_and_val.onlyVal[durType] },
+        { name: "durType-" + durType, data: time_and_val.onlyVal },
       ];
       // let newSeries = data?.map((item) => item?.carbon);
-      console.log("newSeries", newSeries);
-      // return newSeries;
+
+      return newSeries;
     }
     return [{ name: "duration", data: [] }];
   }, [data?.length, durType, time_and_val.onlyVal]);
@@ -94,20 +111,20 @@ function DcarbonChart({ data, durType, time_split_by_durtype, setStrongNumb }) {
       clearInterval(interval);
     };
   }, []);
-  const lastCarbon = useMemo(() => {
-    if (data?.length > 0) {
-      let last = data[data?.length - 1];
-      return last?.carbon;
-    }
-  }, [data]);
-  useEffect(() => {
-    // const yearData = time_and_val?.onlyVal[3];
-    // const filterTotal = yearData?.find((item) => item > 0);
-    setStrongNumb(lastCarbon ?? 0);
-  }, [lastCarbon, setStrongNumb]);
-  useEffect(() => {
-    console.log("data___________________", data);
-  }, [data]);
+  // const lastCarbon = useMemo(() => {
+  //   if (time_and_val?.onlyVal?.length > 0) {
+  //     let last = time_and_val?.onlyVal?.reduce(
+  //       (total, next) => Number(total) + Number(next)
+  //     );
+  //     return last;
+  //   }
+  // }, [time_and_val?.onlyVal]);
+  // useEffect(() => {
+  //   if (lastCarbon !== strongNumb) {
+  //     let newNumber = Math.round(lastCarbon?.toFixed(4) * 1000) / 1000;
+  //     setStrongNumb(newNumber ?? 0);
+  //   }
+  // }, [strongNumb, lastCarbon, setStrongNumb]);
 
   return (
     <div ref={BOXREF} className="myApex -ml-5">

@@ -12,6 +12,15 @@ export const watcherIot = [
     grpcCall(getIot, IOTAct.GET_IOT.SUCCESS, IOTAct.GET_IOT.FAILURE)
   ),
   takeEvery(
+    IOTAct.GET_IOT_TOTAL_MINTED.REQUEST,
+    grpcCall(
+      getIotTotalMinted,
+      IOTAct.GET_IOT_TOTAL_MINTED.SUCCESS,
+      IOTAct.GET_IOT_TOTAL_MINTED.FAILURE
+    )
+  ),
+
+  takeEvery(
     IOTAct.GET_IOT_MINTED.REQUEST,
     grpcCall(
       getIotMinted,
@@ -31,7 +40,11 @@ function getIot(action) {
 }
 
 function getIotMinted(action) {
-  // var url = `iots/${action.payload.iotId}/mint-sign/?from=${action.payload.from}&to=${action.payload.to}`;
   var url = `iots/{iotId}/minted?iotId=${action.payload.iotId}&from=${action.payload.from}&to=${action.payload.to}&interval=${action.payload.interval}`;
+  return AxiosGet(url);
+}
+
+function getIotTotalMinted(action) {
+  var url = `iots/${action.payload.iotId}/mint-sign/?from=${action.payload.from}&to=${action.payload.to}`;
   return AxiosGet(url);
 }

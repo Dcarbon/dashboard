@@ -5,35 +5,29 @@ export default function DcarbonDuration({ durType, setDurType }) {
   var listDur = [
     {
       id: DURATION_TYPE_modal.WEEK,
-      text: "7 days",
+      text: "A week",
     },
+    // {
+    //   id: DURATION_TYPE_modal.MONTH,
+    //   text: "1 month",
+    // },
     {
       id: DURATION_TYPE_modal.MONTH,
-      text: "1 month",
-    },
-    {
-      id: DURATION_TYPE_modal.MONTHs,
-      text: "6 months",
+      text: "A month",
     },
     {
       id: DURATION_TYPE_modal.YEAR,
-      text: "1 year",
+      text: "A year",
     },
   ];
   return (
-    <div className={`grid grid-cols-4 ${stls.selectDuration}`}>
+    <div className={`flex ${stls.selectDuration}`}>
       {listDur.map((item) => (
         <div
           key={"dur-" + item.id}
-          className={`${durType === item.id ? stls.active : ""}`}
+          className={`flex-1 ${durType === item.id ? stls.active : ""}`}
         >
-          <Button
-            onClick={() => {
-              console.log("item.id", item.id);
-              setDurType(item.id);
-            }}
-            className={stls.btn}
-          >
+          <Button onClick={() => setDurType(item.id)} className={stls.btn}>
             {item.text}
           </Button>
         </div>

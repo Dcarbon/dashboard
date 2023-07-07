@@ -1,6 +1,6 @@
 import { handleAttributes, handleImage } from "src/tools/const";
 import stls from "./index.module.scss";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import Image from "next/image";
 import Heading from "src/components/ui/Heading";
 import dateFormat from "dateformat";
