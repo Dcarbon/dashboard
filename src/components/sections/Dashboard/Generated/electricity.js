@@ -87,26 +87,21 @@ function ElectricityGenerated({ iotSelected }) {
   }, [sensor_metrics]);
 
   useEffect(() => {
+    // console.error("!sensorState?.loadingSensorFirstTime");
+
+    // console.log("iotSelected", iotSelected);
+    // console.log("sensorId", sensorId);
     if (
       iotSelected > 0 &&
-      sensorId > 0
-      // &&
-      // !sensorState?.loadingSensorFirstTime
+      sensorId > 0 &&
+      !sensorState?.loadingSensorFirstTime
     ) {
-      console.log("log get metrics");
       dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: true });
       let newPay = { ...payload, iotId: iotSelected, sensorId };
       setPayload(newPay);
       GET_METRICS(newPay);
     }
-  }, [
-    GET_METRICS,
-    dispatch,
-    iotSelected,
-    payload,
-    sensorId,
-    sensorState?.loadingSensorFirstTime,
-  ]);
+  }, [GET_METRICS, dispatch, iotSelected, payload, sensorId, sensorState]);
   //  Lấy Metrics mỗi 5s
   useEffect(() => {
     const intervalGetMetrics = setInterval(GET_METRICS, 15000);
@@ -134,7 +129,7 @@ function ElectricityGenerated({ iotSelected }) {
         color="green"
         title="Biogas treated"
         strongNumb={
-          strongNumb ? Number(strongNumb * 0.528888889).toFixed(3) : "---"
+          strongNumb ? Number(strongNumb * 0.528888889).toFixed(2) : "---"
         }
         unit="m3"
         disable

@@ -51,7 +51,7 @@ export const getTimeLine = (durType) => {
     newDate.setUTCMonth(newDate.getUTCMonth() - 1);
     let beforeMonthTime = newDate.getTime();
     newArr = createArray((thisMonthTime - beforeMonthTime) / oneDay);
-    // nhieu thang
+    // 6 thang
   } else if (durType === DURATION_TYPE_modal.MONTHs) {
     newArr = createArray(6);
     // nam
@@ -69,30 +69,28 @@ export const getTimeLine = (durType) => {
         currentTime = toDay.getTime() - prevDay;
         prevDay += oneDay;
       } else {
-        currentTime = toDay.getUTCMonth() - prevMonth;
+        currentTime = toDay.getMonth() - prevMonth;
         prevMonth++;
       }
       newArr[idx] =
         durType < DURATION_TYPE_modal.MONTHs
           ? currentTime
-          : toDay.setUTCMonth(currentTime);
+          : toDay.setMonth(currentTime);
     }
   }
-  // const toDate = newArr?.map((item) =>
-  //   dateFormat(new Date(item), "dd/mm/yy __ hh:mm:ss")
-  // );
+
   return newArr;
 };
-export const getAmount = (item, text) => {
+export const getAmount = (item) => {
   const hexAmount = new BigNumber(item);
   const reduceAmount = hexAmount.div("1e9");
-  let fxied = reduceAmount.toFixed(4);
-  if (text) {
-    console.log(text + " ||||-----------------------", item);
-    console.log("hexAmount--------------", hexAmount);
-    console.log("reduceAmount-----------", reduceAmount);
-    console.log("fxied-----------------------------", fxied);
-  }
+  let fxied = reduceAmount.toFixed(2);
+  // if (text) {
+  //   console.log(text + " ||||-----------------------", item);
+  //   console.log("hexAmount--------------", hexAmount);
+  //   console.log("reduceAmount-----------", reduceAmount);
+  //   console.log("fxied-----------------------------", fxied);
+  // }
   return Math.round(fxied * 1000) / 1000;
   // return 0;
 };
@@ -135,14 +133,15 @@ export const getDataSeries = (timeline, iot_minted, durType) => {
     });
     const listAmount = getData_inThisTime?.map((item) => item.carbon ?? 0);
     const amount = listAmount?.length > 0 ? listAmount?.reduce(getSum) : 0;
-
+    let returnTime = thisTime;
+    let returnVal = amount ?? "";
     newSeriesArr[index] = {
-      x: thisTime,
-      y: amount ?? "",
+      x: returnTime,
+      y: returnVal,
     };
-    onlyTime[index] = thisTime;
+    onlyTime[index] = returnTime;
     // onlyVal[index] = parseFloat(amount).toFixed(4);
-    onlyVal[index] = amount;
+    onlyVal[index] = returnVal;
   }
 
   return {
@@ -162,21 +161,13 @@ export const optionsDefault = {
   },
   dataLabels: {
     enabled: false,
-    // formatter: (val) => parseFloat(val).toFixed(2),
   },
-  // noData: {
-  //   text: "Loading ...",
-  //   style: {
-  //     color: "#ffffff",
-  //   },
-  // },
 
   xaxis: {
-    type: "datetime",
-    show: true,
+    type: "categories",
     categories: [],
     labels: { show: false },
-    axisTicks: { show: false },
+    axisTicks: { show: true },
     axisBorder: { show: true, color: "#504F5A" },
   },
 

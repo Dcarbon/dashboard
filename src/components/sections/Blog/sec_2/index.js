@@ -14,6 +14,8 @@ function Blog_Section_2({ data, locale }) {
             <div className="item 2xl:col-span-6">
               <PostBox
                 locale={locale}
+                boxClassName={stls.box_1}
+                imageClassName={stls.image_1}
                 data={handleAttributes(data[0])}
                 titleClassName={stls.title_1}
               />

@@ -114,8 +114,6 @@ function CarbonGenerated({ iotSelected }) {
             durType={durType}
             data={iot_minted}
             time_split_by_durtype={time_split_by_durtype}
-            // strongNumb={strongNumb}
-            // setStrongNumb={setStrongNumb}
           />
 
           <DcarbonDuration durType={durType} setDurType={handleChangeDurType} />

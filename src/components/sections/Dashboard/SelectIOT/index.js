@@ -18,6 +18,13 @@ function SelectIOT({ err, features, iotSelected, setIotSelected }) {
             dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: false });
             // xóa project hiện tại
             setIotSelected(e.target.value);
+
+            setTimeout(() => {
+              dispatch({
+                type: SensorsACT.GET_SENSORS.REQUEST,
+                payload: { skip: 0, limit: 50, iotId: e.target.value },
+              });
+            }, 100);
           }}
         >
           {features?.map((item) => (

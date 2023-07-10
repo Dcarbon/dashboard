@@ -19,7 +19,7 @@ function HDIWSection2() {
                 src={imgsDir(imgsObject.Circle)}
                 alt=""
                 width={42}
-                height={42}
+                height={0}
               />
               <Image
                 className={`${stls.fly} ${stls.fly_2}`}

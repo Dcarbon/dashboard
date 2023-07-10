@@ -10,16 +10,19 @@ import { Fragment } from "react";
  * @param {{
  *  color : ("green" | "blue"),
  *  disable : boolean,
+ *  disableNumb : boolean,
  *  isOpen : boolean,
  *  handleOpen : any,
  *  title : string,
  *  strongNumb : number,
+ *
  *  unit : ("" | "kWh" | "m3"),
  * }}
  */
 function CollapseTab({
   color,
   disable,
+  disableNumb,
   isOpen,
   handleOpen,
   title,
@@ -34,25 +37,27 @@ function CollapseTab({
           <Heading Tag={"h5"} className={`${stls.heading} text-white`}>
             {title}
           </Heading>
-          <p className={stls.subtitle}>
-            Total:{" "}
-            {strongNumb ? (
-              <Fragment>
-                <b className="text-white">{strongNumb} </b>
-                <span>
-                  {unit === "m3" ? (
-                    <>
-                      m<sup>3</sup>
-                    </>
-                  ) : (
-                    unit
-                  )}
-                </span>
-              </Fragment>
-            ) : (
-              0
-            )}
-          </p>
+          {!disableNumb && (
+            <p className={stls.subtitle}>
+              Total:{" "}
+              {strongNumb ? (
+                <Fragment>
+                  <b className="text-white">{strongNumb} </b>
+                  <span>
+                    {unit === "m3" ? (
+                      <>
+                        m<sup>3</sup>
+                      </>
+                    ) : (
+                      unit
+                    )}
+                  </span>
+                </Fragment>
+              ) : (
+                0
+              )}
+            </p>
+          )}
         </div>
 
         {!disable && (

@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 import DcarbonAPI from "src/tools/hook";
+import ImageProject from "src/components/sections/Dashboard/ImageProject/ImageProject";
 
 // get info project
 // get iot minted
@@ -49,31 +50,14 @@ function DashboardSideBar({
   // state
   // state
   // state
-  // state
-  // state
-  // state
-  // state
-  // state
-  // state
-  // state
-  // state
   // Khi có iot mới sẽ lấy thông tin iot đó và danh sách sensor của nó
-  // Khi có iot mới
-  // Khi có iot mới
-  // Khi có iot mới
-  // Khi có iot mới
-  // Khi có iot mới
-  // Khi có iot mới
-  // Khi có iot mới
-  // Khi có iot mới
-  // Khi có iot mới
-  // Khi có iot mới
   // Khi có iot mới
   // Khi có iot mới
   // Khi có iot mới
   useEffect(() => {
     // => Get iot by id
     if (iotSelected) {
+      // console.log("iotSelected", iotSelected);
       // get id by features in map
       dispatch({
         type: IOTAct.GET_IOT.REQUEST,
@@ -86,13 +70,6 @@ function DashboardSideBar({
       });
     }
   }, [dispatch, iotSelected]);
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
-  //  PROJECT
   //  PROJECT
   //  PROJECT
   //  PROJECT
@@ -121,12 +98,6 @@ function DashboardSideBar({
   // SENSOR
   // SENSOR
   // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
-  // SENSOR
   return (
     <div className={className}>
       <ScrollBox disableX>
@@ -141,6 +112,9 @@ function DashboardSideBar({
             setIotSelected={setIotSelected}
           />
 
+          <div className={stls.boxMiddle}>
+            <ImageProject project={project} />
+          </div>
           <div className={stls.boxMiddle}>
             {/* info  */}
             {/* info  */}

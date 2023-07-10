@@ -1,3 +1,7 @@
+#SliderGroup {
+  margin-top: 28px;
+  padding: 0 24px;
+}
 .thumbnails {
   margin-right: -1.5rem;
   margin-left: -5px;
@@ -21,6 +25,7 @@
   }
 }
 .Slide {
+  border-radius: 10px;
   [class*="images-wrap"] {
     gap: 16px;
   }

@@ -57,7 +57,7 @@ export const handleUrl = (url) => {
     return url;
   }
   let reqURL = gateway + "/" + url;
-  console.log(`-----------: `, reqURL);
+  // console.log(`-----------: `, reqURL);
   return reqURL;
 };
 

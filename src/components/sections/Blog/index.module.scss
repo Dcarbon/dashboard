@@ -32,7 +32,7 @@
 }
 
 .content {
-  padding-top: 20px;
+  padding-top: 10px;
   .tag {
     margin: 0 0 8px;
     min-height: 20px;
@@ -67,5 +67,11 @@
     font-size: 16px;
     font-weight: 300;
     line-height: 22px;
+  }
+  @media (min-width: 768px) {
+    padding-top: 10px;
+  }
+  @media (min-width: 1440px) {
+    padding-top: 20px;
   }
 }

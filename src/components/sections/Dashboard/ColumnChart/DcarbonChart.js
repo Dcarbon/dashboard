@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  DURATION_TYPE_modal,
   getAmount,
   getDataSeries,
   getStringDay,
@@ -9,17 +10,11 @@ import {
 } from "./tools";
 import DcarbonAPI from "src/tools/hook";
 import { useSelector } from "react-redux";
-import Loading from "src/components/ui/Animation/Loading";
+import dateFormat from "dateformat";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-function DcarbonChart({
-  data,
-  durType,
-  time_split_by_durtype,
-  // strongNumb,
-  // setStrongNumb,
-}) {
+function DcarbonChart({ data, durType, time_split_by_durtype }) {
   const newDcarbon = new DcarbonAPI();
   const iotState = useSelector(newDcarbon.GetIOTState);
 
@@ -63,24 +58,51 @@ function DcarbonChart({
       },
       xaxis: {
         ...optionsDefault.xaxis,
-        type: "category",
-        categories: newCategories,
+        type: "categories",
+        categories: newCategories || [],
+        labels: {
+          show: true,
+          formatter: (val, timestamp, opts) => {
+            switch (durType) {
+              case DURATION_TYPE_modal.WEEK:
+                return dateFormat(new Date(val), "dd mmm");
+              case DURATION_TYPE_modal.MONTH:
+                return (opts?.i + 2) % 5 === 0
+                  ? dateFormat(new Date(val), "dd mmm")
+                  : "";
+              case DURATION_TYPE_modal.YEAR:
+                return (opts?.i + 2) % 3 === 0
+                  ? dateFormat(new Date(val), "mmm yyyy")
+                  : "";
+              default:
+                return "";
+            }
+          },
+          rotate: 0,
+        },
+
+        axisTicks: {
+          ...optionsDefault?.xaxis.axisTicks,
+          borderType: "dotted",
+        },
       },
       tooltip: {
         ...optionsDefault.tooltip,
         custom: function (props) {
           const { series, seriesIndex, dataPointIndex } = props;
-          return (
-            '<div class="arrow_box">' +
-            '<h4 class="title"><b class="strong">' +
-            series?.[seriesIndex]?.[dataPointIndex] +
-            "</b> carbon" +
-            "</h4>" +
-            "<span>" +
-            getStringDay(durType, time_and_val.onlyTime[dataPointIndex]) +
-            "</span>" +
-            "</div>"
-          );
+          if (series?.length > 0) {
+            return (
+              '<div class="arrow_box">' +
+              '<h4 class="title"><b class="strong">' +
+              series?.[seriesIndex]?.[dataPointIndex] +
+              "</b> carbon" +
+              "</h4>" +
+              "<span>" +
+              getStringDay(durType, time_and_val.onlyTime[dataPointIndex]) +
+              "</span>" +
+              "</div>"
+            );
+          }
         },
       },
     };
@@ -92,7 +114,6 @@ function DcarbonChart({
       let newSeries = [
         { name: "durType-" + durType, data: time_and_val.onlyVal },
       ];
-      // let newSeries = data?.map((item) => item?.carbon);
 
       return newSeries;
     }
@@ -111,21 +132,6 @@ function DcarbonChart({
       clearInterval(interval);
     };
   }, []);
-  // const lastCarbon = useMemo(() => {
-  //   if (time_and_val?.onlyVal?.length > 0) {
-  //     let last = time_and_val?.onlyVal?.reduce(
-  //       (total, next) => Number(total) + Number(next)
-  //     );
-  //     return last;
-  //   }
-  // }, [time_and_val?.onlyVal]);
-  // useEffect(() => {
-  //   if (lastCarbon !== strongNumb) {
-  //     let newNumber = Math.round(lastCarbon?.toFixed(4) * 1000) / 1000;
-  //     setStrongNumb(newNumber ?? 0);
-  //   }
-  // }, [strongNumb, lastCarbon, setStrongNumb]);
-
   return (
     <div ref={BOXREF} className="myApex -ml-5">
       <ReactApexChart

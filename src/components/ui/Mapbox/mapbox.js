@@ -1,28 +1,18 @@
 import { useEffect, useState } from "react";
 import { Map } from "react-map-gl";
 import OverView from "./overview";
-import { useDispatch, useSelector } from "react-redux";
-import { customizationAction } from "src/redux/actions/customizationAction";
-import DcarbonAPI from "src/tools/hook";
+import { useDispatch } from "react-redux";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 import MySource from "./source";
 import { layer_1, layer_2 } from "./libs";
+import { useRouter } from "next/router";
 
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 function MapBoxPage({ className, setFeatures, setIotSelected }) {
+  var defaultCenter = [105.79, 21.147];
   const [mymap, setMymap] = useState(null);
-  const [lng, setLng] = useState(105.793123);
-  const [lat, setLat] = useState(21.004998);
-  const [zoom, setZoom] = useState(10);
-  const newDcarbon = new DcarbonAPI();
-  const customState = useSelector(newDcarbon.GetCustomState);
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (!customState?.mymap && mymap) {
-      dispatch({ type: customizationAction.SET_MAP, payload: { mymap } });
-    }
-  }, [customState?.mymap, mymap, dispatch]);
-
+  const { query } = useRouter();
   useEffect(() => {
     if (!mymap) return;
     let hoveredStateId = null;
@@ -94,24 +84,39 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     //
 
     mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
+      // console.log("hoveredStateId = e.features[0].id;", e.features);
+
       if (e.features.length > 0) {
         hoveredStateId = e.features[0].id;
         listFeatures = handleDuplicateFeatures(e.features);
         setIotSelected(listFeatures[0]);
         setFeatures(listFeatures);
         dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: false });
+        setTimeout(() => {
+          dispatch({
+            type: SensorsACT.GET_SENSORS.REQUEST,
+            payload: { skip: 0, limit: 50, iotId: listFeatures[0] },
+          });
+        }, 100);
       }
     });
+    return () => (hoveredStateId = 0);
   }, [dispatch, mymap, setFeatures, setIotSelected]);
+  function Flyto(center, zoom) {
+    mymap.flyTo({
+      center: center,
+      zoom: zoom || 8,
+    });
+  }
 
   return (
     <div className={className}>
       <Map
         ref={setMymap}
         initialViewState={{
-          longitude: lng,
-          latitude: lat,
-          zoom: zoom,
+          longitude: defaultCenter[0],
+          latitude: defaultCenter[1],
+          zoom: 4,
         }}
         maxZoom={20}
         minZoom={2}
@@ -129,13 +134,14 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
           "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
         }}
         mapboxAccessToken={accessToken}
-        onMove={() => {
-          if (mymap) {
-            setLng(mymap.getCenter().lng.toFixed(4));
-            setLat(mymap.getCenter().lat.toFixed(4));
-            setZoom(mymap.getZoom().toFixed(2));
+        onLoad={() => {
+          let newCenter = [];
+          if (query?.lng && query?.lat) {
+            newCenter = [query?.lng, query?.lat];
           }
+          Flyto(newCenter?.length > 0 ? newCenter : defaultCenter, query?.zoom);
         }}
+        onClick={(e) => console.log("e", e)}
       >
         {/* Hiển thị tổng số nodes */}
         <OverView />

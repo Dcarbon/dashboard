@@ -57,6 +57,8 @@ const sensorsReducer = (state = initsensorsState, action) => {
         latest: action.type,
       };
     case SensorsACT.GET_SENSORS_METRICS.SUCCESS:
+      // console.log("case SensorsACT.GET_SENSORS_METRICS.SUCCESS:", action);
+      // console.log("res----------------------------------------:", res);
       return {
         ...state,
         loading: true,
@@ -80,6 +82,7 @@ const sensorsReducer = (state = initsensorsState, action) => {
         error_code: null,
       };
     case SensorsACT.LOAD_SENSOR_1ST_TIME:
+      // console.log("payload load sendor 1 st", action);
       return {
         ...state,
         loadingSensorFirstTime: action.payload,

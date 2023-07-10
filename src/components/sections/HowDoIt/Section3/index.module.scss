@@ -37,13 +37,13 @@
     }
 
     .btn {
+      cursor: pointer;
       flex: 0 1 32px;
       padding: 6px;
       transition: all 0.3s ease;
     }
   }
   .answers {
-    display: none;
     padding: 16px;
   }
   &.active {

@@ -44,10 +44,10 @@ function InfoProject({
   const specs = useMemo(() => project?.specs?.specs, [project?.specs?.specs]);
 
   // Check trạng thái hoạt động của project dựa vào dữ liệu sensor metrics trả về
-  const isActive = useMemo(
-    () => Boolean(sensor_metrics?.length > 0),
-    [sensor_metrics]
-  );
+  const isActive = useMemo(() => {
+    // console.log("Boolean(sensor_metrics?.length > 0)", sensor_metrics);
+    return Boolean(sensor_metrics?.length > 0);
+  }, [sensor_metrics]);
 
   const isDetailInfo = useMemo(
     () =>
@@ -69,7 +69,12 @@ function InfoProject({
     ]
   );
   return (
-    <CollapseTab disable color="blue" title={`Info project ${project?.id}`}>
+    <CollapseTab
+      disableNumb
+      disable
+      color="blue"
+      title={`Info project ${project?.id}`}
+    >
       <div className={stls.infoProject}>
         <ul>
           <li className={stls.itemRow}>

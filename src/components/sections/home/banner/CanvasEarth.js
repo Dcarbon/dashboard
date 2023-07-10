@@ -1,6 +1,6 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useProgress } from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { Suspense, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { imgsDir, imgsObject } from "src/tools/const";
 import { fragmentAtmosphere, vertexAtmosphere } from "src/tools/shaders";
 import {
@@ -14,12 +14,7 @@ import Model from "./Marker";
 
 export default function CanvasEarth() {
   return (
-    <Canvas
-      gl={{ antialias: true }}
-      dpr={[1, 2]}
-      onLoad={(e) => console.log("onLoad::", e)}
-      onProgress={(e) => console.log("progress::", e)}
-    >
+    <Canvas gl={{ antialias: true }} dpr={[1, 2]}>
       <EarthBox scale={0.95} />
       <Suspense fallback={null}>
         <ambientLight intensity={1} color="#ffffff" />
@@ -39,13 +34,22 @@ export default function CanvasEarth() {
 function EarthBox(props) {
   const earthRef = useRef(null);
   const cloudsRef = useRef(null);
+  const { progress } = useProgress();
+  const [imgDayMap, setimgDayMap] = useState("DayMap_quality_low");
+  const [imgCloudMap, setimgCloudMap] = useState("Clouds_quality_low");
   const [colorMap, cloudsMap] = useLoader(TextureLoader, [
-    imgsDir(imgsObject.Earths.DayMap_quality_low),
-    imgsDir(imgsObject.Earths.Clouds_quality_low),
+    imgsDir(imgsObject.Earths[imgDayMap]),
+    imgsDir(imgsObject.Earths[imgCloudMap]),
   ]);
+  useEffect(() => {
+    if (progress === 100) {
+      setimgDayMap("DayMap");
+      setimgCloudMap("Clouds");
+    }
+  }, [progress]);
 
   return (
-    <group onAfterRender={(e) => console.log("onAfterRender --------> ", e)}>
+    <group>
       {/* Earth */}
 
       <mesh {...props} ref={earthRef} rotation={new Euler(0.26, 2.95, 0)}>
