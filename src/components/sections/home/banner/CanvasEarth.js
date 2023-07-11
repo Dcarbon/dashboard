@@ -18,13 +18,14 @@ export default function CanvasEarth() {
       <EarthBox scale={0.95} />
       <Suspense fallback={null}>
         <ambientLight intensity={1} color="#ffffff" />
-        {/* <pointLight color={"#ffffff"} position={[10, 10, 10]} /> */}
+        <pointLight color={"#ffffff"} position={[10, 10, 10]} />
         <OrbitControls
           autoRotate
           autoRotateSpeed={0.3}
           rotateSpeed={0.2}
           enablePan={false}
           enableZoom={false}
+          // enableDamping={false}
         />
       </Suspense>
       <Model />
@@ -54,12 +55,6 @@ function EarthBox(props) {
 
       <mesh {...props} ref={earthRef} rotation={new Euler(0.26, 2.95, 0)}>
         <sphereGeometry args={[3, 90, 33]} />
-        <meshPhysicalMaterial
-          color={"#ffffff"}
-          map={imgsDir(imgsObject.Earths.DayMap)}
-          roughness={1}
-          metalness={0.3}
-        />
         <meshStandardMaterial map={colorMap} roughness={1} metalness={0} />
       </mesh>
 
@@ -82,7 +77,7 @@ function EarthBox(props) {
           fragmentShader={fragmentAtmosphere}
           blending={AdditiveBlending}
           side={BackSide}
-          opacity={0.6}
+          opacity={0.4}
           transparent={true}
         />
       </mesh>

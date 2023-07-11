@@ -9,7 +9,12 @@ import { useRouter } from "next/router";
 
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 function MapBoxPage({ className, setFeatures, setIotSelected }) {
-  var defaultCenter = [105.79, 21.147];
+  // dev
+  var defaultCenter = [105.008, 21.496];
+  var defaultZoom = 12;
+  // prod
+  // var defaultCenter = [105.79, 21.147];
+  // var defaultZoom = 8
   const [mymap, setMymap] = useState(null);
   const dispatch = useDispatch();
   const { query } = useRouter();
@@ -83,9 +88,7 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     //
     //
 
-    mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
-      // console.log("hoveredStateId = e.features[0].id;", e.features);
-
+    mymap.on("click", ["hexagonLayer"], (e) => {
       if (e.features.length > 0) {
         hoveredStateId = e.features[0].id;
         listFeatures = handleDuplicateFeatures(e.features);
@@ -105,7 +108,7 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
   function Flyto(center, zoom) {
     mymap.flyTo({
       center: center,
-      zoom: zoom || 8,
+      zoom: zoom || defaultZoom,
     });
   }
 
@@ -119,7 +122,7 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
           zoom: 4,
         }}
         maxZoom={20}
-        minZoom={2}
+        minZoom={4}
         style={{
           width: "100%",
           height: "100%",
@@ -135,6 +138,14 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
         }}
         mapboxAccessToken={accessToken}
         onLoad={() => {
+          // console.log("mymap", mymap);
+          // console.log("mymap.features", mymap?.getSource("iott_all"));
+          if (mymap) {
+            // const ftstate = mymap?.getFeatureState();
+            // const lyer = mymap?.getLayer();
+            // console.log("ftstate", ftstate);
+            // console.log("lyer", lyer);
+          }
           let newCenter = [];
           if (query?.lng && query?.lat) {
             newCenter = [query?.lng, query?.lat];

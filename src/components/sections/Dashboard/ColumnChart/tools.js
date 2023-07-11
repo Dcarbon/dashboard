@@ -167,7 +167,7 @@ export const optionsDefault = {
     type: "categories",
     categories: [],
     labels: { show: false },
-    axisTicks: { show: true },
+    axisTicks: { show: true, color: "#504F5A" },
     axisBorder: { show: true, color: "#504F5A" },
   },
 

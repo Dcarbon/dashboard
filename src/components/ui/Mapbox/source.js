@@ -7,10 +7,22 @@ function MySource() {
       id="iott_all"
       type="vector"
       tiles={[process.env.NEXT_PUBLIC_MAPSOURCE]}
-      attribution="Show to users"
+      // attribution="Show to users"
     >
       <Layer {...layer_1} />
-      <Layer {...layer_2} />
+      <Layer
+        {...layer_2}
+        paint={{
+          "fill-color": "#72BF44",
+          "fill-antialias": false,
+          "fill-opacity": [
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            0.9,
+            0.6,
+          ],
+        }}
+      />
     </Source>
   );
 }
