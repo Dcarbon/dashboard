@@ -6,15 +6,22 @@
   justify-content: center;
   align-items: center;
   .earth {
+    border: 1px solid transparent;
     order: 1;
     transition: all 0.5s ease;
-    &:hover {
-      border-radius: 50%;
-      background-color: rgba(162, 223, 126, 0.02);
-    }
+    overflow: hidden;
+    border-radius: 10%;
+    // &:hover {
+    //   border-radius: 50%;
+    //   border-color: #72bf44;
+    //   background-color: rgba(162, 223, 126, 0.02);
+    // }
   }
   .boxText {
     order: 2;
+  }
+  [class*="mapboxgl-control-container"] {
+    display: none;
   }
   @media (min-width: 576px) {
     padding: 132px 0 110px;

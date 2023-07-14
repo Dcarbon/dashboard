@@ -5,6 +5,7 @@ import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
 import { imgsDir, imgsObject } from "src/tools/const";
 import CanvasEarth from "./CanvasEarth";
+import Earth from "../earth";
 
 function BannerFisrt() {
   return (
@@ -32,7 +33,8 @@ function BannerFisrt() {
           {/*  */}
           {/*  */}
           <div className={stls.earth}>
-            <CanvasEarth />
+            <Earth />
+            {/* <CanvasEarth /> */}
           </div>
         </div>
       </Container>

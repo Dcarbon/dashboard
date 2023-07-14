@@ -44,6 +44,7 @@ function EarthBox(props) {
   ]);
   useEffect(() => {
     if (progress === 100) {
+      console.log("hihi");
       setimgDayMap("DayMap");
       setimgCloudMap("Clouds");
     }
