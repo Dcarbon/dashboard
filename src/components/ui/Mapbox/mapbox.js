@@ -3,9 +3,10 @@ import { Map } from "react-map-gl";
 import OverView from "./overview";
 import { useDispatch } from "react-redux";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-import MySource from "./source";
 import { layer_1, layer_2 } from "./libs";
 import { useRouter } from "next/router";
+import SourceVector from "./SourceVector";
+import SourceGeojson from "./SourceGeojson";
 
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 function MapBoxPage({ className, setFeatures, setIotSelected }) {
@@ -39,14 +40,6 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
       mymap.setFeatureState(tempState(layer_2["source-layer"]), { hover });
     };
     // on move map get total node on project
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
     mymap.on("mousemove", ["boundaryLayer", "hexagonLayer"], (e) => {
       if (e.features.length > 0) {
         if (hoveredStateId !== null) {
@@ -59,14 +52,6 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     });
 
     // on move map delete total node on project
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
     mymap.on("mouseleave", ["boundaryLayer", "hexagonLayer"], () => {
       if (hoveredStateId !== null) {
         handleMultiFeatureState(false);
@@ -77,16 +62,6 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     // on Chooose
     // on Chooose
     // on Chooose
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
 
     mymap.on("click", ["hexagonLayer"], (e) => {
       if (e.features.length > 0) {
@@ -106,10 +81,12 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     return () => (hoveredStateId = 0);
   }, [dispatch, mymap, setFeatures, setIotSelected]);
   function Flyto(center, zoom) {
-    mymap.flyTo({
-      center: center,
-      zoom: zoom || defaultZoom,
-    });
+    if (mymap) {
+      mymap?.flyTo({
+        center: center,
+        zoom: zoom || defaultZoom,
+      });
+    }
   }
 
   return (
@@ -122,11 +99,12 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
           zoom: 4,
         }}
         maxZoom={20}
-        minZoom={4}
+        minZoom={0}
         style={{
           width: "100%",
           height: "100%",
         }}
+        pitch={0}
         projection={"globe"}
         mapStyle="mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew"
         fog={{
@@ -138,25 +116,17 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
         }}
         mapboxAccessToken={accessToken}
         onLoad={() => {
-          // console.log("mymap", mymap);
-          // console.log("mymap.features", mymap?.getSource("iott_all"));
-          if (mymap) {
-            // const ftstate = mymap?.getFeatureState();
-            // const lyer = mymap?.getLayer();
-            // console.log("ftstate", ftstate);
-            // console.log("lyer", lyer);
-          }
           let newCenter = [];
           if (query?.lng && query?.lat) {
             newCenter = [query?.lng, query?.lat];
           }
           Flyto(newCenter?.length > 0 ? newCenter : defaultCenter, query?.zoom);
         }}
-        onClick={(e) => console.log("e", e)}
       >
         {/* Hiển thị tổng số nodes */}
         <OverView />
-        <MySource />
+        {/* <SourceGeojson /> */}
+        <SourceVector />
       </Map>
     </div>
   );

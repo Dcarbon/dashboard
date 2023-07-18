@@ -32,7 +32,7 @@ function BannerFisrt() {
           {/*  */}
           {/*  */}
           {/*  */}
-          <div className={stls.earth}>
+          <div className={`${stls.earth}`}>
             <Earth />
             {/* <CanvasEarth /> */}
           </div>

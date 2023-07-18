@@ -1,7 +1,7 @@
 import { Layer, Source } from "react-map-gl";
 import { layer_1, layer_2 } from "./libs";
 
-function MySource() {
+function SourceVector() {
   return (
     <Source
       id="iott_all"
@@ -26,4 +26,5 @@ function MySource() {
     </Source>
   );
 }
-export default MySource;
+
+export default SourceVector;

@@ -1,152 +1,121 @@
+import { useRouter } from "next/router";
 import * as React from "react";
-import { Fragment, useRef, useState, useEffect } from "react";
+import { useEffect } from "react";
 import Map, { Layer, Source } from "react-map-gl";
+import SourceGeojson from "src/components/ui/Mapbox/SourceGeojson";
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 function Earth() {
-  const homePageMapREF = useRef(null);
-  const [loaded, setLoaded] = useState(false);
-  const [zoom, setZoom] = useState(0);
+  const homePageMapREF = React.useRef(null);
+  const [loaded, setLoaded] = React.useState(false);
+  const [zoom, setZoom] = React.useState(0.7);
   function ResizeEarth(e) {
-    // console.log("resi neff", homePageMapREF);
-    // let map = homePageMapREF?.current;
-    // if (map) {
-    //   const { width, height } = map?.getContainer().getBoundingClientRect();
-    //   const minDimension = Math.min(width, height);
-    //   const topLeft = map
-    //     .unproject({
-    //       x: 0.5 * (width - minDimension),
-    //       y: 0.5 * (height - minDimension),
-    //     })
-    //     .toArray();
-    //   const bottomRight = map
-    //     .unproject({
-    //       x: 0.5 * (width + minDimension),
-    //       y: 0.38 * (height + minDimension),
-    //     })
-    //     .toArray();
-    //   map.fitBounds([topLeft, bottomRight]);
-    // }
     let container = e?.target?.getCanvasContainer();
     let width = container?.clientWidth;
-    if (width <= 350) {
-      setZoom(0.3);
+    let newZoom = 0;
+    if (width <= 300) {
+      newZoom = 0.2;
+    } else if (width <= 350) {
+      newZoom = 0.6;
     } else if (width <= 400) {
-      setZoom(0.5);
+      newZoom = 0.9;
     } else if (width <= 450) {
-      setZoom(0.7);
+      newZoom = 1.1;
     } else if (width <= 500) {
-      setZoom(0.9);
-    } else if (width <= 550) {
-      setZoom(1.1);
+      newZoom = 1.3;
     } else if (width <= 600) {
-      setZoom(1.3);
+      newZoom = 1.5;
     } else {
-      setZoom(1.5);
+      newZoom = 1.7;
+    }
+    e?.target?.resize();
+    setZoom(newZoom);
+    setLoaded(false);
+  }
+  var defaultCenter = [105.008, 21.496];
+  function SpinEarth() {
+    if (homePageMapREF?.current) {
+      let map = homePageMapREF.current;
+      const center = map?.getCenter();
+      center.lng -= 4;
+      map.easeTo({
+        center,
+        duration: 1000,
+        easing: (n) => n,
+      });
     }
   }
   useEffect(() => {
-    if (loaded) {
-      ResizeEarth();
+    if (homePageMapREF?.current) {
+      if (!loaded) {
+        homePageMapREF.current?.zoomTo(zoom);
+        setLoaded(true);
+      }
     }
-  }, [loaded]);
-  var defaultCenter = [105.008, 21.496];
+  }, [loaded, zoom]);
+  const router = useRouter();
   return (
-    <Fragment>
+    <React.Fragment>
       <Map
         ref={homePageMapREF}
         projection={"globe"}
         initialViewState={{
           longitude: defaultCenter[0],
           latitude: defaultCenter[1],
-          zoom,
+          zoom: 0,
         }}
-        zoom={zoom}
-        mapStyle={"mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew"}
+        pitch={0}
+        touchZoomRotate={false}
+        boxZoom={false}
+        scrollZoom={false}
+        doubleClickZoom={false}
+        mapStyle={"mapbox://styles/qing95/clk6db90d00ad01pga1gqgfq3"}
         mapboxAccessToken={accessToken}
         style={{ width: "100%", height: "100%" }}
         fog={{
-          color: "rgba(255, 255, 255, 0.2)", // Lower atmosphere
-          "horizon-blend": 0.05,
-          "high-color": "rgba(36, 92, 223, 0.0)", // Upper atmosphere
-          "space-color": "rgba(11, 11, 25, 0)", // Background color
-          "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
+          color: "rgba(227, 252, 255, 0.15)", // Lower atmosphere
+          "horizon-blend": 0.03,
+          "high-color": "rgba(0, 0, 0, 0.1)", // Upper atmosphere
+          "space-color": "rgba(255, 255, 255, 0)", // Background color
         }}
         onLoad={(e) => {
-          console.log("e", e.target.getCanvasContainer());
           ResizeEarth(e);
-          setLoaded(true);
+          if (homePageMapREF.current) {
+            let map = homePageMapREF.current;
+            let newInterval = setInterval(SpinEarth, 500);
+            map.on("mousedown", () => {
+              clearInterval(newInterval);
+            });
+            map.on("touchstart", () => {
+              clearInterval(newInterval);
+            });
+
+            // Restart spinning the globe when interaction is complete
+            map.on("mouseup", () => {
+              newInterval = setInterval(SpinEarth, 500);
+            });
+            map.on("touchend", () => {
+              newInterval = setInterval(SpinEarth, 500);
+            });
+            map.on("click", "clusters", (e) => {
+              console.log("e", e);
+              console.log("map", map);
+              const features = map.queryRenderedFeatures(e.point, {
+                layers: ["clusters"],
+              });
+              let geometry = features[0].geometry.coordinates;
+              router.push(
+                `/dashboard?lng=${geometry[0]}&lat=${geometry[1]}&zoom=7.5`
+              );
+            });
+          }
         }}
         onResize={ResizeEarth}
       >
-        <Source
-          id="iott_all"
-          type="geojson"
-          // tiles={[process.env.NEXT_PUBLIC_MAPSOURCE]}
-          data={"https://dev.dcarbon.org/api/v1/iots/geojson"}
-          // attribution="Show to users"
-          cluster={true}
-          clusterMaxZoom={14} // Max zoom to cluster points on
-          clusterRadius={50} // Radius of each cluster when clustering points (defaults to 50)
-        >
-          <Layer
-            id="clusters"
-            type="circle"
-            source={"iott_all"}
-            filter={["has", "point_count"]}
-            paint={{
-              "circle-color": [
-                "step",
-                ["get", "point_count"],
-                "#51bbd6",
-                100,
-                "#f1f075",
-                750,
-                "#f28cb1",
-              ],
-              "circle-radius": [
-                "step",
-                ["get", "point_count"],
-                20,
-                100,
-                30,
-                750,
-                40,
-              ],
-            }}
-          />
-
-          <Layer
-            id="cluster-count"
-            type="symbol"
-            source={"iott_all"}
-            filter={["has", "point_count"]}
-            layout={{
-              "text-field": ["get", "point_count_abbreviated"],
-              "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-              "text-size": 12,
-            }}
-          />
-          <Layer
-            id="unclustered-point"
-            type="circle"
-            source={"iott_all"}
-            filter={["!", ["has", "point_count"]]}
-            layout={{
-              "text-field": ["get", "point_count_abbreviated"],
-              "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-              "text-size": 12,
-            }}
-            paint={{
-              "circle-color": "#11b4da",
-              "circle-radius": 4,
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#fff",
-            }}
-          />
-        </Source>
+        <SourceGeojson />
       </Map>
-    </Fragment>
+    </React.Fragment>
   );
 }
 
 export default Earth;
+//
