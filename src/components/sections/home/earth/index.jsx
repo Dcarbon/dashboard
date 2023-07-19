@@ -36,7 +36,7 @@ function Earth() {
     if (homePageMapREF?.current) {
       let map = homePageMapREF.current;
       const center = map?.getCenter();
-      center.lng -= 4;
+      center.lng -= 2;
       map.easeTo({
         center,
         duration: 1000,
@@ -97,8 +97,6 @@ function Earth() {
               newInterval = setInterval(SpinEarth, 500);
             });
             map.on("click", "clusters", (e) => {
-              console.log("e", e);
-              console.log("map", map);
               const features = map.queryRenderedFeatures(e.point, {
                 layers: ["clusters"],
               });

@@ -4,7 +4,6 @@ import stls from "./index.module.scss";
 import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
 import { imgsDir, imgsObject } from "src/tools/const";
-import CanvasEarth from "./CanvasEarth";
 import Earth from "../earth";
 
 function BannerFisrt() {

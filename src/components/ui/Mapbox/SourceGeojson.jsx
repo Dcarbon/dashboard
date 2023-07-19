@@ -20,13 +20,16 @@ function SourceGeojson() {
             "step",
             ["get", "point_count"],
             20,
-            100,
+            50,
             30,
-            750,
+            100,
+            40,
+            500,
             40,
           ],
           "circle-stroke-width": 1,
           "circle-stroke-color": "#66d622",
+          "circle-opacity": 0.6,
         }}
       />
 
@@ -37,7 +40,22 @@ function SourceGeojson() {
         filter={["has", "point_count"]}
         layout={{
           "text-field": ["get", "point_count_abbreviated"],
-          "text-size": 20,
+          "text-size": 24,
+          "text-padding": 10,
+        }}
+        paint={{
+          "text-color": "#ffffff",
+        }}
+      />
+      <Layer
+        id="unclustered-point"
+        type="circle"
+        source={"iott_all"}
+        filter={["!", ["has", "point_count"]]}
+        paint={{
+          "circle-color": "#66d622",
+          "circle-radius": 10,
+          "circle-opacity": 0.6,
         }}
       />
     </Source>

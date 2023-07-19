@@ -4,7 +4,7 @@ import { layer_1, layer_2 } from "./libs";
 function SourceVector() {
   return (
     <Source
-      id="iott_all"
+      id="iott_all_2"
       type="vector"
       tiles={[process.env.NEXT_PUBLIC_MAPSOURCE]}
       // attribution="Show to users"

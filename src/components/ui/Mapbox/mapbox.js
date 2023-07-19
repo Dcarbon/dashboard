@@ -7,6 +7,7 @@ import { layer_1, layer_2 } from "./libs";
 import { useRouter } from "next/router";
 import SourceVector from "./SourceVector";
 import SourceGeojson from "./SourceGeojson";
+import mapboxgl from "mapbox-gl";
 
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 function MapBoxPage({ className, setFeatures, setIotSelected }) {
@@ -17,6 +18,7 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
   // var defaultCenter = [105.79, 21.147];
   // var defaultZoom = 8
   const [mymap, setMymap] = useState(null);
+  const [currentZoom, setCurrentZoom] = useState(null);
   const dispatch = useDispatch();
   const { query } = useRouter();
   useEffect(() => {
@@ -24,7 +26,7 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     let hoveredStateId = null;
     let listFeatures = null;
     let tempState = (sourceLayer) => ({
-      source: "iott_all",
+      source: "iott_all_2",
       id: hoveredStateId,
       sourceLayer,
     });
@@ -78,8 +80,39 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
         }, 100);
       }
     });
+    // inspect a cluster on click
+    mymap.on("click", ["clusters", "cluster-count"], (e) => {
+      const features = mymap.queryRenderedFeatures(e.point, {
+        layers: ["clusters"],
+      });
+      console.log("e", e);
+      const clusterId = features[0]?.properties.cluster_id;
+      if (features?.length > 0) {
+        mymap
+          .getSource("iott_all")
+          .getClusterExpansionZoom(clusterId, (err, zoom) => {
+            if (err) return;
+
+            mymap.flyTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom,
+            });
+          });
+      } else if (e?.lngLat) {
+        mymap.flyTo({
+          center: [e.lngLat?.lng, e.lngLat?.lat],
+          zoom: currentZoom <= 6 ? currentZoom + 4 : currentZoom + 2,
+        });
+      }
+    });
+    mymap.on("mouseenter", "clusters", () => {
+      mymap.getCanvas().style.cursor = "pointer";
+    });
+    mymap.on("mouseleave", "clusters", () => {
+      mymap.getCanvas().style.cursor = "";
+    });
     return () => (hoveredStateId = 0);
-  }, [dispatch, mymap, setFeatures, setIotSelected]);
+  }, [currentZoom, dispatch, mymap, setFeatures, setIotSelected]);
   function Flyto(center, zoom) {
     if (mymap) {
       mymap?.flyTo({
@@ -108,8 +141,8 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
         projection={"globe"}
         mapStyle="mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew"
         fog={{
-          color: "rgba(169, 200, 232, 0.8)", // Lower atmosphere
-          "horizon-blend": 0.05,
+          color: "rgba(169, 200, 232, 0.5)", // Lower atmosphere
+          "horizon-blend": 0.03,
           "high-color": "rgba(36, 92, 223, 0.7)", // Upper atmosphere
           "space-color": "rgb(11, 11, 25)", // Background color
           "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
@@ -122,11 +155,15 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
           }
           Flyto(newCenter?.length > 0 ? newCenter : defaultCenter, query?.zoom);
         }}
+        onZoomEnd={(e) => {
+          setCurrentZoom(e.viewState.zoom);
+          // console.log("mymap", mymap);
+          mymap.resize();
+        }}
       >
         {/* Hiển thị tổng số nodes */}
         <OverView />
-        {/* <SourceGeojson /> */}
-        <SourceVector />
+        {currentZoom >= 10 ? <SourceVector /> : <SourceGeojson />}
       </Map>
     </div>
   );
