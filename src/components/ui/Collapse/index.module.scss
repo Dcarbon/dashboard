@@ -1,6 +1,9 @@
 .collapse {
   overflow: hidden;
-  transition: all 0.8s ease-in-out 0s;
+  transition: all 0.5s ease-out 0s;
+  &.show {
+    transition: all 0s ease-out 0s;
+  }
 }
 
 .collapse > div {

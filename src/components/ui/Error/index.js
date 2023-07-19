@@ -1,17 +1,10 @@
-import { Fragment, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { Fragment } from "react";
 import FlexBetween from "../Stack/flex-between";
 
 function Error({ err, err_code, clearErrType }) {
-  const [thisErr, setThisErr] = useState(null);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (err) {
-      setThisErr(err);
-      dispatch({ type: clearErrType });
-    }
-  }, [clearErrType, dispatch, err, err_code]);
-
+  if (err || err_code) {
+    setTimeout(() => clearErrType(), 5000);
+  }
   return (
     <Fragment>
       {/* <!-- Main modal --> */}
@@ -20,20 +13,20 @@ function Error({ err, err_code, clearErrType }) {
         tabIndex="-1"
         aria-hidden="true"
         className={`fixed top-0 left-0 ${
-          thisErr ? "visible" : "hidden"
-        } w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}
+          err ? "visible" : "hidden"
+        } w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full z-50`}
       >
-        <div className="mx-auto mt-9 relative w-full max-w-2xl max-h-full">
+        <div className="mx-auto mt-20 relative w-full max-w-2xl max-h-full">
           {/* <!-- Modal content --> */}
-          <div className="relative bg-white rounded-lg border-4 border-red-400 shadow ">
+          <div className="relative bg-red-500 bg-opacity-80 rounded-lg border-2 border-red-700 shadow ">
             {/* <!-- Modal body --> */}
-            <FlexBetween className={"items-center p-6"}>
-              <p className="text-lg leading-relaxed text-red-800">{thisErr}</p>
+            <FlexBetween className={"items-center px-3 py-4"}>
+              <p className="text-white">{err}</p>
               <button
-                onClick={() => setThisErr(null)}
+                onClick={() => clearErrType(false)}
                 data-modal-hide="defaultModal"
                 type="button"
-                className="text-gray-500 bg-white hover:bg-red-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border-4 border-red-500 text-sm font-medium px-5 py-2.5 hover:text-red-900 focus:z-10 "
+                className=" hover:text-white"
               >
                 <BTNSVG />
               </button>

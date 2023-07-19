@@ -6,9 +6,16 @@ import { useState } from "react";
 export default function Dashboard() {
   const [iotSelected, setIotSelected] = useState(0);
   const [features, setFeatures] = useState([]);
-
+  const [errFlyTo, setErrFlyTo] = useState(false);
+  const [mymap, setMymap] = useState(null);
   return (
-    <DashboardLayout>
+    <DashboardLayout
+      setErrFlyTo={setErrFlyTo}
+      mymap={mymap}
+      iotSelected={iotSelected}
+      setIotSelected={setIotSelected}
+      setFeatures={setFeatures}
+    >
       <div
         className={`${stls.main} ${features?.length > 0 ? stls.active : ""}`}
       >
@@ -17,6 +24,10 @@ export default function Dashboard() {
         {/* - hiển thị vị trí node trên bản đồ , mỗi node sẽ có các iot*/}
         {/* - click node -> get iot -> gán vào iotSelected, features (generators)  */}
         <MapBoxPage
+          errFlyTo={errFlyTo}
+          setErrFlyTo={setErrFlyTo}
+          mymap={mymap}
+          setMymap={setMymap}
           setFeatures={setFeatures}
           className={stls?.map}
           iotSelected={iotSelected}

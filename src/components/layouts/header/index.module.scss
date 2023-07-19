@@ -1,4 +1,73 @@
 .logo {
   width: 272px;
   height: 42px;
+  max-width: 100%;
+}
+.search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 375px;
+  max-width: 100%;
+  border: 1px solid #32313d;
+  background-color: #171623;
+  padding: 6px 10px;
+  border-radius: 5px;
+  position: relative;
+  .btn {
+    width: 34px;
+    height: 34px;
+    text-align: center;
+    transition: all 0.5s ease;
+    &:hover {
+      filter: brightness(1.5);
+    }
+    svg {
+      display: inline;
+    }
+  }
+  .btn_second.show {
+    transform: rotate(180deg);
+  }
+  .input {
+    padding: 5px 10px;
+    flex: 1;
+    background-color: transparent;
+    &:focus-visible {
+      outline: none;
+    }
+  }
+  .listResult {
+    position: absolute;
+    top: 100%;
+    transform: translateY(10px);
+    left: 0;
+    width: 100%;
+    z-index: 200;
+    background-color: rgba($color: #171623, $alpha: 1);
+    border-radius: 5px;
+    transition: all 0.5s ease;
+    &.show {
+      padding: 12px 10px;
+      .scrollBox {
+        max-height: 250px;
+      }
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      padding: 6px 10px;
+      gap: 10px;
+      &:hover {
+        color: #ffffff;
+        filter: brightness(1.2);
+        cursor: pointer;
+        border-radius: 5px;
+        background-color: rgba($color: #72bf44, $alpha: 0.3);
+      }
+    }
+    .checked {
+      margin-left: 20px;
+    }
+  }
 }

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useEffect } from "react";
-import Map, { Layer, Source } from "react-map-gl";
+import Map from "react-map-gl";
 import SourceGeojson from "src/components/ui/Mapbox/SourceGeojson";
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 function Earth() {

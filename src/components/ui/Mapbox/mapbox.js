@@ -7,20 +7,28 @@ import { layer_1, layer_2 } from "./libs";
 import { useRouter } from "next/router";
 import SourceVector from "./SourceVector";
 import SourceGeojson from "./SourceGeojson";
-import mapboxgl from "mapbox-gl";
+import Error from "../Error";
 
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
-function MapBoxPage({ className, setFeatures, setIotSelected }) {
+function MapBoxPage({
+  mymap,
+  setMymap,
+  className,
+  setFeatures,
+  setIotSelected,
+  errFlyTo,
+  setErrFlyTo,
+}) {
   // dev
   var defaultCenter = [105.008, 21.496];
   var defaultZoom = 12;
   // prod
   // var defaultCenter = [105.79, 21.147];
   // var defaultZoom = 8
-  const [mymap, setMymap] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(null);
   const dispatch = useDispatch();
-  const { query } = useRouter();
+  const { query, replace } = useRouter();
+
   useEffect(() => {
     if (!mymap) return;
     let hoveredStateId = null;
@@ -71,6 +79,7 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
         listFeatures = handleDuplicateFeatures(e.features);
         setIotSelected(listFeatures[0]);
         setFeatures(listFeatures);
+        replace("/dashboard");
         dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: false });
         setTimeout(() => {
           dispatch({
@@ -85,7 +94,6 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
       const features = mymap.queryRenderedFeatures(e.point, {
         layers: ["clusters"],
       });
-      console.log("e", e);
       const clusterId = features[0]?.properties.cluster_id;
       if (features?.length > 0) {
         mymap
@@ -113,14 +121,20 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
     });
     return () => (hoveredStateId = 0);
   }, [currentZoom, dispatch, mymap, setFeatures, setIotSelected]);
-  function Flyto(center, zoom) {
+
+  const Flyto = (center, zoom) => {
     if (mymap) {
-      mymap?.flyTo({
-        center: center,
-        zoom: zoom || defaultZoom,
-      });
+      try {
+        mymap?.flyTo({
+          center: center,
+          zoom: zoom || defaultZoom,
+        });
+      } catch (error) {
+        setErrFlyTo(true);
+        console.error("Coordinates is invalid", error);
+      }
     }
-  }
+  };
 
   return (
     <div className={className}>
@@ -148,6 +162,7 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
           "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
         }}
         mapboxAccessToken={accessToken}
+        onZoomEnd={(e) => setCurrentZoom(e.viewState.zoom)}
         onLoad={() => {
           let newCenter = [];
           if (query?.lng && query?.lat) {
@@ -155,16 +170,15 @@ function MapBoxPage({ className, setFeatures, setIotSelected }) {
           }
           Flyto(newCenter?.length > 0 ? newCenter : defaultCenter, query?.zoom);
         }}
-        onZoomEnd={(e) => {
-          setCurrentZoom(e.viewState.zoom);
-          // console.log("mymap", mymap);
-          mymap.resize();
-        }}
       >
         {/* Hiển thị tổng số nodes */}
         <OverView />
         {currentZoom >= 10 ? <SourceVector /> : <SourceGeojson />}
       </Map>
+      <Error
+        err={errFlyTo ? "This Coordinate is invalid" : ""}
+        clearErrType={setErrFlyTo}
+      />
     </div>
   );
 }

@@ -23,7 +23,9 @@ function Collapse({ isOpen, children }) {
         maxHeight: isOpen ? cH + "px" : 0,
       }}
     >
-      <div ref={contentREF}>{children}</div>
+      <div ref={contentREF} className={stls[isOpen ? "show" : ""]}>
+        {children}
+      </div>
     </div>
   );
 }
