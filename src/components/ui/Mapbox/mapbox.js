@@ -3,7 +3,6 @@ import { Map } from "react-map-gl";
 import OverView from "./overview";
 import { useDispatch } from "react-redux";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-import { layer_1, layer_2 } from "./libs";
 import { useRouter } from "next/router";
 import SourceVector from "./SourceVector";
 import SourceGeojson from "./SourceGeojson";
@@ -46,8 +45,8 @@ function MapBoxPage({
     };
 
     let handleMultiFeatureState = (hover) => {
-      mymap.setFeatureState(tempState(layer_1["source-layer"]), { hover });
-      mymap.setFeatureState(tempState(layer_2["source-layer"]), { hover });
+      mymap.setFeatureState(tempState("boundary"), { hover });
+      mymap.setFeatureState(tempState("hexagon"), { hover });
     };
     // on move map get total node on project
     mymap.on("mousemove", ["boundaryLayer", "hexagonLayer"], (e) => {
@@ -89,45 +88,18 @@ function MapBoxPage({
         }, 100);
       }
     });
-    // inspect a cluster on click
-    mymap.on("click", ["clusters", "cluster-count"], (e) => {
-      const features = mymap.queryRenderedFeatures(e.point, {
-        layers: ["clusters"],
-      });
-      const clusterId = features[0]?.properties.cluster_id;
-      if (features?.length > 0) {
-        mymap
-          .getSource("iott_all")
-          .getClusterExpansionZoom(clusterId, (err, zoom) => {
-            if (err) return;
 
-            mymap.flyTo({
-              center: features[0].geometry.coordinates,
-              zoom: zoom,
-            });
-          });
-      } else if (e?.lngLat) {
-        mymap.flyTo({
-          center: [e.lngLat?.lng, e.lngLat?.lat],
-          zoom: currentZoom <= 6 ? currentZoom + 4 : currentZoom + 2,
-        });
-      }
-    });
-    mymap.on("mouseenter", "clusters", () => {
-      mymap.getCanvas().style.cursor = "pointer";
-    });
-    mymap.on("mouseleave", "clusters", () => {
-      mymap.getCanvas().style.cursor = "";
-    });
+    // inspect a cluster on click
+
     return () => (hoveredStateId = 0);
-  }, [currentZoom, dispatch, mymap, setFeatures, setIotSelected]);
+  }, [currentZoom, dispatch, mymap, replace, setFeatures, setIotSelected]);
 
   const Flyto = (center, zoom) => {
     if (mymap) {
       try {
         mymap?.flyTo({
           center: center,
-          zoom: zoom || defaultZoom,
+          zoom: zoom,
         });
       } catch (error) {
         setErrFlyTo(true);
@@ -153,7 +125,7 @@ function MapBoxPage({
         }}
         pitch={0}
         projection={"globe"}
-        mapStyle="mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew"
+        mapStyle='mapbox://styles/vova999/clfhwlaqq007f01s2i8mwl7ew'
         fog={{
           color: "rgba(169, 200, 232, 0.5)", // Lower atmosphere
           "horizon-blend": 0.03,
@@ -164,16 +136,49 @@ function MapBoxPage({
         mapboxAccessToken={accessToken}
         onZoomEnd={(e) => setCurrentZoom(e.viewState.zoom)}
         onLoad={() => {
+          let newZoom = defaultZoom;
           let newCenter = [];
           if (query?.lng && query?.lat) {
             newCenter = [query?.lng, query?.lat];
+            newZoom = query?.zoom;
           }
-          Flyto(newCenter?.length > 0 ? newCenter : defaultCenter, query?.zoom);
+          setCurrentZoom(newZoom);
+          Flyto(newCenter?.length > 0 ? newCenter : defaultCenter, newZoom);
+          mymap.on("click", ["clusters", "cluster-count"], (e) => {
+            const features = mymap.queryRenderedFeatures(e.point, {
+              layers: ["clusters"],
+            });
+
+            const clusterId = features[0]?.properties.cluster_id;
+
+            if (features?.length > 0) {
+              mymap
+                .getSource("iott_all")
+                .getClusterExpansionZoom(clusterId, (err, zoom) => {
+                  if (err) return;
+                  newZoom = zoom;
+                  mymap.flyTo({
+                    center: features[0].geometry.coordinates,
+                    zoom: zoom,
+                  });
+                  setCurrentZoom(newZoom);
+                });
+            } else if (e?.lngLat) {
+              newZoom = 11.4;
+              mymap.flyTo({
+                center: [e.lngLat?.lng, e.lngLat?.lat],
+                zoom: newZoom,
+              });
+              setCurrentZoom(newZoom);
+            }
+          });
+          mymap.on("zoom", (e) => (newZoom = e.viewState.zoom));
         }}
       >
         {/* Hiển thị tổng số nodes */}
         <OverView />
-        {currentZoom >= 10 ? <SourceVector /> : <SourceGeojson />}
+        <SourceGeojson visibility={Boolean(currentZoom < 10)} />
+        <SourceVector visibility={Boolean(currentZoom >= 10)} />
       </Map>
       <Error
         err={errFlyTo ? "This Coordinate is invalid" : ""}
