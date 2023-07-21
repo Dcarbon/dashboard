@@ -9,7 +9,7 @@ import Earth from "../earth";
 function BannerFisrt() {
   return (
     <Section
-      className="relative overflow-hidden z-10"
+      className='relative overflow-hidden z-10'
       bgImageUrl={imgsDir(imgsObject.home_banner)}
     >
       <Container>

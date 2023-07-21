@@ -109,7 +109,7 @@ function Earth() {
         }}
         onResize={ResizeEarth}
       >
-        <SourceGeojson />
+        <SourceGeojson visibility={true} />
       </Map>
     </React.Fragment>
   );
