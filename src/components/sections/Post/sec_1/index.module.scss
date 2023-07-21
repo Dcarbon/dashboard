@@ -13,6 +13,16 @@
   font-size: 18px;
   font-weight: 300;
   line-height: 28px;
+  padding-left: 8px;
+  padding-right: 8px;
+  @media (min-width: 768px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  @media (min-width: 1440px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 
   li {
     color: #919097;

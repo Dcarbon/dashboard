@@ -18,7 +18,7 @@ function Post_Sec_2({ attrs }) {
   return (
     <Section className={stls.main}>
       <Container className={stls.container}>
-        <div>
+        <div className={stls.wrapper}>
           <div className={stls.content}>
             {attrs?.blog_category && (
               <Heading Tag={"h5"} className={stls.tag}>
