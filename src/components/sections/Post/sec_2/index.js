@@ -36,10 +36,10 @@ function Post_Sec_2({ attrs }) {
                 unoptimized
                 src={handleImage(attrImg)}
                 alt={attrImg?.alternativeText ?? ""}
-                width={1000}
-                height={1000}
+                width={300}
+                height={0}
                 style={{
-                  width: "auto",
+                  width: "100%",
                   height: "auto",
                 }}
               />

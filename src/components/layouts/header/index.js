@@ -10,7 +10,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import useSWR from "swr";
-import { CMS_HOST } from "src/redux/handle";
+import { IOT_HOST } from "src/redux/handle";
 import { useRouter } from "next/router";
 import ScrollBox from "src/components/ui/ScrollBox";
 import Collapse from "src/components/ui/Collapse";
@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 //
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
-  const { data } = useSWR(`${CMS_HOST}/api/v1/iots/geojson`, fetcher);
+  const { data } = useSWR(`${IOT_HOST}/api/v1/iots/geojson`, fetcher);
   const searchREF = useRef(null);
   const features = useMemo(() => data?.features, [data?.features]);
   const [searchKey, setSearchKey] = useState("");
@@ -57,8 +57,8 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
     }
   };
   return (
-    <header className="bg-[#0B0A12]">
-      <div className="container w-full max-w-full px-4">
+    <header className='bg-[#0B0A12]'>
+      <div className='container w-full max-w-full px-4'>
         <FlexBetween
           className={
             "space-x-2 space-y-4 md:space-y-0 p-3 flex-col md:flex-row justify-between items-center "
@@ -67,7 +67,7 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
           <Link href={"/"} className={`${stls.logo} relative `}>
             <Image
               src={imgsDir(imgsObject.logo)}
-              alt=""
+              alt=''
               width={272}
               height={42}
               priority
@@ -83,7 +83,7 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
             </button>
             <input
               className={stls.input}
-              placeholder="Search project"
+              placeholder='Search project'
               value={searchKey}
               onKeyDown={(e) => {
                 if (e.target.value?.length > 0 && !showIots) {
@@ -153,7 +153,7 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
                             {check && (
                               <small className={stls.checked}>
                                 <CheckCircleIcon
-                                  color="#72bf44"
+                                  color='#72bf44'
                                   width={16}
                                   height={16}
                                 />

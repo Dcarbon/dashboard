@@ -15,6 +15,7 @@ import dateFormat from "dateformat";
 import CollapseTab from "../CollapseTab";
 import Error from "src/components/ui/Error";
 import { ProjectACT } from "src/redux/actions/projectAction";
+import { useDispatch } from "react-redux";
 function InfoProject({
   err,
   project,
@@ -23,6 +24,7 @@ function InfoProject({
   showDetail,
   setShowDetail,
 }) {
+  const dispatch = useDispatch();
   // get project name
   const projectName = useMemo(() => {
     const descs = project?.descs;
@@ -68,11 +70,15 @@ function InfoProject({
       specs?.waste,
     ]
   );
+
+  const clearErrType = () => {
+    dispatch({ type: ProjectACT.CLEAR_ERR });
+  };
   return (
     <CollapseTab
       disableNumb
       disable
-      color="blue"
+      color='blue'
       title={`Info project ${project?.id}`}
     >
       <div className={stls.infoProject}>
@@ -145,7 +151,7 @@ function InfoProject({
                 <li className={stls.itemRow}>
                   <div>Livestock</div>
                   <div>
-                    {specs?.livestock} <span title="Livestock unit">LSU</span>
+                    {specs?.livestock} <span title='Livestock unit'>LSU</span>
                   </div>
                 </li>
               )}
@@ -160,7 +166,7 @@ function InfoProject({
               <div className={stls.information}>
                 <label className={stls.icon}>
                   <InformationCircleIcon
-                    type="outline"
+                    type='outline'
                     width={24}
                     height={24}
                   />
@@ -175,7 +181,7 @@ function InfoProject({
           </Collapse>
         )}
         {isDetailInfo && (
-          <div className="text-right">
+          <div className='text-right'>
             <Button
               className={stls.btnDetails}
               onClick={() => {
@@ -191,7 +197,7 @@ function InfoProject({
             </Button>
           </div>
         )}
-        <Error clearErrType={ProjectACT.CLEAR_ERR} err={err} />
+        <Error clearErrType={clearErrType} err={err} />
       </div>
     </CollapseTab>
   );

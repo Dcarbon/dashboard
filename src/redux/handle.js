@@ -12,6 +12,7 @@ var account =
 
 export const gateway = process.env.NEXT_PUBLIC_APP_GATEWAY;
 export const CMS_HOST = process.env.NEXT_PUBLIC_CMS_HOST;
+export const IOT_HOST = process.env.NEXT_PUBLIC_IOT_HOST;
 
 // token
 export const setToken = (newToken) => {

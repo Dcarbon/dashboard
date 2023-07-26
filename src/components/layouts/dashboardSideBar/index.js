@@ -101,7 +101,7 @@ function DashboardSideBar({
   return (
     <div className={className}>
       <ScrollBox disableX>
-        <div className="text-[#B3B2B8]">
+        <div className='text-[#B3B2B8]'>
           {/* box select iot  */}
           {/* box select iot  */}
           {/* box select iot  */}

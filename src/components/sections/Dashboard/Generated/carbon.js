@@ -83,10 +83,11 @@ function CarbonGenerated({ iotSelected }) {
   }, [iotState.total_minted]);
   useEffect(() => {
     if (iotSelected) {
-      let newDate = new Date();
+      // let newDate = new Date();
       let payloadGetTotal = {
         iotId: iotSelected,
-        to: roundup_second(newDate),
+        // to: roundup_second(newDate),
+        to: 0,
         from: 1,
       };
       let myInter = setInterval(
@@ -101,10 +102,10 @@ function CarbonGenerated({ iotSelected }) {
 
   return (
     <CollapseTab
-      color="green"
-      title="Carbon credit earned"
+      color='green'
+      title='Carbon credit earned'
       strongNumb={strongNumb || "---"}
-      unit="carbon"
+      unit='carbon'
       isOpen={openTab}
       handleOpen={() => setOpenTab(!openTab)}
     >

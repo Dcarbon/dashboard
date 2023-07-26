@@ -11,7 +11,7 @@ function Blog_Section_2({ data, locale }) {
           className={`grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-12 ${stls.grid_1}`}
         >
           {data[0] && (
-            <div className="item 2xl:col-span-6">
+            <div className='item 2xl:col-span-6'>
               <PostBox
                 locale={locale}
                 boxClassName={stls.box_1}
@@ -21,10 +21,10 @@ function Blog_Section_2({ data, locale }) {
               />
             </div>
           )}
-          <div className="item 2xl:col-span-6">
+          <div className='item 2xl:col-span-6'>
             <div className={` ${stls.flex_2}`}>
               {data[1] && (
-                <div className="item ">
+                <div className='item '>
                   <PostBox
                     locale={locale}
                     boxClassName={stls.box_2}
@@ -37,7 +37,7 @@ function Blog_Section_2({ data, locale }) {
               {data[2] && (
                 <>
                   <div className={stls.item}></div>
-                  <div className="item ">
+                  <div className='item '>
                     <PostBox
                       locale={locale}
                       boxClassName={stls.box_2}

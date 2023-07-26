@@ -16,7 +16,7 @@ function Blog_Section_3({ data, meta }) {
       <Container className={stls.container}>
         <div className={`grid grid-cols-2 xl:grid-cols-3 ${stls.grid_1}`}>
           {data?.map((item) => (
-            <div key={"posts=" + item?.id} className="item">
+            <div key={"posts=" + item?.id} className='item'>
               <PostBox
                 data={handleAttributes(item)}
                 titleClassName={stls.title}

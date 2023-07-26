@@ -21,7 +21,6 @@ function Contact() {
     if (mustFill) {
       setMustFill(false);
     }
-    // /api/vtcc-contacts
     if (fullName && email) {
       try {
         const filter = `filters[email][$eq]=${email}`;
@@ -84,7 +83,7 @@ function Contact() {
           <div className={stls.image}>
             <Image
               src={imgsDir(imgsObject.Contact)}
-              alt="Contact us"
+              alt='Contact us'
               width={255}
               height={255}
             />
@@ -93,13 +92,13 @@ function Contact() {
             <Heading Tag={"h2"} className={"text-[#FCFCFC] mb-3"}>
               Contact Us
             </Heading>
-            <p className="mb-10">
+            <p className='mb-10'>
               Love to hear from you, Get in touch <span>🖐</span>
             </p>
             <div
               className={`grid grid-cols-2 gap-5 lg:gap-10 ${stls.boxField}`}
             >
-              <div className="col-span-2 lg:col-span-1">
+              <div className='col-span-2 lg:col-span-1'>
                 <TextField
                   label={"Full name"}
                   placeholder={"Enter your name"}
@@ -107,7 +106,7 @@ function Contact() {
                   setValue={setFullName}
                 />
               </div>
-              <div className="col-span-2 lg:col-span-1">
+              <div className='col-span-2 lg:col-span-1'>
                 <TextField
                   label={"Email"}
                   placeholder={"Enter your email address"}
@@ -115,7 +114,7 @@ function Contact() {
                   setValue={setEmail}
                 />
               </div>
-              <div className="col-span-2  ">
+              <div className='col-span-2  '>
                 <TextField
                   label={"Message"}
                   placeholder={"Type here"}
@@ -143,7 +142,7 @@ function Contact() {
                 {errSend}
               </p>
             )}
-            <div className="text-right mt-7  mb-4">
+            <div className='text-right mt-7  mb-4'>
               <Button onClick={handleSendResquest}>Submit</Button>
             </div>
           </div>

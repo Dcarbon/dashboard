@@ -45,6 +45,6 @@ function getIotMinted(action) {
 }
 
 function getIotTotalMinted(action) {
-  var url = `iots/${action.payload.iotId}/mint-sign/?from=${action.payload.from}&to=${action.payload.to}`;
+  var url = `iots/${action.payload.iotId}/mint-sign?from=${action.payload.from}&to=${action.payload.to}`;
   return AxiosGet(url);
 }

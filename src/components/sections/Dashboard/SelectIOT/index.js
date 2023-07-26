@@ -7,6 +7,9 @@ import Error from "src/components/ui/Error";
 import { IOTAct } from "src/redux/actions/iotAction";
 function SelectIOT({ err, features, iotSelected, setIotSelected }) {
   const dispatch = useDispatch();
+  const clearErrType = (payload) => {
+    dispatch({ type: IOTAct.CLEAR_ERR, payload });
+  };
   return (
     <div className={stls.main}>
       {features?.length > 0 && (
@@ -38,7 +41,7 @@ function SelectIOT({ err, features, iotSelected, setIotSelected }) {
           ))}
         </Selection>
       )}
-      <Error err={err} clearErrType={IOTAct.CLEAR_ERR} />
+      <Error err={err} clearErrType={clearErrType} />
     </div>
   );
 }

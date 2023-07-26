@@ -1,5 +1,11 @@
 .main {
   padding: 72px 0 0;
+  .container {
+    @media (min-width: 1440px) {
+      padding-left: 60px;
+      padding-right: 60px;
+    }
+  }
   .image {
     max-height: 210px;
   }
@@ -13,11 +19,7 @@
     height: 44px;
   }
 }
-.container {
-  @media (min-width: 1440px) {
-    padding: 0 60px;
-  }
-}
+
 .grid_1,
 .grid_2 {
   transition: all 0.2s ease;
