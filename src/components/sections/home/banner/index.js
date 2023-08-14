@@ -5,13 +5,24 @@ import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
 import { imgsDir, imgsObject } from "src/tools/const";
 import Earth from "../earth";
-
+import { useEffect, useState } from "react";
+const qualityLow = imgsDir(imgsObject.home.banner);
+// const qualityHigh = imgsDir(imgsObject.home.banner);
 function BannerFisrt() {
+  const [isLoaded, setIsloaded] = useState(false);
+  const [image] = useState(qualityLow);
+  useEffect(() => {
+    if (window && !isLoaded) {
+      window.addEventListener("load", () => {
+        console.log("loaded");
+        // setImage(qualityHigh);
+        setIsloaded(true);
+      });
+    }
+  }, [isLoaded]);
+
   return (
-    <Section
-      className='relative overflow-hidden z-10'
-      bgImageUrl={imgsDir(imgsObject.home_banner)}
-    >
+    <Section className='relative overflow-hidden z-10' bgImageUrl={image}>
       <Container>
         <div className={stls.box}>
           <div className={stls.boxText}>
@@ -33,7 +44,6 @@ function BannerFisrt() {
           {/*  */}
           <div className={`${stls.earth}`}>
             <Earth />
-            {/* <CanvasEarth /> */}
           </div>
         </div>
       </Container>

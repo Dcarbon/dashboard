@@ -1,13 +1,12 @@
 import { useRouter } from "next/router";
-import * as React from "react";
-import { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Map from "react-map-gl";
 import SourceGeojson from "src/components/ui/Mapbox/SourceGeojson";
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
 function Earth() {
-  const homePageMapREF = React.useRef(null);
-  const [loaded, setLoaded] = React.useState(false);
-  const [zoom, setZoom] = React.useState(0.7);
+  const homePageMapREF = useRef(null);
+  const [loaded, setLoaded] = useState(false);
+  const [zoom, setZoom] = useState(0.7);
   function ResizeEarth(e) {
     let container = e?.target?.getCanvasContainer();
     let width = container?.clientWidth;
@@ -70,7 +69,10 @@ function Earth() {
         doubleClickZoom={false}
         mapStyle={"mapbox://styles/qing95/clk6db90d00ad01pga1gqgfq3"}
         mapboxAccessToken={accessToken}
-        style={{ width: "100%", height: "100%" }}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
         fog={{
           color: "rgba(227, 252, 255, 0.15)", // Lower atmosphere
           "horizon-blend": 0.03,
@@ -102,7 +104,7 @@ function Earth() {
               });
               let geometry = features[0].geometry.coordinates;
               router.push(
-                `/dashboard?lng=${geometry[0]}&lat=${geometry[1]}&zoom=7.5`
+                `/dashboard?lng=${geometry[0]}&lat=${geometry[1]}&zoom=4.8`
               );
             });
           }

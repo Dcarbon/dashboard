@@ -19,8 +19,8 @@ function MapBoxPage({
   setErrFlyTo,
 }) {
   // dev
-  var defaultCenter = [105.008, 21.496];
-  var defaultZoom = 12;
+  var defaultCenter = [105.008, 16.196];
+  var defaultZoom = 4.8;
   // prod
   // var defaultCenter = [105.79, 21.147];
   // var defaultZoom = 8

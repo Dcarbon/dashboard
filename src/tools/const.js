@@ -19,7 +19,11 @@ const imgsObject = {
   Hexagon: "Hexagon.png",
   Manifesto: "Manifesto.svg",
   Whitepaper: "White-paper.svg",
-  home_banner: "home_banner.png",
+  home: {
+    banner: "home/banner.png",
+    banner05x: "home/banner@0.5x.png",
+    banner2x: "home/banner@2x.png",
+  },
   home_banner2: "home_banner2.png",
   home_banner_discover: "home_banner_discover.png",
   Contact: "contact.png",
