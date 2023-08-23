@@ -101,7 +101,7 @@ function Blog() {
   // handle
 
   return (
-    <Layout>
+    <Layout title={"Blog"}>
       <Blog_Section_1 data={handleAttributes(page)} />
       {threePosts?.data?.length > 0 ? (
         <Fragment>
@@ -113,7 +113,7 @@ function Blog() {
           )}
         </Fragment>
       ) : (
-        <div className="py-12 text-center">
+        <div className='py-12 text-center'>
           <Heading Tag={"h1"}>There are no posts yet.</Heading>
         </div>
       )}

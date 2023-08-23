@@ -1,4 +1,3 @@
-import Script from "next/script";
 import Layout from "src/components/layouts";
 import ComingSoon from "src/components/layouts/commingSoon";
 import Contact from "src/components/sections/home/Contact";
@@ -53,7 +52,7 @@ export default function Home() {
   const attrHome = handleAttributes(page);
 
   return (
-    <Layout>
+    <Layout title={"Home page"}>
       <BannerFisrt />
       <IntroDcarbon />
       <Mechanical />

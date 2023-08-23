@@ -5,7 +5,7 @@ import HdiW_FAQs from "src/components/sections/HowDoIt/Section3";
 
 function HowDoIt() {
   return (
-    <Layout>
+    <Layout title={"How does it work?"}>
       <HDI_Banner />
       <HDIWSection2 />
       <HdiW_FAQs />

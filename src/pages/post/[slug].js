@@ -33,7 +33,7 @@ function Post() {
 
   return (
     post && (
-      <Layout>
+      <Layout title={attrs?.title}>
         <Post_Sec_1 title={attrs?.title} />
 
         <Post_Sec_2

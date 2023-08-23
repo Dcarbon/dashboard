@@ -4,7 +4,7 @@ import Section_2 from "src/components/sections/DDAO/section_2";
 
 function DcarbonDao() {
   return (
-    <Layout>
+    <Layout title={"DDAO"}>
       <Section_1 />
       <Section_2 />
     </Layout>

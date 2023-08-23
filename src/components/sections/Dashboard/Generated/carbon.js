@@ -9,7 +9,6 @@ import {
   Get_Duration_by_Type,
   getAmount,
   getTimeLine,
-  roundup_second,
 } from "../ColumnChart/tools";
 import DcarbonDuration from "../ColumnChart/durationType";
 import DcarbonChart from "../ColumnChart/DcarbonChart";

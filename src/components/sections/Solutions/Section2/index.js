@@ -52,7 +52,13 @@ function TabContent({ content }) {
       </Heading>
       <FlexBetween className={`flex-col xl:flex-row ${stls.content_tab}`}>
         <div className={`${stls.image} relative`}>
-          <Image src={content.tab_img} alt="" fill />
+          <Image
+            src={content.tab_img}
+            alt=''
+            width={1200}
+            height={300}
+            style={{ width: "100%", height: "100%" }}
+          />
         </div>
         <div className={stls.body}>
           <div

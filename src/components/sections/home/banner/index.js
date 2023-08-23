@@ -3,26 +3,14 @@ import Section from "src/components/ui/Section";
 import stls from "./index.module.scss";
 import Heading from "src/components/ui/Heading";
 import Button from "src/components/ui/Button";
-import { imgsDir, imgsObject } from "src/tools/const";
 import Earth from "../earth";
-import { useEffect, useState } from "react";
-const qualityLow = imgsDir(imgsObject.home.banner);
-// const qualityHigh = imgsDir(imgsObject.home.banner);
+import { imgsObject } from "src/tools/const";
 function BannerFisrt() {
-  const [isLoaded, setIsloaded] = useState(false);
-  const [image] = useState(qualityLow);
-  useEffect(() => {
-    if (window && !isLoaded) {
-      window.addEventListener("load", () => {
-        console.log("loaded");
-        // setImage(qualityHigh);
-        setIsloaded(true);
-      });
-    }
-  }, [isLoaded]);
-
   return (
-    <Section className='relative overflow-hidden z-10' bgImageUrl={image}>
+    <Section
+      className='relative overflow-hidden z-10'
+      bgImageUrl={imgsObject.home.banner}
+    >
       <Container>
         <div className={stls.box}>
           <div className={stls.boxText}>

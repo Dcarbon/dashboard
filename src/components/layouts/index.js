@@ -5,12 +5,12 @@ import Footer from "./footer";
 import { Fragment } from "react";
 import Script from "next/script";
 const lexend = Lexend_Deca({ subsets: ["vietnamese"] });
-function Layout({ children, noFooter, noHeader }) {
+function Layout({ title, children, noFooter, noHeader }) {
   const GGANAS = process.env.NEXT_PUBLIC_GGANAS;
   return (
     <Fragment>
       <Head>
-        <title> DCarbon</title>
+        <title>{"DCarbon" + (title ? "| " + title : "")}</title>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.png' />

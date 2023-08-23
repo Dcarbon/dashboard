@@ -4,7 +4,7 @@ import SolutionSection_2 from "src/components/sections/Solutions/Section2";
 
 function Solution() {
   return (
-    <Layout>
+    <Layout title={"Solutions"}>
       <SolutionSection_1 />
       <SolutionSection_2 />
     </Layout>

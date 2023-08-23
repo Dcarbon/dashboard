@@ -1,7 +1,7 @@
 import DashboardSideBar from "src/components/layouts/dashboardSideBar";
 import MapBoxPage from "src/components/ui/Mapbox/mapbox";
 import DashboardLayout from "src/components/layouts/iotLayout";
-import stls from "./index.module.scss";
+import stls from "../styles/index.module.scss";
 import { useState } from "react";
 export default function Dashboard() {
   const [iotSelected, setIotSelected] = useState(0);

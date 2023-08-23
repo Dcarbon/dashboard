@@ -2,15 +2,15 @@ import Container from "src/components/ui/Container";
 import Heading from "src/components/ui/Heading";
 import Section from "src/components/ui/Section";
 import stls from "./bannerSecond.module.scss";
-import { imgsDir, imgsObject } from "src/tools/const";
+import { imgsObject } from "src/tools/const";
 function BannerSecond() {
   return (
     <Section
-      className={stls.section}
-      bgImageUrl={imgsDir(imgsObject.home_banner2)}
+      className={`relative ${stls.section}`}
+      bgImageUrl={imgsObject.home_banner2}
     >
       <Container>
-        <div className="flex flex-col justify-between">
+        <div className='flex flex-col justify-between'>
           <div className={stls.heading_left}>
             <Heading Tag={"h1"} className={stls.bigHeading}>
               Fair to us

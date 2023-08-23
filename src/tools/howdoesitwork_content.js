@@ -3,7 +3,7 @@ import { imgsDir, imgsObject } from "./const";
 class _HDIW {
   Section_1() {
     return {
-      banner: imgsDir(imgsObject.howdoesitwork.banner),
+      banner: imgsObject.howdoesitwork.banner,
       text: "How does  DCarbon work?",
     };
   }
