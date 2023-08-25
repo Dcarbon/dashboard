@@ -10,7 +10,7 @@ function Layout({ title, children, noFooter, noHeader }) {
   return (
     <Fragment>
       <Head>
-        <title>{"DCarbon" + (title ? "| " + title : "")}</title>
+        <title>{"DCarbon" + (title ? " | " + title : "")}</title>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.png' />
