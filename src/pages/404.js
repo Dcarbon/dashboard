@@ -1,9 +1,10 @@
 import Layout from "src/components/layouts";
 import stls from "../styles/404.module.scss";
+import Section from "src/components/ui/Section";
+import Container from "src/components/ui/Container";
 import Image from "next/image";
 import Button from "src/components/ui/Button";
-import Container from "src/components/ui/Container";
-import Section from "src/components/ui/Section";
+
 export default function NotFound({}) {
   return (
     <Layout title={"Not found"}>

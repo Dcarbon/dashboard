@@ -4,9 +4,10 @@ import { imgsDir, imgsObject } from "src/tools/const";
 function Logo() {
   return (
     <Image
+      priority
       unoptimized
       src={imgsDir(imgsObject.logo)}
-      alt="D-carbon logo"
+      alt='D-carbon logo'
       width={272}
       height={42}
     />

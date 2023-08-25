@@ -156,7 +156,7 @@ function SliderGroup({ images, projectId }) {
                       unoptimized
                       quality={50}
                       src={item?.image}
-                      alt=""
+                      alt=''
                       width={500}
                       height={500}
                       style={{
@@ -195,7 +195,7 @@ function SliderGroup({ images, projectId }) {
                     <div key={item?.id} className={stls.img}>
                       <Image
                         unoptimized
-                        alt=""
+                        alt=''
                         key={"nav-" + idx}
                         src={images[idx]?.image}
                         width={60}

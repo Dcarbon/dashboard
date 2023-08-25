@@ -11,7 +11,7 @@ import { store } from "src/redux";
 export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <NextNProgress color="#72bf44" />
+      <NextNProgress color='#72bf44' />
       <Component {...pageProps} />
     </Provider>
   );

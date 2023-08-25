@@ -1,17 +1,17 @@
 {
   "name": "d-carbon-website",
-  "version": "0.1.3-rc.5",
+  "version": "0.1.3-rc.6",
   "private": true,
-  "description": "v0.1.3-rc.5 : add gg analytics, edit zoom level",
+  "description": "v0.1.3-rc.6 : Edit title on browser tag, Image Element properties",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "dk-cache": "cd docker-cache && docker build -t harbor.viet-tin.com/dcarbon/dashboard:cache_1 .",
-    "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.1.3-rc.5 .",
-    "dk-run": "docker run -p 3132:3000 harbor.viet-tin.com/dcarbon/dashboard:v0.1.3-rc.5",
-    "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:v0.1.3-rc.5"
+    "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.1.3-rc.6 .",
+    "dk-run": "docker run -p 3132:3000 harbor.viet-tin.com/dcarbon/dashboard:v0.1.3-rc.6",
+    "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:v0.1.3-rc.6"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
