@@ -1,0 +1,21 @@
+.list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .item {
+    color: #b3b2b8;
+    font-size: 14px;
+    padding: 12px 24px;
+    .generatedNumber {
+      color: white;
+    }
+    &:is(:hover, :focus, :focus-within) {
+      cursor: pointer;
+      background-color: rgba($color: #333444, $alpha: 0.2);
+    }
+    &.active {
+      color: white;
+    }
+  }
+}

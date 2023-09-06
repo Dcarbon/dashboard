@@ -40,7 +40,7 @@ function getIot(action) {
 }
 
 function getIotMinted(action) {
-  var url = `iots/{iotId}/minted?iotId=${action.payload.iotId}&from=${action.payload.from}&to=${action.payload.to}&interval=${action.payload.interval}`;
+  var url = `iots/${action.payload.iotId}/minted?from=${action.payload.from}&to=${action.payload.to}&interval=${action.payload.interval}`;
   return AxiosGet(url);
 }
 

@@ -9,9 +9,9 @@ import {
   Get_Duration_by_Type,
   getAmount,
   getTimeLine,
-} from "../ColumnChart/tools";
-import DcarbonDuration from "../ColumnChart/durationType";
-import DcarbonChart from "../ColumnChart/DcarbonChart";
+} from "../Chart/tools";
+import DcarbonDuration from "../Chart/durationType";
+import DcarbonChart from "../Chart/DcarbonChart";
 //
 //
 function CarbonGenerated({ iotSelected }) {

@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import dateFormat from "dateformat";
-export const roundup_second = (time) => Math.round(time.getTime() / 1000);
+export const roundup_second = (time) => Math.round(time?.getTime() / 1000);
 export const DURATION_TYPE_modal = {
   WEEK: 1, // 7 ngày
   MONTH: 2, // 7 ngày
@@ -9,6 +9,11 @@ export const DURATION_TYPE_modal = {
   YEAR: 4, // 7 ngày
 };
 
+export const DURATION__TYPE = {
+  day: "day",
+  month: "month",
+  year: "year",
+};
 export const Get_Duration_by_Type = (durationType) => {
   var thisDate = new Date(); // now
   let to = roundup_second(thisDate);
@@ -26,9 +31,12 @@ export const Get_Duration_by_Type = (durationType) => {
     case DURATION_TYPE_modal.YEAR: // 1 nam
       thisDate?.setUTCFullYear(thisDate?.getUTCFullYear() - 1);
       break;
-    default:
-      thisDate = new Date(0);
-      break;
+    //
+    //
+    //
+    //
+    //
+    //
   }
 
   // thisDate?.setUTCHours(0, 0, 0, 0);
@@ -36,6 +44,8 @@ export const Get_Duration_by_Type = (durationType) => {
 
   return { to, from };
 };
+
+const oneHour = 60 * 60 * 1000;
 const oneDay = 24 * 60 * 60 * 1000;
 const createArray = (length) => new Array(length);
 
@@ -84,17 +94,12 @@ export const getTimeLine = (durType) => {
 export const getAmount = (item) => {
   const hexAmount = new BigNumber(item);
   const reduceAmount = hexAmount.div("1e9");
-  let fxied = reduceAmount.toFixed(2);
-  // if (text) {
-  //   console.log(text + " ||||-----------------------", item);
-  //   console.log("hexAmount--------------", hexAmount);
-  //   console.log("reduceAmount-----------", reduceAmount);
-  //   console.log("fxied-----------------------------", fxied);
-  // }
-  return Math.round(fxied * 1000) / 1000;
+  let fixed = reduceAmount.toFixed(2);
+
+  return fixed;
   // return 0;
 };
-const getSum = (prev, next) => Number(prev) + Number(next);
+export const getSum = (prev, next) => Number(prev) + Number(next);
 export const getStringDay = (durType, time) => {
   if (time) {
     const newTime = new Date(time);
@@ -104,6 +109,33 @@ export const getStringDay = (durType, time) => {
       return dateFormat(newTime, "dd mmm");
     } else {
       return dateFormat(newTime, "mmm yyyy");
+    }
+  }
+};
+export const GET_STRING_DAY = (durType, time) => {
+  if (time) {
+    const newTime = new Date(time);
+    if (durType === DURATION__TYPE.day) {
+      let prevTime = new Date(time - oneHour * 3);
+      return (
+        dateFormat(prevTime, "HH:MM") + " - " + dateFormat(newTime, "HH:MM")
+      );
+    } else if (durType === DURATION__TYPE.month) {
+      return dateFormat(newTime, "mmm dd, yyyy");
+    } else {
+      return dateFormat(newTime, "mmmm yyyy");
+    }
+  }
+};
+export const GET_STRING_DAY_LineChart = (durType, time) => {
+  if (time) {
+    const newTime = new Date(time);
+    if (durType === DURATION__TYPE.day) {
+      return dateFormat(newTime, "HH:MM");
+    } else if (durType === DURATION__TYPE.month) {
+      return dateFormat(newTime, "mmm dd, yyyy");
+    } else {
+      return dateFormat(newTime, "mmmm yyyy");
     }
   }
 };
@@ -150,11 +182,118 @@ export const getDataSeries = (timeline, iot_minted, durType) => {
     onlyVal: onlyVal?.reverse(),
   };
 };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+const COMPARE________ = (timeline, newIOT_minted, handle) => {
+  let newSeriesArr = [];
+  let onlyTime = [];
+  let onlyVal = [];
+  for (let index = 0; index < timeline.length; index++) {
+    const current = timeline[index]; // khoảng thời gian
+    const prev = index > 0 ? timeline[index - 1] : 0; //
+    // filter data có thời gian nhỏ hơn
+    const aggreeConditionsArr = newIOT_minted.filter((item) =>
+      handle(current, prev, item)
+    );
+    const newDataGroup = aggreeConditionsArr.map((item) =>
+      item?.carbon ? item?.carbon : 0
+    );
+
+    let amount = newDataGroup?.length > 0 ? newDataGroup.reduce(getSum) : 0;
+    current;
+    let returnVal = amount ?? "";
+    newSeriesArr[index] = {
+      x: current,
+      y: returnVal,
+    };
+    onlyTime[index] = current;
+    // onlyVal[index] = parseFloat(amount).toFixed(4);
+    onlyVal[index] = returnVal;
+  }
+  return {
+    newSeriesArr,
+    onlyTime,
+    onlyVal,
+  };
+};
+export const GET_DATA_SERIES = (timeline, iot_minted, durType) => {
+  let resultCompare = {};
+  let handle = null;
+  // console.log("-----", { timeline, iot_minted, durType });
+  const newIOT_minted = iot_minted ? [...iot_minted] : [];
+
+  switch (durType) {
+    case DURATION__TYPE.day:
+      handle = (current, prev, item) => {
+        let newCrAt = new Date(item?.createdAt);
+        let newTime = newCrAt.getTime();
+        return prev < newTime && newTime <= current && item?.carbon;
+      };
+      resultCompare = COMPARE________(timeline, newIOT_minted, handle);
+      break;
+
+    case DURATION__TYPE.month:
+      handle = (current, prev, item) => {
+        let newCrAt = new Date(item?.createdAt);
+        let currentDate = new Date(current);
+        return newCrAt.getDate() === currentDate.getDate() && item?.carbon;
+      };
+      resultCompare = COMPARE________(timeline, newIOT_minted, handle);
+
+      break;
+
+    case DURATION__TYPE.year:
+      break;
+    default:
+      break;
+  }
+  return {
+    newSeriesArr: resultCompare?.newSeriesArr,
+    onlyTime: resultCompare?.onlyTime,
+    onlyVal: resultCompare?.onlyVal,
+  };
+};
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 export const optionsDefault = {
   chart: {
-    id: "myChart",
     type: "bar",
-    width: "100%",
+    width: 200,
     height: 170,
     toolbar: { show: false },
     zoom: { enabled: false },

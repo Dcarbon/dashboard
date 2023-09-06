@@ -1,0 +1,88 @@
+import { useCallback, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import DcarbonAPI from "src/tools/hook";
+
+import { IOTAct } from "src/redux/actions/iotAction";
+import DcarbonChart from "../Chart/DcarbonChart";
+
+function Carbon({
+  title,
+  payload,
+  list_time_by_duration,
+  iotSelected,
+  durType,
+  setCarbonGenerated,
+}) {
+  const dispatch = useDispatch();
+  const iotState = useSelector(new DcarbonAPI().GetIOTState);
+  const iot_minted = useMemo(
+    () => iotState?.iot_minted,
+    [iotState?.iot_minted]
+  );
+
+  // call back :  Handle get IotMinted
+  const handleGetIotMinted = useCallback(
+    (newPayload) => {
+      let newfrom = Math.round(newPayload.from / 1000);
+      let newto = Math.round(newPayload.to / 1000);
+      dispatch({
+        type: IOTAct.GET_IOT_MINTED.REQUEST,
+        payload: {
+          ...newPayload,
+          to: newto,
+          from: newfrom,
+        },
+      });
+    },
+    [dispatch]
+  );
+  const handleGetIotTotalMinted = useCallback(
+    (newPayload) => {
+      dispatch({
+        type: IOTAct.GET_IOT_TOTAL_MINTED.REQUEST,
+        payload: newPayload,
+      });
+    },
+    [dispatch]
+  );
+  // STEP 1
+  // STEP 1 GET Iot minted by iotId and duration time
+  // STEP 1
+  // STEP 1
+  // STEP 1
+  // useEffect(() => {
+  //   if (iotSelected && durType) {
+  //     console.log("iotSelected && durType", iotSelected && durType);
+  //   }
+  // }, [durType, iotSelected]);
+
+  useEffect(() => {
+    if (iotSelected && payload?.from && payload?.to) {
+      // console.log("===================================");
+      // console.log("New Load");
+      // console.log("===================================");
+      handleGetIotMinted({
+        ...payload,
+        iotId: iotSelected,
+      });
+    }
+  }, [
+    handleGetIotMinted,
+    handleGetIotTotalMinted,
+    iotSelected,
+    list_time_by_duration,
+    payload,
+  ]);
+
+  return (
+    <DcarbonChart
+      title={title}
+      durType={durType}
+      data={iot_minted}
+      list_time_by_duration={list_time_by_duration}
+      setCarbonGenerated={setCarbonGenerated}
+    />
+  );
+}
+
+export default Carbon;

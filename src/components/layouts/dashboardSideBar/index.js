@@ -2,15 +2,14 @@ import ScrollBox from "src/components/ui/ScrollBox";
 import stls from "./index.module.scss";
 import { useEffect, useMemo, useState } from "react";
 import InfoProject from "src/components/sections/Dashboard/InforProject";
-import CarbonGenerated from "src/components/sections/Dashboard/Generated/carbon";
 import SelectIOT from "src/components/sections/Dashboard/SelectIOT";
-import ElectricityGenerated from "src/components/sections/Dashboard/Generated/electricity";
 import { ProjectACT } from "src/redux/actions/projectAction";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 import DcarbonAPI from "src/tools/hook";
 import ImageProject from "src/components/sections/Dashboard/ImageProject/ImageProject";
+import GeneratedViewBox from "src/components/sections/Dashboard/GeneratedViewBox";
 
 // get info project
 // get iot minted
@@ -131,12 +130,22 @@ function DashboardSideBar({
             {/* Chart  */}
             {/* Chart  */}
             {/* Chart  */}
-            <CarbonGenerated iotSelected={iotSelected} />
+            {/* <CarbonGenerated iotSelected={iotSelected} /> */}
             {/* electric and biogas */}
             {/* electric and biogas */}
             {/* electric and biogas */}
-            <ElectricityGenerated iotSelected={iotSelected} />
+            {/* <ElectricityGenerated iotSelected={iotSelected} /> */}
+            {iotSelected && <GeneratedViewBox iotSelected={iotSelected} />}
           </div>
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
+          {/*  */}
         </div>
       </ScrollBox>
     </div>

@@ -3,9 +3,10 @@ import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   DURATION_TYPE_modal,
+  GET_DATA_SERIES,
+  GET_STRING_DAY,
   getAmount,
-  getDataSeries,
-  getStringDay,
+  getSum,
   optionsDefault,
 } from "./tools";
 import DcarbonAPI from "src/tools/hook";
@@ -14,7 +15,13 @@ import dateFormat from "dateformat";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-function DcarbonChart({ data, durType, time_split_by_durtype }) {
+function DcarbonChart({
+  title,
+  data,
+  durType,
+  list_time_by_duration,
+  setCarbonGenerated,
+}) {
   const newDcarbon = new DcarbonAPI();
   const iotState = useSelector(newDcarbon.GetIOTState);
 
@@ -22,20 +29,31 @@ function DcarbonChart({ data, durType, time_split_by_durtype }) {
 
   const BOXREF = useRef(null);
   const time_and_val = useMemo(() => {
-    let getS = getDataSeries(time_split_by_durtype, data, durType);
-
+    let getS = GET_DATA_SERIES(list_time_by_duration, data, durType);
     return {
       onlyTime: getS.onlyTime,
-      onlyVal: getS.onlyVal.map((item) => getAmount(item)),
+      onlyVal: getS.onlyVal.map(getAmount),
     };
-  }, [data, durType, time_split_by_durtype]);
+  }, [data, durType, list_time_by_duration]);
 
   const options = useMemo(() => {
     let newCategories = time_and_val.onlyTime;
     return {
       ...optionsDefault,
+      title: {
+        text: title,
+        align: "left",
+        offsetX: 10,
+        style: {
+          fontSize: "14px",
+          fontWeight: "normal",
+          color: "#B3B2B8",
+        },
+      },
       chart: {
+        id: "myCarbonChart",
         ...optionsDefault.chart,
+        width: "100%",
         animations: {
           enabled: true,
           easing: "easeinout",
@@ -98,7 +116,7 @@ function DcarbonChart({ data, durType, time_split_by_durtype }) {
               "</b> carbon" +
               "</h4>" +
               "<span>" +
-              getStringDay(durType, time_and_val.onlyTime[dataPointIndex]) +
+              GET_STRING_DAY(durType, time_and_val.onlyTime[dataPointIndex]) +
               "</span>" +
               "</div>"
             );
@@ -106,7 +124,7 @@ function DcarbonChart({ data, durType, time_split_by_durtype }) {
         },
       },
     };
-  }, [durType, iotState?.loading, time_and_val.onlyTime]);
+  }, [durType, iotState?.loading, time_and_val.onlyTime, title]);
   // series
   // series
   const series = useMemo(() => {
@@ -123,7 +141,6 @@ function DcarbonChart({ data, durType, time_split_by_durtype }) {
   // resize
   // resize
   // resize
-
   useEffect(() => {
     const interval = setInterval(() => {
       setWidth(BOXREF?.current?.clientWidth);
@@ -132,14 +149,23 @@ function DcarbonChart({ data, durType, time_split_by_durtype }) {
       clearInterval(interval);
     };
   }, []);
+  useEffect(() => {
+    if (time_and_val?.onlyVal?.length > 0) {
+      let total =
+        time_and_val.onlyVal?.length > 0
+          ? time_and_val.onlyVal?.reduce(getSum)
+          : 0;
+      setCarbonGenerated(total.toFixed(2));
+    }
+  }, [setCarbonGenerated, time_and_val, time_and_val.onlyVal]);
   return (
-    <div ref={BOXREF} className="myApex -ml-5">
+    <div ref={BOXREF} className='myApex -ml-5'>
       <ReactApexChart
-        type="bar"
+        type='bar'
         options={options}
         series={series}
-        width={width}
-        height={170}
+        width={width || "100%"}
+        height={230}
       />
     </div>
   );
