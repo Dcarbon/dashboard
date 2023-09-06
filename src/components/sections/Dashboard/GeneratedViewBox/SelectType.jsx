@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import stls from "./SelectType.module.scss";
 
 function SelectType({
@@ -10,10 +9,6 @@ function SelectType({
   setCurrentType,
   setSensorId,
 }) {
-  useEffect(() => {
-    console.log("sensors", sensors);
-  }, [sensors]);
-
   const sensorDefined = [
     {
       type: 2,

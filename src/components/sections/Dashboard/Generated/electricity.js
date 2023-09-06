@@ -30,8 +30,8 @@ function ElectricityGenerated({ iotSelected }) {
   // sensor list and metrics
   const sensors = useMemo(() => sensorState?.sensors, [sensorState?.sensors]);
   const sensor_metrics = useMemo(
-    () => sensorState?.sensor_metrics,
-    [sensorState?.sensor_metrics]
+    () => sensorState?.sensor_metrics_tem,
+    [sensorState?.sensor_metrics_tem]
   );
   const sensorId = useMemo(
     () => {
@@ -56,7 +56,7 @@ function ElectricityGenerated({ iotSelected }) {
     (newPayload) => {
       setPayload({ ...newPayload });
       dispatch({
-        type: SensorsACT.GET_SENSORS_METRICS.REQUEST,
+        type: SensorsACT.GET_SENSORS_METRICS_TEM.REQUEST,
         payload: newPayload,
       });
     },
@@ -119,19 +119,19 @@ function ElectricityGenerated({ iotSelected }) {
   return (
     <Fragment>
       <CollapseTab
-        color="blue"
-        title="Electricity generated"
+        color='blue'
+        title='Electricity generated'
         strongNumb={strongNumb || "---"}
-        unit="kWh"
+        unit='kWh'
         disable
       />
       <CollapseTab
-        color="green"
-        title="Biogas treated"
+        color='green'
+        title='Biogas treated'
         strongNumb={
           strongNumb ? Number(strongNumb * 0.528888889).toFixed(2) : "---"
         }
-        unit="m3"
+        unit='m3'
         disable
       />
     </Fragment>

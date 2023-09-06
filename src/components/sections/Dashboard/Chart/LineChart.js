@@ -8,7 +8,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 function LineChart({
-  sensorId,
+  checksensorId,
   unit,
   title,
   isLoading,
@@ -45,7 +45,7 @@ function LineChart({
       },
       chart: {
         type: "line",
-        id: "myCarbonChart_" + title,
+        id: "myCarbonChart_" + unit,
         width: "100%",
         height: 170,
         toolbar: { show: false },
@@ -65,7 +65,11 @@ function LineChart({
         },
       },
       noData: {
-        text: !sensorId ? "No sensor" : isLoading ? "Loading..." : "No Data",
+        text: !checksensorId
+          ? "Have no sensor"
+          : isLoading
+          ? "Loading..."
+          : "No Data",
         style: {
           color: "#ffffff",
         },
@@ -131,7 +135,7 @@ function LineChart({
         },
       },
     };
-  }, [configSeries, isLoading, title, unit]);
+  }, [configSeries, isLoading, checksensorId, title, unit]);
   // // resize
   // // resize
   // // resize
@@ -145,13 +149,15 @@ function LineChart({
     };
   }, []);
   useEffect(() => {
-    if (configSeries.length > 0) {
+    console.log("checksensorId", checksensorId);
+    console.log("configSeries", configSeries);
+    if (configSeries.length > 0 && checksensorId) {
       console.log("configSeries", configSeries);
       let value_last = configSeries[configSeries?.length - 1][1];
 
       setGenerated(value_last);
     }
-  }, [configSeries, setGenerated]);
+  }, [checksensorId, configSeries, setGenerated]);
   return (
     <div ref={BOXREF} className='myApex -ml-5'>
       <ReactApexChart

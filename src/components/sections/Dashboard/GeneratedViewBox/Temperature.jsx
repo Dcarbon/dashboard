@@ -6,12 +6,12 @@ import LineChart from "../Chart/LineChart";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 
 function Temperature({ unit, title, sensorId, iotSelected, setGenerated }) {
-  console.log("sensorId,", sensorId);
+  console.log("sensorId---", sensorId);
   const dispatch = useDispatch();
   const GetSensorsState = useSelector(new DcarbonAPI().GetSensorsState);
-  const sensor_metrics = useMemo(
-    () => GetSensorsState?.sensor_metrics,
-    [GetSensorsState?.sensor_metrics]
+  const sensor_metrics_tem = useMemo(
+    () => GetSensorsState?.sensor_metrics_tem,
+    [GetSensorsState?.sensor_metrics_tem]
   );
   const sensors = useMemo(
     () => GetSensorsState?.sensors,
@@ -22,7 +22,7 @@ function Temperature({ unit, title, sensorId, iotSelected, setGenerated }) {
   const handleGetSensorMinted = useCallback(
     (newPayload) => {
       dispatch({
-        type: SensorsACT.GET_SENSORS_METRICS.REQUEST,
+        type: SensorsACT.GET_SENSORS_METRICS_TEM.REQUEST,
         payload: {
           from: Math.round(newPayload?.from / 1000),
           to: Math.round(newPayload?.to / 1000),
@@ -38,6 +38,7 @@ function Temperature({ unit, title, sensorId, iotSelected, setGenerated }) {
   // checksensorId = type 4
   const checksensorId = useMemo(() => {
     let index = sensors?.findIndex((item) => item.id === sensorId);
+    console.log("Temperature index", index);
     if (index >= 0) {
       return Boolean(sensors[index].type === 4);
     }
@@ -66,10 +67,10 @@ function Temperature({ unit, title, sensorId, iotSelected, setGenerated }) {
 
   return (
     <LineChart
-      sensorId={sensorId}
+      checksensorId={checksensorId}
       isLoading={GetSensorsState.loading}
       title={title}
-      data={sensor_metrics}
+      data={sensor_metrics_tem}
       setGenerated={setGenerated}
       unit={unit}
     />

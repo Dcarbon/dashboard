@@ -23,6 +23,9 @@ function Carbon({
   // call back :  Handle get IotMinted
   const handleGetIotMinted = useCallback(
     (newPayload) => {
+      console.log("===================================");
+      console.log("New Load iot");
+      console.log("===================================");
       let newfrom = Math.round(newPayload.from / 1000);
       let newto = Math.round(newPayload.to / 1000);
       dispatch({
@@ -45,27 +48,19 @@ function Carbon({
     },
     [dispatch]
   );
-  // STEP 1
-  // STEP 1 GET Iot minted by iotId and duration time
-  // STEP 1
-  // STEP 1
-  // STEP 1
-  // useEffect(() => {
-  //   if (iotSelected && durType) {
-  //     console.log("iotSelected && durType", iotSelected && durType);
-  //   }
-  // }, [durType, iotSelected]);
 
   useEffect(() => {
-    if (iotSelected && payload?.from && payload?.to) {
-      // console.log("===================================");
-      // console.log("New Load");
-      // console.log("===================================");
+    let load = () =>
       handleGetIotMinted({
         ...payload,
         iotId: iotSelected,
       });
+    if (iotSelected && payload?.from && payload?.to) {
+      load();
     }
+
+    let myInteval = setTimeout(load, 15000);
+    return () => clearInterval(myInteval);
   }, [
     handleGetIotMinted,
     handleGetIotTotalMinted,

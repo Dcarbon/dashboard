@@ -46,13 +46,39 @@ const iotReducer = (state = initIotState, action) => {
         latest: action.type,
       };
     case IOTAct.COUNT_IOT.FAILURE:
-      // console.log("---------------FAILURE ", res);
+      // console.log("---------------FAILURE ", action);
       return {
         ...state,
         loading: true,
         error: res.error,
         error_code: res.error_code,
         latest: action.type,
+      };
+
+    //
+    //
+    //
+    //
+
+    case IOTAct.IsActive.REQUEST:
+      // console.log("---------------request ", { action, res });
+      return {
+        ...state,
+        loading: false,
+      };
+    case IOTAct.IsActive.SUCCESS:
+      // console.log("-IOTAct------IsActive--------SUCCESS ", res.data.actived);
+      // console.log("res", res);
+      return {
+        ...state,
+        isActive: res.data.actived,
+      };
+    case IOTAct.IsActive.FAILURE:
+      // console.log("---------------FAILURE ", res);
+      return {
+        ...state,
+        loading: true,
+        error: res.error,
       };
     //
     //

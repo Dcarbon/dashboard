@@ -42,7 +42,6 @@ function DashboardSideBar({
   const dispatch = useDispatch();
   const newDcarbon = new DcarbonAPI();
   const iotState = useSelector(newDcarbon.GetIOTState);
-  const sensorsState = useSelector(newDcarbon.GetSensorsState);
   const projectState = useSelector(newDcarbon.GetProjectState);
 
   // state
@@ -124,7 +123,8 @@ function DashboardSideBar({
               err={projectState?.error}
               project={project}
               iot={iotState?.iot}
-              sensor_metrics={sensorsState?.sensor_metrics}
+              iotSelected={iotSelected}
+              isActive={iotState?.isActive}
             />
 
             {/* Chart  */}

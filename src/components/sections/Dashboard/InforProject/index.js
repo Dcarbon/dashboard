@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo, useEffect } from "react";
 
 import stls from "./index.module.scss";
 import DcarbonAPI from "src/tools/hook";
@@ -16,11 +16,14 @@ import CollapseTab from "../CollapseTab";
 import Error from "src/components/ui/Error";
 import { ProjectACT } from "src/redux/actions/projectAction";
 import { useDispatch } from "react-redux";
+import { IOTAct } from "src/redux/actions/iotAction";
+import { roundup_second } from "../Chart/tools";
 function InfoProject({
+  isActive,
+  iotSelected,
   err,
   project,
   iot,
-  sensor_metrics,
   showDetail,
   setShowDetail,
 }) {
@@ -46,10 +49,31 @@ function InfoProject({
   const specs = useMemo(() => project?.specs?.specs, [project?.specs?.specs]);
 
   // Check trạng thái hoạt động của project dựa vào dữ liệu sensor metrics trả về
-  const isActive = useMemo(() => {
-    // console.log("Boolean(sensor_metrics?.length > 0)", sensor_metrics);
-    return Boolean(sensor_metrics?.length > 0);
-  }, [sensor_metrics]);
+
+  const checkIsActive = useCallback(() => {
+    let newDate = new Date();
+    let to = roundup_second(newDate);
+    let from = to - 15;
+    dispatch({
+      type: IOTAct.IsActive.REQUEST,
+      payload: {
+        iotId: iotSelected,
+        to,
+        from,
+      },
+    });
+  }, [dispatch, iotSelected]);
+  useEffect(() => {
+    if (iotSelected > 0) {
+      checkIsActive();
+      let myInterval = setInterval(() => {
+        checkIsActive();
+      }, 5000);
+      return () => {
+        clearInterval(myInterval);
+      };
+    }
+  }, [checkIsActive, iotSelected]);
 
   const isDetailInfo = useMemo(
     () =>

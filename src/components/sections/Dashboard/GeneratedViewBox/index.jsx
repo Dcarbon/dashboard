@@ -40,6 +40,10 @@ function GeneratedViewBox({ iotSelected }) {
       }
     }
   }, [currentDate, durationType]);
+  const titleLine = useMemo(() => {
+    let newDate = new Date();
+    return dateFormat(newDate, "mmm dd, yyyy");
+  }, []);
 
   const [currentIsActive, setCurrentIsActive] = useState();
   const [dayActiveList, setDayActiveList] = useState([]);
@@ -91,45 +95,47 @@ function GeneratedViewBox({ iotSelected }) {
           />
         )}
       </BoxBorderTop>
-      <BoxBorderTop isPadding={false}>
-        <SelectType
-          sensors={sensors}
-          carbonGenerated={carbonGenerated}
-          temperatureGenerated={temperatureGenerated}
-          biomassGenerated={biomassGenerated}
-          currentType={currentType}
-          setCurrentType={setCurrentType}
-          setSensorId={setSensorId}
-        />
-      </BoxBorderTop>
-      <BoxBorderTop>
-        {currentType === 1 ? (
-          <Biomass
-            unit={"kg"}
-            title={title ? "Data in " + title : ""}
-            sensorId={sensorId}
-            iotSelected={iotSelected}
-            setGenerated={setBiomassGenerated}
+      <div className='w-full' style={{ width: "100%" }}>
+        <BoxBorderTop isPadding={false}>
+          <SelectType
+            sensors={sensors}
+            carbonGenerated={carbonGenerated}
+            temperatureGenerated={temperatureGenerated}
+            biomassGenerated={biomassGenerated}
+            currentType={currentType}
+            setCurrentType={setCurrentType}
+            setSensorId={setSensorId}
           />
-        ) : currentType === 4 ? (
-          <Temperature
-            unit={"\xB0" + "C"}
-            title={title ? "Data in " + title : ""}
-            sensorId={sensorId}
-            iotSelected={iotSelected}
-            setGenerated={setTemperatureGenerated}
-          />
-        ) : (
-          <Carbon
-            title={title ? "Data in " + title : ""}
-            payload={payload}
-            list_time_by_duration={list_time_by_duration}
-            iotSelected={iotSelected}
-            durType={durationType}
-            setCarbonGenerated={setCarbonGenerated}
-          />
-        )}
-      </BoxBorderTop>
+        </BoxBorderTop>
+        <BoxBorderTop>
+          {currentType === 1 ? (
+            <Biomass
+              unit={"kg"}
+              title={title ? "Data in " + titleLine : ""}
+              sensorId={sensorId}
+              iotSelected={iotSelected}
+              setGenerated={setBiomassGenerated}
+            />
+          ) : currentType === 4 ? (
+            <Temperature
+              unit={"\xB0" + "C"}
+              title={title ? "Data in " + titleLine : ""}
+              sensorId={sensorId}
+              iotSelected={iotSelected}
+              setGenerated={setTemperatureGenerated}
+            />
+          ) : (
+            <Carbon
+              title={title ? "Data in " + title : ""}
+              payload={payload}
+              list_time_by_duration={list_time_by_duration}
+              iotSelected={iotSelected}
+              durType={durationType}
+              setCarbonGenerated={setCarbonGenerated}
+            />
+          )}
+        </BoxBorderTop>
+      </div>
     </Fragment>
   );
 }

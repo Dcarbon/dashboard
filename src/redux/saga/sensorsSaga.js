@@ -12,11 +12,19 @@ export const watcherSensors = [
     )
   ),
   takeEvery(
-    SensorsACT.GET_SENSORS_METRICS.REQUEST,
+    SensorsACT.GET_SENSORS_METRICS_TEM.REQUEST,
     grpcCall(
       getSensorMetrics,
-      SensorsACT.GET_SENSORS_METRICS.SUCCESS,
-      SensorsACT.GET_SENSORS_METRICS.FAILURE
+      SensorsACT.GET_SENSORS_METRICS_TEM.SUCCESS,
+      SensorsACT.GET_SENSORS_METRICS_TEM.FAILURE
+    )
+  ),
+  takeEvery(
+    SensorsACT.GET_SENSORS_METRICS_BIO.REQUEST,
+    grpcCall(
+      getSensorMetrics,
+      SensorsACT.GET_SENSORS_METRICS_BIO.SUCCESS,
+      SensorsACT.GET_SENSORS_METRICS_BIO.FAILURE
     )
   ),
 ];

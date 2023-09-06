@@ -8,6 +8,10 @@ export const watcherIot = [
     grpcCall(countIot, IOTAct.COUNT_IOT.SUCCESS, IOTAct.COUNT_IOT.FAILURE)
   ),
   takeEvery(
+    IOTAct.IsActive.REQUEST,
+    grpcCall(checkisactive, IOTAct.IsActive.SUCCESS, IOTAct.IsActive.FAILURE)
+  ),
+  takeEvery(
     IOTAct.GET_IOT.REQUEST,
     grpcCall(getIot, IOTAct.GET_IOT.SUCCESS, IOTAct.GET_IOT.FAILURE)
   ),
@@ -32,6 +36,12 @@ export const watcherIot = [
 
 function countIot() {
   var url = `iots/count`;
+  return AxiosGet(url);
+}
+
+function checkisactive(action) {
+  // console.log("checkisactive-------------", action);
+  var url = `iots/${action.payload.iotId}/is-actived?from=${action.payload.from}&to=${action.payload.to}`;
   return AxiosGet(url);
 }
 function getIot(action) {

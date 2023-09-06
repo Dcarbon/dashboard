@@ -6,12 +6,12 @@ import LineChart from "../Chart/LineChart";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 
 function Biomass({ unit, title, sensorId, iotSelected, setGenerated }) {
-  console.log("sensorId,", sensorId);
+  console.log("sensorId---", sensorId);
   const dispatch = useDispatch();
   const GetSensorsState = useSelector(new DcarbonAPI().GetSensorsState);
-  const sensor_metrics = useMemo(
-    () => GetSensorsState?.sensor_metrics,
-    [GetSensorsState?.sensor_metrics]
+  const sensor_metrics_bio = useMemo(
+    () => GetSensorsState?.sensor_metrics_bio,
+    [GetSensorsState?.sensor_metrics_bio]
   );
   const sensors = useMemo(
     () => GetSensorsState?.sensors,
@@ -21,7 +21,7 @@ function Biomass({ unit, title, sensorId, iotSelected, setGenerated }) {
   const handleGetSensorMinted = useCallback(
     (newPayload) => {
       dispatch({
-        type: SensorsACT.GET_SENSORS_METRICS.REQUEST,
+        type: SensorsACT.GET_SENSORS_METRICS_BIO.REQUEST,
         payload: {
           from: Math.round(newPayload?.from / 1000),
           to: Math.round(newPayload?.to / 1000),
@@ -37,7 +37,7 @@ function Biomass({ unit, title, sensorId, iotSelected, setGenerated }) {
   // checksensorId = type 1
   const checksensorId = useMemo(() => {
     let index = sensors?.findIndex((item) => item.id === sensorId);
-
+    console.log("biomass index", index);
     if (index >= 0) {
       return Boolean(sensors[index].type === 1);
     }
@@ -65,10 +65,10 @@ function Biomass({ unit, title, sensorId, iotSelected, setGenerated }) {
 
   return (
     <LineChart
-      sensorId={sensorId}
+      checksensorId={checksensorId}
       isLoading={GetSensorsState.loading}
       title={title}
-      data={sensor_metrics}
+      data={sensor_metrics_bio}
       setGenerated={setGenerated}
       unit={unit}
     />

@@ -3,17 +3,25 @@ import MapBoxPage from "src/components/ui/Mapbox/mapbox";
 import DashboardLayout from "src/components/layouts/iotLayout";
 import stls from "../styles/index.module.scss";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { SensorsACT } from "src/redux/actions/sensorsAction";
 export default function Dashboard() {
   const [iotSelected, setIotSelected] = useState(0);
   const [features, setFeatures] = useState([]);
   const [errFlyTo, setErrFlyTo] = useState(false);
   const [mymap, setMymap] = useState(null);
+  const dispatch = useDispatch();
+  const handleClearSensor = () => dispatch({ type: SensorsACT.CLEAR_SENSOR });
+  const handlesetIotSelected = (id) => {
+    handleClearSensor();
+    setIotSelected(id);
+  };
   return (
     <DashboardLayout
       setErrFlyTo={setErrFlyTo}
       mymap={mymap}
       iotSelected={iotSelected}
-      setIotSelected={setIotSelected}
+      setIotSelected={handlesetIotSelected}
       setFeatures={setFeatures}
     >
       <div
@@ -31,7 +39,7 @@ export default function Dashboard() {
           setFeatures={setFeatures}
           className={stls?.map}
           iotSelected={iotSelected}
-          setIotSelected={setIotSelected}
+          setIotSelected={handlesetIotSelected}
         />
 
         {/* Side */}
@@ -48,7 +56,7 @@ export default function Dashboard() {
           setFeatures={setFeatures}
           className={stls.sidebar}
           iotSelected={iotSelected}
-          setIotSelected={setIotSelected}
+          setIotSelected={handlesetIotSelected}
         />
       </div>
     </DashboardLayout>

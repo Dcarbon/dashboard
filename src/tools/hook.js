@@ -87,6 +87,7 @@ class DcarbonAPI {
    *   "updatedAt": string,
    *   "v": string
    * }],
+   * isActive : boolean,
    * latest : string,
    * loading : boolean,
    * error : string,
@@ -145,7 +146,7 @@ class DcarbonAPI {
    * @returns {{
    * metric : {
    *  id: number,
-   *  metrics:: [{
+   *  metrics: [{
    *    id : number,
    *    latest : number,
    *    metric : {
@@ -167,11 +168,11 @@ class DcarbonAPI {
   /**
    *
    * @param {*} amount
-   * @returns {{
+   * @returns {
    * loading : boolean,
    * latest : boolean,
    * error : string,
-   * error_code : string
+   * error_code : string,
    * sensors: [{
    *  address: string,
    *  createdAt: string,
@@ -180,7 +181,7 @@ class DcarbonAPI {
    *  status: number,
    *  type: number
    * }],
-   * sensor_metrics : [{
+   * sensor_metrics_tem : [{
    *  createdAt: string,
    *  data: string,
    *  id: string,
@@ -193,8 +194,20 @@ class DcarbonAPI {
    *  sensorId": number,
    *  sensorType": number
    * }],
-
-   * }}
+   * sensor_metrics_bio : [{
+   *  createdAt: string,
+   *  data: string,
+   *  id: string,
+   *  indicator: {
+   *    lat: number,
+   *    lng: number,
+   *    value: number
+   *  },
+   *  iotId": number,
+   *  sensorId": number,
+   *  sensorType": number
+   * }]
+   * }
    *
    */
   GetSensorsState(state) {
