@@ -53,7 +53,8 @@ function InfoProject({
   const checkIsActive = useCallback(() => {
     let newDate = new Date();
     let to = roundup_second(newDate);
-    let from = to - 15;
+    let from = to - 20;
+
     dispatch({
       type: IOTAct.IsActive.REQUEST,
       payload: {
