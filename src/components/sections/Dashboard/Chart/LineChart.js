@@ -16,7 +16,7 @@ function LineChart({
   setGenerated,
 }) {
   const BOXREF = useRef(null);
-
+  // console.log("configSeries data", data);
   // const newDcarbon = new DcarbonAPI();
   const configSeries = useMemo(() => {
     if (data?.length > 0) {
@@ -149,13 +149,12 @@ function LineChart({
     };
   }, []);
   useEffect(() => {
-    console.log("checksensorId", checksensorId);
-    console.log("configSeries", configSeries);
     if (configSeries.length > 0 && checksensorId) {
-      console.log("configSeries", configSeries);
       let value_last = configSeries[configSeries?.length - 1][1];
 
       setGenerated(value_last);
+    } else {
+      setGenerated(0);
     }
   }, [checksensorId, configSeries, setGenerated]);
   return (

@@ -56,7 +56,7 @@ function Biomass({ unit, title, sensorId, iotSelected, setGenerated }) {
         handleGetSensorMinted({ from: fromTime, to: toTime, sensorId });
       };
       handleGet();
-      let myInterval = setInterval(() => handleGet(), 10000);
+      let myInterval = setInterval(() => handleGet(), 5000);
       return () => {
         clearInterval(myInterval);
       };
