@@ -240,9 +240,9 @@ function CheckCurrentActive(iotSelected, setCurrentIsActive) {
   const today_ = new Date();
   var url = `iots/${iotSelected}/is-actived`;
   today_.setHours(0, 0, 0, 0);
-  let newFrom = today_.getTime();
+  let newFrom = Math.round(today_.getTime() / 1000);
   today_.setHours(23, 59, 59);
-  let newTo = today_.getTime();
+  let newTo = Math.round(today_.getTime() / 1000);
   // eslint-disable-next-line no-undef
   const promise1 = new Promise((resolve) =>
     resolve(AxiosGet(url + `?from=${newFrom}&to=${newTo}`))

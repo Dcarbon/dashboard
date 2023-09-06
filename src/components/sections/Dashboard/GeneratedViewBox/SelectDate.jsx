@@ -14,6 +14,7 @@ function SelectDate({
   setList_time_by_duration,
   setPayload,
 }) {
+  console.log("currentIsActive", currentIsActive);
   const handleNewListTime = useCallback(
     (time, type) => {
       const newPayload = GET_Payload(time?.getTime(), type);
