@@ -203,9 +203,9 @@ function DatePicker({
             // check current và active
             if (value?.getTime() === item.getTime()) {
               isCurrent = true;
-              if (value?.getTime() === today_?.getTime()) {
-                isActive = currentIsActive;
-              }
+            }
+            if (item?.getTime() === today_?.getTime()) {
+              isActive = currentIsActive;
             }
             return (
               <li
