@@ -34,8 +34,13 @@ function getSensors(action) {
   return AxiosGet(url);
 }
 function getSensorMetrics(action) {
-  // console.log("getSensorMetrics");
-  var url = `sensors/sm?from=${action.payload.from}&to=${action.payload.to}&iotId=${action.payload.iotId}&limit=${action.payload.limit}&skip=${action.payload.skip}&sensorId=${action.payload.sensorId}`;
+  // console.log("getSensorMetrics", action);
+  const newTo = action?.payload.to + 60 * 15;
+  var url = `sensors/sm?from=${action.payload.from}&to=${newTo}&iotId=${
+    action.payload.iotId
+  }&limit=${action.payload.limit}&skip=${action.payload.skip}&sensorId=${
+    action.payload.sensorId
+  }&sort=${action.payload.sort || 1}`;
   // console.log("url", url);
   return AxiosGet(url);
 }

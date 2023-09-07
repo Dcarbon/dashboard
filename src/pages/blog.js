@@ -1,11 +1,6 @@
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import Layout from "src/components/layouts";
-import ComingSoon from "src/components/layouts/commingSoon";
-
-import Blog_Section_1 from "src/components/sections/Blog/sec_1";
-import Blog_Section_2 from "src/components/sections/Blog/sec_2";
-import Blog_Section_3 from "src/components/sections/Blog/sec_3";
 import Heading from "src/components/ui/Heading";
 import useLocale from "src/hook/useLocale";
 
@@ -16,6 +11,10 @@ import HandleAPI, {
   handleErr,
 } from "src/tools/handleAPI";
 import useSWR from "swr";
+import Blog_Section_1 from "src/components/sections/blog/sec_1";
+import Blog_Section_2 from "src/components/sections/blog/sec_2";
+import Blog_Section_3 from "src/components/sections/blog/sec_3";
+import ComingSoon from "src/components/layouts/commingSoon";
 const fetcherPage = ([url, qstr, locale]) => {
   return AxiosGet(url, qstr, locale);
 };
@@ -114,7 +113,7 @@ function Blog() {
           )}
         </Fragment>
       ) : (
-        <div className="py-12 text-center">
+        <div className='py-12 text-center'>
           <Heading Tag={"h1"}>There are no posts yet.</Heading>
         </div>
       )}

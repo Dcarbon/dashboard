@@ -14,7 +14,7 @@ function SelectType({
       type: 2,
       title: "Carbon minted",
       generatedNumber: carbonGenerated,
-      unit: <>kWh</>,
+      unit: "",
     },
     {
       type: 4,
@@ -22,12 +22,12 @@ function SelectType({
       generatedNumber: temperatureGenerated,
       unit: <>&ordm;C</>,
     },
-    {
-      type: 1,
-      title: "Biomass",
-      generatedNumber: biomassGenerated,
-      unit: <>kg</>,
-    },
+    // {
+    //   type: 1,
+    //   title: "Biomass",
+    //   generatedNumber: biomassGenerated,
+    //   unit: <>kg</>,
+    // },
   ];
   return (
     <div className=''>
@@ -49,7 +49,7 @@ function SelectType({
                 <h3 className={stls.title}>{item.title}</h3>
                 <p className={stls.generatedNumber}>
                   {item.generatedNumber}{" "}
-                  <span className='unit'>({item.unit})</span>
+                  {item?.unit && <span className='unit'>({item.unit})</span>}
                 </p>
               </div>
             </li>

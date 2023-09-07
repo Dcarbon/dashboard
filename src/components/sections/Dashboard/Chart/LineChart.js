@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-
+import dateFormat from "dateformat";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { hexToString } from "src/tools/const";
@@ -30,10 +30,10 @@ function LineChart({
         }
         return [newTime.getTime(), (newValue / 1000).toFixed(2)];
       });
-      return newData.reverse();
+      return newData;
     }
     return [];
-  }, [data]);
+  }, [data, divider]);
   const [width, setWidth] = useState("100%");
   const options = useMemo(() => {
     return {
@@ -54,19 +54,29 @@ function LineChart({
         height: 170,
         toolbar: { show: false },
         zoom: { enabled: false },
+        // animations: {
+        //   enabled: true,
+        //   easing: "easeinout",
+        //   speed: 800,
+        //   animateGradually: {
+        //     enabled: true,
+        //     delay: 150,
+        //   },
+        //   dynamicAnimation: {
+        //     enabled: true,
+        //     speed: 350,
+        //   },
+        // },
         animations: {
           enabled: true,
-          easing: "easeinout",
-          speed: 800,
-          animateGradually: {
-            enabled: true,
-            delay: 150,
-          },
+          easing: "linear",
           dynamicAnimation: {
-            enabled: true,
-            speed: 350,
+            speed: 5000,
           },
         },
+      },
+      stroke: {
+        curve: "smooth",
       },
       noData: {
         text: !checksensorId
@@ -80,7 +90,12 @@ function LineChart({
       },
       xaxis: {
         type: "datetime",
-        tickAmount: 1,
+        tickAmount: 4,
+        labels: {
+          formatter: function (value, timestamp) {
+            return dateFormat(new Date(timestamp), "HH:MM:ss"); // The formatter function overrides format property
+          },
+        },
       },
 
       // colors: "#72BF44",
@@ -138,6 +153,33 @@ function LineChart({
           }
         },
       },
+      responsive: [
+        {
+          breakpoint: 1023,
+          options: {
+            xaxis: {
+              tickAmount: 8,
+            },
+          },
+        },
+        {
+          breakpoint: 768,
+          options: {
+            xaxis: {
+              tickAmount: 6,
+            },
+          },
+        },
+
+        {
+          breakpoint: 525,
+          options: {
+            xaxis: {
+              tickAmount: 3,
+            },
+          },
+        },
+      ],
     };
   }, [configSeries, isLoading, checksensorId, title, unit]);
   // // resize
@@ -162,9 +204,9 @@ function LineChart({
     }
   }, [checksensorId, configSeries, setGenerated]);
   return (
-    <div ref={BOXREF} className="myApex -ml-5">
+    <div ref={BOXREF} className='myApex -ml-5'>
       <ReactApexChart
-        type="line"
+        type='line'
         options={options}
         series={[
           {

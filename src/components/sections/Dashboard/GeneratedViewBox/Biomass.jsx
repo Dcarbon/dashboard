@@ -6,7 +6,7 @@ import LineChart from "../Chart/LineChart";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 
 function Biomass({ unit, title, sensorId, iotSelected, setGenerated }) {
-  console.log("sensorId---", sensorId);
+  // console.log("sensorId---", sensorId);
   const dispatch = useDispatch();
   const GetSensorsState = useSelector(new DcarbonAPI().GetSensorsState);
   const sensor_metrics_bio = useMemo(

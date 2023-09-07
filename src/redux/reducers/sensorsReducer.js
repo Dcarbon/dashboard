@@ -59,8 +59,8 @@ const sensorsReducer = (state = initsensorsState, action) => {
         latest: action.type,
       };
     case SensorsACT.GET_SENSORS_METRICS_TEM.SUCCESS:
-      console.log("case GET_SENSORS_METRICS_TEM SUCCESS:", action);
-      console.log("res----------------------------------------:", res);
+      // console.log("case GET_SENSORS_METRICS_TEM SUCCESS:", action);
+      // console.log("res----------------------------------------:", res);
       return {
         ...state,
         loading: true,
