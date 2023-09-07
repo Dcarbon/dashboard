@@ -2,9 +2,10 @@ import { useRouter } from "next/router";
 import { Fragment } from "react";
 import Layout from "src/components/layouts";
 import ComingSoon from "src/components/layouts/commingSoon";
-import Blog_Section_1 from "src/components/sections/blog/sec_1";
-import Blog_Section_2 from "src/components/sections/blog/sec_2";
-import Blog_Section_3 from "src/components/sections/blog/sec_3";
+
+import Blog_Section_1 from "src/components/sections/Blog/sec_1";
+import Blog_Section_2 from "src/components/sections/Blog/sec_2";
+import Blog_Section_3 from "src/components/sections/Blog/sec_3";
 import Heading from "src/components/ui/Heading";
 import useLocale from "src/hook/useLocale";
 
@@ -113,7 +114,7 @@ function Blog() {
           )}
         </Fragment>
       ) : (
-        <div className='py-12 text-center'>
+        <div className="py-12 text-center">
           <Heading Tag={"h1"}>There are no posts yet.</Heading>
         </div>
       )}

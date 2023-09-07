@@ -13,6 +13,7 @@ function LineChart({
   title,
   isLoading,
   data = [],
+  divider,
   setGenerated,
 }) {
   const BOXREF = useRef(null);
@@ -24,6 +25,9 @@ function LineChart({
         let newTime = new Date(item.createdAt);
         let newString = JSON.parse(hexToString(item?.data));
         let newValue = newString.indicator.value;
+        if (divider) {
+          return [newTime.getTime(), (newValue / divider).toFixed(2)];
+        }
         return [newTime.getTime(), (newValue / 1000).toFixed(2)];
       });
       return newData.reverse();
@@ -158,9 +162,9 @@ function LineChart({
     }
   }, [checksensorId, configSeries, setGenerated]);
   return (
-    <div ref={BOXREF} className='myApex -ml-5'>
+    <div ref={BOXREF} className="myApex -ml-5">
       <ReactApexChart
-        type='line'
+        type="line"
         options={options}
         series={[
           {

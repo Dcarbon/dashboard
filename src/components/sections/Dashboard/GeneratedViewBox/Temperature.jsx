@@ -53,7 +53,7 @@ function Temperature({ unit, title, sensorId, iotSelected, setGenerated }) {
       const handleGet = () => {
         let newDate = new Date();
         let toTime = newDate.getTime();
-        let fromTime = toTime - 6 * 60 * 60;
+        let fromTime = toTime - 6 * 60 * 60 * 1000;
 
         handleGetSensorMinted({ from: fromTime, to: toTime });
       };
@@ -70,6 +70,7 @@ function Temperature({ unit, title, sensorId, iotSelected, setGenerated }) {
       checksensorId={checksensorId}
       isLoading={GetSensorsState.loading}
       title={title}
+      divider={1}
       data={sensor_metrics_tem}
       setGenerated={setGenerated}
       unit={unit}

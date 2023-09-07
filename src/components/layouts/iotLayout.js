@@ -30,20 +30,23 @@ function DashboardLayout({
     <>
       <Head>
         <title>DCarbon | Dashboard</title>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.png' />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.png" />
         <meta
-          name='description'
-          content='DCarbon website: Fair to us - Fair to Earth'
+          name="description"
+          content="DCarbon website: Fair to us - Fair to Earth"
         />
         {/* <!-- Google tag (gtag.js) --> */}
       </Head>
-      <Script
-        async
-        src={"https://www.googletagmanager.com/gtag/js?id=" + GGANAS}
-      ></Script>
-      <Script id='gg-anas'>
+
+      {GGANAS && (
+        <Script
+          async
+          src={"https://www.googletagmanager.com/gtag/js?id=" + GGANAS}
+        ></Script>
+      )}
+      <Script id="gg-anas">
         {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}

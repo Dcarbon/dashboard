@@ -80,6 +80,8 @@ const IOT_TYPE = (val) => {
       return "Solar Power";
     case 20:
       return "Burn Methane";
+    case 21:
+      return "Clean Cockstove";
     case 30:
       return "Fertilizer";
     case 31:

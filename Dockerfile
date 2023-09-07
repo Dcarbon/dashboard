@@ -3,7 +3,7 @@ FROM harbor.viet-tin.com/dcarbon/dashboard:cache_1
 
 COPY . . 
 
-RUN yarn build &&\
+RUN yarn && yarn build &&\
     rm -rf src &&\
     yarn cache clean &&\ 
     echo "Build dashboard success...!"
