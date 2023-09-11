@@ -1,39 +1,47 @@
 import dynamic from "next/dynamic";
 import dateFormat from "dateformat";
 import { useEffect, useMemo, useRef, useState } from "react";
-
 import { hexToString } from "src/tools/const";
 import { GET_STRING_DAY_LineChart, optionsDefault } from "./tools";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 function LineChart({
-  checksensorId,
+  iotSelected,
   unit,
   title,
-  isLoading,
   data = [],
   divider,
-  setGenerated,
+  isDepended,
+  handle_coefficient,
+  timeSpace,
 }) {
   const BOXREF = useRef(null);
-  // console.log("configSeries data", data);
-  // const newDcarbon = new DcarbonAPI();
-  const configSeries = useMemo(() => {
+  const [series, setSeries] = useState([]);
+
+  useEffect(() => {
+    if (iotSelected && data?.length > 0) {
+      console.log("=======================new iotSelected", iotSelected);
+    }
+  }, [data?.length, iotSelected]);
+
+  useEffect(() => {
     if (data?.length > 0) {
       let newData = data.map((item) => {
         let newTime = new Date(item.createdAt);
         let newString = JSON.parse(hexToString(item?.data));
         let newValue = newString.indicator.value;
-        if (divider) {
-          return [newTime.getTime(), (newValue / divider).toFixed(2)];
-        }
-        return [newTime.getTime(), (newValue / 1000).toFixed(2)];
+        let valueConfig = divider ? newValue / divider : newValue / 1000;
+        let valueIsDepened = isDepended
+          ? handle_coefficient(valueConfig)
+          : valueConfig;
+        let lastValue = valueIsDepened.toFixed(2);
+        return [newTime.getTime(), lastValue];
       });
-      return newData;
+      setSeries(newData);
     }
-    return [];
-  }, [data, divider]);
+  }, [data, divider, handle_coefficient, isDepended]);
+
   const [width, setWidth] = useState("100%");
   const options = useMemo(() => {
     return {
@@ -51,27 +59,14 @@ function LineChart({
         type: "line",
         id: "myCarbonChart_" + unit,
         width: "100%",
-        height: 170,
+        height: 230,
         toolbar: { show: false },
         zoom: { enabled: false },
-        // animations: {
-        //   enabled: true,
-        //   easing: "easeinout",
-        //   speed: 800,
-        //   animateGradually: {
-        //     enabled: true,
-        //     delay: 150,
-        //   },
-        //   dynamicAnimation: {
-        //     enabled: true,
-        //     speed: 350,
-        //   },
-        // },
         animations: {
           enabled: true,
           easing: "linear",
           dynamicAnimation: {
-            speed: 5000,
+            speed: timeSpace * 1000,
           },
         },
       },
@@ -79,11 +74,7 @@ function LineChart({
         curve: "smooth",
       },
       noData: {
-        text: !checksensorId
-          ? "Have no sensor"
-          : isLoading
-          ? "Loading..."
-          : "No Data",
+        text: !series?.length ? "No Data" : "Loading...",
         style: {
           color: "#ffffff",
         },
@@ -91,6 +82,7 @@ function LineChart({
       xaxis: {
         type: "datetime",
         tickAmount: 4,
+        range: 147000,
         labels: {
           formatter: function (value, timestamp) {
             return dateFormat(new Date(timestamp), "HH:MM:ss"); // The formatter function overrides format property
@@ -125,19 +117,20 @@ function LineChart({
         },
       },
       yaxis: {
-        show: true,
-        axisBorder: {
-          show: true,
-          color: "#504F5A",
-          offsetX: 0,
-          offsetY: 0,
-        },
+        // show: true,
+        // axisBorder: {
+        //   show: true,
+        //   color: "#504F5A",
+        //   offsetX: 0,
+        //   offsetY: 0,
+        // },
       },
       tooltip: {
         ...optionsDefault.tooltip,
         custom: function (props) {
-          const { series, seriesIndex, dataPointIndex } = props;
+          const { ctx, series, seriesIndex, dataPointIndex } = props;
           if (series?.length > 0) {
+            let time = ctx.data.twoDSeriesX[dataPointIndex];
             return (
               '<div class="arrow_box">' +
               '<h4 class="title"><b class="strong">' +
@@ -146,7 +139,7 @@ function LineChart({
               unit +
               "</h4>" +
               "<span>" +
-              GET_STRING_DAY_LineChart("day", configSeries[dataPointIndex][0]) +
+              GET_STRING_DAY_LineChart("day", time) +
               "</span>" +
               "</div>"
             );
@@ -181,28 +174,27 @@ function LineChart({
         },
       ],
     };
-  }, [configSeries, isLoading, checksensorId, title, unit]);
+  }, [series?.length, timeSpace, title, unit]);
   // // resize
   // // resize
   // // resize
   // // resize
   useEffect(() => {
-    const interval = setInterval(() => {
-      setWidth(BOXREF?.current?.clientWidth);
-    }, 1000);
-    return () => {
-      clearInterval(interval);
+    const handleSetWidth = () => {
+      setTimeout(() => {
+        setWidth(BOXREF?.current?.clientWidth);
+      }, 200);
     };
-  }, []);
-  useEffect(() => {
-    if (configSeries.length > 0 && checksensorId) {
-      let value_last = configSeries[configSeries?.length - 1][1];
-
-      setGenerated(value_last);
-    } else {
-      setGenerated(0);
+    if (data?.length > 0) {
+      handleSetWidth();
     }
-  }, [checksensorId, configSeries, setGenerated]);
+
+    window.addEventListener("resize", handleSetWidth);
+    return () => {
+      window.removeEventListener("resize", handleSetWidth);
+    };
+  }, [data?.length]);
+
   return (
     <div ref={BOXREF} className='myApex -ml-5'>
       <ReactApexChart
@@ -210,7 +202,7 @@ function LineChart({
         options={options}
         series={[
           {
-            data: configSeries,
+            data: series.slice(),
           },
         ]}
         width={width || "100%"}

@@ -3,31 +3,37 @@ import BoxBorderTop from "src/components/ui/Box/BoxBorderTop";
 import SelectType from "./SelectType";
 import SelectDate from "./SelectDate";
 import Carbon from "./Carbon";
-import { DURATION__TYPE, roundup_second } from "../Chart/tools";
+import { DURATION__TYPE, Get_list_time, roundup_second } from "./tools";
 import dateFormat from "dateformat";
-import Temperature from "./Temperature";
-import Biomass from "./Biomass";
+import SensorLineChart from "./SensorLineChart";
+
 import { AxiosGet } from "src/redux/sagaUtils";
-import { Get_list_time } from "./tools";
 import { useSelector } from "react-redux";
-const newDate = new Date();
-newDate.setHours(0, 0, 0, 0);
+import DcarbonAPI from "src/tools/DcarbonAPI";
+import { SENSOR__TYPE } from "src/tools/const";
+import stls from "./index.module.scss";
+const initDate = new Date();
+initDate.setHours(0, 0, 0, 0);
 function GeneratedViewBox({ iotSelected }) {
-  const [currentDate, setCurrentDate] = useState(null);
-  const [currentType, setCurrentType] = useState(2);
+  const [currentDate, setCurrentDate] = useState(initDate);
+  const [currentSensorType, setCurrentSensorType] = useState(SENSOR__TYPE.None);
   const [carbonGenerated, setCarbonGenerated] = useState(0);
-  const [temperatureGenerated, setTemperatureGenerated] = useState(0);
-  const [biomassGenerated, setBiomassGenerated] = useState(0);
-  const [sensorId, setSensorId] = useState(0);
 
   const [payload, setPayload] = useState({ from: 0, to: 0, interval: 0 });
   const [list_time_by_duration, setList_time_by_duration] = useState([]);
   const [durationType, setDurationType] = useState(DURATION__TYPE.day);
-  useEffect(() => {
-    if (!currentDate) {
-      setCurrentDate(newDate);
-    }
-  }, [currentDate]);
+
+  const [currentIsActive, setCurrentIsActive] = useState(0);
+  const [dayActiveList, setDayActiveList] = useState([]);
+  const [monthActiveList, setMonthActiveList] = useState([]);
+  const [listTab, setListTab] = useState([]);
+
+  // Check IOT type
+  const newDcarbonAPI = new DcarbonAPI();
+  const IOT_state = useSelector(newDcarbonAPI.GetIOTState);
+  const SENSOR_state = useSelector(newDcarbonAPI.GetSensorsState);
+  const iot_type = IOT_state?.iot?.type;
+  const sensors = SENSOR_state?.sensors;
   const title = useMemo(() => {
     if (currentDate) {
       switch (durationType) {
@@ -45,9 +51,13 @@ function GeneratedViewBox({ iotSelected }) {
     return dateFormat(newDate, "mmm dd, yyyy");
   }, []);
 
-  const [currentIsActive, setCurrentIsActive] = useState();
-  const [dayActiveList, setDayActiveList] = useState([]);
-  const [monthActiveList, setMonthActiveList] = useState([]);
+  useEffect(() => {
+    if (iotSelected) {
+      console.log("Iot Mới", iotSelected);
+      console.log("set Sensor Type  === 0 => hiển thị biểu đồ cột");
+      setCurrentSensorType(SENSOR__TYPE.None);
+    }
+  }, [iotSelected]);
 
   useEffect(() => {
     if (payload?.from && payload?.to) {
@@ -61,7 +71,6 @@ function GeneratedViewBox({ iotSelected }) {
       let newDate = new Date();
       newDate.setHours(0, 0, 0, 0);
       let todayTime = newDate.getTime();
-
       if (payload?.from && payload?.to && currrentTime === todayTime) {
         CheckCurrentActive(iotSelected, setCurrentIsActive);
         let myInterval = setInterval(() => {
@@ -73,14 +82,21 @@ function GeneratedViewBox({ iotSelected }) {
       }
     }
   }, [currentDate, iotSelected, payload?.from, payload?.to]);
-  const sensorState = useSelector((state) => state.sensorsState);
-  const sensors = useMemo(() => sensorState?.sensors, [sensorState?.sensors]);
+
+  function GET_sensor_id(sensors = [], typeSensor) {
+    if (sensors?.length > 0) {
+      let getIndex = sensors.findIndex((item) => item.type === typeSensor);
+      return sensors[getIndex]?.id;
+    }
+    return 0;
+  }
 
   return (
     <Fragment>
       <BoxBorderTop>
         {currentDate && (
           <SelectDate
+            currentSensorType={currentSensorType}
             currentIsActive={currentIsActive}
             monthActiveList={monthActiveList}
             dayActiveList={dayActiveList}
@@ -95,45 +111,67 @@ function GeneratedViewBox({ iotSelected }) {
           />
         )}
       </BoxBorderTop>
+      {/* select type to show  */}
+      {/* select type to show  */}
+      {/* select type to show  */}
+      {/* select type to show  */}
+      {/* select type to show  */}
+      {/* select type to show  */}
       <div className='w-full' style={{ width: "100%" }}>
         <BoxBorderTop isPadding={false}>
           <SelectType
-            sensors={sensors}
+            listTab={listTab}
+            iot_type={iot_type}
             carbonGenerated={carbonGenerated}
-            temperatureGenerated={temperatureGenerated}
-            biomassGenerated={biomassGenerated}
-            currentType={currentType}
-            setCurrentType={setCurrentType}
-            setSensorId={setSensorId}
+            currentType={currentSensorType}
+            setCurrentType={setCurrentSensorType}
+            setListTab={setListTab}
           />
         </BoxBorderTop>
+
+        {/*  show charts  */}
+        {/*  show charts  */}
+        {/*  show charts  */}
+        {/*  show charts  */}
+        {/*  show charts  */}
+        {/*  show charts  */}
+
+        {/* <p>iotSelected :{iotSelected}</p>
+        <p>iot_type : {currentSensorType}</p> */}
         <BoxBorderTop>
-          {currentType === 1 ? (
-            <Biomass
-              unit={"kg"}
-              title={title ? "Data in " + titleLine : ""}
-              sensorId={sensorId}
-              iotSelected={iotSelected}
-              setGenerated={setBiomassGenerated}
-            />
-          ) : currentType === 4 ? (
-            <Temperature
-              unit={"\xB0" + "C"}
-              title={title ? "Data in " + titleLine : ""}
-              sensorId={sensorId}
-              iotSelected={iotSelected}
-              setGenerated={setTemperatureGenerated}
-            />
-          ) : (
-            <Carbon
-              title={title ? "Data in " + title : ""}
-              payload={payload}
-              list_time_by_duration={list_time_by_duration}
-              iotSelected={iotSelected}
-              durType={durationType}
-              setCarbonGenerated={setCarbonGenerated}
-            />
-          )}
+          <div className={stls.tab}>
+            <div className={stls.slide}>
+              <Box isShow={currentSensorType === SENSOR__TYPE.None}>
+                <Carbon
+                  title={title ? "Data in " + title : ""}
+                  payload={payload}
+                  list_time_by_duration={list_time_by_duration}
+                  iotSelected={iotSelected}
+                  durType={durationType}
+                  setCarbonGenerated={setCarbonGenerated}
+                />
+              </Box>
+              {listTab.map((item, idx) => {
+                return (
+                  <Box
+                    key={"box-tab-" + idx}
+                    isShow={currentSensorType === item.type}
+                  >
+                    <SensorLineChart
+                      id={item.id}
+                      unit={item.unitChart || item.unit}
+                      title={titleLine ? "Data in " + titleLine : ""}
+                      sensorId={GET_sensor_id(sensors, item.type)}
+                      iotSelected={iotSelected}
+                      generated={item.generated}
+                      setGenerated={item.setGenerated}
+                      timeSpace={3}
+                    />
+                  </Box>
+                );
+              })}
+            </div>
+          </div>
         </BoxBorderTop>
       </div>
     </Fragment>
@@ -141,6 +179,17 @@ function GeneratedViewBox({ iotSelected }) {
 }
 
 export default GeneratedViewBox;
+function Box({ isShow, children }) {
+  return (
+    <div
+      className={`${isShow ? stls.active : ""} ${isShow ? "" : "hidden"} ${
+        stls.tabContent
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
 
 function CheckMonthActive(iotSelected, time, setMonthActive) {
   const today_ = new Date(time);

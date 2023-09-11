@@ -2,13 +2,15 @@ import { SensorsACT } from "../actions/sensorsAction";
 import { handleResponse } from "../handle";
 export const initsensorsState = {
   sensors: null,
-  sensor_metrics_tem: null,
+  sensor_metrics_: null,
   sensor_metrics_bio: null,
   error: null,
   error_code: null,
   latest: "",
   loading: false,
   loadingSensorFirstTime: false,
+  sensor_id_: 0,
+  energy_id: 0,
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -46,7 +48,7 @@ const sensorsReducer = (state = initsensorsState, action) => {
         latest: action.type,
       };
 
-    case SensorsACT.GET_SENSORS_METRICS_TEM.REQUEST:
+    case SensorsACT.GET_SENSORS_METRICS.REQUEST:
       // console.warn("GET_SENSORS_METRICS---------------request ", {
       //   action,
       //   res,
@@ -58,16 +60,32 @@ const sensorsReducer = (state = initsensorsState, action) => {
         error_code: null,
         latest: action.type,
       };
-    case SensorsACT.GET_SENSORS_METRICS_TEM.SUCCESS:
-      // console.log("case GET_SENSORS_METRICS_TEM SUCCESS:", action);
-      // console.log("res----------------------------------------:", res);
+    case SensorsACT.GET_SENSORS_METRICS.SUCCESS:
+      let oldData = state.sensor_metrics_ || [];
+      let newData = res.data?.metrics || [];
+
+      let final = [];
+      if (!action.payload.isFirstTimeLoad) {
+        // console.log(":))))))))))))))))Khong phải lần đầu");
+        // console.log("oldData", oldData);
+        // console.log("newData", newData);
+        let arrayConcat = newData.concat(oldData);
+        // console.log("concat", arrayConcat);
+        final = arrayConcat;
+      } else {
+        // console.error("lần đầu");
+        // console.log("newData", newData);
+        final = newData;
+      }
+      // console.log("final", final);
       return {
         ...state,
         loading: true,
-        sensor_metrics_tem: res.data?.metrics,
+        sensor_metrics_: final,
+        sensor_id_: action.payload.sensorId,
         latest: action.type,
       };
-    case SensorsACT.GET_SENSORS_METRICS_TEM.FAILURE:
+    case SensorsACT.GET_SENSORS_METRICS.FAILURE:
       // console.log("---------------FAILURE ", { action, res });
       return {
         ...state,
@@ -118,7 +136,7 @@ const sensorsReducer = (state = initsensorsState, action) => {
       return {
         ...state,
         sensors: null,
-        sensor_metrics_tem: null,
+        sensor_metrics_: null,
         sensor_metrics_bio: null,
       };
     case SensorsACT.LOAD_SENSOR_1ST_TIME:
@@ -127,7 +145,7 @@ const sensorsReducer = (state = initsensorsState, action) => {
         ...state,
         loadingSensorFirstTime: action.payload,
         sensors: null,
-        sensor_metrics_tem: null,
+        sensor_metrics_: null,
         sensor_metrics_bio: null,
       };
     default:

@@ -14,10 +14,6 @@ function ImageProject({ project }) {
     project?.images?.length > 0 && (
       <SliderGroup images={project?.images} projectId={project?.id} />
     )
-    // iotSelected > 0 &&
-    // projectState?.project?.images?.length > 0 && (
-
-    // )
   );
 }
 

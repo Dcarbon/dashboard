@@ -67,11 +67,12 @@ const iotReducer = (state = initIotState, action) => {
         loading: false,
       };
     case IOTAct.IsActive.SUCCESS:
-      // console.log("-IOTAct------IsActive--------SUCCESS ", res.data.actived);
+      // console.log("-IOTAct------IsActive--------SUCCESS ", res.data?.metrics);
       // console.log("res", res);
       return {
         ...state,
-        isActive: res.data.actived,
+        loading: true,
+        isActive: Boolean(res.data?.metrics?.length > 0),
       };
     case IOTAct.IsActive.FAILURE:
       // console.log("---------------FAILURE ", res);

@@ -93,6 +93,17 @@ function MapBoxPage({
 
     return () => (hoveredStateId = 0);
   }, [currentZoom, dispatch, mymap, replace, setFeatures, setIotSelected]);
+  useEffect(() => {
+    const handleResize = () => {
+      if (mymap) {
+        mymap?.resize();
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mymap]);
 
   const Flyto = (center, zoom) => {
     if (mymap) {

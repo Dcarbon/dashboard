@@ -12,11 +12,11 @@ export const watcherSensors = [
     )
   ),
   takeEvery(
-    SensorsACT.GET_SENSORS_METRICS_TEM.REQUEST,
+    SensorsACT.GET_SENSORS_METRICS.REQUEST,
     grpcCall(
       getSensorMetrics,
-      SensorsACT.GET_SENSORS_METRICS_TEM.SUCCESS,
-      SensorsACT.GET_SENSORS_METRICS_TEM.FAILURE
+      SensorsACT.GET_SENSORS_METRICS.SUCCESS,
+      SensorsACT.GET_SENSORS_METRICS.FAILURE
     )
   ),
   takeEvery(
@@ -35,12 +35,11 @@ function getSensors(action) {
 }
 function getSensorMetrics(action) {
   // console.log("getSensorMetrics", action);
-  const newTo = action?.payload.to + 60 * 15;
-  var url = `sensors/sm?from=${action.payload.from}&to=${newTo}&iotId=${
-    action.payload.iotId
-  }&limit=${action.payload.limit}&skip=${action.payload.skip}&sensorId=${
-    action.payload.sensorId
-  }&sort=${action.payload.sort || 1}`;
+  var url = `sensors/sm?from=${action.payload.from}&to=${
+    action?.payload.to
+  }&iotId=${action.payload.iotId}&limit=${action.payload.limit}&skip=${
+    action.payload.skip
+  }&sensorId=${action.payload.sensorId}&sort=${action.payload.sort || 1}`;
   // console.log("url", url);
   return AxiosGet(url);
 }

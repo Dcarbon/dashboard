@@ -1,6 +1,206 @@
-import { DURATION__TYPE } from "../Chart/tools";
+import BigNumber from "bignumber.js";
 
-const Get_list_time = (time, durType) => {
+import dateFormat from "dateformat";
+export const roundup_second = (time) => Math.round(time?.getTime() / 1000);
+
+export const DURATION__TYPE = {
+  day: "day",
+  month: "month",
+  year: "year",
+};
+
+const oneHour = 60 * 60 * 1000;
+const oneDay = 24 * oneHour;
+export const getAmount = (item) => {
+  const hexAmount = new BigNumber(item);
+  const reduceAmount = hexAmount.div("1e9");
+  let fixed = reduceAmount.toFixed(2);
+
+  return fixed;
+  // return 0;
+};
+export const getSum = (prev, next) => Number(prev) + Number(next);
+
+export const GET_STRING_DAY = (durType, time) => {
+  if (time) {
+    const newTime = new Date(time);
+    if (durType === DURATION__TYPE.day) {
+      let prevTime = new Date(time - oneHour * 3);
+      return (
+        dateFormat(prevTime, "HH:MM") + " - " + dateFormat(newTime, "HH:MM")
+      );
+    } else if (durType === DURATION__TYPE.month) {
+      return dateFormat(newTime, "mmm dd, yyyy");
+    } else {
+      return dateFormat(newTime, "mmmm yyyy");
+    }
+  }
+};
+export const GET_STRING_DAY_LineChart = (durType, time) => {
+  if (time) {
+    const newTime = new Date(time);
+    if (durType === DURATION__TYPE.day) {
+      return dateFormat(newTime, "HH:MM");
+    } else if (durType === DURATION__TYPE.month) {
+      return dateFormat(newTime, "mmm dd, yyyy");
+    } else {
+      return dateFormat(newTime, "mmmm yyyy");
+    }
+  }
+};
+
+const COMPARE________ = (timeline, newIOT_minted, handle) => {
+  let newSeriesArr = [];
+  let onlyTime = [];
+  let onlyVal = [];
+  for (let index = 0; index < timeline.length; index++) {
+    const current = timeline[index]; // khoảng thời gian
+    const prev = index > 0 ? timeline[index - 1] : 0; //
+    // filter data có thời gian nhỏ hơn
+    const aggreeConditionsArr = newIOT_minted.filter((item) =>
+      handle(current, prev, item)
+    );
+    const newDataGroup = aggreeConditionsArr.map((item) =>
+      item?.carbon ? item?.carbon : 0
+    );
+
+    let amount = newDataGroup?.length > 0 ? newDataGroup.reduce(getSum) : 0;
+    current;
+    let returnVal = amount ?? "";
+    newSeriesArr[index] = {
+      x: current,
+      y: returnVal,
+    };
+    onlyTime[index] = current;
+    // onlyVal[index] = parseFloat(amount).toFixed(4);
+    onlyVal[index] = returnVal;
+  }
+  return {
+    newSeriesArr,
+    onlyTime,
+    onlyVal,
+  };
+};
+export const GET_DATA_SERIES = (timeline, iot_minted, durType) => {
+  let resultCompare = {};
+  let handle = null;
+  // console.log("-----", { timeline, iot_minted, durType });
+  const newIOT_minted = iot_minted ? [...iot_minted] : [];
+
+  switch (durType) {
+    case DURATION__TYPE.day:
+      handle = (current, prev, item) => {
+        let newCrAt = new Date(item?.createdAt);
+        let newTime = newCrAt.getTime();
+        return prev < newTime && newTime <= current && item?.carbon;
+      };
+      resultCompare = COMPARE________(timeline, newIOT_minted, handle);
+      break;
+
+    case DURATION__TYPE.month:
+      handle = (current, prev, item) => {
+        let newCrAt = new Date(item?.createdAt);
+        let currentDate = new Date(current);
+        return newCrAt.getDate() === currentDate.getDate() && item?.carbon;
+      };
+      resultCompare = COMPARE________(timeline, newIOT_minted, handle);
+
+      break;
+
+    case DURATION__TYPE.year:
+      break;
+    default:
+      break;
+  }
+  return {
+    newSeriesArr: resultCompare?.newSeriesArr,
+    onlyTime: resultCompare?.onlyTime,
+    onlyVal: resultCompare?.onlyVal,
+  };
+};
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+export const optionsDefault = {
+  chart: {
+    type: "bar",
+    width: 200,
+    height: 170,
+    toolbar: { show: false },
+    zoom: { enabled: false },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+
+  xaxis: {
+    type: "categories",
+    categories: [],
+    labels: { show: false },
+    axisTicks: { show: true, color: "#504F5A" },
+    axisBorder: { show: true, color: "#504F5A" },
+  },
+
+  // config
+  colors: "#72BF44",
+  fill: { opacity: 0.3 },
+
+  grid: { show: false },
+  crosshairs: {
+    fill: {
+      type: "gradient",
+      gradient: {
+        colorFrom: "#D8E3F0",
+        colorTo: "#BED1E6",
+        stops: [0, 100],
+        opacityFrom: 0.4,
+        opacityTo: 0.5,
+      },
+    },
+  },
+  tooltip: {
+    enabled: true,
+    marker: { show: true },
+  },
+  stroke: { show: false },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      borderRadiusApplication: "end",
+      borderRadiusWhenStacked: "all",
+    },
+  },
+  yaxis: {
+    show: true,
+    labels: {
+      show: false,
+    },
+    axisBorder: {
+      show: true,
+      color: "#504F5A",
+      offsetX: 0,
+      offsetY: 0,
+    },
+  },
+};
+
+export const Get_list_time = (time, durType) => {
   const newDate = new Date(time);
   let newArr = [];
 
@@ -45,9 +245,7 @@ const Get_list_time = (time, durType) => {
   return newArr;
 };
 
-const oneHour = 60 * 60 * 1000;
-const oneDay = 24 * oneHour;
-const GET_Payload = (time, durType) => {
+export const GET_Payload = (time, durType) => {
   let interval = "";
   let newFrom = "";
   let newTo = "";
@@ -104,5 +302,3 @@ const GET_Payload = (time, durType) => {
     interval,
   };
 };
-
-export { GET_Payload, Get_list_time };

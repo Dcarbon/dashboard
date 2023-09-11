@@ -1,7 +1,7 @@
 import { Fragment, useMemo, useState } from "react";
 import stls from "./index.module.scss";
 import dateFormat from "dateformat";
-import { DURATION__TYPE } from "src/components/sections/Dashboard/Chart/tools";
+import { DURATION__TYPE } from "src/components/sections/Dashboard/GeneratedViewBox/tools";
 function DatePicker({
   currentIsActive,
   monthActiveList = [],

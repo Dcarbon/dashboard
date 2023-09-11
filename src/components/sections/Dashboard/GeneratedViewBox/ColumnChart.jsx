@@ -2,20 +2,20 @@ import dynamic from "next/dynamic";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  DURATION_TYPE_modal,
+  DURATION__TYPE,
   GET_DATA_SERIES,
   GET_STRING_DAY,
   getAmount,
   getSum,
   optionsDefault,
 } from "./tools";
-import DcarbonAPI from "src/tools/hook";
+import DcarbonAPI from "src/tools/DcarbonAPI";
 import { useSelector } from "react-redux";
 import dateFormat from "dateformat";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-function DcarbonChart({
+function ColumnChart({
   title,
   data,
   durType,
@@ -82,13 +82,13 @@ function DcarbonChart({
           show: true,
           formatter: (val, timestamp, opts) => {
             switch (durType) {
-              case DURATION_TYPE_modal.WEEK:
-                return dateFormat(new Date(val), "dd mmm");
-              case DURATION_TYPE_modal.MONTH:
+              case DURATION__TYPE.day:
+                return dateFormat(new Date(val), "HH:MM");
+              case DURATION__TYPE.month:
                 return (opts?.i + 2) % 5 === 0
                   ? dateFormat(new Date(val), "dd mmm")
                   : "";
-              case DURATION_TYPE_modal.YEAR:
+              case DURATION__TYPE.year:
                 return (opts?.i + 2) % 3 === 0
                   ? dateFormat(new Date(val), "mmm yyyy")
                   : "";
@@ -171,4 +171,4 @@ function DcarbonChart({
   );
 }
 
-export default DcarbonChart;
+export default ColumnChart;

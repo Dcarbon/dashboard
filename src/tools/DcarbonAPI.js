@@ -181,7 +181,7 @@ class DcarbonAPI {
    *  status: number,
    *  type: number
    * }],
-   * sensor_metrics_tem : [{
+   * sensor_metrics_ : [{
    *  createdAt: string,
    *  data: string,
    *  id: string,

@@ -1,7 +1,9 @@
-import { Fragment, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import DatePicker from "src/components/ui/DatePicker";
 import { GET_Payload, Get_list_time } from "./tools";
+import stls from "./SelectDate.module.scss";
 function SelectDate({
+  currentSensorType,
   currentIsActive,
   monthActiveList,
   dayActiveList,
@@ -36,30 +38,34 @@ function SelectDate({
   ]);
 
   return (
-    <Fragment>
+    <div>
       <h1 className='text-center text-gray-200 font-normal my-3'>
         Select date
       </h1>
-      <div className='bg-[#32313D] w-full h-[244px] rounded-md my-3'>
-        <div className='flex flex-col h-full'>
-          <DatePicker
-            currentIsActive={currentIsActive}
-            monthActiveList={monthActiveList}
-            dayActiveList={dayActiveList}
-            durationType={durationType}
-            list_time_by_duration={list_time_by_duration}
-            iotSelected={iotSelected}
-            initType={durationType}
-            value={currentDate}
-            onChangeValue={(time, type) => {
-              setCurrentDate(time);
-              setDurationType(type);
-              handleNewListTime(time, type);
-            }}
-          />
+      <div
+        className={`${stls.main} ${currentSensorType !== 0 ? stls.active : ""}`}
+      >
+        <div className='bg-[#32313D] w-full h-[244px] rounded-md my-3'>
+          <div className='flex flex-col h-full'>
+            <DatePicker
+              currentIsActive={currentIsActive}
+              monthActiveList={monthActiveList}
+              dayActiveList={dayActiveList}
+              durationType={durationType}
+              list_time_by_duration={list_time_by_duration}
+              iotSelected={iotSelected}
+              initType={durationType}
+              value={currentDate}
+              onChangeValue={(time, type) => {
+                setCurrentDate(time);
+                setDurationType(type);
+                handleNewListTime(time, type);
+              }}
+            />
+          </div>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 }
 

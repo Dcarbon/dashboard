@@ -41,7 +41,7 @@ function countIot() {
 
 function checkisactive(action) {
   // console.log("checkisactive-------------", action);
-  var url = `iots/${action.payload.iotId}/is-actived?from=${action.payload.from}&to=${action.payload.to}`;
+  var url = `sensors/sm?from=${action.payload.from}&to=${action.payload.to}&iotId=${action.payload.iotId}&limit=1`;
   return AxiosGet(url);
 }
 function getIot(action) {

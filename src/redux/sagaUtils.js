@@ -63,17 +63,42 @@ export const handleUrl = (url) => {
 
 export function AxiosGet(url) {
   // console.warn("AxiosGet--------GET");
-  return axios.get(handleUrl(url), metaWithAuth());
+  try {
+    return axios.get(handleUrl(url), metaWithAuth());
+  } catch (error) {
+    console.log("AxiosGet", error);
+    alert("AxiosGet lỗi");
+    return null;
+  }
 }
 export function AxiosDelete(url) {
   // console.warn("AxiosDelete--------DELETE");
-  return axios.delete(handleUrl(url), metaWithAuth());
+  try {
+    return axios.delete(handleUrl(url), metaWithAuth());
+  } catch (error) {
+    console.log("AxiosDelete", error);
+    alert("AxiosDelete lỗi");
+    return null;
+  }
 }
 export function AxiosPatch(url, options) {
   // console.warn("AxiosPatch--------PATCH");
-  return axios.patch(handleUrl(url), options, metaWithAuth());
+
+  try {
+    return axios.patch(handleUrl(url), options, metaWithAuth());
+  } catch (error) {
+    console.log("AxiosPatch", error);
+    alert("AxiosPatch lỗi");
+    return null;
+  }
 }
 export function AxiosPost(url, options) {
   // console.warn("AxiosPost--------POST");
-  return axios.post(handleUrl(url), options, metaWithAuth());
+  try {
+    return axios.post(handleUrl(url), options, metaWithAuth());
+  } catch (error) {
+    console.log("AxiosPost", error);
+    alert("AxiosPost lỗi");
+    return null;
+  }
 }

@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import DcarbonAPI from "src/tools/hook";
-
+import DcarbonAPI from "src/tools/DcarbonAPI";
 import { IOTAct } from "src/redux/actions/iotAction";
-import DcarbonChart from "../Chart/DcarbonChart";
+import ColumnChart from "./ColumnChart";
 
 function Carbon({
   title,
@@ -70,7 +69,7 @@ function Carbon({
   ]);
 
   return (
-    <DcarbonChart
+    <ColumnChart
       title={title}
       durType={durType}
       data={iot_minted}

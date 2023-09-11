@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useEffect } from "react";
 
 import stls from "./index.module.scss";
-import DcarbonAPI from "src/tools/hook";
-import { IOT_TYPE } from "src/tools/const";
+import DcarbonAPI from "src/tools/DcarbonAPI";
+import { IOT__TYPE_TEXT } from "src/tools/const";
 import HTMLReactParser from "html-react-parser";
 import {
   ChevronUpIcon,
@@ -17,7 +17,7 @@ import Error from "src/components/ui/Error";
 import { ProjectACT } from "src/redux/actions/projectAction";
 import { useDispatch } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
-import { roundup_second } from "../Chart/tools";
+import { roundup_second } from "../GeneratedViewBox/tools";
 function InfoProject({
   isActive,
   iotSelected,
@@ -53,8 +53,12 @@ function InfoProject({
   const checkIsActive = useCallback(() => {
     let newDate = new Date();
     let to = roundup_second(newDate);
-    let from = to - 15;
-
+    let from = to - 20;
+    console.log("--------------------------------------- ");
+    console.log("--------------------------------------- ");
+    console.log("--------------------------------------- ");
+    console.log("check active " + iotSelected);
+    console.log("newDate " + newDate);
     dispatch({
       type: IOTAct.IsActive.REQUEST,
       payload: {
@@ -65,11 +69,9 @@ function InfoProject({
     });
   }, [dispatch, iotSelected]);
   useEffect(() => {
-    if (iotSelected > 0) {
+    if (iotSelected) {
       checkIsActive();
-      let myInterval = setInterval(() => {
-        checkIsActive();
-      }, 5000);
+      let myInterval = setInterval(checkIsActive, 15000);
       return () => {
         clearInterval(myInterval);
       };
@@ -111,7 +113,7 @@ function InfoProject({
           <li className={stls.itemRow}>
             <div>Project status</div>
             <div>
-              {isActive ? "Active" : "Deactive"}
+              {isActive ? "Active" : "Inactive"}
               <span
                 className={`${stls.status} ${
                   isActive ? stls.true : stls.false
@@ -126,7 +128,7 @@ function InfoProject({
           {/* Loại IOT */}
           <li className={stls.itemRow}>
             <div>Type</div>
-            <div>{IOT_TYPE(iot?.type)}</div>
+            <div>{IOT__TYPE_TEXT[iot?.type]}</div>
           </li>
           {/* Ethereum address */}
           <li className={stls.itemRow}>

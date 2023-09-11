@@ -72,25 +72,54 @@ const imgsObject = {
 };
 
 const listTime = ["7 days", "1 month", "1 year"];
-const IOT_TYPE = (val) => {
-  switch (val) {
-    case 10:
-      return "Wind Power";
-    case 11:
-      return "Solar Power";
-    case 20:
-      return "Burn Methane";
-    case 21:
-      return "Clean Cockstove";
-    case 30:
-      return "Fertilizer";
-    case 31:
-      return "Trash";
-    default:
-      return "Undefined.";
-  }
+
+export const SENSOR__TYPE = {
+  None: 0,
+  Flow: 1,
+  Power: 2,
+  GPS: 3,
+  Thermometer: 4,
+  Biogas: 21,
+  Biomass: 41,
+};
+export const SENSOR__TYPE_TEXT = {
+  0: "None",
+  1: "Flow",
+  2: "Energy",
+  21: "Biogas",
+  3: "GPS",
+  4: "Temperature",
+  41: "Biomass",
 };
 
+export const DEVICE__STATUS = {
+  Reject: -1,
+  Register: -0,
+  Success: 10,
+};
+export const DEVICE__STATUS_TEXT = {
+  "-1": "Reject",
+  "-0": "Register",
+  10: "Success",
+};
+
+export const IOT__TYPE = {
+  None: 0,
+  WindPower: 10,
+  SolarPower: 11,
+  BurnMethane: 20,
+  CleanCockstove: 21, //BurnBiomass
+  Fertilizer: 30,
+  Trash: 31,
+};
+export const IOT__TYPE_TEXT = {
+  10: "Wind Power",
+  11: "Solar Power",
+  20: "Burn Methane",
+  21: "Clean Cockstove",
+  30: "Fertilizer",
+  31: "Trash",
+};
 function hexToString(hex) {
   var string = "";
 
@@ -122,7 +151,6 @@ export {
   filesDir,
   imgsObject,
   listTime,
-  IOT_TYPE,
   hexToString,
   handleAttributes,
   handleMeta,

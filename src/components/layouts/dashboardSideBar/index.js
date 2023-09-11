@@ -1,15 +1,15 @@
 import ScrollBox from "src/components/ui/ScrollBox";
 import stls from "./index.module.scss";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import InfoProject from "src/components/sections/Dashboard/InforProject";
 import SelectIOT from "src/components/sections/Dashboard/SelectIOT";
 import { ProjectACT } from "src/redux/actions/projectAction";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-import DcarbonAPI from "src/tools/hook";
-import ImageProject from "src/components/sections/Dashboard/ImageProject/ImageProject";
+import DcarbonAPI from "src/tools/DcarbonAPI";
 import GeneratedViewBox from "src/components/sections/Dashboard/GeneratedViewBox";
+import ImageProject from "src/components/sections/Dashboard/ImageProject/ImageProject";
 
 // get info project
 // get iot minted
@@ -110,33 +110,32 @@ function DashboardSideBar({
             setIotSelected={setIotSelected}
           />
 
-          <div className={stls.boxMiddle}>
-            <ImageProject project={project} />
-          </div>
-          <div className={stls.boxMiddle}>
-            {/* info  */}
-            {/* info  */}
-            {/* info  */}
-            <InfoProject
-              showDetail={showDetail}
-              setShowDetail={setShowDetail}
-              err={projectState?.error}
-              project={project}
-              iot={iotState?.iot}
-              iotSelected={iotSelected}
-              isActive={iotState?.isActive}
-            />
+          {iotSelected && (
+            <Fragment>
+              <div className={stls.boxMiddle}>
+                <ImageProject project={project} />
+              </div>
+              <div className={stls.boxMiddle}>
+                {/* info  */}
+                {/* info  */}
+                {/* info  */}
+                <InfoProject
+                  showDetail={showDetail}
+                  setShowDetail={setShowDetail}
+                  err={projectState?.error}
+                  project={project}
+                  iot={iotState?.iot}
+                  iotSelected={iotSelected}
+                  isActive={iotState?.isActive}
+                />
 
-            {/* Chart  */}
-            {/* Chart  */}
-            {/* Chart  */}
-            {/* <CarbonGenerated iotSelected={iotSelected} /> */}
-            {/* electric and biogas */}
-            {/* electric and biogas */}
-            {/* electric and biogas */}
-            {/* <ElectricityGenerated iotSelected={iotSelected} /> */}
-            {iotSelected && <GeneratedViewBox iotSelected={iotSelected} />}
-          </div>
+                {/* Chart  */}
+                {/* Chart  */}
+                {/* Chart  */}
+                <GeneratedViewBox iotSelected={iotSelected} />
+              </div>
+            </Fragment>
+          )}
           {/*  */}
           {/*  */}
           {/*  */}
