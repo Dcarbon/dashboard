@@ -54,11 +54,11 @@ function InfoProject({
     let newDate = new Date();
     let to = roundup_second(newDate);
     let from = to - 20;
-    console.log("--------------------------------------- ");
-    console.log("--------------------------------------- ");
-    console.log("--------------------------------------- ");
-    console.log("check active " + iotSelected);
-    console.log("newDate " + newDate);
+    // console.log("--------------------------------------- ");
+    // console.log("--------------------------------------- ");
+    // console.log("--------------------------------------- ");
+    // console.log("check active " + iotSelected);
+    // console.log("newDate " + newDate);
     dispatch({
       type: IOTAct.IsActive.REQUEST,
       payload: {
@@ -71,7 +71,7 @@ function InfoProject({
   useEffect(() => {
     if (iotSelected) {
       checkIsActive();
-      let myInterval = setInterval(checkIsActive, 15000);
+      let myInterval = setInterval(checkIsActive, 10000);
       return () => {
         clearInterval(myInterval);
       };
@@ -132,7 +132,7 @@ function InfoProject({
           </li>
           {/* Ethereum address */}
           <li className={stls.itemRow}>
-            <div>Ethereum address</div>
+            <div>Public address</div>
             <div>
               {strCut(iot?.address)}
               <CopyButton className={stls.copyBtn} obj={iot?.address} />

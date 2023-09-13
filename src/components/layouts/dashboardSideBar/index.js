@@ -26,24 +26,10 @@ function DashboardSideBar({
   // INIT REDUX
   // INIT REDUX
   // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
-  // INIT REDUX
   const dispatch = useDispatch();
   const newDcarbon = new DcarbonAPI();
   const iotState = useSelector(newDcarbon.GetIOTState);
   const projectState = useSelector(newDcarbon.GetProjectState);
-
   // state
   // state
   // state
@@ -73,7 +59,6 @@ function DashboardSideBar({
   //  PROJECT
   //  PROJECT
   //  PROJECT
-  //  PROJECT
   const [showDetail, setShowDetail] = useState(false);
   const project = useMemo(() => projectState?.project, [projectState?.project]);
   const projectId = useMemo(() => {
@@ -86,7 +71,6 @@ function DashboardSideBar({
       dispatch({ type: ProjectACT.GET_PROJECT.REQUEST, payload: projectId });
     }
   }, [dispatch, projectId]);
-
   // SENSOR
   // SENSOR
   // SENSOR
@@ -128,7 +112,6 @@ function DashboardSideBar({
                   iotSelected={iotSelected}
                   isActive={iotState?.isActive}
                 />
-
                 {/* Chart  */}
                 {/* Chart  */}
                 {/* Chart  */}

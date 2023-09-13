@@ -20,7 +20,7 @@ function BannerFisrt() {
             </Heading>
             <p className={stls.sub_heading}>
               Accurately measure, report and verify carbon footprints reduced,
-              then bring them to the Web3.
+              then bring them to the blockchains.
             </p>
             <Button href={"/how-does-it-work"}>Learn more</Button>
           </div>

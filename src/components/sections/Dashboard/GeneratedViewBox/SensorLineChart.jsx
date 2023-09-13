@@ -72,45 +72,22 @@ function SensorLineChart({
 
   useEffect(() => {
     if (iotSelected && sensorId > 0 && !isDepended) {
+      // console.log("isDepended", isDepended);
+      // console.log("iotSelected", iotSelected);
+      // console.log("sensorId", sensorId);
       console.log("===================================");
-      console.log(
-        `New loaded line chart for id=${id} iot=${iotSelected} sensorId=${sensorId}`
-      );
+      console.log("New loaded line chart for");
+      console.log(`id=${id} iot=${iotSelected} sensorId=${sensorId}`);
       console.log("===================================");
       const handleGet = (isFirstTimeLoad) => {
         let newDate = new Date();
         // theo timeSpace (s) có 1 bản ghi mới => 20 bản ghi => timeSpace * 20
         //
-
+        newDate.setHours(23, 59, 59);
         let toTime = newDate.getTime();
-        let fromTime = 0;
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        // newDate.setHours(9);
-        // newDate.setMinutes(2);
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
+        newDate.setHours(0, 0, 0);
+        let fromTime = newDate.getTime();
 
-        if (isFirstTimeLoad) {
-          // 20 bản ghi trong lần đầu gọi
-          fromTime = toTime - timeSpace * 20 * 1000;
-        } else {
-          fromTime = toTime - timeSpace * 1000;
-        }
         // console.log("fromTime", fromTime);
         // console.log("newDate", newDate);
         // console.log("from ", new Date(fromTime));
@@ -119,7 +96,7 @@ function SensorLineChart({
           from: fromTime,
           to: toTime,
           // Nếu không phải lần đầu tiên tải dữ liệu =>  gọi 1 bản ghi để ghép vào biểu đồ
-          limit: !isFirstTimeLoad ? 1 : 20,
+          limit: !isFirstTimeLoad ? 1 : 50,
           // limit: 20,
           isFirstTimeLoad,
         });

@@ -26,7 +26,8 @@ function SelectType({
         setGenerated: setEnergyGenerated,
         unit: <span>kWh</span>,
         unitChart: "kWh",
-        timeSpace: 15,
+        divider: 1000,
+        isDepended: false,
       },
       {
         id: "Biogas",
@@ -41,6 +42,9 @@ function SelectType({
           </span>
         ),
         unitChart: "\xB0" + "C",
+        divider: 1000,
+        isDepended: true,
+        coefficient: 0.528888889,
       },
     ],
     [biogasGenerated, energyGenerated, setBiogasGenerated, setEnergyGenerated]
@@ -56,6 +60,7 @@ function SelectType({
         unit: <span>&ordm;C</span>,
         unitChart: "\xB0" + "C",
         timeSpace: 3,
+        divider: 1,
       },
     ],
     [setTemperatureGenerated, temperatureGenerated]

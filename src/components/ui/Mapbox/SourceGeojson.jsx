@@ -27,7 +27,7 @@ function SourceGeojson({ visibility }) {
             30,
             100,
             40,
-            500,
+            200,
             40,
           ],
           "circle-stroke-width": 1,

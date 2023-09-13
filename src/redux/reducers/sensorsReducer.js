@@ -66,18 +66,14 @@ const sensorsReducer = (state = initsensorsState, action) => {
 
       let final = [];
       if (!action.payload.isFirstTimeLoad) {
-        // console.log(":))))))))))))))))Khong phải lần đầu");
-        // console.log("oldData", oldData);
-        // console.log("newData", newData);
         let arrayConcat = newData.concat(oldData);
-        // console.log("concat", arrayConcat);
         final = arrayConcat;
       } else {
-        // console.error("lần đầu");
-        // console.log("newData", newData);
         final = newData;
       }
-      // console.log("final", final);
+      if (final?.length >= 60) {
+        final.splice(50, 10);
+      }
       return {
         ...state,
         loading: true,

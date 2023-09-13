@@ -29,71 +29,6 @@ function MapBoxPage({
   const { query, replace } = useRouter();
 
   useEffect(() => {
-    if (!mymap) return;
-    let hoveredStateId = null;
-    let listFeatures = null;
-    let tempState = (sourceLayer) => ({
-      source: "iott_all_2",
-      id: hoveredStateId,
-      sourceLayer,
-    });
-    let handleDuplicateFeatures = (features) => {
-      const newFeatures = features?.map((item) => item.id);
-      return newFeatures.filter(
-        (item, index) => newFeatures.indexOf(item) === index
-      );
-    };
-
-    let handleMultiFeatureState = (hover) => {
-      mymap.setFeatureState(tempState("boundary"), { hover });
-      mymap.setFeatureState(tempState("hexagon"), { hover });
-    };
-    // on move map get total node on project
-    mymap.on("mousemove", ["boundaryLayer", "hexagonLayer"], (e) => {
-      if (e.features.length > 0) {
-        if (hoveredStateId !== null) {
-          handleMultiFeatureState(false);
-        }
-        hoveredStateId = e.features[0].id;
-
-        handleMultiFeatureState(true);
-      }
-    });
-
-    // on move map delete total node on project
-    mymap.on("mouseleave", ["boundaryLayer", "hexagonLayer"], () => {
-      if (hoveredStateId !== null) {
-        handleMultiFeatureState(false);
-      }
-      hoveredStateId = null;
-    });
-
-    // on Chooose
-    // on Chooose
-    // on Chooose
-
-    mymap.on("click", ["hexagonLayer"], (e) => {
-      if (e.features.length > 0) {
-        hoveredStateId = e.features[0].id;
-        listFeatures = handleDuplicateFeatures(e.features);
-        setIotSelected(listFeatures[0]);
-        setFeatures(listFeatures);
-        replace("/dashboard");
-        dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: false });
-        setTimeout(() => {
-          dispatch({
-            type: SensorsACT.GET_SENSORS.REQUEST,
-            payload: { skip: 0, limit: 50, iotId: listFeatures[0] },
-          });
-        }, 100);
-      }
-    });
-
-    // inspect a cluster on click
-
-    return () => (hoveredStateId = 0);
-  }, [currentZoom, dispatch, mymap, replace, setFeatures, setIotSelected]);
-  useEffect(() => {
     const handleResize = () => {
       if (mymap) {
         mymap?.resize();
@@ -122,14 +57,15 @@ function MapBoxPage({
   return (
     <div className={className}>
       <Map
+        optimizeForTerrain
         ref={setMymap}
         initialViewState={{
           longitude: defaultCenter[0],
           latitude: defaultCenter[1],
           zoom: 4,
         }}
-        maxZoom={20}
-        minZoom={0}
+        maxZoom={14}
+        minZoom={2}
         style={{
           width: "100%",
           height: "100%",
@@ -156,12 +92,12 @@ function MapBoxPage({
           setCurrentZoom(newZoom);
           Flyto(newCenter?.length > 0 ? newCenter : defaultCenter, newZoom);
           mymap.on("click", ["clusters", "cluster-count"], (e) => {
+            // console.log("click cluster", e);
+            // const center = e.target.transform.center;
             const features = mymap.queryRenderedFeatures(e.point, {
               layers: ["clusters"],
             });
-
             const clusterId = features[0]?.properties.cluster_id;
-
             if (features?.length > 0) {
               mymap
                 .getSource("iott_all")
@@ -184,6 +120,71 @@ function MapBoxPage({
             }
           });
           mymap.on("zoom", (e) => (newZoom = e.viewState.zoom));
+
+          let hoveredStateId = null;
+          let listFeatures = null;
+          let tempState = (sourceLayer) => ({
+            source: "iott_all_2",
+            id: hoveredStateId,
+            sourceLayer,
+          });
+          let handleDuplicateFeatures = (features) => {
+            const newFeatures = features?.map((item) => item.id);
+            return newFeatures.filter(
+              (item, index) => newFeatures.indexOf(item) === index
+            );
+          };
+
+          let handleMultiFeatureState = (hover) => {
+            mymap.setFeatureState(tempState("boundary"), { hover });
+            mymap.setFeatureState(tempState("hexagon"), { hover });
+          };
+          // on move map get total node on project
+          mymap.on("mousemove", ["boundaryLayer", "hexagonLayer"], (e) => {
+            if (e.features.length > 0) {
+              if (hoveredStateId !== null) {
+                handleMultiFeatureState(false);
+              }
+              hoveredStateId = e.features[0].id;
+              handleMultiFeatureState(true);
+            }
+          });
+
+          // on move map delete total node on project
+          mymap.on("mouseleave", ["boundaryLayer", "hexagonLayer"], () => {
+            if (hoveredStateId !== null) {
+              handleMultiFeatureState(false);
+            }
+            hoveredStateId = null;
+          });
+
+          // on Chooose
+          // on Chooose
+          // on Chooose
+
+          mymap.on("click", ["hexagonLayer"], (e) => {
+            if (e.features.length > 0) {
+              hoveredStateId = e.features[0].id;
+              listFeatures = handleDuplicateFeatures(e.features);
+              setIotSelected(listFeatures[0]);
+              setFeatures(listFeatures);
+              replace("/dashboard");
+              dispatch({
+                type: SensorsACT.LOAD_SENSOR_1ST_TIME,
+                payload: false,
+              });
+              setTimeout(() => {
+                dispatch({
+                  type: SensorsACT.GET_SENSORS.REQUEST,
+                  payload: { skip: 0, limit: 50, iotId: listFeatures[0] },
+                });
+              }, 100);
+            }
+          });
+
+          // inspect a cluster on click
+
+          return () => (hoveredStateId = 0);
         }}
       >
         {/* Hiển thị tổng số nodes */}

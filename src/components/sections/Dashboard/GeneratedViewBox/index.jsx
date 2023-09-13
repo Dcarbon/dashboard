@@ -53,8 +53,8 @@ function GeneratedViewBox({ iotSelected }) {
 
   useEffect(() => {
     if (iotSelected) {
-      console.log("Iot Mới", iotSelected);
-      console.log("set Sensor Type  === 0 => hiển thị biểu đồ cột");
+      // console.log("Iot Mới", iotSelected);
+      // console.log("set Sensor Type  === 0 => hiển thị biểu đồ cột");
       setCurrentSensorType(SENSOR__TYPE.None);
     }
   }, [iotSelected]);
@@ -166,6 +166,11 @@ function GeneratedViewBox({ iotSelected }) {
                       generated={item.generated}
                       setGenerated={item.setGenerated}
                       timeSpace={3}
+                      divider={item.divider}
+                      isDepended={item?.isDepended}
+                      handle_coefficient={(val) =>
+                        val * (item?.coefficient || 1)
+                      }
                     />
                   </Box>
                 );

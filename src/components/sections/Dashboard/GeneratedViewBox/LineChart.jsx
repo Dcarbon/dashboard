@@ -18,12 +18,11 @@ function LineChart({
 }) {
   const BOXREF = useRef(null);
   const [series, setSeries] = useState([]);
-
   useEffect(() => {
-    if (iotSelected && data?.length > 0) {
-      console.log("=======================new iotSelected", iotSelected);
+    if (iotSelected) {
+      setSeries([]);
     }
-  }, [data?.length, iotSelected]);
+  }, [iotSelected]);
 
   useEffect(() => {
     if (data?.length > 0) {
