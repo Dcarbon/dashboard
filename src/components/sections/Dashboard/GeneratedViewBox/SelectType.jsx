@@ -20,7 +20,6 @@ function SelectType({
   //
   useEffect(() => {
     if (iotSelected) {
-      console.log("haha");
       setBiogasGenerated(0);
       setEnergyGenerated(0);
       setTemperatureGenerated(0);

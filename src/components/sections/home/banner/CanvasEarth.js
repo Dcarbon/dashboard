@@ -17,7 +17,7 @@ export default function CanvasEarth() {
     <Canvas gl={{ antialias: true }} dpr={[1, 2]}>
       <EarthBox scale={0.95} />
       <Suspense fallback={null}>
-        <ambientLight intensity={1} color="#ffffff" />
+        <ambientLight intensity={1} color='#ffffff' />
         <pointLight color={"#ffffff"} position={[10, 10, 10]} />
         <OrbitControls
           autoRotate
@@ -44,7 +44,6 @@ function EarthBox(props) {
   ]);
   useEffect(() => {
     if (progress === 100) {
-      console.log("hihi");
       setimgDayMap("DayMap");
       setimgCloudMap("Clouds");
     }

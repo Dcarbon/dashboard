@@ -34,7 +34,7 @@ function SelectDate_new({
     );
   }, [currentDate, currentSensorType, iotSelected]);
   const isExist_local_months = useMemo(() => {
-    console.log("Kiểm tra months trong local theo key=", local_key_months);
+    // console.log("Kiểm tra months trong local theo key=", local_key_months);
     return local_key_months
       ? JSON.parse(localStorage.getItem(local_key_months))
       : null;
@@ -53,7 +53,7 @@ function SelectDate_new({
     );
   }, [currentDate, currentSensorType, iotSelected]);
   const isExist_local_days = useMemo(() => {
-    console.log("Kiểm tra days trong local theo key=", local_key_days);
+    // console.log("Kiểm tra days trong local theo key=", local_key_days);
     return local_key_days
       ? JSON.parse(localStorage.getItem(local_key_days))
       : null;

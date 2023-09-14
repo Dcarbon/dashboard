@@ -77,8 +77,7 @@ function SensorLineChart({
         });
         var newDataResponse = [];
         Promise.all(listPromises).then((res) => {
-          res.forEach((data, idx) => {
-            console.log(idx + " -data", data.data.metrics);
+          res.forEach((data) => {
             let newDa = data.data.metrics;
             newDataResponse = newDataResponse.concat(newDa);
             setDataSM(newDataResponse);
@@ -101,8 +100,7 @@ function SensorLineChart({
       });
       var newDataResponse = [];
       Promise.all(listPromises).then((res) => {
-        res.forEach((data, idx) => {
-          console.log(idx + " -data", data.data.metrics);
+        res.forEach((data) => {
           let newDa = data.data.metrics;
           newDataResponse = newDataResponse.concat(newDa);
         });
@@ -124,7 +122,6 @@ function SensorLineChart({
         handleGetSensorMinted_by_day(currentDate);
       }
       if (durationType === DURATION__TYPE.month) {
-        console.log("list_time_by_duration", list_time_by_duration);
         handleGetSensorMinted_by_month(list_time_by_duration);
       }
     }
