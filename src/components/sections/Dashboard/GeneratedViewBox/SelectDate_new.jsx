@@ -114,53 +114,61 @@ function SelectDate_new({
   //
   // kiểm tra active theo 12 tháng
   const HANDLE_CHECK_by_month = useCallback(() => {
-    if (isExist_local_months) {
-      setStatus_months(isExist_local_months);
-      setIsLoadMonths(false);
-    } else {
-      const url = HANDLE_check_active_Type();
-      // kiểm tra active theo 12 tháng
-      // xác định thời gian hiện tại đang được chọn (để lấy năm đang cần kiểm tra)
-      const newTimeStart = new Date(currentDate);
-      const newTimeEnd = new Date(currentDate);
-      // ngày bắt đầu tính từ [1/(tháng hiện tại)] ( lấy đầu tháng 0h:0m:0s )
-      newTimeStart.setDate(1);
-      // ngày kết thúc tính từ [1/(tháng sau) -  1 ngày] ( lấy cuối tháng 23h:59m:59s )
-      newTimeEnd.setDate(1);
-      newTimeEnd.setHours(23, 59, 59, 99);
-      let promisesList = [];
-      // bắt đầu vòng lặp từ tháng 0
-      for (let index = 0; index < 12; index++) {
-        newTimeStart.setMonth(index);
-        newTimeEnd.setMonth(index + 1);
-        let startMonth = newTimeStart.getTime();
-        let endMonth = newTimeEnd.getTime() - oneDay; //đầu tháng/năm mới - 1s
-        let newFrom = Math.round(startMonth / 1000);
-        let newTo = Math.round(endMonth / 1000);
-        // eslint-disable-next-line no-undef
-        promisesList[index] = new Promise((resolve) =>
-          resolve(AxiosGet(url + `from=${newFrom}&to=${newTo}&interval=2`))
-        );
-      }
+    if (currentSensorId > 0) {
+      if (isExist_local_months) {
+        setStatus_months(isExist_local_months);
+        setIsLoadMonths(false);
+      } else {
+        const url = HANDLE_check_active_Type();
+        // kiểm tra active theo 12 tháng
+        // xác định thời gian hiện tại đang được chọn (để lấy năm đang cần kiểm tra)
+        const newTimeStart = new Date(currentDate);
+        const newTimeEnd = new Date(currentDate);
+        // ngày bắt đầu tính từ [1/(tháng hiện tại)] ( lấy đầu tháng 0h:0m:0s )
+        newTimeStart.setDate(1);
+        // ngày kết thúc tính từ [1/(tháng sau) -  1 ngày] ( lấy cuối tháng 23h:59m:59s )
+        newTimeEnd.setDate(1);
+        newTimeEnd.setHours(23, 59, 59, 99);
+        let promisesList = [];
+        // bắt đầu vòng lặp từ tháng 0
+        for (let index = 0; index < 12; index++) {
+          newTimeStart.setMonth(index);
+          newTimeEnd.setMonth(index + 1);
+          let startMonth = newTimeStart.getTime();
+          let endMonth = newTimeEnd.getTime() - oneDay; //đầu tháng/năm mới - 1s
+          let newFrom = Math.round(startMonth / 1000);
+          let newTo = Math.round(endMonth / 1000);
+          // eslint-disable-next-line no-undef
+          promisesList[index] = new Promise((resolve) =>
+            resolve(AxiosGet(url + `from=${newFrom}&to=${newTo}&interval=2`))
+          );
+        }
 
-      // eslint-disable-next-line no-undef
-      Promise.all(promisesList)
-        .then((res) => {
-          let newListToUse = res.map((item, idx) => {
-            return {
-              month: idx + 1,
-              actived: isCarbon ? item?.data?.actived : item?.data?.length > 0,
-            };
-          });
-          setStatus_months(newListToUse);
-          localStorage.setItem(local_key_months, JSON.stringify(newListToUse));
-          setIsLoadMonths(false);
-        })
-        .catch((error) => console.error("Promises all catch err", error));
+        // eslint-disable-next-line no-undef
+        Promise.all(promisesList)
+          .then((res) => {
+            let newListToUse = res.map((item, idx) => {
+              return {
+                month: idx + 1,
+                actived: isCarbon
+                  ? item?.data?.actived
+                  : item?.data?.length > 0,
+              };
+            });
+            setStatus_months(newListToUse);
+            localStorage.setItem(
+              local_key_months,
+              JSON.stringify(newListToUse)
+            );
+            setIsLoadMonths(false);
+          })
+          .catch((error) => console.error("Promises all catch err", error));
+      }
     }
   }, [
     HANDLE_check_active_Type,
     currentDate,
+    currentSensorId,
     isCarbon,
     isExist_local_months,
     local_key_months,
@@ -182,57 +190,60 @@ function SelectDate_new({
   //
   // kiểm tra active theo số ngày trong tháng
   const HANDLE_CHECK_by_days = useCallback(() => {
-    if (isExist_local_days) {
-      setStatus_days(isExist_local_days);
-      setIsLoadDays(false);
-    } else {
-      const url = HANDLE_check_active_Type();
-      // kiểm tra active theo số ngày trong tháng
-      // lấy số ngày trong tháng  (đại diện là 1 mảng có chiều dài bằng số ngày)
-      let list_days_in_this_month = Get_list_time(
-        currentDate?.getTime(),
-        "month"
-      );
-
-      let promisesList = [];
-      let newListToUse = [];
-      // bắt đầu vòng lặp từ tháng 0
-      promisesList = list_days_in_this_month.map((item) => {
-        // xác định ngày hiện tại trong vòng lặp
-        const newTime = new Date(item);
-        // bắt đầu tính từ 0h:0m:0s
-        let newFrom = roundup_second(newTime);
-        // kết thúc tính đến 23h:59m:59s
-        newTime.setHours(23, 59, 59, 99);
-        let newTo = roundup_second(newTime);
-        // eslint-disable-next-line no-undef
-        return new Promise((resolve) =>
-          resolve(AxiosGet(url + `from=${newFrom}&to=${newTo}&interval=1`))
+    if (currentSensorId > 0) {
+      if (isExist_local_days) {
+        setStatus_days(isExist_local_days);
+        setIsLoadDays(false);
+      } else {
+        const url = HANDLE_check_active_Type();
+        // kiểm tra active theo số ngày trong tháng
+        // lấy số ngày trong tháng  (đại diện là 1 mảng có chiều dài bằng số ngày)
+        let list_days_in_this_month = Get_list_time(
+          currentDate?.getTime(),
+          "month"
         );
-      });
 
-      // eslint-disable-next-line no-undef
-      Promise.all(promisesList)
-        .then((res) => {
-          newListToUse = list_days_in_this_month.map((item, idx) => {
-            let newDate = new Date(item);
-            return {
-              date: newDate.getDate(),
-              time: item,
-              actived: isCarbon
-                ? res[idx]?.data?.actived
-                : res[idx]?.data?.length > 0,
-            };
-          });
-          setStatus_days(newListToUse);
-          localStorage.setItem(local_key_days, JSON.stringify(newListToUse));
-          setIsLoadDays(false);
-        })
-        .catch((error) => console.error("Promises days catch err", error));
+        let promisesList = [];
+        let newListToUse = [];
+        // bắt đầu vòng lặp từ tháng 0
+        promisesList = list_days_in_this_month.map((item) => {
+          // xác định ngày hiện tại trong vòng lặp
+          const newTime = new Date(item);
+          // bắt đầu tính từ 0h:0m:0s
+          let newFrom = roundup_second(newTime);
+          // kết thúc tính đến 23h:59m:59s
+          newTime.setHours(23, 59, 59, 99);
+          let newTo = roundup_second(newTime);
+          // eslint-disable-next-line no-undef
+          return new Promise((resolve) =>
+            resolve(AxiosGet(url + `from=${newFrom}&to=${newTo}&interval=1`))
+          );
+        });
+
+        // eslint-disable-next-line no-undef
+        Promise.all(promisesList)
+          .then((res) => {
+            newListToUse = list_days_in_this_month.map((item, idx) => {
+              let newDate = new Date(item);
+              return {
+                date: newDate.getDate(),
+                time: item,
+                actived: isCarbon
+                  ? res[idx]?.data?.actived
+                  : res[idx]?.data?.length > 0,
+              };
+            });
+            setStatus_days(newListToUse);
+            localStorage.setItem(local_key_days, JSON.stringify(newListToUse));
+            setIsLoadDays(false);
+          })
+          .catch((error) => console.error("Promises days catch err", error));
+      }
     }
   }, [
     HANDLE_check_active_Type,
     currentDate,
+    currentSensorId,
     isCarbon,
     isExist_local_days,
     local_key_days,
@@ -267,27 +278,29 @@ function SelectDate_new({
     //     setCurrentIsActive(true);
     //   }
     // }
-    // if (!isActiveAvailable) {
-    const url = HANDLE_check_active_Type();
-    const today_ = new Date();
-    today_.setHours(0, 0, 0, 0);
-    let newFrom = Math.round(today_.getTime() / 1000);
-    today_.setHours(23, 59, 59, 99);
-    let newTo = Math.round(today_.getTime() / 1000);
+    if (currentSensorId > 0) {
+      const url = HANDLE_check_active_Type();
+      const today_ = new Date();
+      today_.setHours(0, 0, 0, 0);
+      let newFrom = Math.round(today_.getTime() / 1000);
+      today_.setHours(23, 59, 59, 99);
+      let newTo = Math.round(today_.getTime() / 1000);
 
-    // eslint-disable-next-line no-undef
-    const promise_ = new Promise((resolve) =>
-      resolve(AxiosGet(url + `from=${newFrom}&to=${newTo}&interval=1`))
-    );
-    promise_
-      .then((res) => {
-        setCurrentIsActive(isCarbon ? res.data?.actived : res.data?.length > 0);
-      })
-      .catch((error) =>
-        console.error(`Promises ${iotSelected} catch err`, error)
+      // eslint-disable-next-line no-undef
+      const promise_ = new Promise((resolve) =>
+        resolve(AxiosGet(url + `from=${newFrom}&to=${newTo}&interval=1`))
       );
-    // }
-  }, [HANDLE_check_active_Type, iotSelected, isCarbon]);
+      promise_
+        .then((res) => {
+          setCurrentIsActive(
+            isCarbon ? res.data?.actived : res.data?.length > 0
+          );
+        })
+        .catch((error) =>
+          console.error(`Promises ${iotSelected} catch err`, error)
+        );
+    }
+  }, [HANDLE_check_active_Type, currentSensorId, iotSelected, isCarbon]);
   //
   //
   //
