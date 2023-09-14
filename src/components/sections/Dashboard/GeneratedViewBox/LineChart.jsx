@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import dateFormat from "dateformat";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { hexToString } from "src/tools/const";
 import {
@@ -7,6 +6,7 @@ import {
   GET_STRING_DAY_LineChart,
   optionsDefault,
 } from "./tools";
+import dateFormat from "dateformat";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
@@ -18,7 +18,6 @@ function LineChart({
   divider,
   isDepended,
   handle_coefficient,
-  timeSpace,
   durationType,
 }) {
   const BOXREF = useRef(null);
@@ -86,7 +85,7 @@ function LineChart({
       xaxis: {
         type: "datetime",
         tickAmount: 3,
-        range: 147000,
+        range: durationType === DURATION__TYPE.day ? 147000 : undefined,
         labels: {
           formatter: function (value, timestamp) {
             if (durationType === DURATION__TYPE.day) {
@@ -138,7 +137,7 @@ function LineChart({
               unit +
               "</h4>" +
               "<span>" +
-              GET_STRING_DAY_LineChart(durationType, time) +
+              GET_STRING_DAY_LineChart("day", time) +
               "</span>" +
               "</div>"
             );

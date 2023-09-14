@@ -24,6 +24,7 @@ function SensorLineChart({
   list_time_by_duration,
 }) {
   const [dataSM, setDataSM] = useState(undefined);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (dataSM?.length > 0) {
@@ -59,10 +60,12 @@ function SensorLineChart({
       newDate.setHours(23, 59, 59, 99);
       let to = roundup_second(newDate);
       let listPromises = [];
+
       if (again) {
         var url = `sensors/sm?from=${from}&to=${to}&iotId=${iotSelected}&skip=0&limit=1&sensorId=${sensorId}&sort=1`;
         const thisPromise = new Promise((resolve) => resolve(AxiosGet(url)));
         Promise.resolve(thisPromise).then((res) => {
+          console.log("Gọi Again =====", true);
           let newDa = res.data.metrics;
           var newDataResponse = dataSM.slice();
           newDataResponse = newDataResponse.concat(newDa);
@@ -77,11 +80,12 @@ function SensorLineChart({
         });
         var newDataResponse = [];
         Promise.all(listPromises).then((res) => {
+          console.log("Gọi Again =====", false);
           res.forEach((data) => {
             let newDa = data.data.metrics;
             newDataResponse = newDataResponse.concat(newDa);
-            setDataSM(newDataResponse);
           });
+          setDataSM(newDataResponse);
         });
       }
     },
@@ -111,19 +115,30 @@ function SensorLineChart({
   );
   useEffect(() => {
     if (
-      durationType &&
-      currentDate &&
-      iotSelected &&
-      sensorId > 0 &&
-      !isDepended
+      (durationType || currentDate || iotSelected || list_time_by_duration) &&
+      sensorId > 0
     ) {
-      if (durationType === DURATION__TYPE.day) {
-        // sẽ gọi api 4 lần
-        handleGetSensorMinted_by_day(currentDate);
-      }
-      if (durationType === DURATION__TYPE.month) {
-        handleGetSensorMinted_by_month(list_time_by_duration);
-      }
+      setLoading(true);
+    }
+  }, [currentDate, durationType, iotSelected, list_time_by_duration, sensorId]);
+
+  useEffect(() => {
+    if (
+      (durationType || currentDate || iotSelected || list_time_by_duration) &&
+      sensorId > 0 &&
+      !isDepended &&
+      loading
+    ) {
+      let check = () => {
+        if (durationType === DURATION__TYPE.day) {
+          handleGetSensorMinted_by_day(currentDate);
+        } else if (durationType === DURATION__TYPE.month) {
+          handleGetSensorMinted_by_month(list_time_by_duration);
+        }
+      };
+
+      check();
+      setLoading(false);
     }
   }, [
     currentDate,
@@ -132,9 +147,38 @@ function SensorLineChart({
     handleGetSensorMinted_by_month,
     iotSelected,
     isDepended,
-    sensorId,
     list_time_by_duration,
+    loading,
+    sensorId,
   ]);
+
+  // useEffect(() => {
+  //   if (
+  //     (durationType || currentDate || iotSelected) &&
+  //     sensorId > 0 &&
+  //     !isDepended
+  //   ) {
+  //     console.log("huhu");
+  //     if (durationType === DURATION__TYPE.day) {
+  //       console.log("durationType === DURATION__TYPE.day");
+  //       // sẽ gọi api 4 lần
+  //       handleGetSensorMinted_by_day(currentDate);
+  //     }
+  //     if (durationType === DURATION__TYPE.month) {
+  //       console.log("durationType === DURATION__TYPE.month ");
+  //       handleGetSensorMinted_by_month(list_time_by_duration);
+  //     }
+  //   }
+  // }, [
+  //   currentDate,
+  //   durationType,
+  //   handleGetSensorMinted_by_day,
+  //   handleGetSensorMinted_by_month,
+  //   iotSelected,
+  //   isDepended,
+  //   list_time_by_duration,
+  //   sensorId,
+  // ]);
   useEffect(() => {
     if (
       durationType &&
@@ -147,6 +191,7 @@ function SensorLineChart({
       today.setHours(0, 0, 0, 0);
       if (currentDate?.getTime() === today.getTime() && dataSM !== undefined) {
         const mainterval = setInterval(() => {
+          console.log("Gọi Again");
           handleGetSensorMinted_by_day(currentDate, true);
         }, 5000);
         return () => {

@@ -40,7 +40,7 @@ export const GET_STRING_DAY_LineChart = (durType, time) => {
   if (time) {
     const newTime = new Date(time);
     if (durType === DURATION__TYPE.day) {
-      return dateFormat(newTime, "HH:MM");
+      return dateFormat(newTime, "mmm dd | HH:MM");
     } else if (durType === DURATION__TYPE.month) {
       return dateFormat(newTime, "mmm dd, yyyy");
     } else {
@@ -251,7 +251,7 @@ export const GET_Payload = (time, durType) => {
   let newTo = "";
   var newInit_From_Date = new Date(time);
   var newInit_To_Date = new Date(time);
-  newInit_To_Date.setHours(23, 59, 59, 99);
+  newInit_To_Date.setHours(23, 59, 59);
   if (durType === DURATION__TYPE.day) {
     // console.log("lấy dữ liệu trong ngày");
     // trong 1 ngày

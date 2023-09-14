@@ -254,41 +254,40 @@ function SelectDate_new({
   //
   // kiểm tra active theo ngày hôm nay
   const HANDLE_CHECK_by_today = useCallback(() => {
-    let isActiveAvailable = false;
-    if (isExist_local_days) {
-      let today = new Date();
-      today.setHours(0, 0, 0, 0);
-      let checkInArr = isExist_local_days.findIndex(
-        (item) => item.time === today.getTime() && item.actived
-      );
-      if (checkInArr >= 0) {
-        isActiveAvailable = true;
-        setCurrentIsActive(true);
-      }
-    }
-    if (!isActiveAvailable) {
-      const url = HANDLE_check_active_Type();
-      const today_ = new Date();
-      today_.setHours(0, 0, 0, 0);
-      let newFrom = Math.round(today_.getTime() / 1000);
-      today_.setHours(23, 59, 59, 99);
-      let newTo = Math.round(today_.getTime() / 1000);
+    console.log("HANDLE_CHECK_by_today");
+    // let isActiveAvailable = false;
+    // if (isExist_local_days) {
+    //   let today = new Date();
+    //   today.setHours(0, 0, 0, 0);
+    //   let checkInArr = isExist_local_days.findIndex(
+    //     (item) => item.time === today.getTime() && item.actived
+    //   );
+    //   if (checkInArr >= 0) {
+    //     isActiveAvailable = true;
+    //     setCurrentIsActive(true);
+    //   }
+    // }
+    // if (!isActiveAvailable) {
+    const url = HANDLE_check_active_Type();
+    const today_ = new Date();
+    today_.setHours(0, 0, 0, 0);
+    let newFrom = Math.round(today_.getTime() / 1000);
+    today_.setHours(23, 59, 59, 99);
+    let newTo = Math.round(today_.getTime() / 1000);
 
-      // eslint-disable-next-line no-undef
-      const promise_ = new Promise((resolve) =>
-        resolve(AxiosGet(url + `from=${newFrom}&to=${newTo}&interval=1`))
+    // eslint-disable-next-line no-undef
+    const promise_ = new Promise((resolve) =>
+      resolve(AxiosGet(url + `from=${newFrom}&to=${newTo}&interval=1`))
+    );
+    promise_
+      .then((res) => {
+        setCurrentIsActive(isCarbon ? res.data?.actived : res.data?.length > 0);
+      })
+      .catch((error) =>
+        console.error(`Promises ${iotSelected} catch err`, error)
       );
-      promise_
-        .then((res) => {
-          setCurrentIsActive(
-            isCarbon ? res.data?.actived : res.data?.length > 0
-          );
-        })
-        .catch((error) =>
-          console.error(`Promises ${iotSelected} catch err`, error)
-        );
-    }
-  }, [HANDLE_check_active_Type, iotSelected, isCarbon, isExist_local_days]);
+    // }
+  }, [HANDLE_check_active_Type, iotSelected, isCarbon]);
   //
   //
   //
