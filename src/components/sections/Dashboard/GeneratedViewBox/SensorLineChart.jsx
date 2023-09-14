@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import DcarbonAPI from "src/tools/DcarbonAPI";
+/* eslint-disable no-undef */
+import { useCallback, useEffect, useState } from "react";
 import LineChart from "./LineChart";
-import { SensorsACT } from "src/redux/actions/sensorsAction";
 import { hexToString } from "src/tools/const";
+import { DURATION__TYPE, roundup_second } from "./tools";
+import { AxiosGet } from "src/redux/sagaUtils";
+// import { useState } from "react";
 
 function SensorLineChart({
   id,
@@ -15,34 +16,33 @@ function SensorLineChart({
   generated,
   setGenerated,
   divider,
+  currentDate,
+  durationType,
   // nếu bị phụ thuộc thì sẽ truyền giá trị vào hàm handle_coefficient
   isDepended = false,
   handle_coefficient,
+  list_time_by_duration,
 }) {
-  const dispatch = useDispatch();
-  const GetSensorsState = useSelector(new DcarbonAPI().GetSensorsState);
-  const sensor_metrics_ = useMemo(
-    () => GetSensorsState?.sensor_metrics_,
-    [GetSensorsState?.sensor_metrics_]
-  );
+  const [dataSM, setDataSM] = useState(undefined);
+
   useEffect(() => {
-    if (sensor_metrics_?.length > 0) {
-      let newString = JSON.parse(hexToString(sensor_metrics_[0]?.data));
+    if (dataSM?.length > 0) {
+      let newString = JSON.parse(hexToString(dataSM[0]?.data));
       let newValue = newString.indicator.value;
       // console.log("newValue", newValue);
       let configValue = isDepended ? handle_coefficient(newValue) : newValue;
       let lastValue = Number(
-        divider ? configValue / divider : configValue / 1000
+        divider ? configValue / divider : configValue / 10000
       ).toFixed(2);
       setGenerated(lastValue);
-    } else if (generated && !sensor_metrics_?.length) {
+    } else if (generated && !dataSM?.length) {
       setGenerated(0);
     }
   }, [
     handle_coefficient,
     generated,
     isDepended,
-    sensor_metrics_,
+    dataSM,
     setGenerated,
     divider,
   ]);
@@ -51,71 +51,129 @@ function SensorLineChart({
   //  get sensor matrics function
   //  get sensor matrics function
   //  get sensor matrics function
-  const handleGetSensorMinted = useCallback(
-    (newPayload) => {
-      dispatch({
-        type: SensorsACT.GET_SENSORS_METRICS.REQUEST,
-        payload: {
-          from: Math.round(newPayload?.from / 1000),
-          to: Math.round(newPayload?.to / 1000),
-          iotId: iotSelected,
-          limit: newPayload?.limit,
-          skip: 0,
-          sensorId,
-          isFirstTimeLoad: newPayload?.isFirstTimeLoad,
-          // sort: 1,
-        },
+
+  const handleGetSensorMinted_by_day = useCallback(
+    (date, again) => {
+      let newDate = new Date(date);
+      let from = roundup_second(newDate);
+      newDate.setHours(23, 59, 59, 99);
+      let to = roundup_second(newDate);
+      let listPromises = [];
+      if (again) {
+        var url = `sensors/sm?from=${from}&to=${to}&iotId=${iotSelected}&skip=0&limit=1&sensorId=${sensorId}&sort=1`;
+        const thisPromise = new Promise((resolve) => resolve(AxiosGet(url)));
+        Promise.resolve(thisPromise).then((res) => {
+          let newDa = res.data.metrics;
+          var newDataResponse = dataSM.slice();
+          newDataResponse = newDataResponse.concat(newDa);
+          setDataSM(newDataResponse);
+        });
+      } else {
+        [0, 1, 2, 3].forEach((item) => {
+          var url = `sensors/sm?from=${from}&to=${to}&iotId=${iotSelected}&skip=${
+            item * 50
+          }&limit=50&sensorId=${sensorId}&sort=0`;
+          listPromises[item] = new Promise((resolve) => resolve(AxiosGet(url)));
+        });
+        var newDataResponse = [];
+        Promise.all(listPromises).then((res) => {
+          res.forEach((data, idx) => {
+            console.log(idx + " -data", data.data.metrics);
+            let newDa = data.data.metrics;
+            newDataResponse = newDataResponse.concat(newDa);
+            setDataSM(newDataResponse);
+          });
+        });
+      }
+    },
+    [dataSM, iotSelected, sensorId]
+  );
+  const handleGetSensorMinted_by_month = useCallback(
+    (listDate) => {
+      let listPromises = [];
+      listDate.forEach((item, idx) => {
+        let newDate = new Date(item);
+        let from = roundup_second(newDate);
+        newDate.setHours(23, 59, 59, 99);
+        let to = roundup_second(newDate);
+        var url = `sensors/sm?from=${from}&to=${to}&iotId=${iotSelected}&skip=${150}&limit=50&sensorId=${sensorId}`;
+        listPromises[idx] = new Promise((resolve) => resolve(AxiosGet(url)));
+      });
+      var newDataResponse = [];
+      Promise.all(listPromises).then((res) => {
+        res.forEach((data, idx) => {
+          console.log(idx + " -data", data.data.metrics);
+          let newDa = data.data.metrics;
+          newDataResponse = newDataResponse.concat(newDa);
+        });
+        setDataSM(newDataResponse);
       });
     },
-    [dispatch, iotSelected, sensorId]
+    [iotSelected, sensorId]
   );
-
   useEffect(() => {
-    if (iotSelected && sensorId > 0 && !isDepended) {
-      // console.log("isDepended", isDepended);
-      // console.log("iotSelected", iotSelected);
-      // console.log("sensorId", sensorId);
-      console.log("===================================");
-      console.log("New loaded line chart for");
-      console.log(`id=${id} iot=${iotSelected} sensorId=${sensorId}`);
-      console.log("===================================");
-      const handleGet = (isFirstTimeLoad) => {
-        let newDate = new Date();
-        // theo timeSpace (s) có 1 bản ghi mới => 20 bản ghi => timeSpace * 20
-        //
-        newDate.setHours(23, 59, 59);
-        let toTime = newDate.getTime();
-        newDate.setHours(0, 0, 0);
-        let fromTime = newDate.getTime();
-
-        // console.log("fromTime", fromTime);
-        // console.log("newDate", newDate);
-        // console.log("from ", new Date(fromTime));
-        // console.log("to ", new Date(toTime));
-        handleGetSensorMinted({
-          from: fromTime,
-          to: toTime,
-          // Nếu không phải lần đầu tiên tải dữ liệu =>  gọi 1 bản ghi để ghép vào biểu đồ
-          limit: !isFirstTimeLoad ? 1 : 50,
-          // limit: 20,
-          isFirstTimeLoad,
-        });
-      };
-      handleGet(true);
-      let myInterval = setInterval(() => handleGet(false), timeSpace * 1000);
-      return () => {
-        clearInterval(myInterval);
-      };
+    if (
+      durationType &&
+      currentDate &&
+      iotSelected &&
+      sensorId > 0 &&
+      !isDepended
+    ) {
+      if (durationType === DURATION__TYPE.day) {
+        // sẽ gọi api 4 lần
+        handleGetSensorMinted_by_day(currentDate);
+      }
+      if (durationType === DURATION__TYPE.month) {
+        console.log("list_time_by_duration", list_time_by_duration);
+        handleGetSensorMinted_by_month(list_time_by_duration);
+      }
     }
-  }, [handleGetSensorMinted, id, iotSelected, isDepended, sensorId, timeSpace]);
+  }, [
+    currentDate,
+    durationType,
+    handleGetSensorMinted_by_day,
+    handleGetSensorMinted_by_month,
+    iotSelected,
+    isDepended,
+    sensorId,
+    list_time_by_duration,
+  ]);
+  useEffect(() => {
+    if (
+      durationType &&
+      currentDate &&
+      iotSelected &&
+      sensorId > 0 &&
+      !isDepended
+    ) {
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (currentDate?.getTime() === today.getTime() && dataSM !== undefined) {
+        const mainterval = setInterval(() => {
+          handleGetSensorMinted_by_day(currentDate, true);
+        }, 5000);
+        return () => {
+          clearInterval(mainterval);
+        };
+      }
+    }
+  }, [
+    currentDate,
+    dataSM,
+    durationType,
+    handleGetSensorMinted_by_day,
+    iotSelected,
+    isDepended,
+    sensorId,
+  ]);
 
   return (
     <LineChart
+      durationType={durationType}
       id={id}
-      isLoading={GetSensorsState.loading}
       title={title}
       divider={divider}
-      data={sensor_metrics_}
+      data={dataSM}
       unit={unit}
       iotSelected={iotSelected}
       isDepended={isDepended}

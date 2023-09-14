@@ -3,6 +3,8 @@ import stls from "./SelectType.module.scss";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 function SelectType({
+  iotSelected,
+  sensors,
   iot_type,
   carbonGenerated,
   currentType,
@@ -15,6 +17,15 @@ function SelectType({
   // CleanCockstove
   const [biogasGenerated, setBiogasGenerated] = useState(0);
   const [energyGenerated, setEnergyGenerated] = useState(0);
+  //
+  useEffect(() => {
+    if (iotSelected) {
+      console.log("haha");
+      setBiogasGenerated(0);
+      setEnergyGenerated(0);
+      setTemperatureGenerated(0);
+    }
+  }, [iotSelected]);
   const BurnMethane = useMemo(
     () => [
       {
@@ -26,14 +37,14 @@ function SelectType({
         setGenerated: setEnergyGenerated,
         unit: <span>kWh</span>,
         unitChart: "kWh",
-        divider: 1000,
+        divider: 10000,
         isDepended: false,
+        isSelectable: false,
       },
       {
         id: "Biogas",
         type: SENSOR__TYPE.Biogas,
         title: "Biogas",
-        // title: "Biogas treated",
         generated: biogasGenerated,
         setGenerated: setBiogasGenerated,
         unit: (
@@ -42,9 +53,11 @@ function SelectType({
           </span>
         ),
         unitChart: "\xB0" + "C",
-        divider: 1000,
+        divider: 10000,
         isDepended: true,
+        dependedOn: SENSOR__TYPE.Power,
         coefficient: 0.528888889,
+        isSelectable: false,
       },
     ],
     [biogasGenerated, energyGenerated, setBiogasGenerated, setEnergyGenerated]
@@ -61,6 +74,7 @@ function SelectType({
         unitChart: "\xB0" + "C",
         timeSpace: 3,
         divider: 1,
+        isSelectable: true,
       },
     ],
     [setTemperatureGenerated, temperatureGenerated]
@@ -78,7 +92,10 @@ function SelectType({
     },
     [BurnMethane, CleanCockstove, setListTab]
   );
-
+  const listSensorShowed = useMemo(
+    () => sensors?.map((item) => item?.type) || [],
+    [sensors]
+  );
   useEffect(() => {
     if (iot_type) {
       changeList(iot_type);
@@ -91,32 +108,42 @@ function SelectType({
         <li
           onClick={() => setCurrentType(0)}
           key={"selectype-"}
-          className={`${stls.item} ${currentType === 0 ? stls.active : ""}`}
+          className={`cursor-pointer ${stls.item} ${
+            currentType === 0 ? stls.active : ""
+          }`}
         >
           <div className={stls.boxContent}>
             <h3 className={stls.title}>Carbon minted</h3>
             <p className={stls.generated}>{carbonGenerated}</p>
           </div>
         </li>
-        {listTab?.map((item, idx) => {
-          return (
-            <li
-              onClick={() => setCurrentType(item?.type)}
-              key={"selectype-" + idx}
-              className={`${stls.item} ${
-                currentType === item.type ? stls.active : ""
-              }`}
-            >
-              <div className={stls.boxContent}>
-                <h3 className={stls.title}>{item.title}</h3>
-                <p className={stls.generated}>
-                  {item.generated}{" "}
-                  {item?.unit && <span className='unit'>({item.unit})</span>}
-                </p>
-              </div>
-            </li>
-          );
-        })}
+        {sensors &&
+          listTab?.map((item, idx) => {
+            let isShow = listSensorShowed?.includes(item?.type);
+            return (
+              isShow && (
+                <li
+                  onClick={() => {
+                    setCurrentType(item?.type);
+                  }}
+                  key={"selectype-" + idx}
+                  className={`cursor-pointer ${stls.item} ${
+                    currentType === item.type ? stls.active : ""
+                  }`}
+                >
+                  <div className={stls.boxContent}>
+                    <h3 className={stls.title}>{item.title}</h3>
+                    <p className={stls.generated}>
+                      {item.generated}{" "}
+                      {item?.unit && (
+                        <span className='unit'>({item.unit})</span>
+                      )}
+                    </p>
+                  </div>
+                </li>
+              )
+            );
+          })}
       </ul>
     </div>
   );

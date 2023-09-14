@@ -4,11 +4,13 @@ import dateFormat from "dateformat";
 import { DURATION__TYPE } from "src/components/sections/Dashboard/GeneratedViewBox/tools";
 function DatePicker({
   currentIsActive,
-  monthActiveList = [],
   initType = DURATION__TYPE.day,
   value = new Date(),
   onChangeValue,
-  dayActiveList = [],
+  status_months,
+  status_days,
+  // local_key_days,
+  // local_key_months,
 }) {
   const today_ = new Date();
   today_.setHours(0, 0, 0, 0);
@@ -26,16 +28,25 @@ function DatePicker({
     return dates;
   }
   function getAllMonthInYear(time = new Date()) {
-    const date = new Date(time);
     const months = [];
     let i = 0;
     while (i <= 11) {
-      let newDate = new Date(date);
-      newDate.setMonth(i);
+      let newDate = new Date(time);
+      let test_Date = new Date(time);
+      // console.log("lastDate", lastDate);
+      // let lastMonth = newDate.getMonth();
+
+      test_Date.setMonth(i);
+      if (test_Date?.getMonth() > i) {
+        newDate.setMonth(i + 1);
+        newDate.setDate(0);
+      } else {
+        newDate.setMonth(i);
+      }
+
       months.push(newDate);
       i++;
     }
-    // console.log("Monthsssssssss", months)
     return months;
   }
   function get12YearNearest(time = new Date()) {
@@ -54,6 +65,7 @@ function DatePicker({
   const listofDays = useMemo(() => {
     return getAllDaysInMonth(value?.getUTCFullYear(), value?.getMonth());
   }, [value]);
+
   const listofMonth = useMemo(() => getAllMonthInYear(value), [value]);
   const listofYear = useMemo(() => get12YearNearest(value), [value]);
 
@@ -115,10 +127,13 @@ function DatePicker({
       };
     }
   }, [listofDays, listofMonth, listofYear, viewType, value]);
-  const configActive = useMemo(
-    () => dayActiveList?.filter((item) => item?.actived && item?.date),
-    [dayActiveList]
-  );
+
+  // useEffect(() => {
+  //   console.log("---------", {
+  //     [local_key_days]: status_months,
+  //     [local_key_months]: status_days,
+  //   });
+  // }, [local_key_days, local_key_months, status_days, status_months]);
   return (
     <Fragment>
       {/* header  */}
@@ -183,27 +198,31 @@ function DatePicker({
           {ViewTypeGroup.list?.map((item, idx) => {
             let isActive = false;
             let isCurrent = false;
-            // check active ngày
-            if (configActive?.length > 0) {
+
+            // // check active ngày
+            if (status_days?.length > 0) {
+              // console.log("status_days", status_days);
               if (viewType === DURATION__TYPE.day) {
-                let find = configActive.findIndex(
-                  (item2) => item2.date === item?.getDate()
+                let find = status_days.findIndex(
+                  (item2) => item2.date === item?.getDate() && item2?.actived
                 );
                 isActive = Boolean(find >= 0);
               }
             }
-            // check active tháng
+            // // check active tháng
             if (
-              monthActiveList?.length > 0 &&
+              status_months?.length > 0 &&
               viewType === DURATION__TYPE.month
             ) {
-              isActive = monthActiveList[item?.getMonth()].actived;
+              isActive = status_months[item?.getMonth()].actived;
             }
 
-            // check current và active
+            // // check current và active
             if (value?.getTime() === item.getTime()) {
               isCurrent = true;
             }
+            // console.log("item", item);
+            // console.log("currentIsActive", currentIsActive);
             if (item?.getTime() === today_?.getTime()) {
               isActive = currentIsActive;
             }

@@ -2,7 +2,11 @@ import dynamic from "next/dynamic";
 import dateFormat from "dateformat";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { hexToString } from "src/tools/const";
-import { GET_STRING_DAY_LineChart, optionsDefault } from "./tools";
+import {
+  DURATION__TYPE,
+  GET_STRING_DAY_LineChart,
+  optionsDefault,
+} from "./tools";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
@@ -15,6 +19,7 @@ function LineChart({
   isDepended,
   handle_coefficient,
   timeSpace,
+  durationType,
 }) {
   const BOXREF = useRef(null);
   const [series, setSeries] = useState([]);
@@ -65,7 +70,7 @@ function LineChart({
           enabled: true,
           easing: "linear",
           dynamicAnimation: {
-            speed: timeSpace * 1000,
+            speed: 1500,
           },
         },
       },
@@ -73,18 +78,23 @@ function LineChart({
         curve: "smooth",
       },
       noData: {
-        text: !series?.length ? "No Data" : "Loading...",
+        text: "No Data",
         style: {
           color: "#ffffff",
         },
       },
       xaxis: {
         type: "datetime",
-        tickAmount: 4,
+        tickAmount: 3,
         range: 147000,
         labels: {
           formatter: function (value, timestamp) {
-            return dateFormat(new Date(timestamp), "HH:MM:ss"); // The formatter function overrides format property
+            if (durationType === DURATION__TYPE.day) {
+              return dateFormat(new Date(timestamp), "HH:MM:ss"); // The formatter function overrides format property
+            }
+            if (durationType === DURATION__TYPE.month) {
+              return dateFormat(new Date(timestamp), "mm dd - HH:MM"); // The formatter function overrides format property
+            }
           },
         },
       },
@@ -93,6 +103,7 @@ function LineChart({
       fill: { opacity: 0.3 },
       grid: { show: false },
       crosshairs: {
+        show: false,
         fill: {
           type: "gradient",
           gradient: {
@@ -104,10 +115,7 @@ function LineChart({
           },
         },
       },
-      tooltip: {
-        enabled: true,
-        marker: { show: true },
-      },
+
       plotOptions: {
         bar: {
           borderRadius: 4,
@@ -115,15 +123,7 @@ function LineChart({
           borderRadiusWhenStacked: "all",
         },
       },
-      yaxis: {
-        // show: true,
-        // axisBorder: {
-        //   show: true,
-        //   color: "#504F5A",
-        //   offsetX: 0,
-        //   offsetY: 0,
-        // },
-      },
+
       tooltip: {
         ...optionsDefault.tooltip,
         custom: function (props) {
@@ -138,7 +138,7 @@ function LineChart({
               unit +
               "</h4>" +
               "<span>" +
-              GET_STRING_DAY_LineChart("day", time) +
+              GET_STRING_DAY_LineChart(durationType, time) +
               "</span>" +
               "</div>"
             );
@@ -173,7 +173,7 @@ function LineChart({
         },
       ],
     };
-  }, [series?.length, timeSpace, title, unit]);
+  }, [durationType, title, unit]);
   // // resize
   // // resize
   // // resize

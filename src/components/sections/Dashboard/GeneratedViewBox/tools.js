@@ -9,8 +9,8 @@ export const DURATION__TYPE = {
   year: "year",
 };
 
-const oneHour = 60 * 60 * 1000;
-const oneDay = 24 * oneHour;
+export const oneHour = 60 * 60 * 1000;
+export const oneDay = 24 * oneHour;
 export const getAmount = (item) => {
   const hexAmount = new BigNumber(item);
   const reduceAmount = hexAmount.div("1e9");
@@ -251,7 +251,7 @@ export const GET_Payload = (time, durType) => {
   let newTo = "";
   var newInit_From_Date = new Date(time);
   var newInit_To_Date = new Date(time);
-  newInit_To_Date.setHours(23, 59, 59);
+  newInit_To_Date.setHours(23, 59, 59, 99);
   if (durType === DURATION__TYPE.day) {
     // console.log("lấy dữ liệu trong ngày");
     // trong 1 ngày

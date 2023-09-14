@@ -9,8 +9,8 @@ import {
   getSum,
   optionsDefault,
 } from "./tools";
-import DcarbonAPI from "src/tools/DcarbonAPI";
-import { useSelector } from "react-redux";
+// import DcarbonAPI from "src/tools/DcarbonAPI";
+// import { useSelector } from "react-redux";
 import dateFormat from "dateformat";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -22,8 +22,8 @@ function ColumnChart({
   list_time_by_duration,
   setCarbonGenerated,
 }) {
-  const newDcarbon = new DcarbonAPI();
-  const iotState = useSelector(newDcarbon.GetIOTState);
+  // const newDcarbon = new DcarbonAPI();
+  // const iotState = useSelector(newDcarbon.GetIOTState);
 
   const [width, setWidth] = useState(0);
 
@@ -69,7 +69,7 @@ function ColumnChart({
         },
       },
       noData: {
-        text: iotState?.loading ? "Loading..." : "No Data",
+        text: "No Data",
         style: {
           color: "#ffffff",
         },
@@ -124,7 +124,7 @@ function ColumnChart({
         },
       },
     };
-  }, [durType, iotState?.loading, time_and_val.onlyTime, title]);
+  }, [durType, time_and_val.onlyTime, title]);
   // series
   // series
   const series = useMemo(() => {

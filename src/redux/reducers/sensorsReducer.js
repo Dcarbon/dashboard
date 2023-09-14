@@ -71,9 +71,7 @@ const sensorsReducer = (state = initsensorsState, action) => {
       } else {
         final = newData;
       }
-      if (final?.length >= 60) {
-        final.splice(50, 10);
-      }
+      console.log("final", final);
       return {
         ...state,
         loading: true,
