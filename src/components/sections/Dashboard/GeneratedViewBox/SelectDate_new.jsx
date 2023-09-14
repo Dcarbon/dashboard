@@ -321,6 +321,7 @@ function SelectDate_new({
       setIsLoadMonths(true);
       setStatus_days([]);
       setStatus_months([]);
+      setCurrentIsActive(false);
       // console.log("loading... by ", {
       //   iotSelected,
       //   durationType,
@@ -352,9 +353,10 @@ function SelectDate_new({
   }, [HANDLE_CHECK_by_month, isLoadMonths]);
   useEffect(() => {
     if (isToday && !currentIsActive) {
+      HANDLE_CHECK_by_today();
       let thisInterval = setInterval(() => {
         HANDLE_CHECK_by_today();
-      }, 3000);
+      }, 5000);
       return () => {
         clearInterval(thisInterval);
       };

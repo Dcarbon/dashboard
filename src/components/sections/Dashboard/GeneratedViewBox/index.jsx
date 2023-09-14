@@ -208,6 +208,7 @@ function GeneratedViewBox({ iotSelected }) {
                     {currentSensorType === item.type ? (
                       <SensorLineChart
                         id={item.id}
+                        iot_type={iot_type}
                         unit={item.unitChart || item.unit}
                         title={titleLine ? "Data in " + titleLine : ""}
                         sensorId={GET_sensor_id(sensors, item.type)}

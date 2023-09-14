@@ -1,11 +1,9 @@
 /* eslint-disable no-undef */
 import { useCallback, useEffect, useState } from "react";
 import LineChart from "./LineChart";
-import { hexToString } from "src/tools/const";
+import { IOT__TYPE, hexToString } from "src/tools/const";
 import { DURATION__TYPE, roundup_second } from "./tools";
 import { AxiosGet } from "src/redux/sagaUtils";
-// import { useState } from "react";
-
 function SensorLineChart({
   id,
   unit,
@@ -18,6 +16,7 @@ function SensorLineChart({
   divider,
   currentDate,
   durationType,
+  iot_type,
   // nếu bị phụ thuộc thì sẽ truyền giá trị vào hàm handle_coefficient
   isDepended = false,
   handle_coefficient,
@@ -28,14 +27,20 @@ function SensorLineChart({
 
   useEffect(() => {
     if (dataSM?.length > 0) {
-      let newString = JSON.parse(hexToString(dataSM[0]?.data));
+      let newString = {};
+
+      let elem =
+        iot_type === IOT__TYPE.BurnMethane
+          ? dataSM[dataSM?.length - 1]
+          : dataSM[0];
+      newString = JSON.parse(hexToString(elem?.data));
       let newValue = newString.indicator.value;
-      // console.log("newValue", newValue);
       let configValue = isDepended ? handle_coefficient(newValue) : newValue;
       let lastValue = Number(
-        divider ? configValue / divider : configValue / 10000
+        divider ? configValue / divider : configValue / 1000
       ).toFixed(2);
       setGenerated(lastValue);
+      // }
     } else if (generated && !dataSM?.length) {
       setGenerated(0);
     }
@@ -46,6 +51,7 @@ function SensorLineChart({
     dataSM,
     setGenerated,
     divider,
+    iot_type,
   ]);
 
   //  get sensor matrics function
@@ -152,33 +158,6 @@ function SensorLineChart({
     sensorId,
   ]);
 
-  // useEffect(() => {
-  //   if (
-  //     (durationType || currentDate || iotSelected) &&
-  //     sensorId > 0 &&
-  //     !isDepended
-  //   ) {
-  //     console.log("huhu");
-  //     if (durationType === DURATION__TYPE.day) {
-  //       console.log("durationType === DURATION__TYPE.day");
-  //       // sẽ gọi api 4 lần
-  //       handleGetSensorMinted_by_day(currentDate);
-  //     }
-  //     if (durationType === DURATION__TYPE.month) {
-  //       console.log("durationType === DURATION__TYPE.month ");
-  //       handleGetSensorMinted_by_month(list_time_by_duration);
-  //     }
-  //   }
-  // }, [
-  //   currentDate,
-  //   durationType,
-  //   handleGetSensorMinted_by_day,
-  //   handleGetSensorMinted_by_month,
-  //   iotSelected,
-  //   isDepended,
-  //   list_time_by_duration,
-  //   sensorId,
-  // ]);
   useEffect(() => {
     if (
       durationType &&
@@ -191,7 +170,7 @@ function SensorLineChart({
       today.setHours(0, 0, 0, 0);
       if (currentDate?.getTime() === today.getTime() && dataSM !== undefined) {
         const mainterval = setInterval(() => {
-          console.log("Gọi Again");
+          // console.log("Gọi Again");
           handleGetSensorMinted_by_day(currentDate, true);
         }, 5000);
         return () => {
