@@ -10,9 +10,14 @@
   /* width */
   &::-webkit-scrollbar {
     display: block;
-    width: 8px;
+    border-radius: 10px;
+    width: 4px;
   }
-
+  &.large {
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+  }
   /* Track */
   &::-webkit-scrollbar-track {
     background: rgba(11, 10, 18, 1);
@@ -20,6 +25,7 @@
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
     background: #72bf44;
     opacity: 0.3;
   }
@@ -27,6 +33,7 @@
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
     background: #8aec50;
+    border-radius: 10px;
     opacity: 1;
   }
 }

@@ -64,6 +64,7 @@ class DcarbonAPI {
    * @param {object} state
    * @returns {{
    * count :number,
+   * all_features : [],
    * iot: {
    *   id: Number,
    *   project: Number,

@@ -1,6 +1,7 @@
 import { takeEvery } from "redux-saga/effects";
 import { AxiosGet, grpcCall } from "../sagaUtils";
 import { IOTAct } from "../actions/iotAction";
+import { handleTakeEvery } from "../handle";
 
 export const watcherIot = [
   takeEvery(
@@ -15,6 +16,7 @@ export const watcherIot = [
     IOTAct.GET_IOT.REQUEST,
     grpcCall(getIot, IOTAct.GET_IOT.SUCCESS, IOTAct.GET_IOT.FAILURE)
   ),
+  handleTakeEvery(GET_ALL_FEATURES, IOTAct.GET_ALL_FEATURES),
   takeEvery(
     IOTAct.GET_IOT_TOTAL_MINTED.REQUEST,
     grpcCall(
@@ -56,5 +58,9 @@ function getIotMinted(action) {
 
 function getIotTotalMinted(action) {
   var url = `iots/${action.payload.iotId}/mint-sign?from=${action.payload.from}&to=${action.payload.to}`;
+  return AxiosGet(url);
+}
+function GET_ALL_FEATURES() {
+  var url = `iots/geojson`;
   return AxiosGet(url);
 }

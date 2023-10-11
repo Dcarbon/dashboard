@@ -10,6 +10,7 @@ export const initIotState = {
   error_code: null,
   latest: "",
   loading: false,
+  all_features: null,
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -166,6 +167,35 @@ const iotReducer = (state = initIotState, action) => {
         error: res.error,
         error_code: res.error_code,
         latest: action.type,
+      };
+    case IOTAct.GET_ALL_FEATURES.REQUEST:
+      // console.log("GET_IOT_MINTED---------------request ", { action, res });
+      return {
+        ...state,
+        latest: action.type,
+        loading: true,
+        error: null,
+        error_code: null,
+      };
+    case IOTAct.GET_ALL_FEATURES.SUCCESS:
+      // console.log(
+      //   "GET_ALL_FEATURES---------------SUCCESS ",
+      //   res.data?.features
+      // );
+      return {
+        ...state,
+        latest: action.type,
+        loading: false,
+        all_features: res.data?.features,
+      };
+    case IOTAct.GET_ALL_FEATURES.FAILURE:
+      // console.log("GET_ALL_FEATURES---------------FAILURE ", res);
+      return {
+        ...state,
+        latest: action.type,
+        loading: false,
+        error: res.error,
+        error_code: res.error_code,
       };
     case IOTAct.CLEAR_ERR:
       return {

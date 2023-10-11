@@ -1,4 +1,5 @@
-import { AxiosPost } from "./sagaUtils";
+import { takeEvery } from "redux-saga/effects";
+import { AxiosPost, grpcCall } from "./sagaUtils";
 const checkWindow = () => Boolean(typeof window !== "undefined");
 /* eslint-disable no-undef */
 var token = checkWindow() && (localStorage.getItem("token") || null);
@@ -89,3 +90,9 @@ export const handleActions = (text) => ({
   SUCCESS: text + "_Success",
   FAILURE: text + "_Failure",
 });
+
+export const handleTakeEvery = (thisFunc, thisObj) =>
+  takeEvery(
+    thisObj["REQUEST"],
+    grpcCall(thisFunc, thisObj["SUCCESS"], thisObj["FAILURE"])
+  );

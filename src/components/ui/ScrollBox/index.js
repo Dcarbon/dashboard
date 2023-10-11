@@ -1,11 +1,12 @@
 import stls from "./index.module.scss";
-function ScrollBox({ disableY, disableX, children, className, style }) {
+function ScrollBox({ size, disableY, disableX, children, className, style }) {
   return (
     <div
       className={`${className ?? ""} ${stls["scroll-box"]} ${
         disableY ? stls.disableY : ""
-      } ${disableX ? stls.disableX : ""}`}
-      style={style}>
+      } ${disableX ? stls.disableX : ""} ${size === "large" ? stls.large : ""}`}
+      style={style}
+    >
       {children}
     </div>
   );

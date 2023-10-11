@@ -6,5 +6,6 @@ export const IOTAct = {
   GET_IOT: handleActions("get_iot"),
   GET_IOT_MINTED: handleActions("get_iot_minted"),
   GET_IOT_TOTAL_MINTED: handleActions("get_iot_TOTAL_minted"),
+  GET_ALL_FEATURES: handleActions("iot_GET_ALL_FEATURES"),
   CLEAR_ERR: "IOT_CLEAR_ERR",
 };
