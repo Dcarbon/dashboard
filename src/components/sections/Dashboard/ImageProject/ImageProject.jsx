@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Heading from "src/components/ui/Heading";
 function ImageProject({ project }) {
+  console.log("project", project);
   return (
     project?.images?.length > 0 && (
       <SliderGroup images={project?.images} projectId={project?.id} />
@@ -103,7 +104,7 @@ function SliderGroup({ images, projectId }) {
                         }}
                       >
                         <Image
-                          unoptimized
+                          priority
                           quality={60}
                           src={slideImage?.image}
                           alt={"Project " + projectId}
@@ -152,7 +153,7 @@ function SliderGroup({ images, projectId }) {
                       unoptimized
                       quality={50}
                       src={item?.image}
-                      alt=''
+                      alt=""
                       width={500}
                       height={500}
                       style={{
@@ -191,7 +192,7 @@ function SliderGroup({ images, projectId }) {
                     <div key={item?.id} className={stls.img}>
                       <Image
                         unoptimized
-                        alt=''
+                        alt=""
                         key={"nav-" + idx}
                         src={images[idx]?.image}
                         width={60}

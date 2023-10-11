@@ -7,24 +7,12 @@ const lexend = Lexend_Deca({ subsets: ["vietnamese"] });
 import stls from "./iotLayout.module.scss";
 import Script from "next/script";
 function DashboardLayout({
-  setErrFlyTo,
-  mymap,
+  Available_features,
   iotSelected,
   setIotSelected,
-  setFeatures,
   children,
+  mymap,
 }) {
-  // // xóa trạng thái load sensor lần đầu
-  // dispatch({ type: SensorsACT.LOAD_SENSOR_1ST_TIME, payload: false });
-  // // xóa project hiện tại
-  // setIotSelected(e.target.value);
-
-  // setTimeout(() => {
-  //   dispatch({
-  //     type: SensorsACT.GET_SENSORS.REQUEST,
-  //     payload: { skip: 0, limit: 50, iotId: e.target.value },
-  //   });
-  // }, 100);
   const GGANAS = process.env.NEXT_PUBLIC_GGANAS;
   return (
     <>
@@ -56,9 +44,8 @@ function DashboardLayout({
       <main className={`${stls.main} ${lexend.className}`}>
         <ScrollBox disableX>
           <Header
-            setErrFlyTo={setErrFlyTo}
             mymap={mymap}
-            setFeatures={setFeatures}
+            features={Available_features}
             iotSelected={iotSelected}
             setIotSelected={setIotSelected}
           />

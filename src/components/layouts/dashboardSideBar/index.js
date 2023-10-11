@@ -83,7 +83,7 @@ function DashboardSideBar({
   return (
     <div className={className}>
       <ScrollBox disableX>
-        <div className='text-[#B3B2B8]'>
+        <div className="text-[#B3B2B8]">
           {/* box select iot  */}
           {/* box select iot  */}
           {/* box select iot  */}
@@ -99,24 +99,6 @@ function DashboardSideBar({
               <div className={stls.boxMiddle}>
                 <ImageProject project={project} />
               </div>
-              <div className={stls.boxMiddle}>
-                {/* info  */}
-                {/* info  */}
-                {/* info  */}
-                <InfoProject
-                  showDetail={showDetail}
-                  setShowDetail={setShowDetail}
-                  err={projectState?.error}
-                  project={project}
-                  iot={iotState?.iot}
-                  iotSelected={iotSelected}
-                  isActive={iotState?.isActive}
-                />
-                {/* Chart  */}
-                {/* Chart  */}
-                {/* Chart  */}
-                <GeneratedViewBox iotSelected={iotSelected} />
-              </div>
             </Fragment>
           )}
           {/*  */}
@@ -128,6 +110,24 @@ function DashboardSideBar({
           {/*  */}
           {/*  */}
           {/*  */}
+          <div className={stls.boxMiddle}>
+            {/* info  */}
+            {/* info  */}
+            {/* info  */}
+            <InfoProject
+              showDetail={showDetail}
+              setShowDetail={setShowDetail}
+              err={projectState?.error}
+              project={project}
+              iot={iotState?.iot}
+              iotSelected={iotSelected}
+              isActive={iotState?.isActive}
+            />
+            {/* Chart  */}
+            {/* Chart  */}
+            {/* Chart  */}
+            {/* <GeneratedViewBox iotSelected={iotSelected} /> */}
+          </div>
         </div>
       </ScrollBox>
     </div>

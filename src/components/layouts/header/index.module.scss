@@ -50,20 +50,24 @@
     &.show {
       padding: 12px 10px;
       .scrollBox {
-        max-height: 250px;
+        max-height: 256px;
       }
     }
     .item {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 6px 10px;
       gap: 10px;
       &:hover {
         color: #ffffff;
         filter: brightness(1.2);
         cursor: pointer;
-        border-radius: 5px;
         background-color: rgba($color: #72bf44, $alpha: 0.3);
+      }
+      &.current{
+        border-radius: 5px;
+        background-color: rgba($color: #316413, $alpha: 0.3);
       }
     }
     .checked {

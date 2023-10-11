@@ -10,19 +10,19 @@ const nextConfig = {
     includePaths: [path.join(__dirname, "styles")],
   },
   images: {
-    domains: ["https://dev.dcarbon.org/static/"],
+    domains: ["https://dev.dcarbon.org"],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "dev.dcarbon.org",
-        port: "",
-        pathname: "/static/**,",
+        // port: "",
+        // pathname: "/static/**,",
       },
       {
-        protocol: "https",
+        protocol: "http",
         hostname: "dev.dcarbon.org",
-        port: "",
-        pathname: "/cms/**,",
+        // port: "",
+        // pathname: "/cms/**,",
       },
     ],
   },

@@ -8,7 +8,6 @@ export const initsensorsState = {
   error_code: null,
   latest: "",
   loading: false,
-  loadingSensorFirstTime: false,
   sensor_id_: 0,
   energy_id: 0,
 };
@@ -134,10 +133,8 @@ const sensorsReducer = (state = initsensorsState, action) => {
         sensor_metrics_bio: null,
       };
     case SensorsACT.LOAD_SENSOR_1ST_TIME:
-      // console.log("payload load sendor 1 st", action);
       return {
         ...state,
-        loadingSensorFirstTime: action.payload,
         sensors: null,
         sensor_metrics_: null,
         sensor_metrics_bio: null,

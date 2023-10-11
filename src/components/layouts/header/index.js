@@ -3,14 +3,12 @@ import { imgsDir, imgsObject } from "src/tools/const";
 import stls from "./index.module.scss";
 import FlexBetween from "src/components/ui/Stack/flex-between";
 import Link from "next/link";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   CheckCircleIcon,
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
-import useSWR from "swr";
-import { IOT_HOST } from "src/redux/handle";
 import { useRouter } from "next/router";
 import ScrollBox from "src/components/ui/ScrollBox";
 import Collapse from "src/components/ui/Collapse";
@@ -22,15 +20,40 @@ import { useDispatch } from "react-redux";
 //
 //
 //
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
-  const { data } = useSWR(`${IOT_HOST}/api/v1/iots/geojson`, fetcher);
+function Header({ features, iotSelected, setIotSelected, mymap }) {
   const searchREF = useRef(null);
-  const features = useMemo(() => data?.features, [data?.features]);
   const [searchKey, setSearchKey] = useState("");
   const [showIots, setShowIots] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
+  const Flyto = (center, zoom) => {
+    if (mymap) {
+      try {
+        mymap?.flyTo({
+          center: center,
+          zoom: zoom,
+        });
+      } catch (error) {
+        console.error(" Header flyto :", error);
+      }
+    }
+  };
+  const HANDLE_FLY_on_load = (id) => {
+    let newZoom = 13;
+    let newCenter = [];
+    if (id && features) {
+      const findIot = features.find(
+        (item) => Number(item.properties.id) === Number(id)
+      );
+      newCenter = findIot?.geometry?.coordinates;
+      newZoom = 13;
+    }
+    if (newCenter?.length) {
+      Flyto(newCenter, newZoom);
+    }
+    setIotSelected(id);
+    router.push(`/dashboard?iot=${id}`);
+  };
   useEffect(() => {
     let clickOutSide = (event) => {
       if (event?.button === 0) {
@@ -43,22 +66,10 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
     document.addEventListener("mousedown", clickOutSide);
     return () => document.removeEventListener("mousedown", clickOutSide);
   }, []);
-  const Flyto = (center, zoom) => {
-    if (mymap) {
-      try {
-        mymap?.flyTo({
-          center: center,
-          zoom: zoom || 5,
-        });
-      } catch (error) {
-        setErrFlyTo(true);
-        console.error("Coordinates is invalid", error);
-      }
-    }
-  };
+
   return (
-    <header className='bg-[#0B0A12]'>
-      <div className='container w-full max-w-full px-4'>
+    <header className="bg-[#0B0A12]">
+      <div className="container w-full max-w-full px-4">
         <FlexBetween
           className={
             "space-x-2 space-y-4 md:space-y-0 p-3 flex-col md:flex-row justify-between items-center "
@@ -67,7 +78,7 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
           <Link href={"/"} className={`${stls.logo} relative `}>
             <Image
               src={imgsDir(imgsObject.logo)}
-              alt=''
+              alt=""
               width={272}
               height={42}
               priority
@@ -83,7 +94,7 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
             </button>
             <input
               className={stls.input}
-              placeholder='Search project'
+              placeholder="Search project"
               value={searchKey}
               onKeyDown={(e) => {
                 if (e.target.value?.length > 0 && !showIots) {
@@ -110,10 +121,7 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
                       {features?.map((item) => {
                         let id = item?.properties?.id;
                         let coordinates = item.geometry?.coordinates;
-                        let check = Boolean(
-                          Number(router?.query?.lng) === coordinates[0] &&
-                            Number(router?.query?.lat) === coordinates[1]
-                        );
+                        let check = Boolean(Number(id) === Number(iotSelected));
                         return coordinates[1] <= 90 && coordinates[1] >= -90 ? (
                           <li
                             key={id}
@@ -122,38 +130,15 @@ function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
                             }`}
                             onClick={() => {
                               setShowIots(false);
-                              // xóa trạng thái load sensor lần đầu
-                              dispatch({
-                                type: SensorsACT.LOAD_SENSOR_1ST_TIME,
-                                payload: false,
-                              });
-                              // xóa project hiện tại
-                              setFeatures([id]);
-                              setIotSelected(id);
-                              setTimeout(() => {
-                                dispatch({
-                                  type: SensorsACT.GET_SENSORS.REQUEST,
-                                  payload: {
-                                    skip: 0,
-                                    limit: 50,
-                                    iotId: id,
-                                  },
-                                });
-                              }, 100);
-                              router.push(
-                                `/dashboard?lng=${coordinates[0]}&lat=${coordinates[1]}&zoom=13`
-                              );
-                              Flyto(coordinates, 12);
+                              HANDLE_FLY_on_load(id);
                             }}
                           >
                             <p>{id}</p>
-                            <small>
-                              [{coordinates[0]}, {coordinates[1]}]
-                            </small>
+
                             {check && (
                               <small className={stls.checked}>
                                 <CheckCircleIcon
-                                  color='#72bf44'
+                                  color="#72bf44"
                                   width={16}
                                   height={16}
                                 />

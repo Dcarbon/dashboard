@@ -129,6 +129,14 @@ function SensorLineChart({
   }, [currentDate, durationType, iotSelected, list_time_by_duration, sensorId]);
 
   useEffect(() => {
+    console.log("ds2,------", {
+      durationType,
+      currentDate,
+      iotSelected,
+      list_time_by_duration,
+      sensorId,
+      isDepended,
+    });
     if (
       (durationType || currentDate || iotSelected || list_time_by_duration) &&
       sensorId > 0 &&

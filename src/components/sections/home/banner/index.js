@@ -8,7 +8,7 @@ import { imgsObject } from "src/tools/const";
 function BannerFisrt() {
   return (
     <Section
-      className='relative overflow-hidden z-10'
+      className="relative overflow-hidden z-10"
       bgImageUrl={imgsObject.home.banner}
     >
       <Container>

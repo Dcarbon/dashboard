@@ -161,7 +161,7 @@ function GeneratedViewBox({ iotSelected }) {
       {/* select type to show  */}
       {/* select type to show  */}
       {/* select type to show  */}
-      <div className='w-full' style={{ width: "100%" }}>
+      <div className="w-full" style={{ width: "100%" }}>
         <BoxBorderTop isPadding={false}>
           <SelectType
             iotSelected={iotSelected}
@@ -196,7 +196,7 @@ function GeneratedViewBox({ iotSelected }) {
                     setCarbonGenerated={setCarbonGenerated}
                   />
                 ) : (
-                  <div className='w-full h-60'></div>
+                  <div className="w-full h-60"></div>
                 )}
               </Box>
               {listTab.map((item, idx) => {
@@ -226,7 +226,7 @@ function GeneratedViewBox({ iotSelected }) {
                         list_time_by_duration={list_time_by_duration}
                       />
                     ) : (
-                      <div className='w-full h-60'></div>
+                      <div className="w-full h-60"></div>
                     )}
                   </Box>
                 );
