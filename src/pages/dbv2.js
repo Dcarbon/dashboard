@@ -1,8 +1,8 @@
 import Head from "next/head";
 import Script from "next/script";
 import { Fragment } from "react";
+import DashboardMap from "src/DashboardComponents/DashboardMap";
 import { API } from "src/constants/mapbox";
-import DashboardMap from "src/dashboardComponents/Map";
 
 const GGANAS = process.env.NEXT_PUBLIC_GGANAS;
 export default function Dashboard() {

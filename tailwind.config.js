@@ -5,11 +5,14 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          100: "#333",
+          DEFAULT: "#72BF44",
+        },
+        secondary: {
+          DEFAULT: "#5055A4",
         },
         extended: {
           DEFAULT: "#0B0A12",
-          100: "#FCFC",
+          100: "#FCFCFC",
           200: "#F3F3F5",
           300: "#B3B2B8",
           400: "#919097",
@@ -55,6 +58,43 @@ module.exports = {
       maxHeight: {
         "1/2": "75%",
         "3/4": "75%",
+      },
+      translate: {
+        "9/10": "90%",
+      },
+      fontSize: {
+        "D-L": "52px",
+        "D-M": "40px",
+        "D-S": "36px",
+        "H-L": "32px",
+        "H-M": "28px",
+        "H-S": "24px",
+        "T-L": "20px",
+        "T-M": "18px",
+        "T-S": "14px",
+        "B-L": "18px",
+        "B-M": "16px",
+        "B-S": "14px",
+      },
+      lineHeight: {
+        "D-L": "72px",
+        "D-M": "52px",
+        "D-S": "44px",
+        "H-L": "40px",
+        "H-M": "36px",
+        "H-S": "32px",
+        "T-L": "28px",
+        "T-M": "24px",
+        "T-S": "20px",
+        "B-L": "28px",
+        "B-M": "24px",
+        "B-S": "18px",
+      },
+      boxShadow: {
+        "-md":
+          "0 -4px 14px -1px rgb(255 255 255 / 0.1), 0 -2px 10px -2px rgb(255 255 255 / 0.1)",
+        "-inner":
+          "inset 0 -4px 14px -1px rgb(255 255 255 / 0.1), inset 0 -2px 10px -2px rgb(255 255 255 / 0.1)",
       },
     },
     container: {

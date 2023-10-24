@@ -9,10 +9,13 @@ import Collapse from "src/components/ui/Collapse";
 import ScrollBox from "src/components/ui/ScrollBox";
 import { useAllFeatures } from "../handleData";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { DashboardAct } from "src/redux/actions/dashboardAction";
+import { IOTAct } from "src/redux/actions/iotAction";
 function Search() {
   const [isShowList, setIsShowList] = useState(false);
   return (
-    <div className="relative">
+    <div className="relative max-w-full">
       <Field isShowList={isShowList} setIsShowList={setIsShowList} />
       <div className={`absolute top-full right-0 w-full z-10 mt-2`}>
         <List isShowList={isShowList} setIsShowList={setIsShowList} />
@@ -56,7 +59,7 @@ function Field({ setIsShowList, isShowList }) {
   );
   return (
     <div className="rounded-md border border-extended-700 bg-extended-800">
-      <div className="flex flex-row items-center min-w-[372px]">
+      <div className="flex flex-row items-center max-w-full w-[372px]">
         <SearchIcon />
         <SearchInput />
         <SearchArrow />
@@ -71,7 +74,12 @@ function Field({ setIsShowList, isShowList }) {
 // List
 function List({ setIsShowList, isShowList }) {
   const router = useRouter();
+  const dispatch = useDispatch();
   const features = useAllFeatures();
+  const handleReset = () => {
+    dispatch({ type: IOTAct.CLEAR_for_dashboard });
+    dispatch({ type: DashboardAct.RESET });
+  };
   return (
     <div
       className={`flex flex-col max-h-56 overflow-hidden rounded-md border ${
@@ -84,27 +92,31 @@ function List({ setIsShowList, isShowList }) {
             {features?.map((item) => {
               let id = item?.properties?.id;
               let coordinates = item.geometry?.coordinates;
-              let check = Boolean(
-                Number(router?.query?.lng) === coordinates[0] &&
-                  Number(router?.query?.lat) === coordinates[1]
-              );
+              let check = Boolean(Number(id) === Number(router?.query?.iot));
               return coordinates[1] <= 90 && coordinates[1] >= -90 ? (
                 <li
                   key={id}
-                  className={`transition-all py-4 px-4 hover:px-6 cursor-pointer hover:bg-opacity-25 hover:bg-black rounded-md ${
+                  className={`transition-all py-4 px-4 hover:pl-6 cursor-pointer hover:bg-opacity-10 hover:bg-primary rounded-md ${
                     stls[check ? "current" : ""]
                   }`}
                   onClick={() => {
                     setIsShowList(false);
+                    handleReset();
                     router.push(router.pathname + `?iot=` + id);
                   }}
                 >
-                  <p>{id}</p>
-                  {check && (
-                    <small>
-                      <CheckCircleIcon color="#72bf44" width={16} height={16} />
-                    </small>
-                  )}
+                  <div className="flex justify-between items-center">
+                    <p>{id}</p>
+                    {check && (
+                      <small>
+                        <CheckCircleIcon
+                          color="#72bf44"
+                          width={16}
+                          height={16}
+                        />
+                      </small>
+                    )}
+                  </div>
                 </li>
               ) : (
                 <Fragment key={id}></Fragment>

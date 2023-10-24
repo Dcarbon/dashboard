@@ -22,6 +22,6 @@ export const MapInitProperties = {
     "horizon-blend": 0.03,
     "high-color": "rgba(36, 92, 223, 0.7)", // Upper atmosphere
     "space-color": "rgb(11, 11, 25)", // Background color
-    "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
+    // "star-intensity": 0.6, // Background star brightness (default 0.35 at low zoooms )
   },
 };

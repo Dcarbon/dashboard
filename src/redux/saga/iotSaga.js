@@ -16,7 +16,6 @@ export const watcherIot = [
     IOTAct.GET_IOT.REQUEST,
     grpcCall(getIot, IOTAct.GET_IOT.SUCCESS, IOTAct.GET_IOT.FAILURE)
   ),
-  handleTakeEvery(GET_ALL_FEATURES, IOTAct.GET_ALL_FEATURES),
   takeEvery(
     IOTAct.GET_IOT_TOTAL_MINTED.REQUEST,
     grpcCall(
@@ -34,6 +33,7 @@ export const watcherIot = [
       IOTAct.GET_IOT_MINTED.FAILURE
     )
   ),
+  handleTakeEvery(getIOTs_byProject, IOTAct.GET_IOTs_byProject),
 ];
 
 function countIot() {
@@ -50,6 +50,10 @@ function getIot(action) {
   var url = `iots/${action.payload}`;
   return AxiosGet(url);
 }
+function getIOTs_byProject(action) {
+  var url = `iots/list?projectId=${action.payload}&status=0`;
+  return AxiosGet(url);
+}
 
 function getIotMinted(action) {
   var url = `iots/${action.payload.iotId}/minted?from=${action.payload.from}&to=${action.payload.to}&interval=${action.payload.interval}`;
@@ -58,9 +62,5 @@ function getIotMinted(action) {
 
 function getIotTotalMinted(action) {
   var url = `iots/${action.payload.iotId}/mint-sign?from=${action.payload.from}&to=${action.payload.to}`;
-  return AxiosGet(url);
-}
-function GET_ALL_FEATURES() {
-  var url = `iots/geojson`;
   return AxiosGet(url);
 }

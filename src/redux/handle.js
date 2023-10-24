@@ -91,8 +91,11 @@ export const handleActions = (text) => ({
   FAILURE: text + "_Failure",
 });
 
-export const handleTakeEvery = (thisFunc, thisObj) =>
-  takeEvery(
-    thisObj["REQUEST"],
-    grpcCall(thisFunc, thisObj["SUCCESS"], thisObj["FAILURE"])
-  );
+export const handleTakeEvery = (thisFunc, thisObj) => {
+  if (thisObj) {
+    return takeEvery(
+      thisObj.REQUEST,
+      grpcCall(thisFunc, thisObj.SUCCESS, thisObj.FAILURE)
+    );
+  }
+};
