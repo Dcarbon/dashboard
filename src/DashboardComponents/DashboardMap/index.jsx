@@ -34,8 +34,8 @@ export default function DashboardMap() {
       {/*  */}
       {/*  */}
       {/*  */}
-      {/*  */}
       <div className="lg:relative lg:flex-1 ">
+        {/* Map */}
         <div className="h-[50vh] lg:h-full">
           <div className="flex flex-col w-full h-full">
             <div className="flex-1">
@@ -54,10 +54,11 @@ export default function DashboardMap() {
             </div>
           </div>
         </div>
+        {/* info */}
         {Boolean(currentIOT) && (
           <div
-            className={` lg:absolute bottom-[0] left-0 w-full lg:max-h-3/4 lg:h-full transition-all duration-500  ${
-              isShowMain ? "lg:translate-y-0" : "lg:translate-y-9/10"
+            className={` lg:absolute bottom-[0] left-0 w-full lg:max-h-9/10 lg:h-full transition-all duration-500  ${
+              isShowMain ? "lg:translate-y-0" : "lg:translate-y-11/12"
             }`}
             style={{
               transitionTimingFunction: "ease-in",
@@ -76,7 +77,7 @@ export default function DashboardMap() {
       {/*  */}
       {/*  */}
       {/*  */}
-      {/*  */}
+      {/* Image */}
       <div
         className={`fixed w-full h-full transition-all duration-500 z-10 ${
           isShow ? " visible" : " invisible"

@@ -4,6 +4,7 @@ import { CMS_HOST } from "src/redux/handle";
 const filesDir = (str) => `/files/${str}`;
 const imgsDir = (str) => `/imgs/${str}`;
 const imgsObject = {
+  Icon_Trash: "icons_trash.png",
   logo: "Logo.png",
   vector: "Vector.svg",
   CopyButton: "CopyButton.svg",
