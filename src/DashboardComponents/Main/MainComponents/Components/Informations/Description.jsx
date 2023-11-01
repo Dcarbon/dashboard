@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useCurrentIOTState } from "src/DashboardComponents/handleData";
 import { imgsDir, imgsObject } from "src/tools/const";
 const Arrow = () => {
@@ -45,14 +45,13 @@ function Description() {
   //     console.log("boxRef ------,", boxRef);
   //   }
   // }, [iotID]);
-  console.log("iotID", iotID);
   // const projectDetail = useMemo(() => {
   //   let newD = new DcarbonAPI();
   //   return newD.ProjectInfo(?.id);
   // }, [project?.id]);
 
   return (
-    <div className="h-full border border-extended-700 rounded-md bg-extended-800">
+    <div className="h-full lg:border lg:border-extended-700 rounded-md bg-extended-800">
       <div
         className={`p-5`}
         style={{

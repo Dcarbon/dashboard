@@ -25,7 +25,10 @@ function InfoProject() {
     ]
   );
   return (
-    <BoxBorder label="Info project">
+    <BoxBorder
+      label="Info project"
+      className={`h-full w-full lg:border py-5 px-4 lg:border-extended-700 rounded-md bg-extended-900`}
+    >
       <ul>
         <Li textLeft={"Type"} textRight={IOT__TYPE_TEXT[infoModel?.type]} />
         <Li textLeft={"Implement"} textRight={infoModel.implement} />

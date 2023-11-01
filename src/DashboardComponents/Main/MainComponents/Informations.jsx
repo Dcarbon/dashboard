@@ -8,18 +8,20 @@ import Description from "./Components/Informations/Description";
 function Information() {
   return (
     <div>
-      <Total />
-      <Heading />
-      <div className="flex flex-wrap flex-col lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0 mb-8">
+      <div className="px-4 lg:px-0">
+        <Total />
+        <Heading />
+      </div>
+      <div className="flex flex-wrap flex-col lg:flex-row gap-3 lg:gap-5 mb-8">
         <div className="flex-1">
           <Description />
         </div>
         <div className="w-full lg:w-[596px]">
-          <div className="flex flex-wrap flex-col md:flex-row gap-5">
+          <div className="flex flex-wrap flex-col md:flex-row gap-3 lg:gap-5">
             <div className="flex-1">
               <InfoProject />
             </div>
-            <div className="w-[264px]">
+            <div className="w-full lg:w-[264px]">
               <Document />
             </div>
             <div className="w-full">

@@ -4,7 +4,7 @@ function ScrollBox({ size, disableY, disableX, children, className, style }) {
     <div
       className={`${className ?? ""} ${stls["scroll-box"]} ${
         disableY ? stls.disableY : ""
-      } ${disableX ? stls.disableX : ""} ${size === "large" ? stls.large : ""}`}
+      } ${disableX ? stls.disableX : ""} ${stls[size ?? ""]}`}
       style={style}
     >
       {children}

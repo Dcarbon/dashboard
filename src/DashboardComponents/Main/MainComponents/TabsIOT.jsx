@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   useCurrentIOTState,
   useIOTState,
@@ -13,12 +13,8 @@ function TabsIOT() {
     [iotState?.iots_by_project]
   );
 
-  const defaultLi = useRouter();
   const router = useRouter();
   const [currentId] = useCurrentIOTState();
-  useEffect(() => {
-    //
-  }, []);
 
   return (
     <div>
@@ -28,7 +24,6 @@ function TabsIOT() {
             const isActive = Boolean(Number(currentId) === Number(item?.id));
             return (
               <li
-                ref={defaultLi}
                 key={"item-" + item?.id}
                 className={`border border-extended-600 rounded-md ${
                   isActive

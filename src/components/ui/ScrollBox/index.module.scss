@@ -13,9 +13,22 @@
     border-radius: 10px;
     width: 4px;
   }
+  &.zero {
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+    }
+  }
+  &.small {
+    &::-webkit-scrollbar {
+      width: 2px;
+      height: 2px;
+    }
+  }
   &.large {
     &::-webkit-scrollbar {
       width: 8px;
+      height: 8px;
     }
   }
   /* Track */

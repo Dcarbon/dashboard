@@ -1,130 +1,64 @@
-import { useRef, useState, useEffect, Fragment } from "react";
+import { useRef, useEffect } from "react";
 import {
   useGetSensorsByIot,
   useIOTState,
 } from "src/DashboardComponents/handleData";
-import CarbonGenerator from "./Components/TabGenerator/CarbonGenerator";
-import dynamic from "next/dynamic";
-import { SENSOR__TYPE } from "src/tools/const";
-const PowerGenerator = dynamic(() =>
-  import("./Components/TabGenerator/PowerGenerator")
-);
-const BiomassGenerator = dynamic(() =>
-  import("./Components/TabGenerator/BiomassGenerator")
-);
-const BiogasGenerator = dynamic(() =>
-  import("./Components/TabGenerator/BiogasGenerator")
-);
-const TemporatureGenerator = dynamic(() =>
-  import("./Components/TabGenerator/TemporatureGenerator")
-);
-function TabsGenerator({ selectedSensor, setSelectedSensor }) {
+import { SENSOR__TYPE, SENSOR__TYPE_TEXT } from "src/tools/const";
+import ScrollBox from "src/components/ui/ScrollBox";
+
+function TabsGenerator({ selectedSensor, setSelectedSensor, setTypeSensor }) {
   const listREF = useRef(null);
   const iotState = useIOTState();
-  console.log("iotState", iotState);
-  const [offsetLeft, setOffsetLeft] = useState(0);
-  const [offsetWidth, setOffsetWidth] = useState(0);
   const [sensors, setSensors] = useGetSensorsByIot(undefined);
 
-  // const types = useMemo(() => {
-  //   switch (Number(iotState?.iot?.type)) {
-  //     case IOT__TYPE.BurnMethane:
-  //       return [
-  //         {
-  //           id: "Power",
-  //           generated: totalPower,
-  //           type: SENSOR__TYPE.Power,
-  //           title: "Energy",
-  //           unit: <span>kWh</span>,
-  //           unitChart: "kWh",
-  //           divider: 10000,
-  //           isDepended: false,
-  //           isSelectable: false,
-  //         },
-  //         {
-  //           id: "Biomass",
-  //           generated: totalBiomass,
-  //           type: SENSOR__TYPE.Biomass,
-  //           title: "Biomass",
-  //           unit: (
-  //             <span>
-  //               m<sup>3</sup>
-  //             </span>
-  //           ),
-  //           unitChart: "kWh",
-  //           divider: 10000,
-  //           isDepended: true,
-  //           dependedOn: SENSOR__TYPE.Power,
-  //           coefficient: 0.528888889,
-  //           isSelectable: false,
-  //         },
-  //       ];
-  //     case IOT__TYPE.CleanCockstove:
-  //       return [
-  //         {
-  //           id: "Thermometer",
-  //           type: SENSOR__TYPE.Thermometer,
-  //           title: "Temperature",
-  //           generated: totalTemperature,
-  //           unit: <span>&ordm;C</span>,
-  //           unitChart: "\xB0" + "C",
-  //           timeSpace: 3,
-  //           divider: 1,
-  //           isSelectable: true,
-  //         },
-  //       ];
-  //     default:
-  //       return [];
-  //   }
-  // }, [iotState?.iot?.type, totalBiomass, totalPower, totalTemperature]);
-  const handleClick = (e) => {
-    const target = e.target;
-    setOffsetLeft(target.offsetLeft);
-    setOffsetWidth(target.offsetWidth);
+  const handleClick = (value, type) => {
+    setSelectedSensor(value);
+    setTypeSensor(type);
   };
   useEffect(() => {
     if (!sensors && iotState?.iot?.id) {
-      console.log("iotState?.iot?.id", iotState?.iot?.id);
       setSensors(iotState?.iot?.id);
     }
   }, [iotState?.iot?.id, sensors, setSensors]);
-  useEffect(() => {
-    const handleClickOnLoad = () => {
-      console.log("listREF", listREF.current.children);
-    };
-    window.addEventListener("load", handleClickOnLoad);
-    return () => {
-      window.addEventListener("load", handleClickOnLoad);
-    };
-  }, []);
+
+  const handleLabelText = (type) => SENSOR__TYPE_TEXT[Number(type)];
   return (
-    <div className="mt-8 pt-5">
-      <div className={"px-4 xl:px-32 border-b border-extended-800"}>
-        <div className="lg:px-7 py-5">
-          <div className="relative">
-            <ul ref={listREF} className="inline-flex gap-12 flex-wrap">
-              <li>
-                <CarbonGenerator
-                  isActive={selectedSensor === 0}
-                  handleClick={() => setSelectedSensor(0)}
-                />
-              </li>
+    <div className="mt-8 pt-5 lg:px-4 xl:px-32">
+      <div className={"px-0 border-b border-extended-800"}>
+        {/* <div classNam> */}
+        <div className="relative">
+          <ScrollBox disableY={true} size={"zero"}>
+            <ul ref={listREF} className="w-max">
+              <LabelTab
+                isActive={selectedSensor === 0}
+                text={"Carbon minted"}
+                onClick={() => handleClick(0, SENSOR__TYPE.None)}
+              />
+
               {sensors?.map((item) => (
-                <ItemTab
-                  id={item?.id}
-                  type={item?.type}
+                <LabelTab
                   key={"item+" + item.id}
-                  isActive={Boolean(item.id === selectedSensor)}
-                  handleClick={() => setSelectedSensor(item.id)}
+                  isActive={selectedSensor === item.id}
+                  text={handleLabelText(item.type)}
+                  onClick={() => handleClick(item.id, item.type)}
+                />
+              ))}
+              {/* delete  */}
+              {/* delete  */}
+              {/* delete  */}
+              {/* delete  */}
+              {/* delete  */}
+              {[0, 30, 4, 123, 412341, 51, 112341, 5682].map((item) => (
+                <LabelTab
+                  key={"item+" + item}
+                  text={"test " + item}
+                  onClick={() => handleClick(item.id)}
                 />
               ))}
             </ul>
-            <div
-              className="absolute top-full h-[1px] mt-5 transition-all duration-300 bg-extended-300"
-              style={{ left: offsetLeft, width: offsetWidth }}
-            />
-          </div>
+          </ScrollBox>
         </div>
+        {/* </div> */}
       </div>
     </div>
   );
@@ -143,35 +77,16 @@ export default TabsGenerator;
 //
 //
 //
-function ItemTab({ id, type, isActive, handleClick }) {
-  const switchE = () => {
-    var Element;
-    switch (type) {
-      case SENSOR__TYPE.Biogas:
-        Element = BiogasGenerator;
-        break;
-      case SENSOR__TYPE.Biomass:
-        Element = BiomassGenerator;
-        break;
-      case SENSOR__TYPE.Thermometer:
-        Element = TemporatureGenerator;
-        break;
-      case SENSOR__TYPE.Power:
-        Element = PowerGenerator;
-        break;
-
-      default:
-        Element = Fragment;
-        break;
-    }
-    return (
-      <Element
-        type={type}
-        id={id}
-        isActive={isActive}
-        handleClick={handleClick}
-      />
-    );
-  };
-  return switchE();
+function LabelTab({ text, onClick, isActive }) {
+  return (
+    <li
+      className={`inline-block text-T-S leading-T-S md:text-T-L md:leading-T-L transition-all duration-700 ${
+        isActive ? "bg-extended-800 rounded-t-md" : ""
+      }`}
+    >
+      <button className="p-4 md:px-6 md:py-5" onClick={onClick}>
+        {text}
+      </button>
+    </li>
+  );
 }

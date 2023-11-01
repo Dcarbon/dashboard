@@ -5,6 +5,7 @@ import { IOTAct } from "src/redux/actions/iotAction";
 import { ProjectACT } from "src/redux/actions/projectAction";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 import DcarbonAPI from "src/tools/DcarbonAPI";
+import { getAmount, roundup_second } from "./handleConfig";
 
 const thisAPI = new DcarbonAPI();
 export function useAllFeatures() {
@@ -116,6 +117,7 @@ export function useProjectInformation(projectID) {
 
   return projectState?.project;
 }
+//
 export function useGetTotalIot_byProject(projectID) {
   const dispatch = useDispatch();
   const iotState = useSelector(thisAPI.GetIOTState);
@@ -126,4 +128,35 @@ export function useGetTotalIot_byProject(projectID) {
   }, [dispatch, projectID]);
 
   return iotState?.iots_by_project;
+}
+
+export function useGetTotalCarbon(iotID) {
+  const dispatch = useDispatch();
+
+  const handleGetTotal = useCallback(() => {
+    let newDate = new Date();
+    let to = roundup_second(newDate);
+    dispatch({
+      type: IOTAct.GET_IOT_TOTAL_MINTED.REQUEST,
+      payload: { iotId: iotID, from: 1, to },
+    });
+  }, [dispatch, iotID]);
+  const iotState = useIOTState();
+  useEffect(() => {
+    if (iotID) {
+      handleGetTotal();
+      let thisInterval = setInterval(() => handleGetTotal(), 15000);
+      return () => clearInterval(thisInterval);
+    }
+  }, [handleGetTotal, iotID]);
+  const total_minted = useMemo(() => {
+    if (iotState.total_minted) {
+      let thisObj = iotState.total_minted[0];
+      let newTotal = thisObj?.amount;
+      console.log("");
+      return newTotal ? getAmount(newTotal) : 0;
+    }
+  }, [iotState.total_minted]);
+
+  return total_minted ?? 0;
 }
