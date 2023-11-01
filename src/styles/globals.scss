@@ -114,7 +114,9 @@ a {
   width: 100%;
   height: 100%;
 }
-
+.mapboxgl-control-container {
+  display: none;
+}
 .map-container .mapboxgl-control-container {
   display: none;
 }

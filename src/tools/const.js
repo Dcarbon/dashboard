@@ -1,8 +1,10 @@
+import BigNumber from "bignumber.js";
 import { CMS_HOST } from "src/redux/handle";
 
 const filesDir = (str) => `/files/${str}`;
 const imgsDir = (str) => `/imgs/${str}`;
 const imgsObject = {
+  Icon_Trash: "icons_trash.png",
   logo: "Logo.png",
   vector: "Vector.svg",
   CopyButton: "CopyButton.svg",
@@ -38,6 +40,7 @@ const imgsObject = {
   project_img_4: "project_img_4.png",
   coming_soon: "bg_comingsoon.jpg",
   image_coming_soon: "icon_comingsoon.png",
+  Download: "download.png",
   Earths: {
     NormalMap: "maps/8k_earth_normal_map.jpg",
     DayMap: "maps/2k_earth_daymap.jpg",
@@ -136,6 +139,13 @@ function hexToString(hex) {
 
   return string;
 }
+function configHexAmount(amount) {
+  const hexAmount = new BigNumber(amount);
+  const reduceAmount = hexAmount.div("1e9");
+  let fixed = reduceAmount.toFixed(2);
+
+  return fixed;
+}
 const handleAttributes = (res) =>
   res?.attributes ?? res?.data?.attributes ?? null;
 const handleMeta = (res) => res?.meta ?? res?.data?.meta;
@@ -155,4 +165,5 @@ export {
   handleAttributes,
   handleMeta,
   handleImage,
+  configHexAmount,
 };

@@ -4,10 +4,11 @@ import axios from "axios";
 
 function* sagaCall(action) {
   try {
-    // console.log('Saga request ------------------ : ', action.type);
+    // console.log("action", action);
+    // console.log("Saga request ------------------ : ", action.type);
     var resp = yield call(this.execute, action);
 
-    // console.log('Saga Success : ', resp.data);
+    // console.log("Saga Success : ", resp.data);
     yield put({
       type: this.success,
       response: resp.data,

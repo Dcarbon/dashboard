@@ -1,6 +1,7 @@
 import { takeEvery } from "redux-saga/effects";
 import { AxiosGet, grpcCall } from "../sagaUtils";
 import { IOTAct } from "../actions/iotAction";
+import { handleTakeEvery } from "../handle";
 
 export const watcherIot = [
   takeEvery(
@@ -32,6 +33,7 @@ export const watcherIot = [
       IOTAct.GET_IOT_MINTED.FAILURE
     )
   ),
+  handleTakeEvery(getIOTs_byProject, IOTAct.GET_IOTs_byProject),
 ];
 
 function countIot() {
@@ -46,6 +48,10 @@ function checkisactive(action) {
 }
 function getIot(action) {
   var url = `iots/${action.payload}`;
+  return AxiosGet(url);
+}
+function getIOTs_byProject(action) {
+  var url = `iots/list?projectId=${action.payload}&status=0`;
   return AxiosGet(url);
 }
 

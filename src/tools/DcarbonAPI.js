@@ -64,6 +64,7 @@ class DcarbonAPI {
    * @param {object} state
    * @returns {{
    * count :number,
+   * all_features : [],
    * iot: {
    *   id: Number,
    *   project: Number,
@@ -253,6 +254,22 @@ class DcarbonAPI {
       };
     }
     return;
+  }
+
+  /**
+   * @param {object} state
+   * @returns {{
+   * all_features : [],
+   * total_project_minted : boolean,
+   * currentIOT : boolean,
+   * latest : string,
+   * loading : boolean,
+   * error : string,
+   * error_code : string
+   * }}
+   */
+  DashboardState(state) {
+    return state?.dashboardState;
   }
 }
 export default DcarbonAPI;
