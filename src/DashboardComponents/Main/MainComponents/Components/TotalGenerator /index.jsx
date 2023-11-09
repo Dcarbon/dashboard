@@ -1,29 +1,61 @@
-import { useEffect } from "react";
-import {
-  useCurrentIOTState,
-  useGetTotalIot_byProject,
-} from "src/DashboardComponents/handleData";
+import { useCurrentIOTState } from "src/DashboardComponents/handleData";
 import { SENSOR__TYPE_TEXT } from "src/tools/const";
+import { Yesterday } from "../Charts/FirstSide/Yesterday";
+import { PastWeek } from "../Charts/FirstSide/PastWeek";
 
-function TotalGenerator({ typeSensor }) {
+function TotalGenerator({ typeSensor, sensorId }) {
   const [currentIot] = useCurrentIOTState();
-  const totalIots = useGetTotalIot_byProject();
+  // const totalIots = useGetTotalIot_byProject();
+  // const totalProjectMinted = useGetGenerated(totalIots, typeSensor, sensorId);
 
-  useEffect(() => {
-    console.log("totalIots", totalIots);
-    console.log("typeSensor", typeSensor);
-    console.log("typeSensor texxt", SENSOR__TYPE_TEXT[typeSensor]);
-  }, [currentIot, totalIots, typeSensor]);
-
-  useEffect(() => {
-    if (currentIot) {
-      console.log("currentIot", currentIot);
-      // nếu currentIot thay đổi
-      // request ngày, tuần, tháng, tổng iot all time
+  // useEffect(() => {
+  //   if (totalProjectMinted) {
+  //     console.log("currentIot thay đổi", totalProjectMinted);
+  //   }
+  // }, [totalProjectMinted]);
+  const handleTitleTotal = (type) => {
+    switch (type) {
+      case 0:
+        return "Total carbon minted";
+      default:
+        let text = SENSOR__TYPE_TEXT[type] ?? "";
+        return `Total ${text.toLowerCase()} generated`;
     }
-  }, [currentIot]);
-
-  return <div></div>;
+  };
+  return (
+    <div>
+      <p>Tổng hợp </p>
+      <div className="flex flex-wrap">
+        <div className="w-full lg:w-[272px]">
+          <div>
+            <p className="text-B-M leading-B-M text-extended-300">
+              {handleTitleTotal(typeSensor)}
+            </p>
+            <p className="text-B-M leading-B-M text-extended-300">
+              (all generator)
+            </p>
+          </div>
+          <h3 className="text-H-M leading-H-M text-white">0</h3>
+        </div>
+        <div className="flex-1">
+          <div className="flex flex-wrap md:flex-nowrap border border-extended-700 rounded-md ">
+            <Yesterday
+              typeSensor={typeSensor}
+              id={currentIot}
+              sensorId={sensorId}
+            />
+            <PastWeek
+              sensorId={sensorId}
+              typeSensor={typeSensor}
+              id={sensorId}
+            />
+            {/*   <Past30 typeSensor={typeSensor} id={sensorId} />
+            <AllTime typeSensor={typeSensor} id={sensorId} /> */}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default TotalGenerator;

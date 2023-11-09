@@ -3,10 +3,10 @@ import { MapInitProperties } from "src/constants/mapbox";
 import Header from "../Header";
 import { useRouter } from "next/router";
 import { useCurrentIOTState } from "../handleData";
-import { useEffect, useState } from "react";
-import Main from "../Main";
-import Footer from "../Footer";
+import { useEffect, useState } from "react"; 
 import ImageDialog from "../Main/MainComponents/Image/ImageDialog";
+import Footer from "../Footer";
+import Main from "../Main";
 
 /**
  * @param {MapboxEvent} evnt

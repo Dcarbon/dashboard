@@ -13,7 +13,6 @@ import TotalGenerator from "./MainComponents/Components/TotalGenerator ";
 
 function Main({ setIsShowMain, isShowMain, isShow, setIsShow }) {
   const iotState = useIOTState();
-  console.log("iotState", iotState);
   const [selectedSensor, setSelectedSensor] = useState(0);
   const [typeSensor, setTypeSensor] = useState(0);
   return (
@@ -64,7 +63,10 @@ function Main({ setIsShowMain, isShowMain, isShow, setIsShow }) {
             {/*  */}
             <ThisContainer className={"bg-extended-800 lg:px-7"}>
               <div className="p-4">
-                <TotalGenerator typeSensor={typeSensor} />
+                <TotalGenerator
+                  typeSensor={typeSensor}
+                  sensorId={selectedSensor}
+                />
                 <Charts />
                 <TabsIOT />
               </div>

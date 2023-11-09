@@ -127,16 +127,17 @@ function hexToString(hex) {
   var string = "";
 
   // Remove the leading "0x" if present
-  if (hex.slice(0, 2) === "0x") {
-    hex = hex.slice(2);
-  }
+  if (hex) {
+    if (hex?.slice(0, 2) === "0x") {
+      hex = hex.slice(2);
+    }
 
-  // Convert each pair of characters to decimal and then to a character
-  for (var i = 0; i < hex.length; i += 2) {
-    var decimal = parseInt(hex.substr(i, 2), 16);
-    string += String.fromCharCode(decimal);
+    // Convert each pair of characters to decimal and then to a character
+    for (var i = 0; i < hex?.length; i += 2) {
+      var decimal = parseInt(hex.substr(i, 2), 16);
+      string += String.fromCharCode(decimal);
+    }
   }
-
   return string;
 }
 function configHexAmount(amount) {

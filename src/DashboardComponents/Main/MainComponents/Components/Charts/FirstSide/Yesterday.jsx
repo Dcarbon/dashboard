@@ -1,31 +1,71 @@
 import { AxiosGet } from "src/redux/sagaUtils";
-import BoxBorder from "../BoxBorder";
-import { roundup_second } from "src/components/sections/Dashboard/GeneratedViewBox/tools";
+import TotalBoxBorder from "../TotalBoxBorder";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { apiTotalCarbon, apiTotalSensor } from "./handle";
+import { hexToString } from "src/tools/const";
 
-function Yesterday({ type, id }) {
-  const getYesterday = async () => {
+export function Yesterday({ typeSensor, id, sensorId }) {
+  const [data, setData] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const getYesterday = useCallback((type, sensor, iot) => {
+    setLoading(true);
     let newDate = new Date();
     newDate.setDate(newDate.getDate() - 1);
     newDate.setHours(0, 0, 0, 0);
-    let from = newDate.getTime();
+    let from = new Date(newDate.getTime());
     newDate.setHours(23, 59, 59);
-    let to = newDate.getTime();
+    let to = new Date(newDate.getTime());
 
     let url = "";
-    if (type === "dcarbon") {
-      // https://dev.dcarbon.org/api/v1/iots/1234/minted?from=12341234&to=1234
-      url = `iots/${id}/minted?from=${roundup_second(from)}&to=${roundup_second(
-        to
-      )}`;
+    console.log("getYesterday --------------------- ");
+    console.log("getYesterday --------------------- ");
+    console.log("getYesterday --------------------- ");
+    console.log("getYesterday --------------------- ");
+    console.log("getYesterday --------------------- ", type);
+    if (type === 0) {
+      url = apiTotalCarbon(iot, from, to);
     } else {
-      // https://dev.dcarbon.org/api/v1/sensors/sm?from=1234&to=1234&iotId=1234&skip=1234&limit=1234&sensorId=23&sort=1
-      url = `sensors/sm?from=${roundup_second(from)}&to=${roundup_second(
-        to
-      )}&iotId=${iotId}&skip=0&limit=1000&sensorId=23&sort=1`;
+      url = apiTotalSensor(iot, sensor, from, to, 1);
     }
-    AxiosGet(url);
-  };
-  return <BoxBorder title={"Yesterday"} number={234} />;
-}
 
-export default Yesterday;
+    AxiosGet(url)
+      .then((res) => {
+        console.log("resss", res);
+        if (type === 0) {
+          setData(res.data);
+        } else {
+          setData(res.data?.metrics);
+        }
+      })
+      .catch((er) => console.log("getYesterday failed ", er))
+      .finally(() => setLoading(false));
+  }, []);
+  useEffect(() => {
+    // console.log("user effect getYesterday", { id, sensorId, typeSensor });
+    if ((id || sensorId) && typeSensor >= 0) {
+      getYesterday(typeSensor, sensorId, id);
+    }
+  }, [getYesterday, id, sensorId, typeSensor]);
+  const number = useMemo(() => {
+    if (data?.length > 0 && typeSensor >= 0) {
+      console.log("dataa_____________");
+      console.log("dataa_____________");
+      console.log("dataa_____________", data);
+      if (typeSensor === 0) {
+        return data[0]?.carbon;
+      } else {
+        let checkdata = data[0]?.value;
+        return checkdata;
+      }
+    }
+    return 0;
+  }, [data, typeSensor]);
+  return (
+    <TotalBoxBorder
+      className={"border-r border-b md:border-b-0"}
+      title={"Yesterday"}
+      number={number}
+      loading={loading}
+    />
+  );
+}

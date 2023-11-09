@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DashboardAct } from "src/redux/actions/dashboardAction";
 import { IOTAct } from "src/redux/actions/iotAction";
@@ -6,6 +6,9 @@ import { ProjectACT } from "src/redux/actions/projectAction";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 import DcarbonAPI from "src/tools/DcarbonAPI";
 import { getAmount, roundup_second } from "./handleConfig";
+import { AxiosGet } from "src/redux/sagaUtils";
+import axios from "axios";
+import { configHexAmount } from "src/tools/const";
 
 const thisAPI = new DcarbonAPI();
 export function useAllFeatures() {
@@ -51,6 +54,9 @@ export function useCurrentIOTState() {
 //
 export function useIOTState() {
   return useSelector(thisAPI.GetIOTState);
+}
+export function useSensorState() {
+  return useSelector(thisAPI);
 }
 export function useGetSensorsByIot() {
   const [id] = useCurrentIOTState();
@@ -159,4 +165,87 @@ export function useGetTotalCarbon(iotID) {
   }, [iotState.total_minted]);
 
   return total_minted ?? 0;
+}
+
+export function useGetGenerated(list, type, sensorId) {
+  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const projectState = useSelector(thisAPI.GetProjectState);
+  useEffect(() => {
+    if (list?.length > 0 || sensorId) {
+      setLoaded(false);
+    }
+  }, [list?.length, sensorId]);
+
+  useEffect(() => {
+    if (list?.length > 0 && !loaded) {
+      const numbType = Number(type);
+      const newDate = new Date();
+      const to = roundup_second(newDate);
+      const from = to - 60 * 60 * 24 * 10;
+      let idList = [];
+      let promisesList = [];
+      let url = "";
+      idList = list.map((item) => item.id);
+      if (numbType >= 0) {
+        setLoading(true);
+        promisesList = idList.map((item) => {
+          if (numbType === 0) {
+            // console.log("Get Api mint sign = ", numbType);
+            url = `iots/${item}/mint-sign?from=${from}&to=${to}`;
+          } else {
+            // console.log("Get Api aggregate = ", numbType);
+            url = `sensors/sm/aggregate?iotId=${item}&sensorId=${sensorId}&from=${from}&to=${to}&interval=1`;
+          }
+          // console.log("----------------------url", url);
+          return AxiosGet(url);
+        });
+        //
+        axios
+          .all(promisesList)
+          .then((res) => {
+            console.log("GET -------- numbType = " + numbType, res);
+
+            let newValueArr = [];
+            console.log("Lọc mảng trả về, lấy data");
+            res.forEach((itemRes, idx) => {
+              let newData = itemRes?.data;
+              // itemRes.data === []
+              let checkLength = newData?.length > 0;
+              // console.log("newData-----", newData);
+
+              if (checkLength) {
+                newValueArr = newData.map((itemData) => {
+                  // nếu numbType = 0 => cacbon => amount => handleAmount
+                  // nếu numbType > 0 => sensor => value => handleValue
+                  if (numbType === 0) {
+                    return configHexAmount(itemData?.amount);
+                  } else {
+                    return itemData?.value;
+                  }
+                });
+                // console.log("newValueArr", newValueArr);
+              }
+              newData[idx] = {
+                id: list[idx].id,
+                value: checkLength ? newValueArr : 0,
+              };
+            });
+          })
+          .catch((error) =>
+            console.error(
+              // "Promises all GET -------- numbType = " + numbType,
+              error
+            )
+          )
+          .finally(() => {
+            setLoaded(true);
+            setLoading(false);
+          });
+      } else {
+        console.error("Type không hợp lệ");
+      }
+    }
+  }, [list, loaded, sensorId, type]);
+  return { data: projectState?.project_generated || 0, loading };
 }

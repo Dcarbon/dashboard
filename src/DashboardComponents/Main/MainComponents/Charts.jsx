@@ -1,8 +1,4 @@
 import Button from "./Components/Charts/Button";
-import LifeTime from "./Components/Charts/FirstSide/LifeTime";
-import Past30 from "./Components/Charts/FirstSide/Past30";
-import PastWeek from "./Components/Charts/FirstSide/PastWeek";
-import Yesterday from "./Components/Charts/FirstSide/Yesterday";
 
 function Charts() {
   return (
@@ -17,12 +13,7 @@ function Charts() {
         {/* left */}
         {/* left */}
         <div className="w-full lg:w-[272px]">
-          <div className="flex flex-col sm:flex-row flex-wrap gap-x-3 gap-y-3 items-stretch lg:flex-col lg:gap-x-0 lg:gap-y-4">
-            <Yesterday />
-            <PastWeek />
-            <Past30 />
-            <LifeTime />
-          </div>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-x-3 gap-y-3 items-stretch lg:flex-col lg:gap-x-0 lg:gap-y-4"></div>
         </div>
         {/* right */}
         {/* right */}
