@@ -27,7 +27,7 @@ export function Yesterday({ typeSensor, id, sensorId }) {
     } else {
       url = apiTotalSensor(iot, sensor, from, to, 1);
     }
-
+    console.log("huhu");
     AxiosGet(url)
       .then((res) => {
         console.log("resss", res);
