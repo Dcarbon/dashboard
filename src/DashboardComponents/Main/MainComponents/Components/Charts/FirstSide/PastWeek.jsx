@@ -2,75 +2,75 @@ import { AxiosGet } from "src/redux/sagaUtils";
 import TotalBoxBorder from "../TotalBoxBorder";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { apiTotalCarbon, apiTotalSensor } from "./handle";
-import { hexToString } from "src/tools/const";
+import { SENSOR__UNIT } from "src/tools/const";
 
 export function PastWeek({ typeSensor, id, sensorId }) {
   const [data, setData] = useState(0);
   const [loading, setLoading] = useState(false);
+  // Hàm lấy dữ liệu tuần trước
+  // Hàm lấy dữ liệu tuần trước
+  // Hàm lấy dữ liệu tuần trước
+  // Hàm lấy dữ liệu tuần trước
   const getPastWeek = useCallback((type, sensor, iot) => {
     setLoading(true);
     let newDate = new Date();
-    newDate.setDate(newDate.getDate() - 1);
     newDate.setHours(23, 59, 59);
-    console.log("new to: =======", newDate);
+    newDate.setDate(newDate.getDate() - 1);
     let to = new Date(newDate.getTime());
-    newDate.setDate(newDate.getDate() - 6);
-    newDate.setHours(0, 0, 0, 0);
-    console.log("new from: =======", newDate);
+    newDate.setDate(newDate.getDate() - 7);
     let from = new Date(newDate.getTime());
 
     let url = "";
-    console.log("getPastWeek --------------------- ");
-    console.log("getPastWeek --------------------- ");
-    console.log("getPastWeek --------------------- ");
-    console.log("getPastWeek --------------------- ");
-    console.log("getPastWeek --------------------- ", type);
     if (type === 0) {
       url = apiTotalCarbon(iot, from, to);
     } else {
       url = apiTotalSensor(iot, sensor, from, to, 1);
     }
-    console.log("getPastWeek --------------------- ", url);
+    console.log("getPastWeek --------------------------------", url);
     AxiosGet(url)
       .then((res) => {
-        console.log("resss", res);
-        if (type === 0) {
-          setData(res.data);
-        } else {
-          setData(res.data?.metrics);
-        }
+        console.log("getPastWeek ________res ", res);
+        let values = [];
+        values = res.data?.map(
+          (item) => item?.[type === 0 ? "carbon" : "value"] ?? 0
+        );
+        setData(values);
       })
       .catch((er) => console.log("getPastWeek failed ", er))
       .finally(() => setLoading(false));
   }, []);
+
+  // Lấy dữ liệu tuần trước nếu đủ điều kiện
+  // Lấy dữ liệu tuần trước nếu đủ điều kiện
+  // Lấy dữ liệu tuần trước nếu đủ điều kiện
+  // Lấy dữ liệu tuần trước nếu đủ điều kiện
   useEffect(() => {
     console.log("user effect getPastWeek", { id, sensorId, typeSensor });
     if ((id || sensorId) && typeSensor >= 0) {
       getPastWeek(typeSensor, sensorId, id);
     }
   }, [getPastWeek, id, sensorId, typeSensor]);
+  // Từ data =>number
+  // Từ data =>number
+  // Từ data =>number
+  // Từ data =>number
   const number = useMemo(() => {
     if (data?.length > 0) {
-      if (typeSensor === 0) {
-        return data[0]?.carbon;
-      } else {
-        let checkdata = data[0]?.data;
-        if (checkdata) {
-          let amountData = hexToString(data[0]?.data);
-          if (amountData) {
-            return JSON?.parse(amountData)?.indicator?.value;
-          }
-        }
-      }
+      let total = 0;
+      let length = data?.length;
+      total = data.reduce((prev, curr) => prev + curr);
+      return total / length;
     }
     return 0;
-  }, [data, typeSensor]);
+  }, [data]);
+
   return (
     <TotalBoxBorder
       className={"border-r border-b md:border-b-0"}
       title={"Average past week"}
       number={number}
       loading={loading}
+      unit={SENSOR__UNIT[typeSensor]}
     />
   );
 }

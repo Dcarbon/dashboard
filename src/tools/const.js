@@ -85,6 +85,23 @@ export const SENSOR__TYPE = {
   Biogas: 21,
   Biomass: 41,
 };
+export const SENSOR__UNIT = {
+  0: <span>(carbon)</span>,
+  1: <span>(Flow)</span>,
+  2: <span>(kWh)</span>,
+  21: <span>(kWh)</span>,
+  3: <span>(GPS)</span>,
+  4: (
+    <span>
+      (<sup>&deg;</sup>C)
+    </span>
+  ),
+  41: (
+    <span>
+      (m<sup>3</sup>)
+    </span>
+  ),
+};
 export const SENSOR__TYPE_TEXT = {
   0: "None",
   1: "Flow",

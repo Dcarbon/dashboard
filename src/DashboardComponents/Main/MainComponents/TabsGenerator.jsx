@@ -43,18 +43,6 @@ function TabsGenerator({ selectedSensor, setSelectedSensor, setTypeSensor }) {
                   onClick={() => handleClick(item.id, item.type)}
                 />
               ))}
-              {/* delete  */}
-              {/* delete  */}
-              {/* delete  */}
-              {/* delete  */}
-              {/* delete  */}
-              {[0, 30, 4, 123, 412341, 51, 112341, 5682].map((item) => (
-                <LabelTab
-                  key={"item+" + item}
-                  text={"test " + item}
-                  onClick={() => handleClick(item.id)}
-                />
-              ))}
             </ul>
           </ScrollBox>
         </div>

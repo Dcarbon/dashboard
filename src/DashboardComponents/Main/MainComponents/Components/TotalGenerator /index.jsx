@@ -2,6 +2,8 @@ import { useCurrentIOTState } from "src/DashboardComponents/handleData";
 import { SENSOR__TYPE_TEXT } from "src/tools/const";
 import { Yesterday } from "../Charts/FirstSide/Yesterday";
 import { PastWeek } from "../Charts/FirstSide/PastWeek";
+import { Past30 } from "../Charts/FirstSide/Past30";
+import { AllTime } from "../Charts/FirstSide/AllTime";
 
 function TotalGenerator({ typeSensor, sensorId }) {
   const [currentIot] = useCurrentIOTState();
@@ -35,7 +37,7 @@ function TotalGenerator({ typeSensor, sensorId }) {
               (all generator)
             </p>
           </div>
-          <h3 className="text-H-M leading-H-M text-white">0</h3>
+          <h3 className="text-H-M leading-H-M text-white">000000</h3>
         </div>
         <div className="flex-1">
           <div className="flex flex-wrap md:flex-nowrap border border-extended-700 rounded-md ">
@@ -47,10 +49,18 @@ function TotalGenerator({ typeSensor, sensorId }) {
             <PastWeek
               sensorId={sensorId}
               typeSensor={typeSensor}
-              id={sensorId}
+              id={currentIot}
             />
-            {/*   <Past30 typeSensor={typeSensor} id={sensorId} />
-            <AllTime typeSensor={typeSensor} id={sensorId} /> */}
+            <Past30
+              typeSensor={typeSensor}
+              id={currentIot}
+              sensorId={sensorId}
+            />
+            <AllTime
+              typeSensor={typeSensor}
+              id={currentIot}
+              sensorId={sensorId}
+            />
           </div>
         </div>
       </div>
