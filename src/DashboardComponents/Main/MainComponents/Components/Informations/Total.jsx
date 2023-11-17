@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from "react";
+import { getAmount } from "src/DashboardComponents/handleConfig";
 import {
   useGetTotalIot_byProject,
   useGet_Total_Project_Minted,
   useIOTState,
   useProjectInformation,
 } from "src/DashboardComponents/handleData";
-import { configHexAmount } from "src/tools/const";
 
 function Total() {
   const iotState = useIOTState();
@@ -29,9 +29,10 @@ function Total() {
   }, [handleGetProjectTotal, listIotId, projectTotal]);
 
   const handleTotalCarbon = (arr = []) => {
+    // console.log("handleTotal", arr);
     let total = 0;
     arr.forEach((item) => {
-      total += Number(configHexAmount(item[0]?.amount)) || 0;
+      total += Number(getAmount(item[0]?.amount)) || 0;
     });
 
     return total;

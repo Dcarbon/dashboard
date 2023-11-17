@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { CMS_HOST } from "src/redux/handle";
 
 const filesDir = (str) => `/files/${str}`;
@@ -157,13 +156,7 @@ function hexToString(hex) {
   }
   return string;
 }
-function configHexAmount(amount) {
-  const hexAmount = new BigNumber(amount);
-  const reduceAmount = hexAmount.div("1e9");
-  let fixed = reduceAmount.toFixed(2);
 
-  return fixed;
-}
 const handleAttributes = (res) =>
   res?.attributes ?? res?.data?.attributes ?? null;
 const handleMeta = (res) => res?.meta ?? res?.data?.meta;
@@ -183,5 +176,4 @@ export {
   handleAttributes,
   handleMeta,
   handleImage,
-  configHexAmount,
 };

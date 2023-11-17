@@ -1,7 +1,9 @@
 import BigNumber from "bignumber.js";
 
 import dateFormat from "dateformat";
-export const roundup_second = (time) => Math.round(time?.getTime() / 1000);
+export const roundup_second = (time) => {
+  return time ? Math.round(time?.getTime() / 1000) : 1;
+};
 
 export const DURATION__TYPE = {
   day: "day",
@@ -15,7 +17,11 @@ export const getAmount = (item) => {
   const hexAmount = new BigNumber(item);
   const reduceAmount = hexAmount.div("1e9");
   let fixed = reduceAmount.toFixed(2);
-
+  return fixed;
+};
+export const getAmountbyNumber = (numb) => {
+  const reduceAmount = numb / 1e9;
+  let fixed = reduceAmount.toFixed(2);
   return fixed;
 };
 export const getSum = (prev, next) => Number(prev) + Number(next);

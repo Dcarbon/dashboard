@@ -3,6 +3,7 @@ import TotalBoxBorder from "../TotalBoxBorder";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { apiTotalCarbon, apiTotalSensor } from "./handle";
 import { SENSOR__UNIT } from "src/tools/const";
+import { getAmountbyNumber } from "src/DashboardComponents/handleConfig";
 
 export function Yesterday({ typeSensor, id, sensorId }) {
   const [data, setData] = useState(0);
@@ -61,7 +62,7 @@ export function Yesterday({ typeSensor, id, sensorId }) {
     <TotalBoxBorder
       className={"border-r border-b md:border-b-0"}
       title={"Yesterday"}
-      number={number}
+      number={getAmountbyNumber(number)}
       loading={loading}
       unit={SENSOR__UNIT[typeSensor]}
     />

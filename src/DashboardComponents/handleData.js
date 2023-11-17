@@ -8,9 +8,13 @@ import DcarbonAPI from "src/tools/DcarbonAPI";
 import { getAmount, roundup_second } from "./handleConfig";
 import { AxiosGet } from "src/redux/sagaUtils";
 import axios from "axios";
-import { configHexAmount } from "src/tools/const";
+import { apiTotalSensor } from "./Main/MainComponents/Components/Charts/FirstSide/handle";
 
 const thisAPI = new DcarbonAPI();
+export function useGetProject() {
+  const projectState = useSelector(thisAPI.GetProjectState);
+  return projectState.project;
+}
 export function useAllFeatures() {
   const dispatch = useDispatch();
   const dashboardState = useSelector(thisAPI.DashboardState);
@@ -167,85 +171,59 @@ export function useGetTotalCarbon(iotID) {
   return total_minted ?? 0;
 }
 
-export function useGetGenerated(list, type, sensorId) {
-  const [loaded, setLoaded] = useState(false);
+// Lấy tổng số giá trị sensor tạo ra
+// Lấy tổng số giá trị sensor tạo ra
+// Lấy tổng số giá trị sensor tạo ra
+export function useTotalSensorGenerated(list, type, projectId, sensorId) {
   const [loading, setLoading] = useState(false);
-  const projectState = useSelector(thisAPI.GetProjectState);
+  const [listItem, setListItem] = useState([]);
   useEffect(() => {
-    if (list?.length > 0 || sensorId) {
-      setLoaded(false);
-    }
-  }, [list?.length, sensorId]);
-
-  useEffect(() => {
-    if (list?.length > 0 && !loaded) {
-      const numbType = Number(type);
-      const newDate = new Date();
-      const to = roundup_second(newDate);
-      const from = to - 60 * 60 * 24 * 10;
+    if (projectId && Number(type) > 0) {
+      // console.log("useTotalSensorGenerated", projectId);
+      var to = new Date();
       let idList = [];
       let promisesList = [];
       let url = "";
-      idList = list.map((item) => item.id);
-      if (numbType >= 0) {
-        setLoading(true);
-        promisesList = idList.map((item) => {
-          if (numbType === 0) {
-            // console.log("Get Api mint sign = ", numbType);
-            url = `iots/${item}/mint-sign?from=${from}&to=${to}`;
-          } else {
-            // console.log("Get Api aggregate = ", numbType);
-            url = `sensors/sm/aggregate?iotId=${item}&sensorId=${sensorId}&from=${from}&to=${to}&interval=1`;
-          }
-          // console.log("----------------------url", url);
-          return AxiosGet(url);
-        });
-        //
-        axios
-          .all(promisesList)
-          .then((res) => {
-            console.log("GET -------- numbType = " + numbType, res);
+      idList = list?.map((item) => item.id);
 
-            let newValueArr = [];
-            console.log("Lọc mảng trả về, lấy data");
-            res.forEach((itemRes, idx) => {
-              let newData = itemRes?.data;
-              // itemRes.data === []
-              let checkLength = newData?.length > 0;
-              // console.log("newData-----", newData);
-
-              if (checkLength) {
-                newValueArr = newData.map((itemData) => {
-                  // nếu numbType = 0 => cacbon => amount => handleAmount
-                  // nếu numbType > 0 => sensor => value => handleValue
-                  if (numbType === 0) {
-                    return configHexAmount(itemData?.amount);
-                  } else {
-                    return itemData?.value;
-                  }
-                });
-                // console.log("newValueArr", newValueArr);
-              }
-              newData[idx] = {
-                id: list[idx].id,
-                value: checkLength ? newValueArr : 0,
-              };
-            });
-          })
-          .catch((error) =>
-            console.error(
-              // "Promises all GET -------- numbType = " + numbType,
-              error
-            )
+      setLoading(true);
+      promisesList = idList?.map((item) => {
+        url = apiTotalSensor(item, sensorId, 0, to, 2);
+        return AxiosGet(url);
+      });
+      //
+      axios
+        .all(promisesList)
+        .then((res) => {
+          // console.log("=====================================");
+          // console.log("===useTotalSensorGenerated===");
+          // console.log("=====================================");
+          // console.log("=====================================");
+          // console.log("=====================================");
+          // console.log("=====================================");
+          // console.log("=====================================");
+          // console.log("=====================================");
+          // console.log("=====================================");
+          // console.log("=====================================");
+          // console.log("=====================================", list);
+          // console.log("=====================================");
+          // console.log("=====================================", res);
+          const newArr = res.map((item, idx) => ({
+            id: list[idx].id,
+            data: item.data,
+          }));
+          setListItem(newArr);
+        })
+        .catch((error) =>
+          console.error(
+            // "Promises all GET -------- numbType = " + numbType,
+            error
           )
-          .finally(() => {
-            setLoaded(true);
-            setLoading(false);
-          });
-      } else {
-        console.error("Type không hợp lệ");
-      }
+        )
+        .finally(() => {
+          setLoading(false);
+        });
     }
-  }, [list, loaded, sensorId, type]);
-  return { data: projectState?.project_generated || 0, loading };
+  }, [list, projectId, sensorId, type]);
+  return { data: listItem, loading };
 }

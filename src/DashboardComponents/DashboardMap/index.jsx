@@ -3,7 +3,7 @@ import { MapInitProperties } from "src/constants/mapbox";
 import Header from "../Header";
 import { useRouter } from "next/router";
 import { useCurrentIOTState } from "../handleData";
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 import ImageDialog from "../Main/MainComponents/Image/ImageDialog";
 import Footer from "../Footer";
 import Main from "../Main";
@@ -39,15 +39,7 @@ export default function DashboardMap() {
         <div className="h-[50vh] lg:h-full">
           <div className="flex flex-col w-full h-full">
             <div className="flex-1">
-              <Map
-                {...MapInitProperties}
-                onLoad={() => {
-                  console.log("onLoad evnt");
-                }}
-                onResize={() => {
-                  console.log("onResize evnt");
-                }}
-              />
+              <Map {...MapInitProperties} />
             </div>
             <div className={`hidden ${!isShowMain ? "lg:block" : ""}`}>
               {currentIOT <= 0 && <Footer />}

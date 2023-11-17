@@ -31,25 +31,25 @@ const dashboardReducer = (state = initDashboardState, action) => {
         error: null,
         error_code: null,
         latest: action.type,
-        total_project_minted: 0,
+        total_project_minted: [],
       };
     case DashboardAct.TOTAL_PROJECT_MINTED.SUCCESS:
-      console.log("TOTAL_PROJECT_MINTED---------------SUCCESS ", action);
+      // console.log("TOTAL_PROJECT_MINTED---------------SUCCESS ", action);
+      let newArr = action.response?.map((item) => item[0]);
       return {
         ...state,
         latest: action.type,
         loading: false,
-        total_project_minted: action?.response,
+        total_project_minted: newArr,
       };
     case DashboardAct.TOTAL_PROJECT_MINTED.FAILURE:
-      console.log("TOTAL_PROJECT_MINTED---------------FAILURE ", action);
+      // console.log("TOTAL_PROJECT_MINTED---------------FAILURE ", action);
       return {
         ...state,
         latest: action.type,
         loading: false,
         error: res.error,
         error_code: res.error_code,
-        total_project_minted: -1,
       };
     //
     //

@@ -6,7 +6,7 @@ import {
   useIOTState,
 } from "src/DashboardComponents/handleData";
 
-function TabsIOT() {
+function TabsIOT({ open }) {
   const iotState = useIOTState();
   const iots_by_project = useMemo(
     () => iotState?.iots_by_project,
@@ -17,9 +17,9 @@ function TabsIOT() {
   const [currentId] = useCurrentIOTState();
 
   return (
-    <div>
+    <div className={open ? "block" : "  lg:block"}>
       {iots_by_project?.length > 0 && (
-        <ul className="mt-4 inline-flex gap-8 flex-wrap">
+        <ul className="mt-4 flex flex-col md:flex-row lg:flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-6">
           {iots_by_project?.map((item) => {
             const isActive = Boolean(Number(currentId) === Number(item?.id));
             return (

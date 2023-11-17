@@ -14,22 +14,28 @@ function GET_ALL_FEATURES() {
   return AxiosGet(url);
 }
 
-function TOTAL_PROJECT_MINTED(action) {
+async function TOTAL_PROJECT_MINTED(action) {
   const listIOT = action.payload.listIOT;
   const newDate = new Date();
   const toDay = roundup_second(newDate);
   newDate.setDate(newDate.getDate() - 5);
   const beforeDay = roundup_second(newDate);
   if (listIOT?.length > 0) {
-    const listAxiosGet = listIOT?.map((item) =>
-      AxiosGet(`iots/${item}/mint-sign?from=${beforeDay}&to=${toDay}`)
-    );
+    console.log("listIOT", listIOT);
+    const listAxiosGet = listIOT?.map((item) => {
+      console.log(
+        " ______________url",
+        `iots/${item}/mint-sign?from=${beforeDay}&to=${toDay}`
+      );
+      return AxiosGet(`iots/${item}/mint-sign?from=${beforeDay}&to=${toDay}`);
+    });
     try {
-      return axios.all(listAxiosGet).then((res) => {
-        return {
-          data: res.map((item) => item.data),
-        };
-      });
+      const res = await axios.all(listAxiosGet);
+
+      console.log("listAxiosGet", res);
+      return {
+        data: res.map((item_1) => item_1.data),
+      };
     } catch (error) {
       console.log("AxiosGet TOTAL_PROJECT_MINTED", error);
       alert("AxiosGet TOTAL_PROJECT_MINTED");

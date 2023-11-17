@@ -3,6 +3,7 @@ import TotalBoxBorder from "../TotalBoxBorder";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { apiTotalCarbon, apiTotalSensor } from "./handle";
 import { SENSOR__UNIT } from "src/tools/const";
+import { getAmountbyNumber } from "src/DashboardComponents/handleConfig";
 
 export function Past30({ typeSensor, id, sensorId }) {
   const [data, setData] = useState(0);
@@ -15,26 +16,26 @@ export function Past30({ typeSensor, id, sensorId }) {
     setLoading(true);
     let newDate = new Date();
     newDate.setHours(23, 59, 59);
-    console.log("new to  : =======", newDate);
+    // console.log("new to  : =======", newDate);
     let to = new Date(newDate.getTime());
     newDate.setMonth(newDate.getMonth() - 1);
 
-    console.log("new from: =======", newDate);
+    // console.log("new from: =======", newDate);
     let from = new Date(newDate.getTime());
 
     let url = "";
-    console.log("getPast30 --------------------- ");
-    console.log("getPast30 --------------------- ");
-    console.log("getPast30 --------------------- ", type);
+    // console.log("getPast30 --------------------- ");
+    // console.log("getPast30 --------------------- ");
+    // console.log("getPast30 --------------------- ", type);
     if (type === 0) {
       url = apiTotalCarbon(iot, from, to);
     } else {
       url = apiTotalSensor(iot, sensor, from, to, 1);
     }
-    console.log("getPast30 --------------------------------", url);
+    // console.log("getPast30 --------------------------------", url);
     AxiosGet(url)
       .then((res) => {
-        console.log("getPast30 ________res ", res);
+        // console.log("getPast30 ________res ", res);
         let values = [];
         values = res.data?.map(
           (item) => item?.[type === 0 ? "carbon" : "value"] ?? 0
@@ -70,7 +71,7 @@ export function Past30({ typeSensor, id, sensorId }) {
     <TotalBoxBorder
       className={"border-r border-b md:border-b-0"}
       title={"Past 30 days"}
-      number={number}
+      number={getAmountbyNumber(number)}
       loading={loading}
       unit={SENSOR__UNIT[typeSensor]}
     />

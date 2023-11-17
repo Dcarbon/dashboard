@@ -4,7 +4,6 @@ import Information from "./MainComponents/Informations";
 import Charts from "./MainComponents/Charts";
 import ChevronUp from "./ChevronUp";
 import ImageProject from "./MainComponents/Image/ImageProject";
-import TabsIOT from "./MainComponents/TabsIOT";
 import TabsGenerator from "./MainComponents/TabsGenerator";
 import { useState } from "react";
 import { useIOTState } from "../handleData";
@@ -61,14 +60,13 @@ function Main({ setIsShowMain, isShowMain, isShow, setIsShow }) {
             {/*  */}
             {/*  */}
             {/*  */}
-            <ThisContainer className={"bg-extended-800 lg:px-7"}>
+            <ThisContainer className={"bg-extended-800 lg:p-7"}>
               <div className="p-4">
                 <TotalGenerator
                   typeSensor={typeSensor}
                   sensorId={selectedSensor}
                 />
                 <Charts />
-                <TabsIOT />
               </div>
             </ThisContainer>
           </div>
