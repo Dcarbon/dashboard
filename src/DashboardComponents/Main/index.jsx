@@ -5,15 +5,37 @@ import Charts from "./MainComponents/Charts";
 import ChevronUp from "./ChevronUp";
 import ImageProject from "./MainComponents/Image/ImageProject";
 import TabsGenerator from "./MainComponents/TabsGenerator";
-import { useState } from "react";
-import { useIOTState } from "../handleData";
+import { useEffect, useState } from "react";
+import {
+  useGetProject,
+  useIots_by_projectId,
+  useIOTState,
+  useTotalSensorGenerated,
+} from "../handleData";
 import Footer from "../Footer";
 import TotalGenerator from "./MainComponents/Components/TotalGenerator ";
+import CircleLoading from "src/components/ui/Loading/CircleLoading";
 
 function Main({ setIsShowMain, isShowMain, isShow, setIsShow }) {
+  // Cencept
+  //
   const iotState = useIOTState();
   const [selectedSensor, setSelectedSensor] = useState(0);
   const [typeSensor, setTypeSensor] = useState(0);
+  // Các iot hiện tại nằm trong project
+  const iots_by_projectId = useIots_by_projectId();
+  // Lấy project Id hiện tại thông qua projectState
+  const projectState = useGetProject();
+  // Nhận số lượng iot sinh ra
+  const { data: totalSensorGenerated, loading } = useTotalSensorGenerated(
+    iots_by_projectId,
+    typeSensor,
+    projectState?.id ?? 0,
+    selectedSensor
+  );
+  useEffect(() => {
+    console.log("iotState      iotState", iotState);
+  }, [iotState]);
   return (
     iotState.iot && (
       <div className="relative bg-[#0B0B0B] w-full h-full border-t-2 border-t-extended-700 ">
@@ -61,13 +83,27 @@ function Main({ setIsShowMain, isShowMain, isShow, setIsShow }) {
             {/*  */}
             {/*  */}
             <ThisContainer className={"bg-extended-800 lg:p-7"}>
-              <div className="p-4">
-                <TotalGenerator
-                  typeSensor={typeSensor}
-                  sensorId={selectedSensor}
-                />
-                <Charts />
-              </div>
+              {loading ? (
+                <div className="p-4">
+                  <CircleLoading />
+                </div>
+              ) : totalSensorGenerated?.length ? (
+                <div className="p-4">
+                  <TotalGenerator
+                    typeSensor={typeSensor}
+                    sensorId={selectedSensor}
+                    loading={loading}
+                    totalSensorGenerated={totalSensorGenerated}
+                  />
+                  <Charts />
+                </div>
+              ) : (
+                <div className="p-4">
+                  <h1 className="p-6 text-center font-bold uppercase">
+                    This project have no Iots yet. Please try again later!
+                  </h1>
+                </div>
+              )}
             </ThisContainer>
           </div>
 

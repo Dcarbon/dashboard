@@ -3,11 +3,11 @@ import stls from "./ImageProject.module.scss";
 import Slider from "react-slick";
 import Image from "next/image";
 import { useProjectInformation } from "src/DashboardComponents/handleData";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 function ImageProject({ setIsShow }) {
   const projectInfo = useProjectInformation();
   return (
-    <div className="mt-10 pt-5">
+    <div className="mt-10 pt-5 px-4 lg:px-0">
       <h3 className="text-T-L leading-T-L text-extended-200 mb-5">
         Picture project
       </h3>

@@ -1,25 +1,30 @@
 import {
   useCurrentIOTState,
-  useTotalSensorGenerated,
-  useGetTotalIot_byProject,
   useGet_Total_Project_Minted,
-  useGetProject,
 } from "src/DashboardComponents/handleData";
 import { SENSOR__TYPE_TEXT } from "src/tools/const";
 import { Yesterday } from "../Charts/FirstSide/Yesterday";
 import { PastWeek } from "../Charts/FirstSide/PastWeek";
 import { Past30 } from "../Charts/FirstSide/Past30";
 import { AllTime } from "../Charts/FirstSide/AllTime";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
   getAmount,
   getAmountbyNumber,
 } from "src/DashboardComponents/handleConfig";
 
-function TotalGenerator({ typeSensor, sensorId }) {
-  const [currentIot] = useCurrentIOTState();
-  const totalIots = useGetTotalIot_byProject();
-  const projectState = useGetProject();
+function TotalGenerator({
+  typeSensor,
+  sensorId,
+  totalSensorGenerated,
+  loading,
+}) {
+  useEffect(() => {
+    console.log("totalSensorGenerated", totalSensorGenerated);
+  }, [totalSensorGenerated]);
+
+  // const [currentIot] = useCurrentIOTState();
+
   //
   //
   //
@@ -29,47 +34,60 @@ function TotalGenerator({ typeSensor, sensorId }) {
   // totalSensorGenerated là 1 mảng
   // mảng có các phần tử là sensor id
   // đi kèm nó là 1 mảng các giá trị đã sinh ra
-  const { data: totalSensorGenerated, loading } = useTotalSensorGenerated(
-    totalIots,
-    typeSensor,
-    projectState?.id ?? 0,
-    sensorId
-  );
-  // quy đổi giá trị của sensor thành số
-  const sensorValues = useMemo(
-    () =>
-      totalSensorGenerated?.map((item) => {
-        let newVal =
-          item?.data?.length > 0
-            ? item.data.reduce((prev, curr) => {
-                return {
-                  value: Number(prev.value) + Number(curr.value),
-                };
-              })
-            : { value: 0 };
 
-        return {
-          ...item,
-          total: newVal.value,
-        };
-      }),
-    [totalSensorGenerated]
-  );
+  // quy đổi giá trị của sensor thành số
+  // const sensorValues = useMemo(() => {
+  //   if (totalSensorGenerated) {
+  //     console.log("totalSensorGenerated", totalSensorGenerated);
+  //     totalSensorGenerated?.map((item) => {
+  //       let newItem = item?.data ?? [];
+  //       console.log("Step 1");
+  //       console.log("Step 1");
+  //       console.log("Step 1");
+  //       console.log("Step 1-------------------");
+  //       let newVal =
+  //         newItem.length > 0
+  //           ? item.data.reduce((prev, curr) => {
+  //               return {
+  //                 value: Number(prev.value) + Number(curr.value),
+  //               };
+  //             })
+  //           : [{ value: 0 }];
+
+  //       console.log("Step 1--------newVal-----------", item);
+  //       return {
+  //         ...item,
+  //         total: newVal.value ?? 0,
+  //       };
+  //     });
+  //   }
+  //   return [];
+  // }, [totalSensorGenerated]);
   // Lọc ra sensor hiện tại
-  const sensorGenerated = useMemo(
-    () => sensorValues?.find((item) => item.id === Number(currentIot)),
-    [currentIot, sensorValues]
-  );
-  // Tổng tất cả giá trị các sensor
-  const sensorTotal = useMemo(
-    () =>
-      sensorValues?.length > 0
-        ? sensorValues.reduce(
-            (pre, cur) => Number(pre?.total) + Number(cur?.total)
-          )
-        : 0,
-    [sensorValues]
-  );
+  // const sensorGenerated = useMemo(() => {
+  //   if (sensorValues) {
+  //     console.log("Step 2");
+  //     console.log("Step 2");
+  //     console.log("Step 2");
+  //     console.log("Step 2");
+  //     console.log("Step 2");
+  //     return sensorValues?.find((item) => item.id === Number(currentIot));
+  //   }
+  //   return undefined;
+  // }, [currentIot, sensorValues]);
+  // // Tổng tất cả giá trị các sensor
+  // const sensorTotal = useMemo(() => {
+  //   if (sensorValues) {
+  //     console.log("Step 3", sensorValues);
+  //     console.log("Step 3");
+  //     console.log("Step 3");
+  //     console.log("Step 3");
+  //     return sensorValues.reduce(
+  //       (pre, cur) => Number(pre?.total) + Number(cur?.total)
+  //     );
+  //   }
+  //   return 0;
+  // }, [sensorValues]);
 
   //
   //
@@ -78,47 +96,91 @@ function TotalGenerator({ typeSensor, sensorId }) {
   //
   //
   // IOT
-  const [projectTotal] = useGet_Total_Project_Minted();
+  // const [projectTotal] = useGet_Total_Project_Minted();
+
   // quy đổi giá trị của iot thành số
-  const iotValues = useMemo(
-    () =>
-      projectTotal?.map((item) => {
-        let newVal = item?.amount;
-        return {
-          iotId: item.iotId,
-          total: getAmount(newVal),
-        };
-      }),
-    [projectTotal]
-  );
+  // const iotValues = useMemo(() => {
+  //   if (projectTotal) {
+  //     console.log("projectTotal", projectTotal);
+  //     projectTotal?.map((item) => {
+  //       console.log("Step 4");
+  //       console.log("Step 4");
+  //       console.log("Step 4");
+  //       console.log("Step 4");
+  //       console.log("Step 4----------------");
+  //       let newVal = item?.amount;
+  //       return {
+  //         iotId: item?.iotId ?? 0,
+  //         total: getAmount(newVal),
+  //       };
+  //     });
+  //   }
+  //   return [];
+  // }, [projectTotal]);
   // Lọc iot hiện tại
-  const iotMinted = useMemo(
-    () =>
-      iotValues?.length > 0
-        ? iotValues.find((item) => item.iotId === Number(currentIot))
-        : [],
-    [currentIot, iotValues]
-  );
+  // const iotMinted = useMemo(() => {
+  //   if (iotValues) {
+  //     console.log("Step 5");
+  //     console.log("Step 5");
+  //     console.log("Step 5");
+  //     console.log("Step 5----------------");
+  //     return iotValues.find((item) => item.iotId === Number(currentIot));
+  //   }
+  //   return undefined;
+  // }, [currentIot, iotValues]);
   // Tổng giá trị của iots
-  const iotTotal = useMemo(
-    () =>
-      iotValues?.length > 0
-        ? iotValues.reduce(
-            (pre, cur) => Number(pre?.total) + Number(cur?.total)
-          )
-        : 0,
-    [iotValues]
-  );
-  const handleTitleTotal = (type) => {
-    let text = "Total carbon minted";
-    if (type) {
-      text = `Total ${SENSOR__TYPE_TEXT[type].toLowerCase()} generated`;
-    }
-    return text;
-  };
+  // const iotTotal = useMemo(() => {
+  //   if (iotValues) {
+  //     console.log("Step 6");
+  //     console.log("Step 6");
+  //     console.log("Step 6");
+  //     console.log("Step 6");
+  //     return iotValues.reduce(
+  //       (pre, cur) => Number(pre?.total) + Number(cur?.total)
+  //     );
+  //   }
+  //   return 0;
+  // }, [iotValues]);
+  // useEffect(() => {
+  //   console.log("sensor group -----------------------");
+  //   console.log("sensor group -----------------------");
+  //   console.log("sensor group -----------------------");
+  //   console.log("sensor group -----------------------");
+  //   console.log("sensorValues", sensorValues);
+  //   console.log("sensorGenerated", sensorGenerated);
+  //   console.log("sensorTotal", sensorTotal);
+  // }, [sensorGenerated, sensorTotal, sensorValues]);
+
+  // useEffect(() => {
+  //   console.log("iot group -----------------------");
+  //   console.log("iot group -----------------------");
+  //   console.log("iot group -----------------------");
+  //   console.log("iot group -----------------------");
+  //   console.log("iotValues", iotValues);
+  //   console.log("iotMinted", iotMinted);
+  //   console.log("iotTotal", iotTotal);
+  // }, [iotMinted, iotTotal, iotValues]);
+
+  // useEffect(() => {
+  //   console.log("-----------1111 -----------------------");
+  //   console.log("-----------1111 -----------------------");
+  //   console.log("-----------1111 -----------------------");
+  //   console.log("-----------1111 -----------------------");
+  //   console.log("sensorId", sensorId);
+  //   console.log("typeSensor", typeSensor);
+  //   console.log("currentIot", currentIot);
+  // }, [currentIot, sensorId, typeSensor]);
+
+  // const handleTitleTotal = (type) => {
+  //   let text = "Total carbon minted";
+  //   if (type) {
+  //     text = `Total ${SENSOR__TYPE_TEXT[type].toLowerCase()} generated`;
+  //   }
+  //   return text;
+  // };
   return (
     <div>
-      <div className="flex flex-wrap gap-8">
+      {/* <div className="flex flex-wrap gap-8">
         <div className="w-full lg:w-[170px]">
           <div>
             <p className="text-B-M leading-B-M text-extended-300">
@@ -159,7 +221,7 @@ function TotalGenerator({ typeSensor, sensorId }) {
             />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

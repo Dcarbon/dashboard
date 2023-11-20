@@ -15,21 +15,6 @@ export function useGetProject() {
   const projectState = useSelector(thisAPI.GetProjectState);
   return projectState.project;
 }
-export function useAllFeatures() {
-  const dispatch = useDispatch();
-  const dashboardState = useSelector(thisAPI.DashboardState);
-  const features = useMemo(
-    () => dashboardState?.all_features,
-    [dashboardState?.all_features]
-  );
-  useEffect(() => {
-    if (typeof features === "undefined") {
-      console.log("Request get all features available");
-      dispatch({ type: DashboardAct.GET_ALL_FEATURES.REQUEST });
-    }
-  }, [dispatch, features]);
-  return features;
-}
 
 //
 //
@@ -112,23 +97,7 @@ export function useGet_Total_Project_Minted() {
 }
 
 //
-//
-//
-//
-//
-export function useProjectInformation(projectID) {
-  const dispatch = useDispatch();
-  const projectState = useSelector(thisAPI.GetProjectState);
-  useEffect(() => {
-    if (projectID) {
-      dispatch({ type: ProjectACT.GET_PROJECT.REQUEST, payload: projectID });
-    }
-  }, [dispatch, projectID]);
-
-  return projectState?.project;
-}
-//
-export function useGetTotalIot_byProject(projectID) {
+export function useIots_by_projectId(projectID) {
   const dispatch = useDispatch();
   const iotState = useSelector(thisAPI.GetIOTState);
   useEffect(() => {

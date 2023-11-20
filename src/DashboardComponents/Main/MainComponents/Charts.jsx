@@ -4,7 +4,7 @@ import {
 } from "src/DashboardComponents/handleData";
 import Button from "./Components/Charts/Button";
 import TabsIOT from "./TabsIOT";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 function Charts() {
   const iotState = useIOTState();
@@ -23,12 +23,13 @@ function Charts() {
   //         "lng": 21.5030237
   //     }
   // }
+  const [mobileTabIots, setMobileTabIots] = useState(false);
   const [currentId] = useCurrentIOTState();
   console.log("iots_by_project", iots_by_project);
   // const activeIOT = useMemo(() => iots_by_project, [ ])
   return (
     <div className="py-8 lg:py-12">
-      <h3 className="text-T-M leading-T-M">
+      <h3 className="text-T-M leading-T-M mb-4">
         Select Generator to view data detail
       </h3>
       <div className="flex flex-col lg:flex-row gap-10">
@@ -41,19 +42,50 @@ function Charts() {
         {/* left */}
         {/* left */}
         <div className="w-full lg:w-[170px]">
-          <div className="bg-extended-200 border rounded-md">
-            <div className="text-extended-900">
-              <h3 className="text-T-S leading-T-S font-semibold">
-                Generator 1
-              </h3>
-              <div className="flex flex-row ">
-                <div></div>
-                <div></div>
+          <div className="bg-extended-200 border rounded-md text-extended-900 md:hidden">
+            <div
+              className="py-3 px-5 flex gap-4 justify-between items-center cursor-pointer "
+              onClick={() => setMobileTabIots(!mobileTabIots)}
+            >
+              <div>
+                <h4
+                  className={`text-T-S leading-T-S font-semibold text-extended-900`}
+                >
+                  Device IOT {currentId}
+                </h4>
+                <p
+                  className={`text-B-M leading-B-M  text-extended-700"
+                  `}
+                >
+                  <span
+                    className={`inline-block w-2 h-2 rounded-full bg-primary align-middle mr-2 mb-0.5`}
+                  />
+                  Active
+                </p>
               </div>
+              <span
+                className={` rounded-full overflow-hidden p-3 transition-transform ${
+                  mobileTabIots ? "rotate-180" : "rotate-0"
+                }`}
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.41 0.589844L6 5.16984L10.59 0.589844L12 1.99984L6 7.99984L0 1.99984L1.41 0.589844Z"
+                    fill="#323232"
+                  />
+                </svg>
+              </span>
             </div>
-            <span></span>
           </div>
-          <TabsIOT />
+          <div className={`${mobileTabIots ? "block" : "hidden md:block"}`}>
+            <TabsIOT />
+          </div>
         </div>
         {/* right */}
         {/* right */}

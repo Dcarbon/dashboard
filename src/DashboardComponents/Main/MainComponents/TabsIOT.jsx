@@ -19,7 +19,7 @@ function TabsIOT({ open }) {
   return (
     <div className={open ? "block" : "  lg:block"}>
       {iots_by_project?.length > 0 && (
-        <ul className="mt-4 flex flex-col md:flex-row lg:flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-6">
+        <ul className="mt-4 md:mt-0 flex flex-col md:flex-row lg:flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-6">
           {iots_by_project?.map((item) => {
             const isActive = Boolean(Number(currentId) === Number(item?.id));
             return (
@@ -27,7 +27,7 @@ function TabsIOT({ open }) {
                 key={"item-" + item?.id}
                 className={`border border-extended-600 rounded-md ${
                   isActive
-                    ? "bg-extended-100 hover:bg-extended-200"
+                    ? "bg-extended-100 hover:bg-extended-200 hidden md:block"
                     : "bg-extended-900 hover:bg-extended-800"
                 }  transition-all duration-300`}
               >
@@ -48,13 +48,13 @@ function TabsIOT({ open }) {
                       />
                       {isActive ? "Active" : "Inactived"}
                     </p>
-                    <p
+                    <h4
                       className={`text-T-M leading-T-M ${
                         isActive ? "text-extended-900" : "text-extended-300"
                       }`}
                     >
                       Device IOT {item?.id}
-                    </p>
+                    </h4>
                   </div>
                 </Link>
               </li>
