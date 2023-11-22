@@ -10,7 +10,7 @@ export const DURATION__TYPE = {
   month: "month",
   year: "year",
 };
-
+export const DURATION_TYPES = ["1W", "1M", "3M", "6M", "1Y", "All time"];
 export const oneHour = 60 * 60 * 1000;
 export const oneDay = 24 * oneHour;
 export const getAmount = (item) => {
@@ -29,12 +29,12 @@ export const getSum = (prev, next) => Number(prev) + Number(next);
 export const GET_STRING_DAY = (durType, time) => {
   if (time) {
     const newTime = new Date(time);
-    if (durType === DURATION__TYPE.day) {
+    if (durType < 3) {
       let prevTime = new Date(time - oneHour * 3);
       return (
-        dateFormat(prevTime, "HH:MM") + " - " + dateFormat(newTime, "HH:MM")
+        dateFormat(prevTime, "dd/ mm") + " - " + dateFormat(newTime, "HH:MM")
       );
-    } else if (durType === DURATION__TYPE.month) {
+    } else if (durType < 5 && durType > 3) {
       return dateFormat(newTime, "mmm dd, yyyy");
     } else {
       return dateFormat(newTime, "mmmm yyyy");
@@ -54,74 +54,47 @@ export const GET_STRING_DAY_LineChart = (durType, time) => {
   }
 };
 
-const COMPARE________ = (timeline, newIOT_minted, handle) => {
-  let newSeriesArr = [];
-  let onlyTime = [];
-  let onlyVal = [];
-  for (let index = 0; index < timeline.length; index++) {
-    const current = timeline[index]; // khoảng thời gian
-    const prev = index > 0 ? timeline[index - 1] : 0; //
-    // filter data có thời gian nhỏ hơn
-    const aggreeConditionsArr = newIOT_minted.filter((item) =>
-      handle(current, prev, item)
-    );
-    const newDataGroup = aggreeConditionsArr.map((item) =>
-      item?.carbon ? item?.carbon : 0
-    );
+export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
+  let sorted = [];
+  let newmap = [];
+  if (data) {
+    let initTime = 0;
+    let total = 0;
+    newmap = data.map((item) => {
+      let newTime = typeSensor === 0 ? item.createdAt : item.time;
+      let newValue = typeSensor === 0 ? item.carbon : item.value;
 
-    let amount = newDataGroup?.length > 0 ? newDataGroup.reduce(getSum) : 0;
-    current;
-    let returnVal = amount ?? "";
-    newSeriesArr[index] = {
-      x: current,
-      y: returnVal,
-    };
-    onlyTime[index] = current;
-    // onlyVal[index] = parseFloat(amount).toFixed(4);
-    onlyVal[index] = returnVal;
-  }
-  return {
-    newSeriesArr,
-    onlyTime,
-    onlyVal,
-  };
-};
-export const GET_DATA_SERIES = (timeline, iot_minted, durType) => {
-  let resultCompare = {};
-  let handle = null;
-  // console.log("-----", { timeline, iot_minted, durType });
-  const newIOT_minted = iot_minted ? [...iot_minted] : [];
-
-  switch (durType) {
-    case DURATION__TYPE.day:
-      handle = (current, prev, item) => {
-        let newCrAt = new Date(item?.createdAt);
-        let newTime = newCrAt.getTime();
-        return prev < newTime && newTime <= current && item?.carbon;
+      return {
+        time: new Date(newTime).getTime(),
+        value: newValue ? getAmountbyNumber(newValue) : "0",
       };
-      resultCompare = COMPARE________(timeline, newIOT_minted, handle);
-      break;
+    });
+    sorted = newmap.sort((a, b) => a?.time - b?.time);
 
-    case DURATION__TYPE.month:
-      handle = (current, prev, item) => {
-        let newCrAt = new Date(item?.createdAt);
-        let currentDate = new Date(current);
-        return newCrAt.getDate() === currentDate.getDate() && item?.carbon;
-      };
-      resultCompare = COMPARE________(timeline, newIOT_minted, handle);
+    if (durationType === 2) {
+      // đảo nghịch trở về ngày gần nhất lên đầu
+      let newReverseZA = sorted?.reverse() ?? [];
+      // cộng dồn về 5 ngày trước đó
+      let newReverse = [];
+      newReverseZA.forEach((val, idx) => {
+        // khi ở ngày thứ 5 trả ra kết quả và total = 0
+        if (idx % 5 === 0 && idx > 0) {
+          initTime = newReverseZA[idx - 6]?.time;
+          newReverse.push({
+            time: initTime,
+            value: total.toFixed(2),
+          });
+          total = 0;
+        } else {
+          total += Number(val?.value) ?? 0;
+        }
+      });
 
-      break;
-
-    case DURATION__TYPE.year:
-      break;
-    default:
-      break;
+      return newReverse.reverse();
+    } else {
+      return sorted;
+    }
   }
-  return {
-    newSeriesArr: resultCompare?.newSeriesArr,
-    onlyTime: resultCompare?.onlyTime,
-    onlyVal: resultCompare?.onlyVal,
-  };
 };
 //
 //
@@ -142,14 +115,7 @@ export const GET_DATA_SERIES = (timeline, iot_minted, durType) => {
 //
 //
 //
-export const optionsDefault = {
-  chart: {
-    type: "bar",
-    width: 200,
-    height: 170,
-    toolbar: { show: false },
-    zoom: { enabled: false },
-  },
+export const Options_DEFAULT = {
   dataLabels: {
     enabled: false,
   },
@@ -194,7 +160,8 @@ export const optionsDefault = {
   yaxis: {
     show: true,
     labels: {
-      show: false,
+      show: true,
+      align: "left",
     },
     axisBorder: {
       show: true,

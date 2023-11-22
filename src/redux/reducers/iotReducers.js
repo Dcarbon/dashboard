@@ -2,16 +2,17 @@ import { IOTAct } from "../actions/iotAction";
 import { handleResponse } from "../handle";
 
 export const initIotState = {
+  all_iots: null,
   iot: null,
   count: null,
   iot_minted: null,
+  iots_minted: null,
   total_minted: null,
   error: null,
   error_code: null,
   latest: "",
   loading: false,
-  all_features: null,
-  currentIOT: 0,
+  current: 0,
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -117,6 +118,50 @@ const iotReducer = (state = initIotState, action) => {
         error_code: res.error_code,
         latest: action.type,
       };
+    //
+    //
+    //
+    //
+    // get all iot
+    //
+    //
+    case IOTAct.GET_all_IOT.REQUEST:
+      // console.log("---------------request ", { action, res });
+      return {
+        ...state,
+        loading: false,
+        all_iots: null,
+        error: null,
+        error_code: null,
+        latest: action.type,
+      };
+    case IOTAct.GET_all_IOT.SUCCESS:
+      return {
+        ...state,
+        loading: true,
+        all_iots: res.data?.features ?? [],
+        latest: action.type,
+      };
+    case IOTAct.GET_all_IOT.FAILURE:
+      // console.log("---------------FAILURE ", res);
+      return {
+        ...state,
+        loading: true,
+        error: res.error,
+        error_code: res.error_code,
+        latest: action.type,
+      };
+
+    //
+    //
+    //
+    //
+    //
+    // Get Iot minted
+    //
+    //
+    //
+    //
     case IOTAct.GET_IOT_MINTED.REQUEST:
       // console.log("GET_IOT_MINTED---------------request ", { action, res });
       return {
@@ -143,6 +188,16 @@ const iotReducer = (state = initIotState, action) => {
         error_code: res.error_code,
         latest: action.type,
       };
+
+    //
+    //
+    //
+    //
+    // GET_IOT_TOTAL_MINTED
+    //
+    //
+    //
+    //
     case IOTAct.GET_IOT_TOTAL_MINTED.REQUEST:
       // console.log("GET_IOT_MINTED---------------request ", { action, res });
       return {
@@ -200,7 +255,46 @@ const iotReducer = (state = initIotState, action) => {
         error_code: res.error_code,
         latest: action.type,
       };
-
+    //
+    //
+    //
+    //
+    //
+    case IOTAct.GET_IOTs_MINTED.REQUEST:
+      // console.log("GET_IOT_MINTED---------------request ", { action, res });
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        error_code: null,
+        latest: action.type,
+        iots_minted: [],
+      };
+    case IOTAct.GET_IOTs_MINTED.SUCCESS:
+      // console.log("GET_IOTs_byProject---------------SUCCESS ", res);
+      return {
+        ...state,
+        loading: true,
+        iots_minted: res.data,
+        latest: action.type,
+      };
+    case IOTAct.GET_IOTs_MINTED.FAILURE:
+      // console.log("GET_IOT_MINTED---------------FAILURE ", res);
+      return {
+        ...state,
+        loading: true,
+        error: res.error,
+        error_code: res.error_code,
+        latest: action.type,
+      };
+    //
+    //
+    case IOTAct.SET_CURRENT_IOT:
+      return {
+        ...state,
+        latest: action.type,
+        current: action.payload,
+      };
     //
     //
     //

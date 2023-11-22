@@ -7,11 +7,10 @@ import { Fragment, useState } from "react";
 import stls from "./search.module.scss";
 import Collapse from "src/components/ui/Collapse";
 import ScrollBox from "src/components/ui/ScrollBox";
-import { useAllFeatures } from "../handleData";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import { DashboardAct } from "src/redux/actions/dashboardAction";
-import { IOTAct } from "src/redux/actions/iotAction";
+// import { useDispatch } from "react-redux";
+// import { IOTAct } from "src/redux/actions/iotAction";
+import { useGet_all_iot } from "src/hook/useIOT";
 function Search() {
   const [isShowList, setIsShowList] = useState(false);
   return (
@@ -74,12 +73,8 @@ function Field({ setIsShowList, isShowList }) {
 // List
 function List({ setIsShowList, isShowList }) {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const features = useAllFeatures();
-  const handleReset = () => {
-    dispatch({ type: IOTAct.CLEAR_for_dashboard });
-    dispatch({ type: DashboardAct.RESET });
-  };
+  const all_iots = useGet_all_iot();
+
   return (
     <div
       className={`flex flex-col max-h-56 overflow-hidden rounded-md border ${
@@ -89,7 +84,7 @@ function List({ setIsShowList, isShowList }) {
       <ScrollBox>
         <Collapse isOpen={isShowList}>
           <ul className="py-3 px-2 bg-extended-800">
-            {features?.map((item) => {
+            {all_iots?.map((item) => {
               let id = item?.properties?.id;
               let coordinates = item.geometry?.coordinates;
               let check = Boolean(Number(id) === Number(router?.query?.iot));
@@ -101,7 +96,7 @@ function List({ setIsShowList, isShowList }) {
                   }`}
                   onClick={() => {
                     setIsShowList(false);
-                    handleReset();
+                    // handleReset();
                     router.push(router.pathname + `?iot=` + id);
                   }}
                 >

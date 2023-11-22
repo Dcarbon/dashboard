@@ -1,26 +1,23 @@
 import { useRef, useEffect } from "react";
-import {
-  useGetSensorsByIot,
-  useIOTState,
-} from "src/DashboardComponents/handleData";
 import { SENSOR__TYPE, SENSOR__TYPE_TEXT } from "src/tools/const";
 import ScrollBox from "src/components/ui/ScrollBox";
+import { useIot } from "src/hook/useIOT";
+import { useSensors } from "src/hook/useSensor";
 
 function TabsGenerator({ selectedSensor, setSelectedSensor, setTypeSensor }) {
   const listREF = useRef(null);
-  const iotState = useIOTState();
-  const [sensors, setSensors] = useGetSensorsByIot(undefined);
+  const [iot] = useIot();
+  const [sensors, setSensors] = useSensors();
 
   const handleClick = (value, type) => {
     setSelectedSensor(value);
     setTypeSensor(type);
   };
   useEffect(() => {
-    if (!sensors && iotState?.iot?.id) {
-      setSensors(iotState?.iot?.id);
+    if (iot?.id) {
+      setSensors({ iotId: iot?.id });
     }
-  }, [iotState?.iot?.id, sensors, setSensors]);
-
+  }, [iot?.id, setSensors]);
   const handleLabelText = (type) => SENSOR__TYPE_TEXT[Number(type)];
   return (
     <div className="mt-8 pt-5 lg:px-4 xl:px-32">

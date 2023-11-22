@@ -1,13 +1,40 @@
-import { useProjectMinted } from "src/hook/useDashboard";
+import { useEffect } from "react";
+import { getSum } from "src/DashboardComponents/handleConfig";
+import {
+  useHandleIots_minted,
+  useIotState,
+  useIots_Minted,
+} from "src/hook/useIOT";
 
 function Total() {
-  const total = useProjectMinted();
-  console.log("total", total);
+  const iotState = useIotState();
+  const iots_inside = iotState.iots_by_project;
+
+  const [getTotal, setTotal] = useIots_Minted();
+  const collection = useHandleIots_minted(getTotal);
+  useEffect(() => {
+    if (iots_inside) {
+      setTotal(iots_inside);
+    }
+  }, [iots_inside, setTotal]);
+  const handleTotal = (collection) => {
+    if (collection?.length > 0) {
+      let newCollection = collection.reduce((prev, curr) => {
+        return {
+          ...prev,
+          amount: getSum(prev?.amount ?? 0, curr?.amount ?? 0),
+        };
+      });
+      return Number(newCollection.amount ?? 0).toFixed(2);
+    }
+    return 0;
+  };
   return (
     <div className="inline-block border-2 border-primary rounded-full px-5 py-2 mb-6">
       Total carbon credit earned{" "}
       <span className="text-primary text-T-M leading-T-M">
-        {/* {projectTotal ? handleTotalCarbon(projectTotal) : 0} */}
+        {/* {projectState.total_project_minted} */}
+        {handleTotal(collection)}
       </span>
     </div>
   );

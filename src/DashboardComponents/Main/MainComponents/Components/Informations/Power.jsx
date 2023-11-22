@@ -1,9 +1,9 @@
-import { useProjectInformation } from "src/DashboardComponents/handleData";
 import BoxBorder from "./components/Box";
 import { useMemo } from "react";
 import Li from "./components/liComponent";
+import { useProject } from "src/hook/useProject";
 function Power() {
-  const projectState = useProjectInformation();
+  const projectState = useProject();
   const specs = useMemo(
     () => projectState?.specs?.specs,
     [projectState?.specs?.specs]

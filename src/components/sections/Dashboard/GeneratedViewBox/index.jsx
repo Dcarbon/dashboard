@@ -6,7 +6,6 @@ import { DURATION__TYPE, GET_Payload, Get_list_time } from "./tools";
 import dateFormat from "dateformat";
 import SensorLineChart from "./SensorLineChart";
 import { useSelector } from "react-redux";
-import DcarbonAPI from "src/tools/DcarbonAPI";
 import { SENSOR__TYPE } from "src/tools/const";
 import stls from "./index.module.scss";
 import SelectDate_new from "./SelectDate_new";
@@ -24,9 +23,9 @@ function GeneratedViewBox({ iotSelected }) {
   const [listTab, setListTab] = useState([]);
 
   // Check IOT type
-  const newDcarbonAPI = new DcarbonAPI();
-  const IOT_state = useSelector(newDcarbonAPI.GetIOTState);
-  const SENSOR_state = useSelector(newDcarbonAPI.GetSensorsState);
+  const newDcarbonAPI = null;
+  const IOT_state = useSelector((state) => state.iotState);
+  const SENSOR_state = useSelector((state) => state.sensorsState);
   const iot_type = IOT_state?.iot?.type;
   const sensors = SENSOR_state?.sensors;
   const title = useMemo(() => {
@@ -161,7 +160,7 @@ function GeneratedViewBox({ iotSelected }) {
       {/* select type to show  */}
       {/* select type to show  */}
       {/* select type to show  */}
-      <div className='w-full' style={{ width: "100%" }}>
+      <div className="w-full" style={{ width: "100%" }}>
         <BoxBorderTop isPadding={false}>
           <SelectType
             iotSelected={iotSelected}
@@ -196,7 +195,7 @@ function GeneratedViewBox({ iotSelected }) {
                     setCarbonGenerated={setCarbonGenerated}
                   />
                 ) : (
-                  <div className='w-full h-60'></div>
+                  <div className="w-full h-60"></div>
                 )}
               </Box>
               {listTab.map((item, idx) => {
@@ -226,7 +225,7 @@ function GeneratedViewBox({ iotSelected }) {
                         list_time_by_duration={list_time_by_duration}
                       />
                     ) : (
-                      <div className='w-full h-60'></div>
+                      <div className="w-full h-60"></div>
                     )}
                   </Box>
                 );

@@ -1,45 +1,47 @@
-import { takeEvery } from "redux-saga/effects";
-import { AxiosGet, grpcCall } from "../sagaUtils";
+import { AxiosGet } from "../sagaUtils";
 import { SensorsACT } from "../actions/sensorsAction";
+import { handleTakeEvery } from "../handle";
+import { apiTotalSensor } from "src/DashboardComponents/Main/MainComponents/Components/Charts/TotalNumber/handle";
+import axios from "axios";
 
 export const watcherSensors = [
-  takeEvery(
-    SensorsACT.GET_SENSORS.REQUEST,
-    grpcCall(
-      getSensors,
-      SensorsACT.GET_SENSORS.SUCCESS,
-      SensorsACT.GET_SENSORS.FAILURE
-    )
-  ),
-  takeEvery(
-    SensorsACT.GET_SENSORS_METRICS.REQUEST,
-    grpcCall(
-      getSensorMetrics,
-      SensorsACT.GET_SENSORS_METRICS.SUCCESS,
-      SensorsACT.GET_SENSORS_METRICS.FAILURE
-    )
-  ),
-  takeEvery(
-    SensorsACT.GET_SENSORS_METRICS_BIO.REQUEST,
-    grpcCall(
-      getSensorMetrics,
-      SensorsACT.GET_SENSORS_METRICS_BIO.SUCCESS,
-      SensorsACT.GET_SENSORS_METRICS_BIO.FAILURE
-    )
-  ),
+  handleTakeEvery(getSensors, SensorsACT.GET_SENSORS),
+  handleTakeEvery(getSensorMetrics, SensorsACT.GET_SENSORS_METRICS),
+  handleTakeEvery(getSensorsGenerated, SensorsACT.getSensorsGenerated),
 ];
 function getSensors(action) {
-  // console.log("action", action);
   var url = `sensors/?skip=${action.payload.skip}&limit=${action.payload.limit}&iot_id=${action.payload.iotId}&iot_address=${action.payload.iotAddress}`;
   return AxiosGet(url);
 }
 function getSensorMetrics(action) {
-  // console.log("getSensorMetrics", action);
   var url = `sensors/sm?from=${action.payload.from}&to=${
     action?.payload.to
   }&iotId=${action.payload.iotId}&limit=${action.payload.limit}&skip=${
     action.payload.skip
   }&sensorId=${action.payload.sensorId}&sort=${action.payload.sort || 1}`;
-  // console.log("url", url);
+
   return AxiosGet(url);
+}
+
+async function getSensorsGenerated({ payload }) {
+  const listIOT = payload.list;
+  const sensorId = payload.sensorId;
+  const to = new Date();
+  if (listIOT?.length > 0) {
+    const listAxiosGet = listIOT?.map((item) => {
+      let url = apiTotalSensor(item, sensorId, 0, to, 2);
+      return AxiosGet(url);
+    });
+    try {
+      const res = await axios.all(listAxiosGet);
+      console.log("getSensorGenerated----------", res);
+      return {
+        data: res.map((item_1) => item_1.data),
+      };
+    } catch (error) {
+      console.log("AxiosGet getSensorGenerated", error);
+      return null;
+    }
+  }
+  return { data: [] };
 }

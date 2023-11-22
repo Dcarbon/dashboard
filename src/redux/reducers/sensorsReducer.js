@@ -3,12 +3,11 @@ import { handleResponse } from "../handle";
 export const initsensorsState = {
   sensors: null,
   sensor_metrics_: null,
-  sensor_metrics_bio: null,
+  sensors_generated: [],
   error: null,
   error_code: null,
   latest: "",
   loading: false,
-  loadingSensorFirstTime: false,
   sensor_id_: 0,
   energy_id: 0,
 };
@@ -88,30 +87,39 @@ const sensorsReducer = (state = initsensorsState, action) => {
         error_code: res.error_code,
         latest: action.type,
       };
-
-    case SensorsACT.GET_SENSORS_METRICS_BIO.REQUEST:
-      // console.warn("GET_SENSORS_METRICS---------------request ", {
-      //   action,
-      //   res,
-      // });
+    //
+    //
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    // get_Sensors_Generated
+    //
+    //
+    //
+    //
+    case SensorsACT.get_Sensors_Generated.REQUEST:
       return {
         ...state,
         loading: false,
         error: null,
         error_code: null,
         latest: action.type,
+        sensors_generated: [],
       };
-    case SensorsACT.GET_SENSORS_METRICS_BIO.SUCCESS:
-      // console.log("case SensorsACT.GET_SENSORS_METRICS.SUCCESS:", action);
-      // console.log("res----------------------------------------:", res);
+    case SensorsACT.get_Sensors_Generated.SUCCESS:
       return {
         ...state,
         loading: true,
-        sensor_metrics_bio: res.data?.metrics,
+        sensors_generated: res.data,
         latest: action.type,
       };
-    case SensorsACT.GET_SENSORS_METRICS_BIO.FAILURE:
-      // console.log("---------------FAILURE ", { action, res });
+    case SensorsACT.get_Sensors_Generated.FAILURE:
       return {
         ...state,
         loading: true,
@@ -119,6 +127,19 @@ const sensorsReducer = (state = initsensorsState, action) => {
         error_code: res.error_code,
         latest: action.type,
       };
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
 
     case SensorsACT.CLEAR_ERR:
       return {
@@ -133,15 +154,7 @@ const sensorsReducer = (state = initsensorsState, action) => {
         sensor_metrics_: null,
         sensor_metrics_bio: null,
       };
-    case SensorsACT.LOAD_SENSOR_1ST_TIME:
-      // console.log("payload load sendor 1 st", action);
-      return {
-        ...state,
-        loadingSensorFirstTime: action.payload,
-        sensors: null,
-        sensor_metrics_: null,
-        sensor_metrics_bio: null,
-      };
+
     default:
       return state;
   }

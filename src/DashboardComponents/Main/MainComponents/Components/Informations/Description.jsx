@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { useCurrentIOTState } from "src/DashboardComponents/handleData";
 import { imgsDir, imgsObject } from "src/tools/const";
 const Arrow = () => {
   return (
@@ -33,22 +32,7 @@ const Arrow = () => {
 
 function Description() {
   const boxRef = useRef(null);
-  // const [isShowBtn, setIsShowBtn] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [iotID] = useCurrentIOTState();
-
-  // useEffect(() => {
-  //   if (iotID) {
-  //     console.log("boxRef ------,");
-  //     console.log("boxRef ------,");
-  //     console.log("boxRef ------,");
-  //     console.log("boxRef ------,", boxRef);
-  //   }
-  // }, [iotID]);
-  // const projectDetail = useMemo(() => {
-  //   let newD = new DcarbonAPI();
-  //   return newD.ProjectInfo(?.id);
-  // }, [project?.id]);
 
   return (
     <div className="h-full lg:border lg:border-extended-700 rounded-md bg-extended-800">

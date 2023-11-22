@@ -1,28 +1,22 @@
-import {
-  useIOTState,
-  useProjectInformation,
-} from "src/DashboardComponents/handleData";
 import BoxBorder from "./components/Box";
 import { useMemo } from "react";
 import { IOT__TYPE_TEXT } from "src/tools/const";
 import dateFormat from "dateformat";
 import Li from "./components/liComponent";
+import { useProject } from "src/hook/useProject";
+import { useIot } from "src/hook/useIOT";
 function InfoProject() {
-  const iotState = useIOTState();
-  const projectState = useProjectInformation();
+  const [iot] = useIot();
+  const [project] = useProject();
   const infoModel = useMemo(
     () => ({
-      type: iotState?.iot?.type ?? 0,
-      implement: projectState?.createdAt
-        ? dateFormat(new Date(projectState?.createdAt), "dd/mm/yyyy")
+      type: iot.type ?? 0,
+      implement: project?.createdAt
+        ? dateFormat(new Date(project?.createdAt), "dd/mm/yyyy")
         : "",
-      area: projectState?.specs?.specs?.area ?? "",
+      area: project?.specs?.specs?.area ?? "",
     }),
-    [
-      iotState?.iot?.type,
-      projectState?.createdAt,
-      projectState?.specs?.specs?.area,
-    ]
+    [iot?.type, project?.createdAt, project?.specs?.specs?.area]
   );
   return (
     <BoxBorder

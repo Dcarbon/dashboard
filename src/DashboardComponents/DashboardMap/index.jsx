@@ -1,29 +1,21 @@
 import Map from "react-map-gl";
 import { MapInitProperties } from "src/constants/mapbox";
 import Header from "../Header";
-import { useRouter } from "next/router";
-import { useCurrentIOTState } from "../handleData";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ImageDialog from "../Main/MainComponents/Image/ImageDialog";
 import Footer from "../Footer";
 import Main from "../Main";
+import { useCurrentIOT } from "src/hook/useIOT";
 
 /**
  * @param {MapboxEvent} evnt
  * @returns
  */
 export default function DashboardMap() {
-  const router = useRouter();
   const [isShow, setIsShow] = useState(false);
-  const [currentIOT, setCurrentIOT] = useCurrentIOTState(0);
-  const [isLoadedQuery, setIsLoadedQuery] = useState(false);
+  const [currentIOT] = useCurrentIOT();
   const [isShowMain, setIsShowMain] = useState(false);
-  useEffect(() => {
-    if (router?.query?.iot !== currentIOT) {
-      setIsLoadedQuery(true);
-      setCurrentIOT(router?.query?.iot);
-    }
-  }, [currentIOT, isLoadedQuery, router, setCurrentIOT]);
+
   return (
     <div className="flex flex-col w-full lg:h-screen bg-extended-900 lg:overflow-hidden">
       <div className="px-6 py-4">
@@ -42,7 +34,7 @@ export default function DashboardMap() {
               <Map {...MapInitProperties} />
             </div>
             <div className={`hidden ${!isShowMain ? "lg:block" : ""}`}>
-              {currentIOT <= 0 && <Footer />}
+              {!currentIOT && <Footer />}
             </div>
           </div>
         </div>

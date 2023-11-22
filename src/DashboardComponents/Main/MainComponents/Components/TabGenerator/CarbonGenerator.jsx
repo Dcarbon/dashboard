@@ -1,11 +1,9 @@
-import {
-  useCurrentIOTState,
-  useGetTotalCarbon,
-} from "src/DashboardComponents/handleData";
+import { useGetTotalCarbon } from "src/DashboardComponents/handleData";
 import BoxTabGenerator from "./Box";
+import { useCurrentIOT } from "src/hook/useIOT";
 
 function CarbonGenerator({ isActive, handleClick }) {
-  const [currentIot] = useCurrentIOTState();
+  const [currentIot] = useCurrentIOT();
   const total = useGetTotalCarbon(currentIot);
 
   return (

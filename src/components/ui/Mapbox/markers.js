@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
 import { Marker } from "react-map-gl";
-import DcarbonAPI from "src/tools/DcarbonAPI";
 import IconSvg from "../IconSvg";
 import { imgsObject } from "src/tools/const";
 
@@ -8,8 +7,8 @@ function MyMarkers({ mymap }) {
   const [markers, setMarkers] = useState([]);
   useEffect(() => {
     if (!markers?.length) {
-      const newHOOk = new DcarbonAPI();
-      setMarkers(newHOOk.GetMarker());
+      const newHOOk = null;
+      setMarkers(newHOOk?.GetMarker());
     }
   }, [markers]);
   return (

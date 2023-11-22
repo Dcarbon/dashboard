@@ -1,24 +1,106 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getAmount } from "src/DashboardComponents/handleConfig";
 import { IOTAct } from "src/redux/actions/iotAction";
 
+export function useIotState() {
+  const iotState = useSelector((state) => state?.iotState);
+  return {
+    all_iots: iotState?.all_iots,
+    iots_by_project: iotState?.iots_by_project,
+    iot: iotState?.iot,
+    count: iotState?.count,
+    iot_minted: iotState?.iot_minted,
+    iots_minted: iotState?.iots_minted,
+    total_minted: iotState?.total_minted,
+    error: iotState?.error,
+    error_code: iotState?.error_code,
+    latest: iotState?.latest,
+    loading: iotState?.loading,
+    current: iotState?.current,
+  };
+}
 export function useCurrentIOT() {
-  const { param } = useRouter();
-  const res = useSelector((state) => state?.dashboardState?.currentIOT);
-  return res;
+  const { query, push, pathname } = useRouter();
+  const setCurrent = (id) =>
+    push(pathname + "?iot=" + id, pathname + "?iot=" + id, { scroll: true });
+  return [query?.iot, setCurrent];
 }
 
-export function useAllFeatures() {
+export function useGet_all_iot() {
   const dispatch = useDispatch();
-  const all_iots = useSelector((state) => state.iot.all_iots);
+  const iotState = useIotState();
+  const all_iots = iotState.all_iots;
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    if (typeof all_iots === "undefined" && !loaded) {
+    if (!all_iots && !loaded) {
       setLoaded(true);
-      console.log("Request get all features available");
       dispatch({ type: IOTAct.GET_all_IOT.REQUEST });
     }
   }, [all_iots, dispatch, loaded]);
   return all_iots;
+}
+export function useIot() {
+  const dispatch = useDispatch();
+  const iotState = useIotState();
+  const handleSetIot = useCallback(
+    (id) => {
+      dispatch({ type: IOTAct.GET_IOT.REQUEST, payload: id });
+    },
+    [dispatch]
+  );
+  return [iotState.iot, handleSetIot];
+}
+
+export function useIots_by_project() {
+  const dispatch = useDispatch();
+  const iotState = useIotState();
+  const handleSetIot_inside = useCallback(
+    (id) => {
+      dispatch({ type: IOTAct.GET_IOTs_byProject.REQUEST, payload: id });
+    },
+    [dispatch]
+  );
+  return [iotState.all_iots, handleSetIot_inside];
+}
+export function useIots_Minted() {
+  const dispatch = useDispatch();
+  const iotState = useIotState();
+  const handleSetIot_inside = useCallback(
+    (list) => {
+      dispatch({
+        type: IOTAct.GET_IOTs_MINTED.REQUEST,
+        payload: {
+          list,
+        },
+      });
+    },
+    [dispatch]
+  );
+  return [iotState.iots_minted, handleSetIot_inside];
+}
+export function useHandleIots_minted(total) {
+  const [newValue, setNewValue] = useState([]);
+  useEffect(() => {
+    if (total) {
+      let nV = total?.map((item) => {
+        if (item?.length > 0) {
+          let i = item[0];
+          let returnVal = {
+            id: i.id,
+            iotId: i.iotId,
+            nonce: i.nonce,
+            amount: getAmount(i.amount),
+            iot: i.iot,
+          };
+
+          return returnVal;
+        }
+        return { amount: 0 };
+      });
+      setNewValue(nV);
+    }
+  }, [total]);
+  return newValue;
 }

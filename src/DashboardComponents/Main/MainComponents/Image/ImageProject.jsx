@@ -2,21 +2,22 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import stls from "./ImageProject.module.scss";
 import Slider from "react-slick";
 import Image from "next/image";
-import { useProjectInformation } from "src/DashboardComponents/handleData";
 import { useState } from "react";
+import { useProjectState } from "src/hook/useProject";
 function ImageProject({ setIsShow }) {
-  const projectInfo = useProjectInformation();
+  const projectState = useProjectState();
+  const project = projectState.project;
   return (
     <div className="mt-10 pt-5 px-4 lg:px-0">
       <h3 className="text-T-L leading-T-L text-extended-200 mb-5">
         Picture project
       </h3>
-      {projectInfo?.images?.length > 0 ? (
+      {project?.images?.length > 0 ? (
         <div className={stls.boxSlider}>
           <div className={stls.boxBG}>
             <SliderGroup
-              images={projectInfo?.images}
-              projectId={projectInfo?.id}
+              images={project?.images}
+              projectId={project?.id}
               setIsShow={setIsShow}
             />
           </div>

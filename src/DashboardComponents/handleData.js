@@ -1,18 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DashboardAct } from "src/redux/actions/dashboardAction";
 import { IOTAct } from "src/redux/actions/iotAction";
-import { ProjectACT } from "src/redux/actions/projectAction";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-import DcarbonAPI from "src/tools/DcarbonAPI";
 import { getAmount, roundup_second } from "./handleConfig";
 import { AxiosGet } from "src/redux/sagaUtils";
 import axios from "axios";
-import { apiTotalSensor } from "./Main/MainComponents/Components/Charts/FirstSide/handle";
+import { apiTotalSensor } from "./Main/MainComponents/Components/Charts/TotalNumber/handle";
+import { useCurrentIOT, useIotState } from "src/hook/useIOT";
 
-const thisAPI = new DcarbonAPI();
 export function useGetProject() {
-  const projectState = useSelector(thisAPI.GetProjectState);
+  const projectState = useSelector((state) => state.projectState);
   return projectState.project;
 }
 
@@ -21,36 +18,13 @@ export function useGetProject() {
 //
 //
 //
-export function useCurrentIOTState() {
-  const dispatch = useDispatch();
-  const dashboardState = useSelector(thisAPI.DashboardState);
-  const currentIOT = useMemo(
-    () => dashboardState?.currentIOT,
-    [dashboardState?.currentIOT]
-  );
-  const handleSetIOTState = (val) => {
-    if (val) {
-      dispatch({ type: IOTAct.GET_IOT.REQUEST, payload: val });
-      dispatch({ type: DashboardAct.SET_currentIOT, payload: val });
-    }
-  };
-  return [currentIOT, handleSetIOTState];
-}
-//
-//
-//
-//
-//
-export function useIOTState() {
-  return useSelector(thisAPI.GetIOTState);
-}
 export function useSensorState() {
-  return useSelector(thisAPI);
+  return useSelector((state) => state.sensorsState);
 }
 export function useGetSensorsByIot() {
-  const [id] = useCurrentIOTState();
+  const [id] = useCurrentIOT();
   const dispatch = useDispatch();
-  const sensors = useSelector(thisAPI.GetSensorsState);
+  const sensors = useSelector((state) => state.sensorsState);
   const handleGetSensor = useCallback(
     (newId) =>
       dispatch({
@@ -66,40 +40,32 @@ export function useGetSensorsByIot() {
 
   return [sensors?.sensors, handleGetSensor];
 }
+
 //
 //
 //
 //
 //
-export function useTotalIots() {
-  const dashboardState = useSelector(thisAPI.DashboardState);
-  return dashboardState.all_features;
-}
-//
-//
-//
-//
-//
-export function useGet_Total_Project_Minted() {
-  const dispatch = useDispatch();
-  const dashboardState = useSelector(thisAPI.DashboardState);
-  const result = useMemo(
-    () => dashboardState?.total_project_minted,
-    [dashboardState?.total_project_minted]
-  );
-  const handleRequest = (listIot = []) => {
-    dispatch({
-      type: DashboardAct.TOTAL_PROJECT_MINTED.REQUEST,
-      payload: { listIOT: listIot },
-    });
-  };
-  return [result, handleRequest];
-}
+// export function useGet_Total_Project_Minted() {
+//   const dispatch = useDispatch();
+//   const dashboardState = useSelector(thisAPI?.DashboardState);
+//   const result = useMemo(
+//     () => dashboardState?.total_project_minted,
+//     [dashboardState?.total_project_minted]
+//   );
+//   const handleRequest = (listIot = []) => {
+//     dispatch({
+//       type: DashboardAct.TOTAL_PROJECT_MINTED.REQUEST,
+//       payload: { listIOT: listIot },
+//     });
+//   };
+//   return [result, handleRequest];
+// }
 
 //
 export function useIots_by_projectId(projectID) {
   const dispatch = useDispatch();
-  const iotState = useSelector(thisAPI.GetIOTState);
+  const iotState = useSelector((state) => state.iotState.iot);
   useEffect(() => {
     if (projectID) {
       dispatch({ type: IOTAct.GET_IOTs_byProject.REQUEST, payload: projectID });
@@ -120,7 +86,7 @@ export function useGetTotalCarbon(iotID) {
       payload: { iotId: iotID, from: 1, to },
     });
   }, [dispatch, iotID]);
-  const iotState = useIOTState();
+  const iotState = useIotState();
   useEffect(() => {
     if (iotID) {
       handleGetTotal();
@@ -148,7 +114,7 @@ export function useTotalSensorGenerated(list, type, projectId, sensorId) {
   const [listItem, setListItem] = useState([]);
   useEffect(() => {
     if (projectId && Number(type) > 0) {
-      // console.log("useTotalSensorGenerated", projectId);
+      console.log("useTotalSensorGenerated", projectId);
       var to = new Date();
       let idList = [];
       let promisesList = [];

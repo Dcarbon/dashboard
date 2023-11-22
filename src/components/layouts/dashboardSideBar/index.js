@@ -7,7 +7,6 @@ import { ProjectACT } from "src/redux/actions/projectAction";
 import { useDispatch, useSelector } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
-import DcarbonAPI from "src/tools/DcarbonAPI";
 import GeneratedViewBox from "src/components/sections/Dashboard/GeneratedViewBox";
 import ImageProject from "src/components/sections/Dashboard/ImageProject/ImageProject";
 
@@ -27,9 +26,11 @@ function DashboardSideBar({
   // INIT REDUX
   // INIT REDUX
   const dispatch = useDispatch();
-  const newDcarbon = new DcarbonAPI();
-  const iotState = useSelector(newDcarbon.GetIOTState);
-  const projectState = useSelector(newDcarbon.GetProjectState);
+  const newDcarbon = null;
+  const iotState = useSelector((state) => state.iotState.GetIOTState);
+  const projectState = useSelector(
+    (state) => state.projectState.GetProjectState
+  );
   // state
   // state
   // state
@@ -83,7 +84,7 @@ function DashboardSideBar({
   return (
     <div className={className}>
       <ScrollBox disableX>
-        <div className='text-[#B3B2B8]'>
+        <div className="text-[#B3B2B8]">
           {/* box select iot  */}
           {/* box select iot  */}
           {/* box select iot  */}

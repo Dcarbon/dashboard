@@ -8,8 +8,8 @@ import Heading from "src/components/ui/Heading";
 import stls from "./ImageDialog.module.scss";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Button from "src/components/ui/Button";
-import { useProjectInformation } from "src/DashboardComponents/handleData";
 import Image from "next/image";
+import { useProject } from "src/hook/useProject";
 function ImageDialog({ isShow, setIsShow }) {
   const dialogREF = useRef(null);
 
@@ -17,7 +17,7 @@ function ImageDialog({ isShow, setIsShow }) {
   const slider2 = useRef(null);
 
   const [navState, setNavState] = useState({ nav1: null, nav2: null });
-  const projectInfo = useProjectInformation();
+  const projectInfo = useProject();
   const images = useMemo(() => projectInfo?.images, [projectInfo?.images]);
   useEffect(() => {
     if (slider1?.current && slider2?.current) {

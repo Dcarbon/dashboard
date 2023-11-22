@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useEffect } from "react";
 
 import stls from "./index.module.scss";
-import DcarbonAPI from "src/tools/DcarbonAPI";
 import { IOT__TYPE_TEXT } from "src/tools/const";
 import HTMLReactParser from "html-react-parser";
 import {
@@ -105,7 +104,7 @@ function InfoProject({
     <CollapseTab
       disableNumb
       disable
-      color='blue'
+      color="blue"
       title={`Info project ${project?.id}`}
     >
       <div className={stls.infoProject}>
@@ -178,7 +177,7 @@ function InfoProject({
                 <li className={stls.itemRow}>
                   <div>Livestock</div>
                   <div>
-                    {specs?.livestock} <span title='Livestock unit'>LSU</span>
+                    {specs?.livestock} <span title="Livestock unit">LSU</span>
                   </div>
                 </li>
               )}
@@ -193,7 +192,7 @@ function InfoProject({
               <div className={stls.information}>
                 <label className={stls.icon}>
                   <InformationCircleIcon
-                    type='outline'
+                    type="outline"
                     width={24}
                     height={24}
                   />
@@ -208,7 +207,7 @@ function InfoProject({
           </Collapse>
         )}
         {isDetailInfo && (
-          <div className='text-right'>
+          <div className="text-right">
             <Button
               className={stls.btnDetails}
               onClick={() => {

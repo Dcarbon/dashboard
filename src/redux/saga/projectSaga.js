@@ -1,16 +1,9 @@
-import { takeEvery } from "redux-saga/effects";
-import { AxiosGet, grpcCall } from "../sagaUtils";
+import { AxiosGet } from "../sagaUtils";
 import { ProjectACT } from "../actions/projectAction";
+import { handleTakeEvery } from "../handle";
 
 export const watcherProject = [
-  takeEvery(
-    ProjectACT.GET_PROJECT.REQUEST,
-    grpcCall(
-      getProject,
-      ProjectACT.GET_PROJECT.SUCCESS,
-      ProjectACT.GET_PROJECT.FAILURE
-    )
-  ),
+  handleTakeEvery(getProject, ProjectACT.GET_PROJECT),
 ];
 
 function getProject(action) {

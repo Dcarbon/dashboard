@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import DcarbonAPI from "src/tools/DcarbonAPI";
+import { useDispatch } from "react-redux";
 import { IOTAct } from "src/redux/actions/iotAction";
 import ColumnChart from "./ColumnChart";
 
@@ -13,7 +12,7 @@ function Carbon({
   setCarbonGenerated,
 }) {
   const dispatch = useDispatch();
-  const iotState = useSelector(new DcarbonAPI().GetIOTState);
+  const iotState = null;
   const iot_minted = useMemo(
     () => iotState?.iot_minted,
     [iotState?.iot_minted]

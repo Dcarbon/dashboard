@@ -6,7 +6,6 @@ import iotReducer from "./reducers/iotReducers";
 import projectReducer from "./reducers/projectReducer";
 import operatorReducer from "./reducers/operatorReducer";
 import sensorsReducer from "./reducers/sensorsReducer";
-import dashboardReducer from "./reducers/dashboardReducers";
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({
   projectState: projectReducer,
   operatorState: operatorReducer,
   sensorsState: sensorsReducer,
-  dashboardState: dashboardReducer,
 });
 
 export default rootReducer;

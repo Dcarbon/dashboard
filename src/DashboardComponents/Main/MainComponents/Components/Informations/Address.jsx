@@ -1,26 +1,20 @@
-import {
-  useIOTState,
-  useProjectInformation,
-} from "src/DashboardComponents/handleData";
 import BoxBorder from "./components/Box";
 import { Fragment, useMemo } from "react";
 import CopyButton from "src/components/ui/Button/CopyButton";
-import DcarbonAPI from "src/tools/DcarbonAPI";
 import Li from "./components/liComponent";
+import { useProject, useProjectDetail } from "src/hook/useProject";
+import { useIot } from "src/hook/useIOT";
 function Address() {
-  const iotState = useIOTState();
+  const [iot] = useIot();
 
-  const projectState = useProjectInformation();
-  const projectDetail = useMemo(() => {
-    let newD = new DcarbonAPI();
-    return newD.ProjectInfo(projectState?.id);
-  }, [projectState?.id]);
+  const [project] = useProject();
+  const projectDetail = useProjectDetail(project?.id);
   const addressModel = useMemo(
     () => ({
-      address: iotState?.iot?.address || "",
+      address: iot?.address || "",
       location: projectDetail?.location || "",
     }),
-    [iotState?.iot?.address, projectDetail?.location]
+    [iot?.address, projectDetail?.location]
   );
   // handle Ether address
   const strCut = (str) => {

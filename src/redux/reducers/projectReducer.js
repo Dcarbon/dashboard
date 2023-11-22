@@ -7,6 +7,7 @@ export const initProjectState = {
   error_code: null,
   latest: "",
   loading: false,
+  iots_inside: [],
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //

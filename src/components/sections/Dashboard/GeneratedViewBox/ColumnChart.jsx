@@ -9,8 +9,6 @@ import {
   getSum,
   optionsDefault,
 } from "./tools";
-// import DcarbonAPI from "src/tools/DcarbonAPI";
-// import { useSelector } from "react-redux";
 import dateFormat from "dateformat";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -159,9 +157,9 @@ function ColumnChart({
     }
   }, [setCarbonGenerated, time_and_val, time_and_val.onlyVal]);
   return (
-    <div ref={BOXREF} className='myApex -ml-5'>
+    <div ref={BOXREF} className="myApex -ml-5">
       <ReactApexChart
-        type='bar'
+        type="bar"
         options={options}
         series={series}
         width={width || "100%"}
