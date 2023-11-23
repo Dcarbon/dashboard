@@ -58,39 +58,81 @@ export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
   let sorted = [];
   let newmap = [];
   if (data) {
-    let initTime = 0;
-    let total = 0;
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data");
+    console.log("data", data);
+    // let initTime = 0;
+    // let total = 0;
     newmap = data.map((item) => {
-      let newTime = typeSensor === 0 ? item.createdAt : item.time;
-      let newValue = typeSensor === 0 ? item.carbon : item.value;
+      let newTime = item.createdAt || item.time;
+      let newValue = item.carbon || item.value;
 
       return {
-        time: new Date(newTime).getTime(),
+        time: new Date(newTime),
         value: newValue ? getAmountbyNumber(newValue) : "0",
       };
     });
-    sorted = newmap.sort((a, b) => a?.time - b?.time);
 
-    if (durationType === 2) {
+    sorted = newmap.sort((a, b) => a?.time?.getTime() - b?.time?.getTime());
+    let newReverseZA = [];
+    let newReverse = [];
+    let sortedHandled = [];
+    if (durationType === 1) {
       // đảo nghịch trở về ngày gần nhất lên đầu
-      let newReverseZA = sorted?.reverse() ?? [];
+      newReverseZA = sorted?.reverse() ?? [];
       // cộng dồn về 5 ngày trước đó
-      let newReverse = [];
+      newReverse = [];
       newReverseZA.forEach((val, idx) => {
-        // khi ở ngày thứ 5 trả ra kết quả và total = 0
-        if (idx % 5 === 0 && idx > 0) {
-          initTime = newReverseZA[idx - 6]?.time;
-          newReverse.push({
-            time: initTime,
-            value: total.toFixed(2),
-          });
-          total = 0;
-        } else {
-          total += Number(val?.value) ?? 0;
+        // if (idx % 2 === 0 && idx > 0) {
+        //   initTime = newReverseZA[idx - 2]?.time;
+        //   newReverse.push({
+        //     time: initTime,
+        //     value: total.toFixed(2),
+        //   });
+        //   total = 0;
+        // } else {
+        //   total += Number(val?.value) ?? 0;
+        // }
+        if (idx % 2 === 0) {
+          newReverse.push(val);
         }
       });
-
-      return newReverse.reverse();
+      sortedHandled = newReverse.reverse();
+      return sortedHandled;
+    } else if (durationType === 2) {
+      // đảo nghịch trở về ngày gần nhất lên đầu
+      newReverseZA = sorted?.reverse() ?? [];
+      // cộng dồn về 5 ngày trước đó
+      newReverse = [];
+      newReverseZA.forEach((val, idx) => {
+        // khi ở ngày thứ 5 trả ra kết quả và total = 0
+        if (idx % 3 === 0) {
+          newReverse.push(val);
+        }
+        // if (idx % 5 === 0 && idx > 0) {
+        //   initTime = newReverseZA[idx - 5]?.time;
+        //   newReverse.push({
+        //     time: initTime,
+        //     value: total.toFixed(2),
+        //   });
+        //   total = 0;
+        // } else {
+        //   total += Number(val?.value) ?? 0;
+        // }
+      });
+      sortedHandled = newReverse.reverse();
+      return sortedHandled;
     } else {
       return sorted;
     }

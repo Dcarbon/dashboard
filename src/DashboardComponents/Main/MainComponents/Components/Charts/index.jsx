@@ -7,13 +7,15 @@ import { AxiosGet } from "src/redux/sagaUtils";
 import { apiTotalCarbon, apiTotalSensor } from "./TotalNumber/handle";
 import CircleLoading from "src/components/ui/Loading/CircleLoading";
 import ChartData from "./ChartData";
-
+import ScrollBox from "src/components/ui/ScrollBox";
+import stls from "./index.module.scss";
+import { SENSOR__UNIT_text } from "src/tools/const";
 function Charts({ onChangeIOT, sensorId, typeSensor }) {
   const [mobileTabIots, setMobileTabIots] = useState(false);
   const [currentId] = useCurrentIOT();
   const [durationType, setDurationTypes] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(false);
+  const [data, setData] = useState([]);
 
   const handleGetDuration = (type) => {
     let newDate = new Date();
@@ -83,11 +85,11 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
   }, [currentId, handleGetData]);
 
   return (
-    <div className="py-8 lg:py-12">
-      <h3 className="text-T-M leading-T-M mb-4">
+    <div className='py-8 lg:py-12'>
+      <h3 className='text-T-M leading-T-M mb-4'>
         Select Generator to view data detail
       </h3>
-      <div className="flex flex-col lg:flex-row gap-10">
+      <div className='flex flex-col lg:flex-row gap-3 lg:gap-0'>
         {/* left */}
         {/* left */}
         {/* left */}
@@ -96,10 +98,10 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
         {/* left */}
         {/* left */}
         {/* left */}
-        <div className="w-full lg:w-[170px]">
-          <div className="bg-extended-200 border rounded-md text-extended-900 md:hidden">
+        <div className={stls.left}>
+          <div className='bg-extended-200 border rounded-md text-extended-900 md:hidden'>
             <div
-              className="py-3 px-5 flex gap-4 justify-between items-center cursor-pointer "
+              className='py-3 px-5 flex gap-4 justify-between items-center cursor-pointer '
               onClick={() => setMobileTabIots(!mobileTabIots)}
             >
               <div>
@@ -124,23 +126,25 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
                 }`}
               >
                 <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 8"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                  width='12'
+                  height='12'
+                  viewBox='0 0 12 8'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
                 >
                   <path
-                    d="M1.41 0.589844L6 5.16984L10.59 0.589844L12 1.99984L6 7.99984L0 1.99984L1.41 0.589844Z"
-                    fill="#323232"
+                    d='M1.41 0.589844L6 5.16984L10.59 0.589844L12 1.99984L6 7.99984L0 1.99984L1.41 0.589844Z'
+                    fill='#323232'
                   />
                 </svg>
               </span>
             </div>
           </div>
-          <div className={`${mobileTabIots ? "block" : "hidden md:block"}`}>
-            <TabsIOT open={mobileTabIots} onChangeIOT={onChangeIOT} />
-          </div>
+          <ScrollBox className={"max-h-[400px]"} size={"small"}>
+            <div className={`${mobileTabIots ? "block" : "hidden md:block"}`}>
+              <TabsIOT open={mobileTabIots} onChangeIOT={onChangeIOT} />
+            </div>
+          </ScrollBox>
         </div>
         {/* right */}
         {/* right */}
@@ -150,21 +154,26 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
         {/* right */}
         {/* right */}
         {/* right */}
-        <div className="flex-1 items-stretch ">
-          <div className="flex flex-col w-full h-full gap-6">
-            <div>
-              {loading ? (
-                <CircleLoading />
-              ) : (
+        <div className={stls.right}>
+          <div className='flex flex-col w-full h-full '>
+            <div className='relative'>
+              <div className='p-3'>
                 <ChartData
-                  title={typeSensor === 0 ? "Carbon" : ""}
+                  loading={loading}
+                  title={SENSOR__UNIT_text[typeSensor]}
                   data={data}
                   durationType={durationType}
                   typeSensor={typeSensor}
                 />
+              </div>
+
+              {loading && (
+                <div className='absolute top-0 left-0 flex justify-center items-center w-full h-full bg-slate-800 bg-opacity-50'>
+                  <CircleLoading big={true} />
+                </div>
               )}
             </div>
-            <div className="flex flex-row flex-wrap gap-6">
+            <div className='flex flex-row flex-wrap gap-6'>
               {DURATION_TYPES.map((item, idx) => {
                 return (
                   <Button

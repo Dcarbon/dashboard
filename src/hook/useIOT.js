@@ -21,13 +21,26 @@ export function useIotState() {
     current: iotState?.current,
   };
 }
+
 export function useCurrentIOT() {
   const { query, push, pathname } = useRouter();
   const setCurrent = (id) =>
     push(pathname + "?iot=" + id, pathname + "?iot=" + id, { scroll: true });
   return [query?.iot, setCurrent];
 }
+export function useCountIot() {
+  const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
 
+  const iotState = useIotState();
+  useEffect(() => {
+    if (!loaded) {
+      dispatch({ type: IOTAct.COUNT_IOT.REQUEST });
+      setLoaded(true);
+    }
+  }, [dispatch, loaded]);
+  return iotState?.count;
+}
 export function useGet_all_iot() {
   const dispatch = useDispatch();
   const iotState = useIotState();

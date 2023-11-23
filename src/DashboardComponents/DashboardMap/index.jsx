@@ -1,11 +1,10 @@
-import Map from "react-map-gl";
-import { MapInitProperties } from "src/constants/mapbox";
 import Header from "../Header";
 import { useState } from "react";
 import ImageDialog from "../Main/MainComponents/Image/ImageDialog";
 import Footer from "../Footer";
 import Main from "../Main";
 import { useCurrentIOT } from "src/hook/useIOT";
+import DashboardEarth from "./components/earth";
 
 /**
  * @param {MapboxEvent} evnt
@@ -17,8 +16,8 @@ export default function DashboardMap() {
   const [isShowMain, setIsShowMain] = useState(false);
 
   return (
-    <div className="flex flex-col w-full lg:h-screen bg-extended-900 lg:overflow-hidden">
-      <div className="px-6 py-4">
+    <div className='flex flex-col w-full lg:h-screen bg-extended-900 lg:overflow-hidden'>
+      <div className='px-6 py-4'>
         <Header />
       </div>
 
@@ -26,12 +25,12 @@ export default function DashboardMap() {
       {/*  */}
       {/*  */}
       {/*  */}
-      <div className="lg:relative lg:flex-1 ">
+      <div className='lg:relative lg:flex-1 '>
         {/* Map */}
-        <div className="h-[50vh] lg:h-full">
-          <div className="flex flex-col w-full h-full">
-            <div className="flex-1">
-              <Map {...MapInitProperties} />
+        <div className='h-[50vh] lg:h-full'>
+          <div className='flex flex-col w-full h-full'>
+            <div className='flex-1'>
+              <DashboardEarth />
             </div>
             <div className={`hidden ${!isShowMain ? "lg:block" : ""}`}>
               {!currentIOT && <Footer />}

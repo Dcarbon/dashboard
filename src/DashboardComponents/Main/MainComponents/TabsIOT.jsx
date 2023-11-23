@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useCurrentIOT, useIotState } from "src/hook/useIOT";
 
-function TabsIOT({ open, onChangeIOT }) {
+function TabsIOT({ onChangeIOT }) {
   const iotState = useIotState();
   const iots_by_project = useMemo(
     () => iotState?.iots_by_project,
@@ -11,15 +11,15 @@ function TabsIOT({ open, onChangeIOT }) {
   const [currentId, setCurrentId] = useCurrentIOT();
 
   return (
-    <div className={open ? "block" : "  lg:block"}>
+    <div className='pr-3 md:pr-0 md:pb-3 lg:pr-3 lg:pb-0'>
       {iots_by_project?.length > 0 && (
-        <ul className="mt-4 md:mt-0 flex flex-col sm:flex-row lg:flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-6">
+        <ul className='mt-4 md:mt-0 w-full md:w-auto lg:w-full flex md:inline-flex lg:flex flex-col md:flex-row lg:flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-6'>
           {iots_by_project?.map((item) => {
             const isActive = Boolean(Number(currentId) === Number(item?.id));
             return (
               <li
                 key={"item-" + item?.id}
-                className={`border border-extended-600 rounded-md ${
+                className={`w-full md:w-64 lg:w-full border border-extended-600 rounded-md ${
                   isActive
                     ? "bg-extended-100 hover:bg-extended-200 hidden md:block"
                     : "bg-extended-900 hover:bg-extended-800"
@@ -29,7 +29,7 @@ function TabsIOT({ open, onChangeIOT }) {
                   setCurrentId(item.id);
                 }}
               >
-                <div className="py-3 px-5 ">
+                <div className='py-3 px-5 '>
                   <p
                     className={`text-B-M leading-B-M ${
                       isActive ? "text-extended-700" : "text-extended-400"

@@ -134,7 +134,6 @@ function MapBoxPage({
               (item, index) => newFeatures.indexOf(item) === index
             );
           };
-
           let handleMultiFeatureState = (hover) => {
             mymap.setFeatureState(tempState("boundary"), { hover });
             mymap.setFeatureState(tempState("hexagon"), { hover });

@@ -1,4 +1,4 @@
-import { SENSOR__TYPE_TEXT, SENSOR__UNIT } from "src/tools/const";
+import { SENSOR__TYPE_TEXT, SENSOR__UNIT_html } from "src/tools/const";
 import { Yesterday } from "../Charts/TotalNumber/Yesterday";
 import { PastWeek } from "../Charts/TotalNumber/PastWeek";
 import { Past30 } from "../Charts/TotalNumber/Past30";
@@ -48,26 +48,26 @@ function TotalGenerator({ typeSensor, sensorId }) {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-8">
-        <div className="w-full lg:w-[170px]">
+      <div className='flex flex-wrap gap-8'>
+        <div className='w-full lg:w-[170px]'>
           {typeSensor === 0 && (
             <>
               <div>
-                <p className="text-B-M leading-B-M text-extended-300">
+                <p className='text-B-M leading-B-M text-extended-300'>
                   {handleTitleTotal(typeSensor)}
                 </p>
-                <p className="text-B-M leading-B-M text-extended-300">
+                <p className='text-B-M leading-B-M text-extended-300'>
                   (all generator)
                 </p>
               </div>
-              <h3 className="text-H-M leading-H-M text-white">
+              <h3 className='text-H-M leading-H-M text-white'>
                 {handleTotal(collection)}
               </h3>
             </>
           )}
         </div>
-        <div className="flex-1">
-          <div className="flex flex-wrap md:flex-nowrap border border-extended-700 rounded-md ">
+        <div className='flex-1'>
+          <div className='flex flex-wrap md:flex-nowrap border border-extended-700 rounded-md '>
             <Yesterday data={data} loading={loading} />
             <PastWeek data={data} loading={loading} />
             <Past30
@@ -85,8 +85,9 @@ function TotalGenerator({ typeSensor, sensorId }) {
               sensorId={sensorId}
             />
           </div>
-          <p className="py-2 text-right text-B-S leading-B-S">
-            Unit: <span className="uppercase">{SENSOR__UNIT[typeSensor]}</span>
+          <p className='py-2 text-right text-B-S leading-B-S'>
+            Unit:
+            <span className='uppercase'>{SENSOR__UNIT_html[typeSensor]}</span>
           </p>
         </div>
       </div>
