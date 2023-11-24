@@ -98,14 +98,15 @@ function Earth() {
             map.on("touchend", () => {
               newInterval = setInterval(SpinEarth, 500);
             });
-            map.on("click", "clusters", (e) => {
-              const features = map.queryRenderedFeatures(e.point, {
-                layers: ["clusters"],
-              });
-              let geometry = features[0].geometry.coordinates;
-              router.push(
-                `/dashboard?lng=${geometry[0]}&lat=${geometry[1]}&zoom=4.8`
-              );
+            map.on("click", "clusters", () => {
+              // const features = map.queryRenderedFeatures(e.point, {
+              // layers: ["clusters"],
+              // });
+              // let geometry = features[0].geometry.coordinates;
+              router.push(`/dashboard`);
+              // router.push(
+              //   `/dashboard?lng=${geometry[0]}&lat=${geometry[1]}&zoom=4.8`
+              // );
             });
           }
         }}

@@ -3,12 +3,15 @@ import { MapInitProperties } from "src/constants/mapbox";
 import OverView from "./overview";
 import SourceGeojson from "../SourceGeojson";
 import SourceVector from "./SourceVector";
-import { useEffect, useRef, useState } from "react";
-import { useIot } from "src/hook/useIOT";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useCurrentIOT, useIot } from "src/hook/useIOT";
+import ZoomOptions from "./zoomOptions";
 function DashboardEarth() {
   const [currentZoom, setCurrentZoom] = useState(4);
+  const [loaded, setLoaded] = useState(false);
   const mapREF = useRef(null);
-  //   const [currentIot, setCurrentIot] = useCurrentIOT();
+  const [currentIot, setCurrentIot] = useCurrentIOT();
+  const [prevId, setPrevId] = useState();
   const handleFlyTo = (center, zoom) => {
     try {
       mapREF?.current.flyTo({
@@ -25,6 +28,32 @@ function DashboardEarth() {
       handleFlyTo([iot.position.lat, iot.position.lng], 14);
     }
   }, [iot]);
+  const tempState = useCallback(
+    (sourceLayer, id) => ({
+      source: "iott_all_vector",
+      id: id,
+      sourceLayer,
+    }),
+    []
+  );
+  const handleMultiFeatureState = useCallback(
+    (hover, id) => {
+      mapREF?.current?.setFeatureState(tempState("boundary", id), { hover });
+      mapREF?.current?.setFeatureState(tempState("hexagon", id), { hover });
+    },
+    [tempState]
+  );
+  useEffect(() => {
+    if (currentIot && mapREF.current && loaded) {
+      if (prevId) {
+        // console.log("clear old");
+        handleMultiFeatureState(false, prevId);
+      }
+      // console.log("set new");
+      setPrevId(currentIot);
+      handleMultiFeatureState(true, currentIot);
+    }
+  }, [currentIot, handleMultiFeatureState, loaded, prevId]);
 
   return (
     <Map
@@ -33,8 +62,6 @@ function DashboardEarth() {
       onLoad={() => {
         let mymap = mapREF.current;
         let newZoom = 4;
-        // let newCenter = [];
-        console.log("mapREF", mapREF);
         mymap.on("click", ["clusters", "cluster-count"], (e) => {
           const features = mymap.queryRenderedFeatures(e.point, {
             layers: ["clusters"],
@@ -42,8 +69,9 @@ function DashboardEarth() {
           const clusterId = features[0]?.properties.cluster_id;
           if (features?.length > 0) {
             mymap
-              .getSource("iott_all")
+              .getSource("iott_all_geojson")
               .getClusterExpansionZoom(clusterId, (err, zoom) => {
+                console.log("err, zoom", { err, zoom });
                 if (err) return;
                 newZoom = zoom;
                 mymap.flyTo({
@@ -52,81 +80,28 @@ function DashboardEarth() {
                 });
                 setCurrentZoom(newZoom);
               });
-          } else if (e?.lngLat) {
-            newZoom = 11.4;
-            mymap.flyTo({
-              center: [e.lngLat?.lng, e.lngLat?.lat],
-              zoom: newZoom,
-            });
-            setCurrentZoom(newZoom);
           }
         });
-        let hoveredStateId = null;
-        let listFeatures = null;
-        let tempState = (sourceLayer) => ({
-          source: "iott_all_2",
-          id: hoveredStateId,
-          sourceLayer,
-        });
-        let handleDuplicateFeatures = (features) => {
-          const newFeatures = features?.map((item) => item.id);
-          return newFeatures.filter(
-            (item, index) => newFeatures.indexOf(item) === index
-          );
-        };
-        let handleMultiFeatureState = (hover) => {
-          mymap.setFeatureState(tempState("boundary"), { hover });
-          mymap.setFeatureState(tempState("hexagon"), { hover });
-        };
-        // on move map get total node on project
-        mymap.on("mousemove", ["boundaryLayer", "hexagonLayer"], (e) => {
-          if (e.features.length > 0) {
-            if (hoveredStateId !== null) {
-              handleMultiFeatureState(false);
-            }
-            hoveredStateId = e.features[0].id;
-            handleMultiFeatureState(true);
+        mymap.on("click", ["boundaryLayer", "hexagonLayer"], (e) => {
+          const features = mymap.queryRenderedFeatures(e.point, {
+            layers: ["hexagonLayer"],
+          });
+          if (features?.length > 0) {
+            const hexId = features[0]?.id;
+            setCurrentIot(hexId);
           }
         });
-        // on move map delete total node on project
-        mymap.on("mouseleave", ["boundaryLayer", "hexagonLayer"], () => {
-          if (hoveredStateId !== null) {
-            handleMultiFeatureState(false);
-          }
-          hoveredStateId = null;
-        });
-
-        // on Chooose
-        // on Chooose
-        // on Chooose
-
-        mymap.on("click", ["hexagonLayer"], (e) => {
-          if (e.features.length > 0) {
-            hoveredStateId = e.features[0].id;
-            listFeatures = handleDuplicateFeatures(e.features);
-            console.log("listFeatures", listFeatures);
-            // setIotSelected(listFeatures[0]);
-            // setFeatures(listFeatures);
-            // replace("/dashboard");
-            // dispatch({
-            //   type: SensorsACT.LOAD_SENSOR_1ST_TIME,
-            //   payload: false,
-            // });
-            // setTimeout(() => {
-            //   dispatch({
-            //     type: SensorsACT.GET_SENSORS.REQUEST,
-            //     payload: { skip: 0, limit: 50, iotId: listFeatures[0] },
-            //   });
-            // }, 100);
-          }
-        });
-
-        // inspect a cluster on click
+      }}
+      onData={(e) => {
+        if (e.isSourceLoaded && !loaded) {
+          setLoaded(true);
+        }
       }}
       onZoomEnd={(e) => setCurrentZoom(e.viewState.zoom)}
     >
       {/* Hiển thị tổng số nodes */}
       <OverView />
+      <ZoomOptions mapREF={mapREF} />
       <SourceGeojson visibility={Boolean(currentZoom < 10)} />
       <SourceVector visibility={Boolean(currentZoom >= 10)} />
     </Map>

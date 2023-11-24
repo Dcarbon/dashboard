@@ -58,20 +58,20 @@ export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
   let sorted = [];
   let newmap = [];
   if (data) {
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data");
-    console.log("data", data);
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data");
+    // console.log("data", data);
     // let initTime = 0;
     // let total = 0;
     newmap = data.map((item) => {

@@ -168,7 +168,7 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
               </div>
 
               {loading && (
-                <div className='absolute top-0 left-0 flex justify-center items-center w-full h-full bg-slate-800 bg-opacity-50'>
+                <div className='absolute top-0 left-0 rounded-md flex justify-center items-center w-full h-full bg-primary bg-opacity-10'>
                   <CircleLoading big={true} />
                 </div>
               )}

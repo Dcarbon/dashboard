@@ -13,6 +13,8 @@ export const MapInitProperties = {
     latitude: defaultCenter[1],
     zoom: 4,
   },
+  minZoom: 1,
+  maxZoom: 15,
   pitch: 0,
   projection: "globe",
   style: { width: "100%", height: "100%" },

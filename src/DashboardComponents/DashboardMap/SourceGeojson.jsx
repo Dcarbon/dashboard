@@ -10,17 +10,17 @@ import { CirclePaint } from "mapbox-gl";
 function SourceGeojson({ visibility }) {
   return (
     <Source
-      id="iott_all"
-      type="geojson"
+      id='iott_all_geojson'
+      type='geojson'
       data={API.geojson}
       cluster={true}
       clusterMaxZoom={14} // Max zoom to cluster points on
       clusterRadius={50} // Radius of each cluster when clustering points (defaults to 50)
     >
       <Layer
-        id="clusters"
-        type="circle"
-        source={"iott_all"}
+        id='clusters'
+        type='circle'
+        source={"iott_all_geojson"}
         filter={["has", "point_count"]}
         layout={{
           visibility: visibility ? "visible" : "none",
@@ -45,9 +45,9 @@ function SourceGeojson({ visibility }) {
       />
 
       <Layer
-        id="cluster-count"
-        type="symbol"
-        source={"iott_all"}
+        id='cluster-count'
+        type='symbol'
+        source={"iott_all_geojson"}
         filter={["has", "point_count"]}
         layout={{
           "text-field": ["get", "point_count_abbreviated"],
@@ -60,9 +60,9 @@ function SourceGeojson({ visibility }) {
         }}
       />
       <Layer
-        id="unclustered-point"
-        type="circle"
-        source={"iott_all"}
+        id='unclustered-point'
+        type='circle'
+        source={"iott_all_geojson"}
         filter={["!", ["has", "point_count"]]}
         paint={{
           "circle-color": "#66d622",

@@ -3,7 +3,7 @@ import { Layer, Source } from "react-map-gl";
 function SourceVector({ visibility }) {
   return (
     <Source
-      id='iott_all_2'
+      id='iott_all_vector'
       type='vector'
       tiles={[process.env.NEXT_PUBLIC_MAPSOURCE]}
       // attribution="Show to users"
@@ -11,7 +11,7 @@ function SourceVector({ visibility }) {
       <Layer
         id={"boundaryLayer"}
         type='line'
-        source={"iott_all"}
+        source={"iott_all_vector"}
         source-layer='boundary'
         layout={{
           // Make the layer visible by default.
@@ -42,7 +42,7 @@ function SourceVector({ visibility }) {
       <Layer
         id={"hexagonLayer"}
         type={"fill"}
-        source={"iott_all"}
+        source={"iott_all_vector"}
         source-layer={"hexagon"}
         layout={{
           visibility: visibility ? "visible" : "none",
