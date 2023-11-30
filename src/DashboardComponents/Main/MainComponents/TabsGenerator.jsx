@@ -20,26 +20,31 @@ function TabsGenerator({ selectedSensor, setSelectedSensor, setTypeSensor }) {
   }, [iot?.id, setSensors]);
   const handleLabelText = (type) => SENSOR__TYPE_TEXT[Number(type)];
   return (
-    <div className="mt-8 pt-5 lg:px-4 xl:px-32">
+    <div className='mt-8 pt-5 lg:px-4 xl:px-32'>
       <div className={"px-0 border-b border-extended-800"}>
         {/* <div classNam> */}
-        <div className="relative">
+        <div className='relative'>
           <ScrollBox disableY={true} size={"zero"}>
-            <ul ref={listREF} className="w-max">
+            <ul ref={listREF} className='w-max'>
               <LabelTab
                 isActive={selectedSensor === 0}
                 text={"Carbon minted"}
                 onClick={() => handleClick(0, SENSOR__TYPE.None)}
               />
 
-              {sensors?.map((item) => (
-                <LabelTab
-                  key={"item+" + item.id}
-                  isActive={selectedSensor === item.id}
-                  text={handleLabelText(item.type)}
-                  onClick={() => handleClick(item.id, item.type)}
-                />
-              ))}
+              {sensors?.map((item) => {
+                let text = handleLabelText(item.type);
+                if (text) {
+                  return (
+                    <LabelTab
+                      key={"item+" + item.id}
+                      isActive={selectedSensor === item.id}
+                      text={text}
+                      onClick={() => handleClick(item.id, item.type)}
+                    />
+                  );
+                }
+              })}
             </ul>
           </ScrollBox>
         </div>
@@ -69,7 +74,7 @@ function LabelTab({ text, onClick, isActive }) {
         isActive ? "bg-extended-800 rounded-t-md" : ""
       }`}
     >
-      <button className="p-4 md:px-6 md:py-5" onClick={onClick}>
+      <button className='p-4 md:px-6 md:py-5' onClick={onClick}>
         {text}
       </button>
     </li>

@@ -25,14 +25,14 @@ export default function DashboardMap() {
       {/*  */}
       {/*  */}
       {/*  */}
-      <div className='lg:relative lg:flex-1 '>
+      <div className='flex-1 lg:relative lg:flex-1 '>
         {/* Map */}
-        <div className='h-[50vh] lg:h-full'>
+        <div className={`${currentIOT ? "h-[50vh]" : "h-full"} lg:h-full`}>
           <div className='flex flex-col w-full h-full'>
             <div className='flex-1'>
               <DashboardEarth />
             </div>
-            <div className={`hidden ${!isShowMain ? "lg:block" : ""}`}>
+            <div className={`  ${!isShowMain ? "lg:block" : "lg:hidden"}`}>
               {!currentIOT && <Footer />}
             </div>
           </div>

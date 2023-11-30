@@ -112,10 +112,10 @@ export const SENSOR__UNIT_text = {
 };
 export const SENSOR__TYPE_TEXT = {
   0: "None",
-  1: "Flow",
+  // 1: "Flow",
   2: "Energy",
   21: "Biogas",
-  3: "GPS",
+  // 3: "GPS",
   4: "Temperature",
   41: "Biomass",
 };

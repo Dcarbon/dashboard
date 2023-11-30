@@ -115,9 +115,13 @@ export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
       newReverseZA = sorted?.reverse() ?? [];
       // cộng dồn về 5 ngày trước đó
       newReverse = [];
+      console.log("durationType", durationType);
+      console.log("newReverseZA", newReverseZA);
       newReverseZA.forEach((val, idx) => {
+        console.log("idx", idx);
         // khi ở ngày thứ 5 trả ra kết quả và total = 0
         if (idx % 3 === 0) {
+          console.log("val", val);
           newReverse.push(val);
         }
         // if (idx % 5 === 0 && idx > 0) {

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+       <loc>https://dcarbon.org/</loc>
+       <lastmod>2023-11-24T10:15:31+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>1.0000</priority>
+  </url>
+  <url>
+       <loc>https://dcarbon.org/how-does-it-work</loc>
+       <lastmod>2023-11-24T10:15:31+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://dcarbon.org/solution</loc>
+       <lastmod>2023-11-24T10:15:31+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://dcarbon.org/dcarbon-DAO</loc>
+       <lastmod>2023-11-24T10:15:31+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://dcarbon.org/blog</loc>
+       <lastmod>2023-11-24T10:15:31+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://dcarbon.org/post</loc>
+       <lastmod>2023-11-24T10:15:31+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://dcarbon.org/dashboard</loc>
+       <lastmod>2023-11-24T10:15:31+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+</urlset>
