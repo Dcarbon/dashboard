@@ -85,11 +85,11 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
   }, [currentId, handleGetData]);
 
   return (
-    <div className='py-8 lg:py-12'>
-      <h3 className='text-T-M leading-T-M mb-4'>
+    <div className="py-8 lg:py-12">
+      <h3 className="text-T-M leading-T-M mb-4">
         Select Generator to view data detail
       </h3>
-      <div className='flex flex-col lg:flex-row gap-3 lg:gap-0'>
+      <div className="flex flex-col lg:flex-row gap-3 lg:gap-0">
         {/* left */}
         {/* left */}
         {/* left */}
@@ -99,9 +99,9 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
         {/* left */}
         {/* left */}
         <div className={stls.left}>
-          <div className='bg-extended-200 border rounded-md text-extended-900 md:hidden'>
+          <div className="bg-extended-200 border rounded-md text-extended-900 md:hidden">
             <div
-              className='py-3 px-5 flex gap-4 justify-between items-center cursor-pointer '
+              className="py-3 px-5 flex gap-4 justify-between items-center cursor-pointer "
               onClick={() => setMobileTabIots(!mobileTabIots)}
             >
               <div>
@@ -126,15 +126,15 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
                 }`}
               >
                 <svg
-                  width='12'
-                  height='12'
-                  viewBox='0 0 12 8'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d='M1.41 0.589844L6 5.16984L10.59 0.589844L12 1.99984L6 7.99984L0 1.99984L1.41 0.589844Z'
-                    fill='#323232'
+                    d="M1.41 0.589844L6 5.16984L10.59 0.589844L12 1.99984L6 7.99984L0 1.99984L1.41 0.589844Z"
+                    fill="#323232"
                   />
                 </svg>
               </span>
@@ -155,9 +155,9 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
         {/* right */}
         {/* right */}
         <div className={stls.right}>
-          <div className='flex flex-col w-full h-full '>
-            <div className='relative'>
-              <div className='p-3'>
+          <div className="flex flex-col w-full h-full ">
+            <div className="relative">
+              <div className="p-3">
                 <ChartData
                   loading={loading}
                   title={SENSOR__UNIT_text[typeSensor]}
@@ -168,14 +168,14 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
               </div>
 
               {loading && (
-                <div className='absolute top-0 left-0 rounded-md flex justify-center items-center w-full h-full bg-primary bg-opacity-10'>
+                <div className="absolute top-0 left-0 rounded-md flex justify-center items-center w-full h-full bg-primary bg-opacity-10">
                   <CircleLoading big={true} />
                 </div>
               )}
             </div>
-            <div className='flex flex-row flex-wrap gap-6'>
+            <div className="flex flex-row flex-wrap gap-6">
               {DURATION_TYPES.map((item, idx) => {
-                return (
+                return item !== "3M" ? (
                   <Button
                     key={"duration-type-" + idx}
                     isActive={idx === durationType}
@@ -186,6 +186,11 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
                   >
                     {item}
                   </Button>
+                ) : (
+                  <div
+                    key={"duration-type-hidden" + idx}
+                    className="hidden"
+                  ></div>
                 );
               })}
             </div>

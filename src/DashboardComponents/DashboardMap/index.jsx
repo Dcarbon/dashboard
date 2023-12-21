@@ -5,7 +5,7 @@ import Footer from "../Footer";
 import Main from "../Main";
 import { useCurrentIOT } from "src/hook/useIOT";
 import DashboardEarth from "./components/earth";
-
+import stls from "../../styles/dashboard.module.scss";
 /**
  * @param {MapboxEvent} evnt
  * @returns
@@ -13,11 +13,10 @@ import DashboardEarth from "./components/earth";
 export default function DashboardMap() {
   const [isShow, setIsShow] = useState(false);
   const [currentIOT] = useCurrentIOT();
-  const [isShowMain, setIsShowMain] = useState(false);
 
   return (
-    <div className='flex flex-col w-full lg:h-screen bg-extended-900 lg:overflow-hidden'>
-      <div className='px-6 py-4'>
+    <div className="bg-extended-900">
+      <div className={`${stls.header} px-6 py-4`}>
         <Header />
       </div>
 
@@ -25,36 +24,22 @@ export default function DashboardMap() {
       {/*  */}
       {/*  */}
       {/*  */}
-      <div className='flex-1 lg:relative lg:flex-1 '>
+      <div className={`${stls.main} flex flex-col justify-between`}>
         {/* Map */}
-        <div className={`${currentIOT ? "h-[50vh]" : "h-full"} lg:h-full`}>
-          <div className='flex flex-col w-full h-full'>
-            <div className='flex-1'>
-              <DashboardEarth />
-            </div>
-            <div className={`  ${!isShowMain ? "lg:block" : "lg:hidden"}`}>
-              {!currentIOT && <Footer />}
-            </div>
-          </div>
-        </div>
-        {/* info */}
-        {Boolean(currentIOT) && (
+        <div className="flex-1">
           <div
-            className={` lg:absolute bottom-[0] left-0 w-full lg:max-h-9/10 lg:h-full transition-all duration-500  ${
-              isShowMain ? "lg:translate-y-0" : "lg:translate-y-11/12"
-            }`}
-            style={{
-              transitionTimingFunction: "ease-in",
-            }}
+            className={`${
+              currentIOT ? stls.isCurrent : stls.isEmpty
+            } lg:h-full`}
           >
-            <Main
-              isShowMain={isShowMain}
-              setIsShowMain={setIsShowMain}
-              isShow={isShow}
-              setIsShow={setIsShow}
-            />
+            <DashboardEarth />
           </div>
-        )}
+          {/* info */}
+          {Boolean(currentIOT) && (
+            <Main isShow={isShow} setIsShow={setIsShow} />
+          )}
+        </div>
+        <Footer />
       </div>
       {/*  */}
       {/*  */}

@@ -10,18 +10,18 @@ export default function Dashboard() {
     <Fragment>
       <Head>
         <title>DCarbon | Dashboard</title>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.png' />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.png" />
         <meta
-          name='description'
-          content='DCarbon website: Fair to us - Fair to Earth'
+          name="description"
+          content="DCarbon website: Fair to us - Fair to Earth"
         />
         {/* <!-- Google tag (gtag.js) --> */}
       </Head>
 
       {GGANAS && <Script async src={API.GGANAS + GGANAS}></Script>}
-      <Script id='gg-anas'>
+      <Script id="gg-anas">
         {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}

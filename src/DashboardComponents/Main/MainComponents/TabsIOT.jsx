@@ -26,9 +26,9 @@ function TabsIOT({ onChangeIOT }) {
     });
   };
   return (
-    <div className='pr-3 md:pr-0 md:pb-3 lg:pr-3 lg:pb-0'>
+    <div className="pr-3 md:pr-0 md:pb-3 lg:pr-3 lg:pb-0">
       {iots_by_project?.length > 0 && (
-        <ul className='mt-4 md:mt-0 w-full md:w-auto lg:w-full flex md:inline-flex lg:flex flex-col md:flex-row lg:flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-6'>
+        <ul className="mt-4 md:mt-0 w-full md:w-auto lg:w-full flex md:inline-flex lg:flex flex-col md:flex-row lg:flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-6">
           {iots_by_project?.map((item) => (
             <ItemTab
               key={"item-" + item?.id}
@@ -81,8 +81,8 @@ function ItemTab({
         setCurrentId(item.id);
       }}
     >
-      <div className='py-3 px-5 '>
-        <p
+      <div className="py-3 px-5 ">
+        <div
           className={`text-B-M leading-B-M ${
             isCurrent ? "text-extended-700" : "text-extended-400"
           }`}
@@ -90,16 +90,16 @@ function ItemTab({
           {loading ? (
             <CircleLoading small />
           ) : (
-            <>
+            <p>
               <span
                 className={`inline-block w-2 h-2 rounded-full ${
                   isActive ? "bg-primary" : "bg-extended-400"
                 } align-middle mr-2 mb-0.5`}
               />
               {isActive ? "Active" : "Inactived"}
-            </>
+            </p>
           )}
-        </p>
+        </div>
         <h4
           className={`text-T-M leading-T-M ${
             isCurrent ? "text-extended-900" : "text-extended-300"

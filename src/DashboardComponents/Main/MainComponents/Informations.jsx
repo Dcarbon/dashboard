@@ -2,7 +2,7 @@ import Heading from "./Components/Informations/Heading";
 import Total from "./Components/Informations/Total";
 import InfoProject from "./Components/Informations/InfoProject";
 import Address from "./Components/Informations/Address";
-import Document from "./Components/Informations/Document";
+// import Document from "./Components/Informations/Document";
 import Description from "./Components/Informations/Description";
 
 function Information() {
@@ -21,9 +21,9 @@ function Information() {
             <div className="flex-1">
               <InfoProject />
             </div>
-            <div className="w-full lg:w-[264px]">
+            {/* <div className="w-full lg:w-[264px]">
               <Document />
-            </div>
+            </div> */}
             <div className="w-full">
               <Address />
             </div>

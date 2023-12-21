@@ -205,113 +205,120 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
   }, [data, durationType, loading, typeSensor]);
 
   useEffect(() => {
-    if (dataHandled?.value && dataHandled?.time && !loading) {
-      const text = "(" + title + ")";
-      const formatter = (val) => {
-        if (typeof val === "object") {
-          let newD = val ? new Date(val) : null;
+    const text = "(" + title + ")";
+    const formatter = (val) => {
+      if (typeof val === "object") {
+        let newD = val ? new Date(val) : null;
 
-          switch (durationType) {
-            case 0: //1 tuần
-            case 1: //1 tháng
-            case 2: //3 tháng
-            case 3: // 6 tháng
-            case 4: // 1 năm
-              return dateFormat(newD, newD?.getDate() === 1 ? "mmm" : "dd/mmm");
+        switch (durationType) {
+          case 0: //1 tuần
+          case 1: //1 tháng
+          case 2: //3 tháng
+          case 3: // 6 tháng
+          case 4: // 1 năm
+            return dateFormat(newD, newD?.getDate() === 1 ? "mmm" : "dd/mmm");
 
-            case 5: // all time
-              return dateFormat(newD, "mmm yyyy");
+          case 5: // all time
+            return dateFormat(newD, "mmm yyyy");
 
-            default:
-              return "";
-          }
+          default:
+            return "";
         }
+      }
 
-        // return "";
-      };
-      const custom = (series, seriesIndex, dataPointIndex) => {
-        if (series?.length > 0) {
-          return (
-            '<div class="arrow_box">' +
-            '<h4 class="title"><b class="strong">' +
-            series?.[seriesIndex]?.[dataPointIndex] +
-            "</b> " +
-            title +
-            "</h4>" +
-            "<span>" +
-            GET_STRING_DAY(durationType, dataHandled.time[dataPointIndex]) +
-            "</span>" +
-            "</div>"
-          );
-        }
-      };
-      let newSeries = initSeries;
+      // return "";
+    };
+    const custom = (series, seriesIndex, dataPointIndex) => {
+      if (series?.length > 0) {
+        return (
+          '<div class="arrow_box">' +
+          '<h4 class="title"><b class="strong">' +
+          series?.[seriesIndex]?.[dataPointIndex] +
+          "</b> " +
+          title +
+          "</h4>" +
+          "<span>" +
+          GET_STRING_DAY(durationType, dataHandled.time[dataPointIndex]) +
+          "</span>" +
+          "</div>"
+        );
+      }
+    };
+    let newSeries = initSeries;
+    let newCategories = [];
+    if (dataHandled?.value?.length === 0 || dataHandled?.time?.length === 0) {
+      newSeries = initSeries;
+    } else if (
+      dataHandled?.value?.length > 0 &&
+      dataHandled?.time?.length > 0 &&
+      !loading
+    ) {
       newSeries[0].data = dataHandled.value;
       setSeries(newSeries);
       // set options
-      let newCategories = dataHandled.time;
-      if (typeSensor === 0) {
-        let newOpBar = {
-          ...initOptions,
-          title: {
-            ...initOptions.title,
-            text,
+      newCategories = dataHandled.time;
+    }
+    if (typeSensor === 0) {
+      let newOpBar = {
+        ...initOptions,
+        title: {
+          ...initOptions.title,
+          text,
+        },
+        xaxis: {
+          ...initOptions.xaxis,
+          categories: newCategories,
+          labels: {
+            ...initOptions.xaxis.labels,
+            show: true,
+            formatter,
           },
-          xaxis: {
-            ...initOptions.xaxis,
-            categories: newCategories,
-            labels: {
-              ...initOptions.xaxis.labels,
-              show: true,
-              formatter,
-            },
-          },
+        },
 
-          tooltip: {
-            ...initOptions.tooltip,
-            custom: function (props) {
-              const { series, seriesIndex, dataPointIndex } = props;
-              return custom(series, seriesIndex, dataPointIndex);
-            },
+        tooltip: {
+          ...initOptions.tooltip,
+          custom: function (props) {
+            const { series, seriesIndex, dataPointIndex } = props;
+            return custom(series, seriesIndex, dataPointIndex);
           },
-          plotOptions: {
-            bar: {
-              borderRadius: 4,
-              borderRadiusApplication: "end",
-              borderRadiusWhenStacked: "all",
-            },
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            borderRadiusApplication: "end",
+            borderRadiusWhenStacked: "all",
           },
-        };
-        setOptionsBar(newOpBar);
-      } else {
-        let newOpLine = {
-          ...initOptions,
-          title: {
-            ...initOptions.title,
-            text,
+        },
+      };
+      setOptionsBar(newOpBar);
+    } else {
+      let newOpLine = {
+        ...initOptions,
+        title: {
+          ...initOptions.title,
+          text,
+        },
+        xaxis: {
+          ...initOptions.xaxis,
+          categories: newCategories,
+          labels: {
+            ...initOptions.xaxis.labels,
+            show: true,
+            formatter,
           },
-          xaxis: {
-            ...initOptions.xaxis,
-            categories: newCategories,
-            labels: {
-              ...initOptions.xaxis.labels,
-              show: true,
-              formatter,
-            },
+        },
+        stroke: {
+          curve: "smooth",
+        },
+        tooltip: {
+          ...initOptions.tooltip,
+          custom: function (props) {
+            const { series, seriesIndex, dataPointIndex } = props;
+            return custom(series, seriesIndex, dataPointIndex);
           },
-          stroke: {
-            curve: "smooth",
-          },
-          tooltip: {
-            ...initOptions.tooltip,
-            custom: function (props) {
-              const { series, seriesIndex, dataPointIndex } = props;
-              return custom(series, seriesIndex, dataPointIndex);
-            },
-          },
-        };
-        setOptionsLine(newOpLine);
-      }
+        },
+      };
+      setOptionsLine(newOpLine);
     }
   }, [dataHandled, durationType, loading, title, typeSensor]);
 
@@ -319,16 +326,16 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
   // // resize
   // // resize
   // // resize
-  useEffect(() => {
-    const handleResize = () => setWidth(BOXREF?.current?.clientWidth);
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  // useEffect(() => {
+  // const handleResize = () => setWidth(BOXREF?.current?.clientWidth);
+  // window.addEventListener("resize", handleResize);
+  // return () => {
+  //   window.removeEventListener("resize", handleResize);
+  // };
+  // }, []);
 
   return (
-    <div ref={BOXREF} className='myApex -ml-5'>
+    <div ref={BOXREF} className="myApex -ml-5">
       <div className={typeSensor === 0 ? "block" : "hidden"}>
         <ReactApexChart
           type={"bar"}

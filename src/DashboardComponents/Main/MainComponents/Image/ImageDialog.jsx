@@ -18,7 +18,7 @@ function ImageDialog({ isShow, setIsShow }) {
 
   const [navState, setNavState] = useState({ nav1: null, nav2: null });
   const projectInfo = useProject();
-  const images = useMemo(() => projectInfo?.images, [projectInfo?.images]);
+  const images = useMemo(() => projectInfo[0]?.images, [projectInfo]);
   useEffect(() => {
     if (slider1?.current && slider2?.current) {
       setNavState({

@@ -14,7 +14,7 @@ function DashboardEarth() {
   const [prevId, setPrevId] = useState();
   const handleFlyTo = (center, zoom) => {
     try {
-      mapREF?.current.flyTo({
+      mapREF?.current?.flyTo({
         center: center, // lat, lng
         zoom: zoom,
       });

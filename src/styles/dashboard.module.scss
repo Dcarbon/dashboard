@@ -1,0 +1,17 @@
+.main {
+  min-height: calc(100vh - 148px);
+}
+.isEmpty {
+  height: calc(100vh - 148px - 72px);
+}
+.isCurrent {
+  height: 50vh;
+}
+@media screen and (min-width: 768px) {
+  .main {
+    min-height: calc(100vh - 82px);
+  }
+  .isEmpty {
+    height: calc(100vh - 82px - 72px);
+  }
+}
