@@ -50,7 +50,7 @@
   .box {
     margin: 0 auto;
     width: 848px;
-    max-width: 90%;
+    max-width: 80%;
     overflow: auto;
     background-color: #32303e;
     border-radius: 20px;
@@ -58,6 +58,9 @@
 
     @media (min-width: 1024px) {
       transform: translateX(0);
+    }
+    @media (min-width: 1440px) {
+      width: 1200px;
     }
   }
 
@@ -74,10 +77,15 @@
       }
       .img_ {
         padding: 0;
-        max-height: 35vh;
+        max-height: calc(100vh - 300px);
         max-width: 100%;
         @media (min-width: 1200px) {
-          max-height: 300px;
+          // max-height: 300px;
+          max-height: calc(100vh - 300px);
+        }
+        @media (min-width: 1200px) {
+          // max-height: 300px;
+          max-height: calc(100vh - 300px);
         }
       }
     }

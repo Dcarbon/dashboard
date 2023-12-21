@@ -109,7 +109,7 @@ function ImageDialog({ isShow, setIsShow }) {
               {
                 breakpoint: 768,
                 settings: {
-                  arrows: false,
+                  // arrows: false,
                 },
               },
             ]}
