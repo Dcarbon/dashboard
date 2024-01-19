@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import Layout from "src/components/layouts";
 import Post_Sec_2 from "src/components/sections/Post/sec_2";
 import Post_Sec_1 from "src/components/sections/Post/sec_1";
-import { handleAttributes } from "src/tools/const";
+import { handleAttributes, handleImage } from "src/tools/const";
 import HandleAPI, { AxiosGet, QStringify } from "src/tools/handleAPI";
 import useSWR from "swr";
 import { useRouter } from "next/router";
@@ -25,15 +25,34 @@ function Post() {
   // handle
   // handle
   // handle
-
+  // console.log("post", post);
   const attrs = useMemo(() => handleAttributes(post?.data[0]), [post?.data]);
   if (errPost) {
     router.push("/404");
   }
-
+  const layout_description = useMemo(() => {
+    if (post?.data?.length > 0) {
+      let newAttr = post?.data[0]?.attributes;
+      return newAttr?.summary;
+    }
+    return undefined;
+  }, [post?.data]);
+  const layout_image = useMemo(() => {
+    if (post?.data?.length > 0) {
+      let newAttr = post?.data[0]?.attributes;
+      const attrImg = handleAttributes(newAttr?.thumbnail);
+      return handleImage(attrImg);
+    }
+    return undefined;
+  }, [post?.data]);
+  // handleImage
   return (
     post && (
-      <Layout title={attrs?.title}>
+      <Layout
+        title={attrs?.title}
+        description={layout_description}
+        image={layout_image}
+      >
         <Post_Sec_1 title={attrs?.title} />
 
         <Post_Sec_2

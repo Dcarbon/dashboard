@@ -5,7 +5,7 @@ import Footer from "./footer";
 import { Fragment } from "react";
 import Script from "next/script";
 const lexend = Lexend_Deca({ subsets: ["vietnamese"] });
-function Layout({ title, children, noFooter, noHeader }) {
+function Layout({ title, children, noFooter, noHeader, image, description }) {
   const GGANAS = process.env.NEXT_PUBLIC_GGANAS;
   return (
     <Fragment>
@@ -18,6 +18,13 @@ function Layout({ title, children, noFooter, noHeader }) {
           name="description"
           content="DCarbon website: Fair to us - Fair to Earth"
         />
+        <meta name="description" content={description} key="desc" />
+        <meta
+          property="og:title"
+          content={"DCarbon" + (title ? " | " + title : "")}
+        />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
         {/* <!-- Google tag (gtag.js) --> */}
       </Head>
       {GGANAS && (
