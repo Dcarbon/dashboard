@@ -80,11 +80,15 @@ export function Past30({
     }
     return { time: 0, created: 0 };
   }, [data]);
+
+  const newNumber = useMemo(() => {
+    return getAmountbyNumber(number?.created);
+  }, [number?.created]);
   return (
     <TotalBoxBorder
       className={"border-r border-b md:border-b-0"}
       title={"Past 30 days"}
-      number={getAmountbyNumber(number.created)}
+      number={newNumber}
       loading={loading}
     />
   );

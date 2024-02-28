@@ -1,17 +1,11 @@
 {
   "name": "d-carbon-website",
-  "version": "v0.1.4-rc.5",
   "private": true,
-  "description": "v0.1.4-rc.5 : Edit component chart",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "dk-cache": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:cache .",
-    "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.1.4-rc.5 .",
-    "dk-run": "docker run -p 3132:3000 harbor.viet-tin.com/dcarbon/dashboard:v0.1.4-rc.5",
-    "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:v0.1.4-rc.5"
+    "lint": "next lint"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",

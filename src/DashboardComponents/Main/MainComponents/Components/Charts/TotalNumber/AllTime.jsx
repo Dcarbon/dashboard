@@ -13,7 +13,7 @@ export function AllTime({ typeSensor, id, sensorId }) {
   const [loading, setLoading] = useState(null);
   const [total] = useIots_Minted();
   const values = useHandleIots_minted(total);
-  // Hàm lấy dữ liệu
+
   // Hàm lấy dữ liệu
   // Hàm lấy dữ liệu
   // Hàm lấy dữ liệu
@@ -76,6 +76,9 @@ export function AllTime({ typeSensor, id, sensorId }) {
     }
     return returnNumb;
   }, [id, values]);
+  const newNumber = useMemo(() => {
+    return getAmountbyNumber(numberSensor?.created);
+  }, [numberSensor?.created]);
   return (
     <TotalBoxBorder
       className={"border-r border-b md:border-b-0"}
@@ -83,7 +86,7 @@ export function AllTime({ typeSensor, id, sensorId }) {
       number={
         typeSensor === 0
           ? Number(numberIOT?.amount)
-          : getAmountbyNumber(numberSensor?.created)
+          : getAmountbyNumber(newNumber)
       }
       loading={loading}
     />
