@@ -1,10 +1,12 @@
 import { Layer, Source } from "react-map-gl";
+import { Endpoint } from "src/components/router/router";
+import { gateway } from "src/redux/handle";
 function SourceGeojson({ visibility }) {
   return (
     <Source
       id='iott_all'
       type='geojson'
-      data={"https://dev.dcarbon.org/api/v1/iots/geojson"}
+      data={`${gateway}/`+Endpoint.GeoJSON}
       cluster={true}
       clusterMaxZoom={14} // Max zoom to cluster points on
       clusterRadius={50} // Radius of each cluster when clustering points (defaults to 50)

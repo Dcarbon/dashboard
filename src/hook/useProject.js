@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ProjectACT } from "src/redux/actions/projectAction";
 
 export function useProjectState() {
-  const projectState = useSelector((state) => state?.projectState);
+  const projectState = useSelector((state) => state?.projectState);  
   return {
     iots_inside: projectState?.iots_inside,
     project: projectState?.project,
@@ -26,7 +26,7 @@ export function useProject() {
       dispatch({ type: ProjectACT.GET_PROJECT.REQUEST, payload: id });
     },
     [dispatch]
-  );
+  );    
   return [projectState.project, handleSetProject];
 }
 export function useProjectDetail(id) {

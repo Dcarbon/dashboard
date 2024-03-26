@@ -21,12 +21,12 @@ export const getAmount = (item) => {
 };
 export const getAmountbyNumber = (numb) => {
   const reduceAmount = numb / 1e9;
-  let fixed = reduceAmount.toFixed(2);
+  let fixed = reduceAmount.toFixed(2);  
   return fixed;
 };
 export const getSum = (prev, next) => Number(prev) + Number(next);
 
-export const GET_STRING_DAY = (durType, time) => {
+export const GET_STRING_DAY = (durType, time) => {  
   if (time) {
     const newTime = new Date(time);
     if (durType < 3) {
@@ -56,8 +56,8 @@ export const GET_STRING_DAY_LineChart = (durType, time) => {
 
 export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
   let sorted = [];
-  let newmap = [];
-  if (data) {
+  let newmap = [];  
+  if (data?.data?.length) {
     // console.log("data");
     // console.log("data");
     // console.log("data");
@@ -68,22 +68,20 @@ export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
     // console.log("data");
     // console.log("data");
     // console.log("data");
-    // console.log("data");
+    // console.log("data");  
     // console.log("data");
     // console.log("data");
     // console.log("data", data);
     // let initTime = 0;
     // let total = 0;
-    newmap = data.map((item) => {
+    newmap = data?.data?.map((item) => {        
       let newTime = item.createdAt || item.time;
-      let newValue = item.carbon || item.value;
-
+      let newValue = item.carbon || item.value;          
       return {
-        time: new Date(newTime),
+        time: new Date(Number(newTime)),
         value: newValue ? getAmountbyNumber(newValue) : "0",
       };
-    });
-
+    });    
     sorted = newmap.sort((a, b) => a?.time?.getTime() - b?.time?.getTime());
     let newReverseZA = [];
     let newReverse = [];
@@ -137,7 +135,7 @@ export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
       });
       sortedHandled = newReverse.reverse();
       return sortedHandled;
-    } else {
+    } else {      
       return sorted;
     }
   }

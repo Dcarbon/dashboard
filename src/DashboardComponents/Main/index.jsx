@@ -43,7 +43,7 @@ function Main({ isShow, setIsShow }) {
       // <div className="relative bg-[#0B0B0B] w-full h-full border-t-2 border-t-extended-700 ">
 
       <div className="mb-12">
-        <ThisContainer>
+        <ThisContainer>          
           <Information />
           <ImageProject isShow={isShow} setIsShow={setIsShow} />
         </ThisContainer>
