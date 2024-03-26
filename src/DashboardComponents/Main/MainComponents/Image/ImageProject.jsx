@@ -44,8 +44,8 @@ function BtnArr({ onClick, right }) {
   );
 }
 function SliderGroup({ images, projectId, setIsShow }) {
-  const [current, setCurrent] = useState(0);
-
+  const [current, setCurrent] = useState(0);   
+   
   return (
     <Slider
       autoplay={false}
@@ -85,7 +85,7 @@ function SliderGroup({ images, projectId, setIsShow }) {
             <div onClick={() => setIsShow(true)} className={stls.img}>
               <Image
                 unoptimized
-                src={slideImage?.image}
+                src={slideImage}
                 alt={"Project " + projectId}
                 fill
                 style={{

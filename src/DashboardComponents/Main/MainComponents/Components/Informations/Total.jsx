@@ -8,16 +8,15 @@ import {
 
 function Total() {
   const iotState = useIotState();
-  const iots_inside = iotState.iots_by_project;
-
-  const [getTotal, setTotal] = useIots_Minted();
-  const collection = useHandleIots_minted(getTotal);
-  useEffect(() => {
-    if (iots_inside) {
+  const iots_inside = iotState.iots_by_project;  
+  const [getTotal, setTotal] = useIots_Minted();    
+  useEffect(() => {    
+    if (iots_inside) {           
       setTotal(iots_inside);
     }
   }, [iots_inside, setTotal]);
-  const handleTotal = (collection) => {
+  const collection = useHandleIots_minted(getTotal);
+  const handleTotal = (collection) => {    
     if (collection?.length > 0) {
       let newCollection = collection.reduce((prev, curr) => {
         return {

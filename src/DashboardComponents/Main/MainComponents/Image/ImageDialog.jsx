@@ -17,7 +17,7 @@ function ImageDialog({ isShow, setIsShow }) {
   const slider2 = useRef(null);
 
   const [navState, setNavState] = useState({ nav1: null, nav2: null });
-  const projectInfo = useProject();
+  const projectInfo = useProject();  
   const images = useMemo(() => projectInfo[0]?.images, [projectInfo]);
   useEffect(() => {
     if (slider1?.current && slider2?.current) {
@@ -72,7 +72,7 @@ function ImageDialog({ isShow, setIsShow }) {
                       className={stls.img_}
                       unoptimized
                       quality={50}
-                      src={item?.image}
+                      src={item}
                       alt=""
                       width={500}
                       height={500}
@@ -121,7 +121,7 @@ function ImageDialog({ isShow, setIsShow }) {
                     unoptimized
                     alt=""
                     key={"nav-" + idx}
-                    src={images[idx]?.image}
+                    src={ images[idx]}
                     width={60}
                     height={100}
                     quality={10}

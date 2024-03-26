@@ -9,17 +9,18 @@ export function Yesterday({ data, loading }) {
   // Từ data =>number
   // Từ data =>number
   const number = useMemo(() => {
-    let newDate = new Date();
-    let today = newDate.getDate();
-    let yesterday = today - 1;
-
+    const today = new Date().getDate();
+    const yesterday = today - 1;
+    
     let yesterdayData = { time: 0, created: 0 };
     if (data?.length > 1) {
-      let filterIdx = data?.findIndex((item) => {
-        let newDateByItem = new Date(item.time);
+      const filteredData = data.find(item => {
+        const newDateByItem = new Date(Number(item.time));
         return newDateByItem.getDate() === yesterday;
       });
-      yesterdayData = data[filterIdx];
+      if (filteredData) {
+        yesterdayData = filteredData;
+      }
     }
     return yesterdayData;
   }, [data]);

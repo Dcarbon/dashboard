@@ -7,16 +7,16 @@ import { useProject } from "src/hook/useProject";
 import { useIot } from "src/hook/useIOT";
 function InfoProject() {
   const [iot] = useIot();
-  const [project] = useProject();
+  const [project] = useProject();  
   const infoModel = useMemo(
     () => ({
       type: iot.type ?? 0,
-      implement: project?.createdAt
-        ? dateFormat(new Date(project?.createdAt), "dd/mm/yyyy")
+      implement: project?.ca
+        ? dateFormat(new Date(Number(project?.ca)), "dd/mm/yyyy")
         : "",
-      area: project?.specs?.specs?.area ?? "",
+      area: project?.area ?? "",
     }),
-    [iot?.type, project?.createdAt, project?.specs?.specs?.area]
+    [iot?.type, project?.ca, project?.area]
   );
   return (
     <BoxBorder

@@ -31,9 +31,8 @@ function TabsGenerator({ selectedSensor, setSelectedSensor, setTypeSensor }) {
                 text={"Carbon minted"}
                 onClick={() => handleClick(0, SENSOR__TYPE.None)}
               />
-
-              {sensors?.map((item) => {
-                let text = handleLabelText(item.type);
+              {sensors?.data?.map((item) => {                                       
+                let text = handleLabelText(item.type);                
                 if (text) {
                   return (
                     <LabelTab

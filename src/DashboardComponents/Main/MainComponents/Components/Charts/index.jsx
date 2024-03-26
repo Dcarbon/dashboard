@@ -64,8 +64,8 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
       let to = newDate;
       let url = "";
       let { from, interval } = handleGetDuration(newType);
-      if (typeSensor === 0) {
-        url = apiTotalCarbon(currentId, from, to, interval);
+      if (typeSensor === 0) {      
+        url = apiTotalCarbon(currentId, from, to, interval);      
       } else if (typeSensor > 0 && sensorId) {
         url = apiTotalSensor(currentId, sensorId, from, to, interval);
       }
@@ -158,7 +158,7 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
         <div className={stls.right}>
           <div className="flex flex-col w-full h-full ">
             <div className="relative">
-              <div className="p-3">
+              <div className="p-3">                            
                 <ChartData
                   loading={loading}
                   title={SENSOR__UNIT_text[typeSensor]}

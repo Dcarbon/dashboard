@@ -96,10 +96,10 @@ export function useIots_Minted() {
 export function useHandleIots_minted(total) {
   const [newValue, setNewValue] = useState([]);
   useEffect(() => {
-    if (total) {
-      let nV = total?.map((item) => {
-        if (item?.length > 0) {
-          let i = item[0];
+    if (total) {      
+      let nV = total?.map((item) => {                      
+        if (item?.data?.length > 0) {
+          let i = item?.data?.[0];        
           let returnVal = {
             id: i.id,
             iotId: i.iotId,

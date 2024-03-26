@@ -192,7 +192,7 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
       let newData = GET_DATA_SERIES(data, typeSensor, durationType);
       let newTime = [];
       let newValue = [];
-      newData?.forEach((item) => {
+      newData?.forEach((item) => {        
         newTime.push(item.time);
         newValue.push(item.value);
       });
@@ -200,15 +200,14 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
         time: newTime,
         value: newValue,
       });
-    }
+    }    
   }, [data, durationType, loading, typeSensor]);
    
   useEffect(() => {    
     const text = "(" + title + ")";
     const formatter = (val) => {
-      if (typeof val === "object") {
-        let newD = val ? new Date(val) : null;
-
+      if (typeof val === "object") {      
+        let newD = val ? new Date(val) : null;             
         switch (durationType) {
           case 0: //1 tuần
           case 1: //1 tháng
@@ -290,7 +289,7 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
         },
       };
       setOptionsBar(newOpBar);
-    } else {
+     } else {      
       let newOpLine = {
         ...initOptions,
         title: {

@@ -28,7 +28,7 @@ export function AllTime({ typeSensor, id, sensorId }) {
       AxiosGet(url)
         .then((res) => {
           let newData = [];
-          newData = res.data?.map((item) => ({
+          newData = res.data?.data?.map((item) => ({
             time: typeSensor === 0 ? item?.createdAt : item.time,
             created: item?.[type === 0 ? "carbon" : "value"] ?? 0,
           }));
@@ -60,7 +60,7 @@ export function AllTime({ typeSensor, id, sensorId }) {
           ...prev,
           created: getSum(prev?.created ?? 0, curr?.created ?? 0),
         };
-      });
+      });      
       return total;
     }
     return { time: 0, created: 0 };
@@ -76,7 +76,7 @@ export function AllTime({ typeSensor, id, sensorId }) {
     }
     return returnNumb;
   }, [id, values]);
-  const newNumber = useMemo(() => {
+  const newNumber = useMemo(() => {    
     return getAmountbyNumber(numberSensor?.created);
   }, [numberSensor?.created]);
   return (
@@ -86,7 +86,7 @@ export function AllTime({ typeSensor, id, sensorId }) {
       number={
         typeSensor === 0
           ? Number(numberIOT?.amount)
-          : getAmountbyNumber(newNumber)
+          : newNumber
       }
       loading={loading}
     />

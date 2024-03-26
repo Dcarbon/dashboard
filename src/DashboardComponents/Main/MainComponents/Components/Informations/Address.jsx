@@ -7,14 +7,6 @@ import { useIot } from "src/hook/useIOT";
 function Address() {
   const [iot] = useIot();
   const [project] = useProject();
-  const projectDetail = useProjectDetail(project?.id);
-  const addressModel = useMemo(
-    () => ({
-      address: iot?.address || "",
-      location: projectDetail?.location || "",
-    }),
-    [iot?.address, projectDetail?.location]
-  );
   // handle Ether address
   const strCut = (str) => {
     const strReplace = str?.substring(5, str?.length - 4);
@@ -49,15 +41,15 @@ function Address() {
           }
           textRight={
             <Fragment>
-              <span className='mr-2'>{strCut(addressModel?.address)}</span>
-              <CopyButton obj={addressModel?.address} />
+              <span className='mr-2'>{strCut(iot?.address)}</span>
+              <CopyButton obj={iot?.address} />
             </Fragment>
           }
         />
         <Li
           noMarginBottom={true}
           textLeft={"Location"}
-          textRight={addressModel?.location}
+          textRight={project?.address}
         />
       </ul>
     </BoxBorder>

@@ -41,15 +41,16 @@ export function Past30({
       // console.log("getPast30 --------------------------------", url);
       AxiosGet(url)
         .then((res) => {
-          let newData = [];
-          newData = res.data?.map((item) => ({
-            time: typeSensor === 0 ? item?.createdAt : item.time,
+          let newData = [];        
+          newData = res.data?.data?.map((item) => ({            
+            // it has the same response element, so there is no need switch_case.
+            time:  item.createdAt, // "typeSensor === 0 ? item?.createdAt : item.createdAt,"
             created: item?.[type === 0 ? "carbon" : "value"] ?? 0,
-          }));
-          setData(newData);
+          }));                    
+          setData(newData);          
         })
         .catch((er) => console.log("getPast30 failed ", er))
-        .finally(() => setLoading(false));
+        .finally(() => setLoading(false));      
     },
     [setData, setLoading, typeSensor]
   );
@@ -58,8 +59,8 @@ export function Past30({
   // Lấy dữ liệu 30 ngày trước nếu đủ điều kiện
   // Lấy dữ liệu 30 ngày trước nếu đủ điều kiện
   // Lấy dữ liệu 30 ngày trước nếu đủ điều kiện
-  useEffect(() => {
-    if ((id || sensorId) && typeSensor >= 0) {
+  useEffect(() => {    
+    if ((id || sensorId) && typeSensor >= 0) {      
       getPast30(typeSensor, sensorId, id);
     }
   }, [getPast30, id, sensorId, typeSensor]);
@@ -68,7 +69,7 @@ export function Past30({
   // Từ data =>number
   // Từ data =>number
   const number = useMemo(() => {
-    if (data?.length > 0) {
+    if (data?.length > 0) {      
       let total = 0;
       total = data.reduce((prev, curr) => {
         return {
@@ -81,7 +82,7 @@ export function Past30({
     return { time: 0, created: 0 };
   }, [data]);
 
-  const newNumber = useMemo(() => {
+  const newNumber = useMemo(() => {  
     return getAmountbyNumber(number?.created);
   }, [number?.created]);
   return (
