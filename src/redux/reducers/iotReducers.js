@@ -45,7 +45,7 @@ const iotReducer = (state = initIotState, action) => {
       return {
         ...state,
         loading: true,
-        count: res.data?.count,
+        count: res.data?.data,
         latest: action.type,
       };
     case IOTAct.COUNT_IOT.FAILURE:

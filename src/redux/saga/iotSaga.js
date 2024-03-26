@@ -3,6 +3,7 @@ import { IOTAct } from "../actions/iotAction";
 import { handleTakeEvery } from "../handle";
 import { roundup_second } from "src/DashboardComponents/handleConfig";
 import axios from "axios";
+import { Endpoint } from "src/components/router/router";
 
 export const watcherIot = [
   handleTakeEvery(countIot, IOTAct.COUNT_IOT),
@@ -29,25 +30,25 @@ function getIot({ payload }) {
   return AxiosGet(url);
 }
 function getAllIots() {
-  var url = `iots/geojson`;
+  var url = Endpoint.GeoJSON;
   return AxiosGet(url);
 }
 function getIOTs_byProject(action) {
-  var url = `iots/list?projectId=${action.payload}&status=10`;
+  var url = `iots?projectId=${action.payload}&status=10`;
   return AxiosGet(url);
 }
 function getIotMinted(action) {
-  var url = `iots/${action.payload.iotId}/minted?from=${action.payload.from}&to=${action.payload.to}&interval=${action.payload.interval}`;
+  var url = `iot-op/minted/${action.payload.iotId}?from=${action.payload.from}&to=${action.payload.to}&interval=${action.payload.interval}`;
   return AxiosGet(url);
 }
 
-async function getIotsMinted({ payload }) {
+async function getIotsMinted({ payload }) {  
   const listIOT = payload.list;
   const newDate = new Date();
-  const toDay = roundup_second(newDate);
-  if (listIOT?.length > 0) {
-    const listAxiosGet = listIOT?.map((item) => {
-      return AxiosGet(`iots/${item?.id}/mint-sign?from=1&to=${toDay}&sort=1`);
+  const toDay = roundup_second(newDate);  
+  if (listIOT?.data?.length > 0) {
+    const listAxiosGet = listIOT?.data?.map((item) => {
+      return AxiosGet(`iot-op/mint-sign/${item?.id}?from=1&to=${toDay}&sort=1`);
     });
     try {
       const res = await axios.all(listAxiosGet);

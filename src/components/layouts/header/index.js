@@ -10,12 +10,13 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import useSWR from "swr";
-import { IOT_HOST } from "src/redux/handle";
+import { IOT_HOST, gateway } from "src/redux/handle";
 import { useRouter } from "next/router";
 import ScrollBox from "src/components/ui/ScrollBox";
 import Collapse from "src/components/ui/Collapse";
 import { SensorsACT } from "src/redux/actions/sensorsAction";
 import { useDispatch } from "react-redux";
+import { Endpoint } from "src/components/router/router";
 //
 //
 //
@@ -24,7 +25,7 @@ import { useDispatch } from "react-redux";
 //
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 function Header({ setFeatures, setErrFlyTo, mymap, setIotSelected }) {
-  const { data } = useSWR(`${IOT_HOST}/api/v1/iots/geojson`, fetcher);
+  const { data } = useSWR(`${gateway}/` +Endpoint.GeoJSON, fetcher);
   const searchREF = useRef(null);
   const features = useMemo(() => data?.features, [data?.features]);
   const [searchKey, setSearchKey] = useState("");

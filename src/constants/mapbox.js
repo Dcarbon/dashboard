@@ -1,5 +1,8 @@
+import { Endpoint } from "src/components/router/router";
+import { gateway } from "src/redux/handle";
+
 export const API = {
-  geojson: "https://dev.dcarbon.org/api/v1/iots/geojson",
+  geojson: `${gateway}/`+ Endpoint.GeoJSON,
   GGANAS: "https://www.googletagmanager.com/gtag/js?id=",
 };
 const accessToken = process.env.NEXT_PUBLIC_MAPBOX_STYLE;
