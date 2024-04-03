@@ -33,7 +33,7 @@ function getAllIots() {
   return AxiosGet(url);
 }
 function getIOTs_byProject(action) {
-  var url = `iots/list?projectId=${action.payload}&status=0`;
+  var url = `iots/list?projectId=${action.payload}&status=10`;
   return AxiosGet(url);
 }
 function getIotMinted(action) {

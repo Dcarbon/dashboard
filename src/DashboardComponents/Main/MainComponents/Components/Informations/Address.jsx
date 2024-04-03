@@ -43,7 +43,7 @@ function Address() {
           textLeft={
             <Fragment>
               <span className='inline-flex items-center gap-2'>
-                <LogoSVG /> Etherium
+                <LogoSVG /> Ethereum
               </span>
             </Fragment>
           }

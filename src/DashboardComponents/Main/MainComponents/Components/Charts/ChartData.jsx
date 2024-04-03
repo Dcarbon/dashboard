@@ -182,12 +182,12 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
   const [optionsLine, setOptionsLine] = useState({ ...initOptionsLine });
 
   useEffect(() => {
-    if (loading && data?.length > 0) {
+    if (loading && data?.length >= 0) {
       setSeries(initSeries);
     }
   }, [data?.length, loading]);
 
-  useEffect(() => {
+  useEffect(() => {  
     if (data && !loading) {
       let newData = GET_DATA_SERIES(data, typeSensor, durationType);
       let newTime = [];
@@ -196,15 +196,14 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
         newTime.push(item.time);
         newValue.push(item.value);
       });
-
       setDataHandled({
         time: newTime,
         value: newValue,
       });
     }
   }, [data, durationType, loading, typeSensor]);
-
-  useEffect(() => {
+   
+  useEffect(() => {    
     const text = "(" + title + ")";
     const formatter = (val) => {
       if (typeof val === "object") {
@@ -246,19 +245,19 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
     };
     let newSeries = initSeries;
     let newCategories = [];
-    if (dataHandled?.value?.length === 0 || dataHandled?.time?.length === 0) {
-      newSeries = initSeries;
+    if (dataHandled?.value?.length === 0 || dataHandled?.time?.length === 0) {      
+      newSeries = [{ name: "iot", data: [] }];    
     } else if (
       dataHandled?.value?.length > 0 &&
       dataHandled?.time?.length > 0 &&
       !loading
-    ) {
-      newSeries[0].data = dataHandled.value;
-      setSeries(newSeries);
+    ) {      
+      newSeries[0].data = dataHandled.value;      
       // set options
       newCategories = dataHandled.time;
-    }
-    if (typeSensor === 0) {
+    }    
+    setSeries(newSeries); 
+      if (typeSensor === 0) {
       let newOpBar = {
         ...initOptions,
         title: {

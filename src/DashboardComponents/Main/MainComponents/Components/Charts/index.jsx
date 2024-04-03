@@ -71,6 +71,7 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
       }
       AxiosGet(url)
         .then((res) => {
+          // console.log("data ",  res?.data?.length)
           setData(res?.data);
         })
         .catch((err) => console.error("Handle get data failed", err))
