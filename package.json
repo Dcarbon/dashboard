@@ -9,10 +9,10 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next export",
-    "dk-cache": "cd docker-cache && docker build -t harbor.viet-tin.com/dcarbon/dashboard:cache .",
-    "dk-build": "docker build -t harbor.viet-tin.com/dcarbon/dashboard:v0.1.4-rc.6 .",
+    "dk-cache": "cd docker-cache && docker build -t dcarbon/dashboard:cache .",
+    "dk-build": "docker build -t dcarbon/dashboard:hackathon_v1 .",
     "dk-run": "docker run -p 3132:3000 harbor.viet-tin.com/dcarbon/dashboard:v0.1.4-rc.6",
-    "dk-push": "docker push harbor.viet-tin.com/dcarbon/dashboard:v0.1.4-rc.6"
+    "dk-push": "docker push dcarbon/dashboard:hackathon_v1"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
