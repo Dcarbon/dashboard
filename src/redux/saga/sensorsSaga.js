@@ -10,7 +10,7 @@ export const watcherSensors = [
   handleTakeEvery(getSensorsGenerated, SensorsACT.getSensorsGenerated),
 ];
 function getSensors(action) {
-  var url = `sensors?skip=${action.payload.skip}&limit=${action.payload.limit}&iot_id=${action.payload.iotId}&iot_address=${action.payload.iotAddress}`;
+  var url = `sensors?skip=${action.payload.skip}&limit=${action.payload.limit}&iotId=${action.payload.iotId}`;
   return AxiosGet(url);
 }
 function getSensorMetrics(action) {

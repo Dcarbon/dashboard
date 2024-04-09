@@ -16,7 +16,7 @@ export const watcherIot = [
 ];
 
 function countIot() {
-  var url = `iots/count`;
+  var url = `iots/count?status=10`;
   return AxiosGet(url);
 }
 
