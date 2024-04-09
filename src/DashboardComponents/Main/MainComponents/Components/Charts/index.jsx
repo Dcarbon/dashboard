@@ -26,6 +26,7 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
       case 1: // 1 tháng
         newDate.setMonth(newDate.getMonth() - 1);
         from = newDate;
+        interval = 2;
         break;
       case 2: // 3 tháng
         newDate.setMonth(newDate.getMonth() - 3);
@@ -34,16 +35,16 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
       case 3: // 6 tháng
         newDate.setMonth(newDate.getMonth() - 6);
         from = newDate;
-        interval = 2;
+        interval = 3;
         break;
       case 4: // 1 năm
         newDate.setFullYear(newDate.getFullYear() - 1);
         from = newDate;
-        interval = 2;
+        interval = 3;
         break;
       case 5: // all
         from = null;
-        interval = 2;
+        interval = 4;
         break;
       default: // 1 tuần
         newDate.setDate(newDate.getDate() - 7);
@@ -57,7 +58,7 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
   };
 
   const handleGetData = useCallback(
-    (newType = durationType) => {
+    (newType = durationType) => {      
       setLoading(true);
       let newDate = new Date();
       newDate.setHours(23, 59, 59);

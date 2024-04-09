@@ -9,8 +9,7 @@ function TabsIOT({ onChangeIOT }) {
   const iots_by_project = useMemo(
     () => iotState?.iots_by_project,
     [iotState?.iots_by_project]
-  );
-
+  );  
   const [currenid, setCurrentId] = useCurrentIOT();
   const handleCheckActive = (id, setActive, setLoading) => {
     setLoading(true);
@@ -18,18 +17,18 @@ function TabsIOT({ onChangeIOT }) {
     let to = roundup_second(newDate);
     newDate.setTime(newDate.getTime() - 1000 * 60 * 5);
     let from = roundup_second(newDate);
-    let url = `iots/${id}/is-actived?from=${from}&to=${to}`;
+    let url = `iot-op/${id}/is-activated?from=${from}&to=${to}`;
     AxiosGet(url).then((res) => {
       let _res_ = res.data.actived;
       setActive(_res_);
       setLoading(false);
-    });
-  };
+    });  
+  };  
   return (
     <div className="pr-3 md:pr-0 md:pb-3 lg:pr-3 lg:pb-0">
-      {iots_by_project?.length > 0 && (
+      {iots_by_project?.data?.length > 0 && (
         <ul className="mt-4 md:mt-0 w-full md:w-auto lg:w-full flex md:inline-flex lg:flex flex-col md:flex-row lg:flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-6">
-          {iots_by_project?.map((item) => (
+          {iots_by_project?.data?.map((item) => (
             <ItemTab
               key={"item-" + item?.id}
               item={item}

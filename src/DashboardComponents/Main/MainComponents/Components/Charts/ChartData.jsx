@@ -217,7 +217,7 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
             return dateFormat(newD, newD?.getDate() === 1 ? "mmm" : "dd/mmm");
 
           case 5: // all time
-            return dateFormat(newD, "mmm yyyy");
+            return dateFormat(newD, "yyyy");
 
           default:
             return "";
