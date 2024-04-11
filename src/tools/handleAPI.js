@@ -56,6 +56,7 @@ class HandleAPI {
       populate: {
         ...populateAll("download"),
         ...populateAll("localizations"),
+        ...populateAll("video"),
       },
     };
     return objQuery;

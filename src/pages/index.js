@@ -49,8 +49,7 @@ export default function Home() {
     }
   }
 
-  const attrHome = handleAttributes(page);
-
+  const attrHome = handleAttributes(page);  
   return (
     <Layout title={"Home page"}>
       <BannerFisrt />
