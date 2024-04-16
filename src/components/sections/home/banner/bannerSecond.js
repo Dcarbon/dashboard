@@ -19,7 +19,7 @@ function BannerSecond() {
         boundingBoxTop < windowHeight - distance // boundingbox nhỏ hơn khoảng 160 tính khoảng cách từ đầu window
       ) {
         setActived(true);
-      }      
+      }
     };
     if (!loaded) {
       setLoaded(true);
@@ -31,31 +31,37 @@ function BannerSecond() {
     };
   }, [loaded]);
   useEffect(() => {
-    if (loaded && actived) {      
-      secREF?.current?.play()
+    if (loaded && actived) {
+      secREF?.current?.play();
     }
-
-  },[loaded, actived])
+  }, [loaded, actived]);
   return (
     <Section
       className={`relative ${stls.section}`}
       bgImageUrl={imgsObject.home_banner2}
     >
-       {/* <Container>  */}
-        <div className='flex flex-col container mx-auto' >
-{/* <div className={stls.heading_left}> */}
-            {/* <Heading Tag={"h1"} className={stls.bigHeading}>
+      {/* <Container> */}
+      <div className="flex flex-col container mx-auto">
+        {/* <div className={stls.heading_left}> */}
+        {/* <Heading Tag={"h1"} className={stls.bigHeading}>
               Fair to us
             </Heading> */}
-            <video ref={secREF} src={videoBanner}></video>
-          {/* </div>  */}
-          {/* <div className={stls.heading_right}> */}
-            {/* <Heading Tag={"h1"} className={stls.bigHeading}>
+        {/* <video ref={secREF} src={videoBanner} controls={true} type="video/mp4"></video> */}      
+        <iframe height={800} src="https://www.youtube.com/embed/XdH5eEPr-do?si=xhXLwhQvwoCSgPjl"               
+        allow="accelerometer; 
+        autoplay; 
+        clipboard-write; encrypted-media; gyroscope; 
+        picture-in-picture; web-share" 
+        ></iframe>              
+                
+        {/* </div>  */}
+        {/* <div className={stls.heading_right}> */}
+        {/* <Heading Tag={"h1"} className={stls.bigHeading}>
               Fair to earth            
             </Heading> */}
-            
-          {/* </div>           */}
-        </div>
+
+        {/* </div>           */}
+      </div>
       {/* </Container> */}
     </Section>
   );
