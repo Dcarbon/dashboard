@@ -9,20 +9,16 @@ function BannerSecond() {
       className={`relative ${stls.section}`}
       bgImageUrl={imgsObject.home_banner2}
     >
-      <Container>
-        <div className='flex flex-col justify-between'>
-          <div className={stls.heading_left}>
-            <Heading Tag={"h1"} className={stls.bigHeading}>
-              Fair to us
-            </Heading>
-          </div>
-          <div className={stls.heading_right}>
-            <Heading Tag={"h1"} className={stls.bigHeading}>
-              Fair to earth
-            </Heading>
-          </div>
-        </div>
-      </Container>
+      <div className="flex flex-col container mx-auto">        
+        <iframe
+          height={800}
+          src="https://www.youtube.com/embed/XdH5eEPr-do?si=xhXLwhQvwoCSgPjl"
+          allow="accelerometer; 
+      autoplay; 
+      clipboard-write; encrypted-media; gyroscope; 
+      picture-in-picture; web-share"
+        ></iframe>      
+      </div>      
     </Section>
   );
 }
