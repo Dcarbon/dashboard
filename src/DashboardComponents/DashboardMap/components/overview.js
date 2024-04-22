@@ -28,7 +28,7 @@ function OverView() {
       >      
           <p>Iots minted:</p>
           <span  className={stls.overView_totals}>            
-            {0 ?? offset}
+            {offset?.toFixed(2) ?? 0}
           </span>        
       </FlexBetween>
     </div>

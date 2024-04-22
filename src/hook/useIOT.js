@@ -19,6 +19,7 @@ export function useIotState() {
     latest: iotState?.latest,
     loading: iotState?.loading,
     current: iotState?.current,
+    amount:iotState?.amount,
   };
 }
 
@@ -45,14 +46,14 @@ export function useOffsetIot() {
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
 
-  const iotState = useIotState();
+  const iotState = useIotState();  
   useEffect(() => {
     if (!loaded) {
       dispatch({ type: IOTAct.OFFSET_IOT.REQUEST });
       setLoaded(true);
     }
   }, [dispatch, loaded]);
-  return iotState?.count;
+  return iotState?.amount;
 }
 
 export function useGet_all_iot() {
