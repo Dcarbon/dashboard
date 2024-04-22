@@ -6,6 +6,7 @@ import axios from "axios";
 import { Endpoint } from "src/components/router/router";
 
 export const watcherIot = [
+  handleTakeEvery(offsetIot, IOTAct.OFFSET_IOT),
   handleTakeEvery(countIot, IOTAct.COUNT_IOT),
   handleTakeEvery(getAllIots, IOTAct.GET_all_IOT),
   handleTakeEvery(getIot, IOTAct.GET_IOT),
@@ -17,6 +18,11 @@ export const watcherIot = [
 
 function countIot() {
   var url = `iots/count?status=10`;
+  return AxiosGet(url);
+}
+
+function offsetIot() {
+  var url = `iot-op/offset`;
   return AxiosGet(url);
 }
 
