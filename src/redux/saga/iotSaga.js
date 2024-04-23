@@ -12,10 +12,15 @@ export const watcherIot = [
   handleTakeEvery(getIotMinted, IOTAct.GET_IOT_MINTED),
   handleTakeEvery(getIotsMinted, IOTAct.GET_IOTs_MINTED),
   handleTakeEvery(getIOTs_byProject, IOTAct.GET_IOTs_byProject),
+  handleTakeEvery(offsetIot, IOTAct.OFFSET_IOT),
 ];
 
 function countIot() {
   var url = `iots/count`;
+  return AxiosGet(url);
+}
+function offsetIot() {
+  var url = `iots/offset`;
   return AxiosGet(url);
 }
 

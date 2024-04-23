@@ -2,9 +2,10 @@ import { imgsObject } from "src/tools/const";
 import stls from "./overview.module.scss";
 import IconSvg from "src/components/ui/IconSvg";
 import FlexBetween from "src/components/ui/Stack/flex-between";
-import { useCountIot } from "src/hook/useIOT";
+import { useCountIot, useOffsetIot } from "src/hook/useIOT";
 function OverView() {
   const count = useCountIot();
+  const offset = useOffsetIot();
 
   return (
     <div
@@ -21,6 +22,14 @@ function OverView() {
             {count ?? 0}
           </span>
         </FlexBetween>
+      </FlexBetween>
+      <FlexBetween
+        className={"items-stretch text-opacity-60 text-white text-sm gap-5"}
+      >      
+          <p>Iots minted:</p>
+          <span  className={stls.overView_totals}>            
+            {offset?.toFixed(2) ?? 0}
+          </span>        
       </FlexBetween>
     </div>
   );

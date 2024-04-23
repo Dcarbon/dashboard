@@ -57,6 +57,37 @@ const iotReducer = (state = initIotState, action) => {
         error_code: res.error_code,
         latest: action.type,
       };
+    //
+    //
+    // offset iot
+    //
+    //
+    case IOTAct.OFFSET_IOT.REQUEST:
+      // console.log("---------------request ", { action, res });
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        error_code: null,
+        latest: action.type,
+      };
+    case IOTAct.OFFSET_IOT.SUCCESS:
+      //console.log("---------------SUCCESS ", res);
+      return {
+        ...state,
+        loading: true,
+        amount: res.data?.amount,
+        latest: action.type,
+      };
+    case IOTAct.OFFSET_IOT.FAILURE:
+      // console.log("---------------FAILURE ", action);
+      return {
+        ...state,
+        loading: true,
+        error: res.error,
+        error_code: res.error_code,
+        latest: action.type,
+      };
 
     //
     //

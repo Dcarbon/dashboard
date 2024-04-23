@@ -19,6 +19,7 @@ export function useIotState() {
     latest: iotState?.latest,
     loading: iotState?.loading,
     current: iotState?.current,
+    amount: iotState?.amount,
   };
 }
 
@@ -40,6 +41,19 @@ export function useCountIot() {
     }
   }, [dispatch, loaded]);
   return iotState?.count;
+}
+export function useOffsetIot() {
+  const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
+
+  const iotState = useIotState();
+  useEffect(() => {
+    if (!loaded) {
+      dispatch({ type: IOTAct.OFFSET_IOT.REQUEST });
+      setLoaded(true);
+    }
+  }, [dispatch, loaded]);
+  return iotState?.amount;
 }
 export function useGet_all_iot() {
   const dispatch = useDispatch();

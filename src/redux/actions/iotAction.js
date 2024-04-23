@@ -12,4 +12,5 @@ export const IOTAct = {
   CLEAR_ERR: "IOT_CLEAR_ERR",
   CLEAR_for_dashboard: "CLEAR_for_dashboard",
   SET_CURRENT_IOT: "SET_CURRENT_IOT",
+  OFFSET_IOT: handleActions("offset_iot"),
 };
