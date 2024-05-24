@@ -228,7 +228,6 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
   const custom = useCallback(
     (series, seriesIndex, dataPointIndex) => {
       if (series?.length > 0) {
-        console.log("dataHandled.time", dataHandled.time);
         return (
           '<div class="arrow_box">' +
           '<h4 class="title"><b class="strong">' +
@@ -249,8 +248,7 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
     setTitleChart("(" + title + ")");
   }, [title]);
 
-  useEffect(() => {
-    console.log("dataHandled", dataHandled);
+  useEffect(() => {  
   }, [dataHandled]);
 
   useEffect(() => {
@@ -264,8 +262,7 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
     ) {
       newSeries[0].data = dataHandled.value;
       setNewCategories(dataHandled.time);
-    }
-
+    }    
     setSeries(newSeries);
   }, [
     custom,
@@ -339,20 +336,28 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
       };
       setOptionsLine(newOpLine);
     }
-  }, [custom, formatter, newCategories, titleChart, typeSensor]);
+  }, [data,custom, formatter, newCategories, titleChart, typeSensor]);
 
   return (
     data?.data && (
-      <div ref={BOXREF} className="myApex -ml-5">
-        <ReactApexChart
-          key={"bar"}
-          type={typeSensor === 0 ? "bar" : "line"}
-          options={typeSensor === 0 ? optionsBar : optionsLine}
-          series={series}
-          width={"100%"}
-          height={332}
-        />
-      </div>
+      <div ref={BOXREF} className="myApex -ml-5">     
+      <div className={typeSensor === 0 ? "block" : "hidden"}>
+       <ReactApexChart
+         type={"bar"}
+         options={optionsBar}
+         series={series}         
+         height={332}
+       />
+     </div>
+     <div className={typeSensor === 0 ? "hidden" : "block"}>
+       <ReactApexChart
+         type={"line"}
+         options={optionsLine}
+         series={series}        
+         height={332}
+       />
+     </div>
+   </div> 
     )
   );
 }

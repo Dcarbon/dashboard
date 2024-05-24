@@ -9,7 +9,7 @@ function TabsGenerator({ selectedSensor, setSelectedSensor, setTypeSensor }) {
   const [iot] = useIot();
   const [sensors, setSensors] = useSensors();
 
-  const handleClick = (value, type) => {
+  const handleClick = (value, type) => {    
     setSelectedSensor(value);
     setTypeSensor(type);
   };

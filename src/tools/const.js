@@ -90,11 +90,12 @@ export const SENSOR__UNIT_html = {
   2: <span>kWh</span>,
   21: <span>kWh</span>,
   3: <span>GPS</span>,
-  4: (
-    <span>
-      <sup>&deg;</sup>C
-    </span>
-  ),
+  // 4: (
+  //   <span>
+  //     <sup>&deg;</sup>C
+  //   </span>
+  // ),
+  4: <span>Kilograms</span>,
   41: (
     <span>
       m<sup>3</sup>
@@ -107,7 +108,7 @@ export const SENSOR__UNIT_text = {
   2: "kWh",
   21: "kWh",
   3: "gps",
-  4: "celsius",
+  4: "kg",
   41: "m3",
 };
 export const SENSOR__TYPE_TEXT = {

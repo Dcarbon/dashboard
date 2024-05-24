@@ -52,9 +52,10 @@ export const GET_STRING_DAY = (durType, time) => {
     const newTime = new Date(time);
     if (durType < 3) {
       let prevTime = new Date(time - oneHour * 3);
-      return (
-        dateFormat(prevTime, "dd/ mm") + " - " + dateFormat(newTime, "HH:MM")
-      );
+      return dateFormat(newTime, "mmm dd, yyyy");
+      // return (
+      //   dateFormat(prevTime, "dd/ mm") + " - " + dateFormat(newTime, "HH:MM")
+      // );
     } else if (durType < 5 && durType > 3) {
       return dateFormat(newTime, "mmm dd, yyyy");
     } else {
