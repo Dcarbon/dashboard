@@ -25,7 +25,7 @@ function DashboardEarth() {
   const [iot] = useIot();
   useEffect(() => {
     if (iot?.position) {
-      handleFlyTo([iot.position.lat, iot.position.lng], 14);
+      handleFlyTo([iot.position.longitude, iot.position.latitude], 14);
     }
   }, [iot]);
   const tempState = useCallback(

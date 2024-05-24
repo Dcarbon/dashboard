@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import dateFormat from "dateformat";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   GET_DATA_SERIES,
   GET_STRING_DAY,
@@ -175,9 +175,10 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
   const [dataHandled, setDataHandled] = useState({
     time: [],
     value: [],
-  });  
-  const [width, setWidth] = useState(0);
+  });
   const [series, setSeries] = useState(initSeries);
+  const [titleChart, setTitleChart] = useState("");
+  const [newCategories, setNewCategories] = useState([]);
   const [optionsBar, setOptionsBar] = useState({ ...initOptionsBar });
   const [optionsLine, setOptionsLine] = useState({ ...initOptionsLine });
   useEffect(() => {
@@ -185,12 +186,12 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
       setSeries(initSeries);
     }
   }, [data?.length, loading]);
-  useEffect(() => {  
+  useEffect(() => {
     if (data && !loading) {
       let newData = GET_DATA_SERIES(data, typeSensor, durationType);
       let newTime = [];
       let newValue = [];
-      newData?.forEach((item) => {        
+      newData?.forEach((item) => {
         newTime.push(item.time);
         newValue.push(item.value);
       });
@@ -198,14 +199,12 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
         time: newTime,
         value: newValue,
       });
-    }    
+    }
   }, [data, durationType, loading, typeSensor]);
-   
-  useEffect(() => {    
-    const text = "(" + title + ")";
-    const formatter = (val) => {
-      if (typeof val === "object") {      
-        let newD = val ? new Date(val) : null;             
+  const formatter = useCallback(
+    (val) => {
+      if (typeof val === "object") {
+        let newD = val ? new Date(val) : null;
         switch (durationType) {
           case 0: //1 tuần
           case 1: //1 tháng
@@ -223,9 +222,13 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
       }
 
       // return "";
-    };
-    const custom = (series, seriesIndex, dataPointIndex) => {
+    },
+    [durationType]
+  );
+  const custom = useCallback(
+    (series, seriesIndex, dataPointIndex) => {
       if (series?.length > 0) {
+        console.log("dataHandled.time", dataHandled.time);
         return (
           '<div class="arrow_box">' +
           '<h4 class="title"><b class="strong">' +
@@ -239,27 +242,47 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
           "</div>"
         );
       }
-    };
+    },
+    [dataHandled.time, durationType, title]
+  );
+  useEffect(() => {
+    setTitleChart("(" + title + ")");
+  }, [title]);
+
+  useEffect(() => {
+    console.log("dataHandled", dataHandled);
+  }, [dataHandled]);
+
+  useEffect(() => {
     let newSeries = initSeries;
-    let newCategories = [];
-    if (dataHandled?.value?.length === 0 || dataHandled?.time?.length === 0) {      
-      newSeries = [{ name: "iot", data: [] }];    
+    if (dataHandled?.value?.length === 0 || dataHandled?.time?.length === 0) {
+      newSeries = [{ name: "iot", data: [] }];
     } else if (
       dataHandled?.value?.length > 0 &&
       dataHandled?.time?.length > 0 &&
       !loading
-    ) {      
-      newSeries[0].data = dataHandled.value;      
-      // set options
-      newCategories = dataHandled.time;
-    }    
-    setSeries(newSeries); 
-      if (typeSensor === 0) {
+    ) {
+      newSeries[0].data = dataHandled.value;
+      setNewCategories(dataHandled.time);
+    }
+
+    setSeries(newSeries);
+  }, [
+    custom,
+    dataHandled,
+    durationType,
+    formatter,
+    loading,
+    title,
+    typeSensor,
+  ]);
+  useEffect(() => {
+    if (typeSensor === 0) {
       let newOpBar = {
         ...initOptions,
         title: {
           ...initOptions.title,
-          text,
+          text: titleChart,
         },
         xaxis: {
           ...initOptions.xaxis,
@@ -287,12 +310,12 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
         },
       };
       setOptionsBar(newOpBar);
-     } else {      
+    } else {
       let newOpLine = {
         ...initOptions,
         title: {
           ...initOptions.title,
-          text,
+          text: titleChart,
         },
         xaxis: {
           ...initOptions.xaxis,
@@ -316,41 +339,21 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
       };
       setOptionsLine(newOpLine);
     }
-  }, [dataHandled, durationType, loading, title, typeSensor]);
-
-  // // resize
-  // // resize
-  // // resize
-  // // resize
-  // useEffect(() => {
-  // const handleResize = () => setWidth(BOXREF?.current?.clientWidth);
-  // window.addEventListener("resize", handleResize);
-  // return () => {
-  //   window.removeEventListener("resize", handleResize);
-  // };
-  // }, []);
+  }, [custom, formatter, newCategories, titleChart, typeSensor]);
 
   return (
-    <div ref={BOXREF} className="myApex -ml-5">     
-       <div className={typeSensor === 0 ? "block" : "hidden"}>
+    data?.data && (
+      <div ref={BOXREF} className="myApex -ml-5">
         <ReactApexChart
-          type={"bar"}
-          options={optionsBar}
+          key={"bar"}
+          type={typeSensor === 0 ? "bar" : "line"}
+          options={typeSensor === 0 ? optionsBar : optionsLine}
           series={series}
-          width={width || "100%"}
+          width={"100%"}
           height={332}
         />
       </div>
-      <div className={typeSensor === 0 ? "hidden" : "block"}>
-        <ReactApexChart
-          type={"line"}
-          options={optionsLine}
-          series={series}
-          width={width || "100%"}
-          height={332}
-        />
-      </div>
-    </div>
+    )
   );
 }
 

@@ -59,20 +59,21 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
   };
 
   const handleGetData = useCallback(
-    (newType = durationType) => {      
+    (newType = durationType) => {
       setLoading(true);
       let newDate = new Date();
       newDate.setHours(23, 59, 59);
       let to = newDate;
       let url = "";
       let { from, interval } = handleGetDuration(newType);
-      if (typeSensor === 0) {      
-        url = apiTotalCarbon(currentId, from, to, interval);      
+      if (typeSensor === 0) {
+        url = apiTotalCarbon(currentId, from, to, interval);
       } else if (typeSensor > 0 && sensorId) {
         url = apiTotalSensor(currentId, sensorId, from, to, interval);
       }
+
       AxiosGet(url)
-        .then((res) => {          
+        .then((res) => {
           setData(res?.data);
         })
         .catch((err) => console.error("Handle get data failed", err))
@@ -159,7 +160,7 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
         <div className={stls.right}>
           <div className="flex flex-col w-full h-full ">
             <div className="relative">
-              <div className="p-3">                            
+              <div className="p-3">
                 <ChartData
                   loading={loading}
                   title={SENSOR__UNIT_text[typeSensor]}

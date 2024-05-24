@@ -287,38 +287,38 @@ const iotReducer = (state = initIotState, action) => {
         error_code: res.error_code,
         latest: action.type,
       };
-      //
-      //
-      //
-      //
-      //
-      //
-      case IOTAct.OFFSET_IOT.REQUEST:
-        // console.log("OFFSET_IOT---------------request ";
-        return {
-          ...state,
-          loading: false,
-          error: null,
-          error_code: null,
-          latest: action.type,          
-        };
-      case IOTAct.OFFSET_IOT.SUCCESS:
-         console.log("OFFSET_IOT---------------SUCCESS ", res);
-        return {
-          ...state,
-          loading: true,
-          amount: res.data?.amount,
-          latest: action.type,
-        };
-      case IOTAct.OFFSET_IOT.FAILURE:
-        // console.log("OFFSET_IOT---------------FAILURE ", res);
-        return {
-          ...state,
-          loading: true,
-          error: res.error,
-          error_code: res.error_code,
-          latest: action.type,
-        };
+    //
+    //
+    //
+    //
+    //
+    //
+    case IOTAct.OFFSET_IOT.REQUEST:
+      // console.log("OFFSET_IOT---------------request ";
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        error_code: null,
+        latest: action.type,
+      };
+    case IOTAct.OFFSET_IOT.SUCCESS:
+      //  console.log("OFFSET_IOT---------------SUCCESS ", res);
+      return {
+        ...state,
+        loading: true,
+        amount: res.data?.amount,
+        latest: action.type,
+      };
+    case IOTAct.OFFSET_IOT.FAILURE:
+      // console.log("OFFSET_IOT---------------FAILURE ", res);
+      return {
+        ...state,
+        loading: true,
+        error: res.error,
+        error_code: res.error_code,
+        latest: action.type,
+      };
     //
     //
     case IOTAct.SET_CURRENT_IOT:

@@ -19,21 +19,27 @@ function Main({ isShow, setIsShow }) {
 
   // Truy vấn thông tin IOT khi có current
   useEffect(() => {
+    // no Maximum
     if (currentIot) {
+      // console.log("setIot", currentIot);
       setIot(currentIot);
     }
   }, [currentIot, setIot]);
 
   // Truy vấn thông tin IOT khi có current project id
   useEffect(() => {
+    // no Maximum
     if (getIot?.project) {
+      // console.log("setProject", getIot?.project);
       setProject(getIot?.project);
     }
   }, [getIot, setProject]);
 
   // Truy vấn  IOTs thuộc về project khi có current project id
   useEffect(() => {
+    // no Maximum
     if (getIot?.project) {
+      // console.log("setIots_by_project", getIot?.project);
       setIots_by_project(getIot?.project);
     }
   }, [getIot, setIots_by_project]);
@@ -43,7 +49,7 @@ function Main({ isShow, setIsShow }) {
       // <div className="relative bg-[#0B0B0B] w-full h-full border-t-2 border-t-extended-700 ">
 
       <div className="mb-12">
-        <ThisContainer>          
+        <ThisContainer>
           <Information />
           <ImageProject isShow={isShow} setIsShow={setIsShow} />
         </ThisContainer>
@@ -58,6 +64,7 @@ function Main({ isShow, setIsShow }) {
         {/*  */}
         {/*  */}
         {/*  */}
+        {/* // no Maximum  */}
         <TabsGenerator
           setTypeSensor={setTypeSensor}
           selectedSensor={selectedSensor}
@@ -74,6 +81,8 @@ function Main({ isShow, setIsShow }) {
         {/*  */}
         {/*  */}
         {/*  */}
+
+        {/* //  Maximum  */}
         <ThisContainer className={"bg-extended-800 lg:p-7 "}>
           <div className="p-4">
             <TotalGenerator typeSensor={typeSensor} sensorId={selectedSensor} />
