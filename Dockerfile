@@ -1,5 +1,5 @@
 
-FROM harbor.viet-tin.com/dcarbon/dashboard:cache
+FROM dcarbon/dashboard:cache
 
 COPY . . 
 

@@ -175,18 +175,16 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
   const [dataHandled, setDataHandled] = useState({
     time: [],
     value: [],
-  });
+  });  
   const [width, setWidth] = useState(0);
   const [series, setSeries] = useState(initSeries);
   const [optionsBar, setOptionsBar] = useState({ ...initOptionsBar });
   const [optionsLine, setOptionsLine] = useState({ ...initOptionsLine });
-
   useEffect(() => {
     if (loading && data?.length >= 0) {
       setSeries(initSeries);
     }
   }, [data?.length, loading]);
-
   useEffect(() => {  
     if (data && !loading) {
       let newData = GET_DATA_SERIES(data, typeSensor, durationType);
@@ -333,8 +331,8 @@ function ChartData({ data, durationType, typeSensor, title, loading }) {
   // }, []);
 
   return (
-    <div ref={BOXREF} className="myApex -ml-5">
-      <div className={typeSensor === 0 ? "block" : "hidden"}>
+    <div ref={BOXREF} className="myApex -ml-5">     
+       <div className={typeSensor === 0 ? "block" : "hidden"}>
         <ReactApexChart
           type={"bar"}
           options={optionsBar}

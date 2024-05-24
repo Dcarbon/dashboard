@@ -1,32 +1,38 @@
 import TotalBoxBorder from "../TotalBoxBorder";
 import { useMemo } from "react";
 
-import { getAmountbyNumber } from "src/DashboardComponents/handleConfig";
+import { getAmountbyNumber, getAmountbyNumber2 } from "src/DashboardComponents/handleConfig";
+import SensorTypes from "./SensorType";
 
-export function Yesterday({ data, loading }) {
+export function Yesterday({ data, loading,typeSensor }) {
   // Từ data =>number
   // Từ data =>number
   // Từ data =>number
   // Từ data =>number
   const number = useMemo(() => {
-    const today = new Date().getDate();
-    const yesterday = today - 1;
-    
-    let yesterdayData = { time: 0, created: 0 };
-    if (data?.length > 1) {
-      const filteredData = data.find(item => {
-        const newDateByItem = new Date(Number(item.time));
-        return newDateByItem.getDate() === yesterday;
-      });
-      if (filteredData) {
-        yesterdayData = filteredData;
+    const today = new Date();
+    const yesterday = today.getDate() - 1;
+    const month = today.getMonth();    
+    let yesterdayData = 0;
+    if (data?.length > 1) {                
+      
+      for (var i=0; i < data.length; i++) {
+        const newDateByItem = new Date(Number(data[i].time));     
+        if(newDateByItem.getDate() === yesterday && newDateByItem.getMonth() === month){
+          yesterdayData = Number(yesterdayData) + Number(data[i].created);
+        }
       }
     }
     return yesterdayData;
   }, [data]);
-  const newNumber = useMemo(() => {
-    return getAmountbyNumber(number?.created);
-  }, [number?.created]);
+  const newNumber = useMemo(() => {    
+    try {
+      return SensorTypes.get(typeSensor)===true?getAmountbyNumber2(number) : getAmountbyNumber(number);
+    } catch (error) {
+      console.log("Yesterday: ", error)
+      return 0;
+    }
+  }, [number]);
   return (
     <TotalBoxBorder
       className={"border-r border-b md:border-b-0"}

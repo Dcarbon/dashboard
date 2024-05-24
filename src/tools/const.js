@@ -116,7 +116,7 @@ export const SENSOR__TYPE_TEXT = {
   2: "Energy",
   21: "Biogas",
   // 3: "GPS",
-  4: "Temperature",
+  4: "Wood Burned",
   41: "Biomass",
 };
 

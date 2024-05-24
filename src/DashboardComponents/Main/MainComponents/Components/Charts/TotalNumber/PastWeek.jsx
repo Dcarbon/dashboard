@@ -3,10 +3,12 @@ import { useMemo } from "react";
 
 import {
   getAmountbyNumber,
+  getAmountbyNumber2,
   getSum,
 } from "src/DashboardComponents/handleConfig";
+import SensorTypes from "./SensorType";
 
-export function PastWeek({ data, loading }) {
+export function PastWeek({ data, loading,typeSensor }) {
   // Từ data =>number
   // Từ data =>number
   // Từ data =>number
@@ -36,7 +38,12 @@ export function PastWeek({ data, loading }) {
     return yesterdayData;
   }, [data]);
   const newNumber = useMemo(() => {
-    return getAmountbyNumber(number?.created);
+    try {
+      return SensorTypes.get(typeSensor)===true?getAmountbyNumber2(number?.created) : getAmountbyNumber(number?.created);
+    } catch (error) {
+      console.log("PastWeek: ",error)
+      return 0;
+    }
   }, [number?.created]);  
   return (
     <TotalBoxBorder

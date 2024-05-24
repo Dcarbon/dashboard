@@ -33,7 +33,7 @@ function TotalGenerator({ typeSensor, sensorId }) {
           amount: getSum(prev?.amount ?? 0, curr?.amount ?? 0),
         };
       });
-      return Number(newCollection.amount ?? 0).toFixed(2);
+      return Number(newCollection.amount ?? 0).toFixed(4);
     }
     return 0;
   };
@@ -68,8 +68,8 @@ function TotalGenerator({ typeSensor, sensorId }) {
         </div>
         <div className='flex-1'>
           <div className='flex flex-wrap md:flex-nowrap border border-extended-700 rounded-md '>
-            <Yesterday data={data} loading={loading} />
-            <PastWeek data={data} loading={loading} />
+            <Yesterday data={data} loading={loading} typeSensor={typeSensor}/>
+            <PastWeek data={data} loading={loading} typeSensor={typeSensor}/>
             <Past30
               data={data}
               loading={loading}

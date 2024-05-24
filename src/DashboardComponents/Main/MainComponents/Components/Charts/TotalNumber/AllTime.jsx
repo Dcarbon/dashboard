@@ -1,5 +1,6 @@
 import {
   getAmountbyNumber,
+  getAmountbyNumber2,
   getSum,
 } from "src/DashboardComponents/handleConfig";
 import TotalBoxBorder from "../TotalBoxBorder";
@@ -7,6 +8,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useHandleIots_minted, useIots_Minted } from "src/hook/useIOT";
 import { AxiosGet } from "src/redux/sagaUtils";
 import { apiTotalSensor } from "./handle";
+import SensorTypes from "./SensorType";
 
 export function AllTime({ typeSensor, id, sensorId }) {
   const [data, setData] = useState(null);
@@ -43,7 +45,7 @@ export function AllTime({ typeSensor, id, sensorId }) {
   // Get data
   // Get data
   // Get data
-  useEffect(() => {
+  useEffect(() => { 
     if (typeSensor !== 0 && id && sensorId) {
       getAllTimeSensor(typeSensor, sensorId, id);
     }
@@ -65,7 +67,7 @@ export function AllTime({ typeSensor, id, sensorId }) {
     }
     return { time: 0, created: 0 };
   }, [data]);
-  const numberIOT = useMemo(() => {
+  const numberIOT = useMemo(() => {    
     let returnNumb = { amount: 0 };
     if (values?.length > 0) {
       let newVal = values.find((item) => Number(item.iotId) === Number(id));
@@ -73,13 +75,18 @@ export function AllTime({ typeSensor, id, sensorId }) {
       if (newVal) {
         returnNumb = newVal;
       }
-    }
+    }    
     return returnNumb;
   }, [id, values]);
-  const newNumber = useMemo(() => {    
-    return getAmountbyNumber(numberSensor?.created);
+  const newNumber = useMemo(() => {  
+    try {
+      return   SensorTypes.get(typeSensor)===true?getAmountbyNumber2(numberSensor?.created) : getAmountbyNumber(numberSensor?.created); 
+    } catch (error) {
+      console.log("Alltime error: ", error)
+      return 0
+    }
   }, [numberSensor?.created]);
-  return (
+  return (    
     <TotalBoxBorder
       className={"border-r border-b md:border-b-0"}
       title={"All time"}

@@ -4,8 +4,12 @@ import { useCallback, useEffect, useMemo } from "react";
 import { apiTotalCarbon, apiTotalSensor } from "./handle";
 import {
   getAmountbyNumber,
+  getAmountbyNumber2,
   getSum,
 } from "src/DashboardComponents/handleConfig";
+import SensorTypes from "./SensorType";
+
+
 
 export function Past30({
   typeSensor,
@@ -21,7 +25,7 @@ export function Past30({
   // Hàm lấy dữ liệu 30 ngày trước
   // Hàm lấy dữ liệu 30 ngày trước
   const getPast30 = useCallback(
-    (type, sensor, iot) => {
+    (type, sensor, iot) => {    
       setLoading(true);
       let newDate = new Date();
       newDate.setHours(23, 59, 59);
@@ -34,9 +38,9 @@ export function Past30({
 
       let url = "";
       if (type === 0) {
-        url = apiTotalCarbon(iot, from, to);
+        url = apiTotalCarbon(iot, from, to,2);
       } else {
-        url = apiTotalSensor(iot, sensor, from, to, 1);
+        url = apiTotalSensor(iot, sensor, from, to, 2);
       }
       // console.log("getPast30 --------------------------------", url);
       AxiosGet(url)
@@ -83,7 +87,12 @@ export function Past30({
   }, [data]);
 
   const newNumber = useMemo(() => {  
-    return getAmountbyNumber(number?.created);
+    try {
+      return  SensorTypes.get(typeSensor)===true?getAmountbyNumber2(number?.created) : getAmountbyNumber(number?.created);
+    } catch (error) {
+      console.log("Past30 day", error)
+      return 0
+    }
   }, [number?.created]);
   return (
     <TotalBoxBorder

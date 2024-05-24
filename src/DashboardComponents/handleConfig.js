@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import dateFormat from "dateformat";
+import SensorTypes from "./Main/MainComponents/Components/Charts/TotalNumber/SensorType";
 export const roundup_second = (time) => {
   return time ? Math.round(time?.getTime() / 1000) : 1;
 };
@@ -14,19 +15,39 @@ export const DURATION_TYPES = ["1W", "1M", "3M", "6M", "1Y", "All time"];
 export const oneHour = 60 * 60 * 1000;
 export const oneDay = 24 * oneHour;
 export const getAmount = (item) => {
-  const hexAmount = new BigNumber(item);
-  const reduceAmount = hexAmount.div("1e9");
-  let fixed = reduceAmount.toFixed(2);
-  return fixed;
+  try {
+    const hexAmount = new BigNumber(item);
+    const reduceAmount = hexAmount.div("1e9");
+    let fixed = reduceAmount?.toFixed(4);
+    return fixed;
+  } catch (error) {
+    console.log("getAmount: ", error);
+    return 0;
+  }
 };
 export const getAmountbyNumber = (numb) => {
-  const reduceAmount = numb / 1e9;
-  let fixed = reduceAmount.toFixed(2);  
-  return fixed;
+  try {
+    const reduceAmount = numb / 1e9;
+    let fixed = reduceAmount?.toFixed(4);
+    return fixed;
+  } catch (error) {
+    console.log("getAmountbyNumber: ", error);
+    return 0;
+  }
+};
+export const getAmountbyNumber2 = (numb) => {
+  try {
+    const reduceAmount = numb * 0.000030368;
+    let fixed = reduceAmount?.toFixed(4);
+    return fixed;
+  } catch (error) {
+    console.log("getAmountbyNumber2: ", error);
+    return 0;
+  }
 };
 export const getSum = (prev, next) => Number(prev) + Number(next);
 
-export const GET_STRING_DAY = (durType, time) => {  
+export const GET_STRING_DAY = (durType, time) => {
   if (time) {
     const newTime = new Date(time);
     if (durType < 3) {
@@ -56,7 +77,7 @@ export const GET_STRING_DAY_LineChart = (durType, time) => {
 
 export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
   let sorted = [];
-  let newmap = [];  
+  let newmap = [];
   if (data?.data?.length) {
     // console.log("data");
     // console.log("data");
@@ -68,20 +89,20 @@ export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
     // console.log("data");
     // console.log("data");
     // console.log("data");
-    // console.log("data");  
+    // console.log("data");
     // console.log("data");
     // console.log("data");
     // console.log("data", data);
     // let initTime = 0;
     // let total = 0;
-    newmap = data?.data?.map((item) => {        
+    newmap = data?.data?.map((item) => {
       let newTime = item.createdAt || item.time;
-      let newValue = item.carbon || item.value;          
+      let newValue = item.carbon || item.value;
       return {
         time: new Date(Number(newTime)),
         value: newValue ? getAmountbyNumber(newValue) : "0",
       };
-    });    
+    });
     sorted = newmap.sort((a, b) => a?.time?.getTime() - b?.time?.getTime());
     let newReverseZA = [];
     let newReverse = [];
@@ -135,7 +156,7 @@ export const GET_DATA_SERIES = (data, typeSensor, durationType) => {
       });
       sortedHandled = newReverse.reverse();
       return sortedHandled;
-    } else {      
+    } else {
       return sorted;
     }
   }

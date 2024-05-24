@@ -49,6 +49,7 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
       default: // 1 tuần
         newDate.setDate(newDate.getDate() - 7);
         from = newDate;
+        interval = 2;
         break;
     }
     return {
@@ -71,8 +72,7 @@ function Charts({ onChangeIOT, sensorId, typeSensor }) {
         url = apiTotalSensor(currentId, sensorId, from, to, interval);
       }
       AxiosGet(url)
-        .then((res) => {
-          // console.log("data ",  res?.data?.length)
+        .then((res) => {          
           setData(res?.data);
         })
         .catch((err) => console.error("Handle get data failed", err))
