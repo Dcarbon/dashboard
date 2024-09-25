@@ -10,9 +10,9 @@
     "lint": "next lint",
     "export": "next export",
     "dk-cache": "docker build -t dcarbon/dashboard:cache -f docker-cache/Dockerfile .",
-    "dk-build": "docker build -t dcarbon/dashboard:prod.6 .",
-    "dk-run": "docker run -p 3132:3000 dcarbon/dashboard:prod.6",
-    "dk-push": "docker push dcarbon/dashboard:prod.6"
+    "dk-build": "docker build -t dcarbon/dashboard:prod.7 .",
+    "dk-run": "docker run -p 3132:3000 dcarbon/dashboard:prod.7",
+    "dk-push": "docker push dcarbon/dashboard:prod.7"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
