@@ -40,7 +40,7 @@ function getAllIots() {
   return AxiosGet(url);
 }
 function getIOTs_byProject(action) {
-  var url = `iots?projectId=${action.payload}&status=10`;
+  var url = `iots?projectId=${action.payload}&status=10&type=-1`;
   return AxiosGet(url);
 }
 function getIotMinted(action) {
