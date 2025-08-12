@@ -3,9 +3,9 @@ const path = require("path");
 
 const nextConfig = {
   // reactStrictMode: false,
-  experimental: {
-    appDir: false,
-  },
+  // experimental: {
+  //   appDir: false,
+  // },
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },

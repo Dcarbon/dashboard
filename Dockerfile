@@ -3,7 +3,7 @@ FROM dcarbon/dashboard:cache
 
 COPY . . 
 
-RUN yarn && yarn build &&\
+RUN yarn build &&\
     rm -rf src &&\
     yarn cache clean &&\ 
     echo "Build dashboard success...!"

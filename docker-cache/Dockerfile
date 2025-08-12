@@ -2,9 +2,9 @@
 FROM node:18-alpine
 
 WORKDIR /dashboard
-COPY . . 
+COPY package.json yarn.lock ./
 
-RUN yarn  &&\
-    yarn cache clean &&\ 
+RUN yarn install --frozen-lockfile &&\
+    yarn cache clean &&\
     echo "Build dashboard cache success...!"
 
